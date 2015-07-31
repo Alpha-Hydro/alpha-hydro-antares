@@ -1,0 +1,29 @@
+<h3><?=$this->product->name. ' '. $this->product->sku?></h3>
+
+<form id="modification" name="modification" method="post" enctype="multipart/form-data" action="<?=$this->url(array("controller"=>"products", "action"=>"passport", 'id' => $this->product->id))?>" target="_blank">
+
+    <table class="modification" cellspacing="1" cellpadding="5">
+        <thead>
+        <tr>
+            <th><input type="checkbox" class="checkAll"/></th>
+            <?php foreach ($this->tableHead as $value):?>
+                <th><?=$value?></th>
+            <?php endforeach;?>
+        </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($this->modifications as $modification):?>
+                <tr>
+                    <td><input type="checkbox" name="modifications[]" value="<?=$modification->id?>"/></td>
+                    <td><?= $modification->sku ?></td>
+                    <?php $params = $modification->getParamsValues();?>
+                    <?php foreach ($params as $value):?>
+                        <td><?=$value->value?></td>
+                    <?php endforeach;?>
+                </tr>
+            <?php endforeach;?>
+        </tbody>
+    </table>
+    <input type="hidden" value="<?=$this->product->id?>" name="id"/>
+    <button type="submit" name="submit">Создать паспорт</button>
+</form>

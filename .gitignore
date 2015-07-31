@@ -1,0 +1,13 @@
+# IntelliJ project files
+.idea
+
+.protect
+
+google*.html
+yandex_*.html
+robots.txt
+Catalog_alpha-hydro_2013-10-16.pdf
+db-backup.sql
+nicEditorIcons.gif
+/documentation
+/Zend

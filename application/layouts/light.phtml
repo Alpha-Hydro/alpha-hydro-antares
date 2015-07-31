@@ -1,0 +1,44 @@
+<?php echo $this->doctype() ?>
+<html lang="ru-RU">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<link rel="shortcut icon" href="/favicon.png" />
+		<?php
+		echo $this->headMeta ();
+		
+		echo $this->headTitle ( "Альфа-Гидро" );
+		echo $this->headLink ()->appendStylesheet ( 'http://fonts.googleapis.com/css?family=PT+Sans:400,700&subset=latin,cyrillic' )->appendStylesheet ( '/css/application.css' );
+		
+		$this->headScript()
+			-> prependFile("/scripts/jquery-1.8.1.min.js")
+			-> appendFile("/scripts/mainmenu.js")
+			-> appendFile("/scripts/scripts.js");
+		?>
+		
+	</head>
+<body class="light-layout">
+	<? echo $this->partial("components/adminZone.phtml")?>
+	<div id="page">
+		<div id="header">
+			<? echo $this->partial("components/_header.phtml") ?>
+		</div>
+		<div id="content">
+			<?php
+				echo $this->layout()->content;
+			?>
+			 <div id="pre-footer"></div> 
+		</div>
+	</div>
+	
+	<? echo $this->partial("components/_footer.phtml") ?>
+	
+	<?php
+		echo $this -> headScript ();
+	?>
+	<?php
+		if(!Zend_Auth::getInstance()->hasIdentity())
+			echo $this->partial("components/_counters.phtml");
+	?>
+</body>
+</html>
