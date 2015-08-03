@@ -28,7 +28,12 @@ set_include_path(implode(PATH_SEPARATOR, array(
 
 require_once 'Zend/Application.php';
 
-$application = new Zend_Application(APPLICATION_ENV, APPLICATION_PATH . '/config/application.xml');
+$application = new Zend_Application(APPLICATION_ENV, array(
+	'config' => array(
+		APPLICATION_PATH . '/config/application.xml',
+		APPLICATION_PATH . '/config/db.xml'
+	),
+));
 
 $application -> bootstrap() -> run();
 ?>
