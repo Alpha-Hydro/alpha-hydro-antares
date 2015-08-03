@@ -12,3 +12,5 @@ nicEditorIcons.gif
 /documentation
 /Zend
 .htaccess
+_utils
+application/config/db.xml
