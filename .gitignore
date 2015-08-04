@@ -12,7 +12,7 @@ nicEditorIcons.gif
 /documentation
 /Zend
 _utils
-*/config/db.xml
 
 _db
 tests
+appadmin/config/db.xml
