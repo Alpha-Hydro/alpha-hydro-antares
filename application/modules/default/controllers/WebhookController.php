@@ -9,11 +9,9 @@
 class WebhookController extends Zend_Controller_Action
 {
     public function indexAction(){
+        $local_repo = APPLICATION_ROOT;
         if($_POST['payload']){
-            $writer = new Zend_Log_Writer_Stream(APPLICATION_ROOT.'webhook.json');
-            $logger = new Zend_Log($writer);
-
-            $logger->info('Informational message');
+            shell_exec("cd {$local_repo} && git pull");
         }
     }
 
