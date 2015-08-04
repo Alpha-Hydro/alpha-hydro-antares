@@ -5,7 +5,7 @@ error_reporting(1);
 error_reporting(E_ALL);
 
 defined('APPLICATION_PATH') 
-	|| define('APPLICATION_PATH',dirname(__FILE__) . '/application');
+	|| define('APPLICATION_PATH',dirname(__FILE__) . '/appadmin');
 defined('APPLICATION_ENV') 
 	|| define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
 
