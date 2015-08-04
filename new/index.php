@@ -8,7 +8,7 @@ error_reporting(E_ALL);
 defined('APPLICATION_PATH') || define('APPLICATION_PATH',realpath(dirname(__FILE__) . '/../application'));
 defined('APPLICATION_ENV') || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
 
-var_dump(realpath(APPLICATION_PATH .'/../../frameworks/Zend12/library/'));
+//var_dump(realpath(APPLICATION_PATH .'/../../frameworks/Zend12/library/'));
 
 // /**
 //  * Path to root folder
