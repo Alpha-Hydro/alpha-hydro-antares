@@ -95,5 +95,14 @@ class IndexController extends Zend_Controller_Action {
 	
 	public function aboutAction(){
 	}
+
+    public function webhookAction(){
+        if($this->getRequest()->isPost() && $this->getRequest()->getParam('payload')){
+            $writer = new Zend_Log_Writer_Stream(APPLICATION_ROOT.'webhook.json');
+            $logger = new Zend_Log($writer);
+
+            $logger->info('Informational message');
+        }
+    }
 }
 ?>
