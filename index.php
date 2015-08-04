@@ -36,4 +36,3 @@ $application = new Zend_Application(APPLICATION_ENV, array(
 ));
 
 $application -> bootstrap() -> run();
-?>
