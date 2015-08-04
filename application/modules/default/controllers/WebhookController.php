@@ -9,9 +9,13 @@
 class WebhookController extends Zend_Controller_Action
 {
     public function indexAction(){
-        $local_repo = APPLICATION_ROOT;
+
         if($this->getRequest()->isPost() && $_POST['payload']){
+            $local_repo = APPLICATION_ROOT;
             shell_exec("cd {$local_repo} && git pull");
+        }
+        else{
+            throw new Zend_Exception("Page not found", 404);
         }
     }
 
