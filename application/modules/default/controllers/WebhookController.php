@@ -10,7 +10,7 @@ class WebhookController extends Zend_Controller_Action
 {
     public function indexAction(){
         $local_repo = APPLICATION_ROOT;
-        if($_POST['payload']){
+        if($this->getRequest()->isPost() && $_POST['payload']){
             shell_exec("cd {$local_repo} && git pull");
         }
     }
