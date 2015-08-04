@@ -13,3 +13,4 @@ nicEditorIcons.gif
 /Zend
 _utils
 application/config/db.xml
+.gitignore
