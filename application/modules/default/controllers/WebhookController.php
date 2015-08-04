@@ -9,7 +9,7 @@
 class WebhookController extends Zend_Controller_Action
 {
     public function indexAction(){
-        if($this->getRequest()->isPost() && $this->getRequest()->getParam('payload')){
+        if($this->getRequest()->isPost() && $_POST['payload']){
             $writer = new Zend_Log_Writer_Stream(APPLICATION_ROOT.'webhook.json');
             $logger = new Zend_Log($writer);
 
