@@ -1,0 +1,34 @@
+//noinspection CssInvalidFunction
+$main-menu: sprite-map("main-menu/*.png", $position: 100%, $spacing: 5px, $repeat: repeat-x);
+
+//noinspection SassScssResolvedByNameOnly
+$alpha-font-size-small: ceil(($font-size-base * 0.75)); //~8pt, ~11px;
+//noinspection SassScssResolvedByNameOnly
+$alpha-font-size-large: ceil(($font-size-base * 1.6)); //~17pt, ~23px;
+
+$alpha-gray-dark: #6A6A6A;
+$alpha-gray: #ABABAB;
+$alpha-gray-light: #CCCCCC;
+$alpha-orange: #F48123;
+$alpha-blue: #0895D8;
+
+$height-footer: 80px;
+
+.header .container .row{
+  //@include red-box();
+}
+
+.ok{
+  background-color: transparent;
+}
+.no{
+  background-color: $alpha-orange;
+  color: white;
+}
+
+.text-size-small{
+  font-size: $alpha-font-size-small;
+}
+.text-size-large{
+  font-size: $alpha-font-size-large;
+}

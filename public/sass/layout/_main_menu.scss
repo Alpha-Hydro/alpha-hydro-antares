@@ -1,0 +1,25 @@
+//noinspection ALL
+.main-menu{
+  margin:{
+    top: 24px;
+  }
+  position: relative;
+  line-height: 36px;
+  background: sprite($main-menu, menu-bg);
+  height: 38px;
+  &::after, &::before{
+    position: absolute;
+    content: '';
+    display: block;
+    width: 11px;
+    height: 38px;
+  }
+  &::after{
+    left: 0;
+    background: sprite($main-menu, menu-bg-left) #fff no-repeat;
+  }
+  &::before{
+    right: 0;
+    background: sprite($main-menu, menu-bg-right) #fff no-repeat;
+  }
+}

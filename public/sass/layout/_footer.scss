@@ -1,0 +1,12 @@
+.footer{
+  background: image_url('footer-new.png') repeat-x;
+  @include box-shadow(#E8E7E7 0px 10px 50px);
+  font-size: $alpha-font-size-small;
+  position: relative;
+  .wrapper{
+    background: image_url('footer-center.png') no-repeat center top;
+    padding: {
+      top: 25px;
+    }
+  }
+}

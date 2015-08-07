@@ -1,0 +1,13 @@
+//noinspection ALL
+@mixin red-box($all-children: false){
+  @if $all-children {
+    &, div {
+      @include box-shadow(#f00 0 0 1px inset);
+    }
+  }
+  @else{
+    >div {
+      @include box-shadow(#f00 0 0 1px inset);
+    }
+  }
+}

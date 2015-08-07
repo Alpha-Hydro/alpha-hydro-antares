@@ -1,0 +1,58 @@
+.example{
+  position: relative;
+  margin:{
+    right: 0;
+    left: 0;
+  }
+  padding: {
+    top: 45px;
+    right: 15px;
+    bottom: 15px;
+    left: 15px;
+  }
+  background-color: #FFF;
+  border:{
+    color: #DDD;
+    width: 1px;
+    radius: 4px;
+    style: solid;
+  }
+  box-shadow: none;
+  &::after{
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    font:{
+      size: 12px;
+      weight: 700;
+    }
+    color: #959595;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    content: "Example";
+  }
+  .table{
+    .type-info{
+      color: #767676;
+      vertical-align: middle;
+    }
+  }
+}
+.color{
+  height: 20px;
+  &.gray-dark{
+    background-color: $alpha-gray-dark;
+  }
+  &.gray{
+    background-color: $alpha-gray;
+  }
+  &.gray-light{
+    background-color: $alpha-gray-light;
+  }
+  &.orange{
+    background-color: $alpha-orange;
+  }
+  &.blue{
+    background-color: $alpha-blue;
+  }
+}

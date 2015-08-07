@@ -15,7 +15,7 @@
 				<params>
 					<host>localhost</host>
 					<username>root</username>
-					<password></password>
+					<password/>
 					<dbname>db1057313_alphahyd</dbname>
 					<charset value="utf8" />
 				</params>
