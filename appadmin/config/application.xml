@@ -10,17 +10,6 @@
 		</bootstrap>
 		
 		<resources>
-			<db>
-				<adapter>pdo_mysql</adapter>
-				<params>
-					<host>localhost</host>
-					<username>root</username>
-					<password/>
-					<dbname>db1057313_alphahyd</dbname>
-					<charset value="utf8" />
-				</params>
-			</db>
-			
 			<layout>
 				<layout value="default" />
 				<layoutPath><zf:const zf:name="APPLICATION_PATH" />/layouts</layoutPath>
@@ -28,9 +17,6 @@
 			<frontController>
 				<moduleDirectory><zf:const zf:name="APPLICATION_PATH" />/modules</moduleDirectory>
 			</frontController>
-			<!-- <view>
-				<placeholder />
-			</view> -->
 			<modules>
 				<placeholder />
 			</modules>
