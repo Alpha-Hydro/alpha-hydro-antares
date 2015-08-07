@@ -1,0 +1,51 @@
+<?php
+    $this->headMeta()
+        ->prependName('viewport', 'width=device-width, initial-scale=1.0')
+        ->prependHttpEquiv('X-UA-Compatible', 'IE=edge')
+        ->prependName('keywords', $this->meta_keywords)
+        ->prependName('description', $this->meta_description)
+        ->prependHttpEquiv('Content-Type', 'text/html; charset=UTF-8');
+
+    //Apple iOS
+    $this->headLink(array('rel' => 'apple-touch-icon',
+            'href' => $this->baseUrl().'/img/favicons/touch-icon-iphone.png'),
+            'APPEND')
+        ->headLink(array('rel' => 'apple-touch-icon',
+            'href' => $this->baseUrl().'/img/favicons/touch-icon-ipad.png',
+            'size' => "76x76"),
+            'APPEND')
+        ->headLink(array('rel' => 'apple-touch-icon',
+            'href' => $this->baseUrl().'/img/favicons/touch-icon-iphone-retina.png',
+            'size' => "120x120"),
+            'APPEND')
+        ->headLink(array('rel' => 'apple-touch-icon',
+            'href' => $this->baseUrl().'/img/favicons/touch-icon-ipad-retina.png',
+            'size' => "152x152"),
+            'APPEND');
+
+    //win meta
+    $this->headMeta()
+        ->appendName('application-name','Альфа Гидро. Гидравлика.')
+        ->appendName('msapplication-TileColor','#4b93ca')
+        ->appendName('msapplication-square70x70logo',$this->baseUrl().'/img/favicons/win70x70.png')
+        ->appendName('msapplication-square150x150logo',$this->baseUrl().'/img/favicons/win150x150.png')
+        ->appendName('msapplication-square310x150logo',$this->baseUrl().'/img/favicons/win310x150.png')
+        ->appendName('msapplication-square310x310logo',$this->baseUrl().'/img/favicons/win310x310.png');
+
+    //twitter meta
+    $this->headMeta()
+        ->appendName('twitter:card','summary')
+        ->appendName('twitter:site',$this->serverUrl())
+        ->appendName('twitter:title',$this->meta_title)
+        ->appendName('twitter:description',$this->meta_description)
+        ->appendName('twitter:image','/img/favicons/win310x310.png');
+
+    echo $this->headMeta();
+?>
+
+<meta property="og:url" content="<?=$this->serverUrl()?>" />
+<meta property="og:title" content="<?=$this->meta_title?>" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Альфа Гидро. Гидравлика" />
+<meta property="og:image" content="<?=$this->baseUrl().'/img/favicons/win310x310.png'?>" />
+<meta property="og:description" content="<?=$this->meta_description?>" />

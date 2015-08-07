@@ -8,6 +8,17 @@ defined('APPLICATION_PATH')
 defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
 
+/**
+ * Path to font folder
+ */
+defined('IMAGE_DIR')
+|| define('IMAGE_DIR', '/public/img');
+
+/**
+ * Path to root folder
+ */
+define('APPLICATION_ROOT', dirname(__FILE__));
+
 // Ensure library/ is on include_path
 set_include_path(implode(PATH_SEPARATOR, array(
     realpath(APPLICATION_PATH . '/../../frameworks/Zend12/library'),

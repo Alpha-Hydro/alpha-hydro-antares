@@ -1,13 +1,18 @@
 <?php echo $this->doctype() ?>
 <html lang="ru">
 <head>
-    <meta charset=utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <?php
         echo $this->headTitle();
-        echo $this->headMeta();
-        echo $this->headLink()->appendStylesheet('/public/css/global.css');
+
+        echo $this->partial("components/_meta_head.phtml");
+
+        $this->headLink()
+            ->appendStylesheet('/public/css/global.css')
+            ->headLink(array('rel' => 'shortcut icon',
+                'type' => "image/x-icon",
+                'href' => $this->baseUrl().'/img/favicons/favicon.ico'),
+                'PREPEND');
+        echo $this->headLink();
     ?>
 </head>
 <body>
