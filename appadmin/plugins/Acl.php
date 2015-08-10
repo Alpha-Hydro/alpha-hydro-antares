@@ -6,16 +6,19 @@ class Plugin_Acl extends Zend_Controller_Plugin_Abstract {
     	$acl -> addResource("page");
     	$acl -> addResource("forum");
     	$acl -> addResource("catalog");
-    	
+
     	$acl -> addRole("administrator");
     	$acl -> addRole("moderator");
-    	
+
     	$acl -> allow("administrator");
-    	
+
     	$acl -> deny("moderator");
     	$acl -> allow("moderator", "forum", array("answer", "edit-own"));
 
     	Zend_Registry::set('acl', $acl);
+
+//        if(!Zend_Auth::getInstance()->hasIdentity())
+//            $request->setControllerName('index')->setActionName('login');
     }
 
 }

@@ -21,12 +21,12 @@ class IndexController extends Zend_Controller_Action {
 	 * Default action, will forward, or show start page
 	 */
 	public function indexAction() {
-		Zend_Layout::getMvcInstance ()->setLayout ( "index" );
+		Zend_Layout::getMvcInstance()->setLayout("index");
 		
-		$categoriesModel = new Model_DbTable_PagesCategories ();
-		$pagesModel = new Model_DbTable_Pages ();
+		$categoriesModel = new Model_DbTable_PagesCategories();
+		$pagesModel = new Model_DbTable_Pages();
 		
-		$category = $categoriesModel->fetchRow ( $categoriesModel->select ()->where ( "name = ?", "Пресса" )->where ( "parent_id IS NULL" ) );
+		$category = $categoriesModel->fetchRow($categoriesModel->select()->where("name = ?","Пресса")->where("parent_id IS NULL"));
 		
 		$categories = $category->findDependentRowset ( "Model_DbTable_PagesCategories" );
 		
@@ -59,7 +59,7 @@ class IndexController extends Zend_Controller_Action {
 		$forumModel = new Model_DbTable_Forum();
 		
 		$this->view->forum = new StdClass;
-		$this->view->forum->answer = $forumModel->fetchRow( $forumModel->select()->order("timestamp DESC") ->where ( "parent_id IS NOT NULL " ) );
+		$this->view->forum->answer = $forumModel->fetchRow($forumModel->select()->order("timestamp DESC") ->where("parent_id IS NOT NULL"));
 		$this->view->forum->question = $this->view->forum->answer->findParentRow("Model_DbTable_Forum");
 	}
 	

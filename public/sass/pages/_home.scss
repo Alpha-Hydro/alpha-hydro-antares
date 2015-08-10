@@ -1,0 +1,18 @@
+.sections{
+  margin-top: 70px;
+}
+.section{
+  position: relative;
+  .caption{
+    bottom: 30px;
+    position: absolute;
+    width: 100%;
+    font-size: $font-size-base;
+    color: $alpha-gray-dark;
+    &::before{
+      content: '\25a0';
+      margin-right: 10px;
+      vertical-align: 0.1em;
+    }
+  }
+}
