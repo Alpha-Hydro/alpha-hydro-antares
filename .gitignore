@@ -23,4 +23,8 @@ appadmin/config/db.xml
 .sass-cache
 *.css.map
 
-
+# frontend
+frontend/css
+frontend/files
+frontend/images
+frontend/scripts
