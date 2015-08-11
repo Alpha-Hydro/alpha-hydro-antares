@@ -1,4 +1,4 @@
-<ul class="nav navbar-nav">
+<ul class="">
     <?php $menu = new Zend_Navigation(new Zend_Config_Xml(APPLICATION_PATH . "/navigations/main-menu.xml"));?>
     <?foreach ( $menu as $menuItem ) :?>
         <li><a href="<?=$menuItem->getHref();?>/"><?=$menuItem; ?></a></li>
