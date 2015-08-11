@@ -7,7 +7,7 @@
         echo $this->partial("components/_meta_head.phtml");
 
         $this->headLink()
-            ->appendStylesheet('/public/css/global.css')
+            ->appendStylesheet($this->baseUrl().'/css/global.css')
             ->headLink(array('rel' => 'shortcut icon',
                 'type' => "image/x-icon",
                 'href' => $this->baseUrl().'/img/favicons/favicon.ico'),

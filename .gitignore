@@ -29,3 +29,7 @@ frontend/files
 frontend/images
 frontend/scripts
 frontend/fonts
+
+# public
+public/images
+public/fonts
