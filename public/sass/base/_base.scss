@@ -3,6 +3,7 @@ $main-menu: sprite-map("main-menu/*.png", $position: 100%, $spacing: 5px, $repea
 
 //noinspection SassScssResolvedByNameOnly
 $alpha-font-size-small: ceil(($font-size-base * 0.75)); //~8pt, ~11px;
+
 //noinspection SassScssResolvedByNameOnly
 $alpha-font-size-large: ceil(($font-size-base * 1.6)); //~17pt, ~23px;
 
