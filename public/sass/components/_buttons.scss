@@ -1,0 +1,38 @@
+.btn-alpha{
+  position: relative;
+  margin-right: 8px;
+  padding: {
+    top: 0;
+    bottom: 0;
+    left: 6px;
+    right: 6px;
+  };
+  border: none;
+  font: {
+    size: $alpha-font-size-small;
+  };
+  line-height: 20px;
+  height: 20px;
+  background: sprite($btn-sprite, btn-bg) transparent repeat-x;
+  &::after, &::before{
+    position: absolute;
+    content: '';
+    display: block;
+    width: 8px;
+    height: 20px;
+    top: 0;
+  }
+  &::after{
+    background: sprite($btn-sprite, btn-right) transparent no-repeat;
+    right: -8px;
+  }
+  &::before{
+    background: sprite($btn-sprite, btn-left) transparent no-repeat;
+    left: -8px;
+  }
+  @include transition(all .2s ease-in-out);
+  &:hover{
+    background: sprite($btn-sprite, btn-bg) transparent repeat-x;
+    @extend .z-depth-1;
+  }
+}

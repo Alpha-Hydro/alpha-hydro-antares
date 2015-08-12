@@ -6,10 +6,14 @@
 @import "compass/layout";
 @import "compass/css3";
 
+@import "utils/variables";
 @import "utils/mixins";
 
 @import "base/base";
 @import "base/fonts";
+
+@import "components/box-shadow";
+@import "components/buttons";
 
 @import "layout/layout";
 @import "layout/header";

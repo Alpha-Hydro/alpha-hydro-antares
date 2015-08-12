@@ -1,5 +1,8 @@
 .sections{
-  margin-top: 70px;
+  margin: {
+    top: 70px;
+    bottom: 40px;
+  };
 }
 .section{
   position: relative;
@@ -13,6 +16,42 @@
       content: '\25a0';
       margin-right: 10px;
       vertical-align: 0.1em;
+    }
+  }
+}
+.home-i-block{
+  height: 250px;
+  margin: {
+    left: 40px;
+    right: 40px;
+  };
+  padding: {
+    left: 16px;
+    right: 16px;
+  };
+  &.gradient{
+    @include gradient-vertical(lighten($alpha-gray-lighter, 10%), $alpha-gray-lighter);
+  }
+  .head-block{
+    padding: {
+      top: 16px;
+    };
+    h2{
+      display: inline-block;
+      font: {
+        family: Impact;
+        size: 22pt;
+        weight: normal;
+      };
+      color: $alpha-gray-darker;
+      padding: {
+        right: 5px;
+        left: 5px;
+      };
+      margin: 0;
+    }
+    .btn-alpha{
+      margin-top: 9px;
     }
   }
 }
