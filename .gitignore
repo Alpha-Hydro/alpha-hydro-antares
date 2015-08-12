@@ -29,6 +29,7 @@ frontend/files
 frontend/images
 frontend/scripts
 frontend/fonts
+frontend/js
 
 # public
 public/images
