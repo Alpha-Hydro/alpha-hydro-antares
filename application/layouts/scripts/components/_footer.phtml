@@ -2,11 +2,10 @@
 $hostHttp = new Zend_Controller_Request_Http();
 $host = $hostHttp->getServer('HTTP_HOST');
 ?>
-<div class="footer">
+<div class="footer" role="contentinfo">
     <div class="wrapper text-center">
         <div>© Альфа-Гидро, 2012-<?=date('Y')?></div>
         <div>Гидравлические системы и компоненты</div>
-        <!--<div><a href="http://admin.<?/*=$host*/?>" class="admin btn btn-alpha default">Вход</a></div>-->
     </div>
     <div class="admin">
         <div><a href="http://admin.<?=$host?>" class="btn btn-alpha default">Вход</a></div>

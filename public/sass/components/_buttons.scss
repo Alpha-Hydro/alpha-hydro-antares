@@ -14,16 +14,25 @@
   line-height: 20px;
   height: 20px;
   @include transition(all .2s ease-in-out);
+  &:hover{
+    @extend .z-depth-1;
+  }
+  &::after, &::before{
+    position: absolute;
+    content: '';
+    display: block;
+    height: 20px;
+    top: 0;
+  }
+
   &.default{
     background: sprite($btn-sprite, btn-bg) transparent repeat-x;
-    margin-right: 8px;
+    margin:{
+      right: 8px;
+      left: 8px;
+    }
     &::after, &::before{
-      position: absolute;
-      content: '';
-      display: block;
       width: 8px;
-      height: 20px;
-      top: 0;
     }
     &::after{
       background: sprite($btn-sprite, btn-right) transparent no-repeat;
@@ -35,7 +44,10 @@
     }
     &:hover{
       background: sprite($btn-sprite, btn-bg) transparent repeat-x;
-      @extend .z-depth-1;
     }
+  }
+
+  &.inverse{
+   @include btn-alpha-color($alpha-gray-darker);
   }
 }
