@@ -17,8 +17,8 @@ class Plugin_Acl extends Zend_Controller_Plugin_Abstract {
 
     	Zend_Registry::set('acl', $acl);
 
-//        if(!Zend_Auth::getInstance()->hasIdentity())
-//            $request->setControllerName('index')->setActionName('login');
+        if(!Zend_Auth::getInstance()->hasIdentity())
+            $request->setControllerName('index')->setActionName('login');
     }
 
 }

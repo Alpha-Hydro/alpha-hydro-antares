@@ -6,7 +6,16 @@
   .wrapper{
     background: image_url('footer-center.png') no-repeat center top;
     padding: {
-      top: 25px;
+      top: $padding-top-footer;
     }
+  }
+  .admin{
+    position: absolute;
+    top: $padding-top-footer;
+    width: 100%;
+    height: $height-footer - $padding-top-footer;
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
   }
 }

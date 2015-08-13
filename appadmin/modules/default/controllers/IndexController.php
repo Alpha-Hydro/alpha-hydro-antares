@@ -89,8 +89,16 @@ class IndexController extends Zend_Controller_Action {
 	/**
 	 * Logout action
 	 */
-	public function logoutAction() {
-		Zend_Auth::getInstance ()->clearIdentity ();
+	public function logoutAction(){
+        $hostHttp = new Zend_Controller_Request_Http();
+        $host = $hostHttp->getServer('HTTP_HOST');
+        $aHost = explode('.', $host, 2);
+
+		Zend_Auth::getInstance ()->clearIdentity();
+
+        $this->redirect('http://'.$aHost[1]);
+
+        $this->view->host = $aHost;
 	}
 	
 	public function aboutAction(){
