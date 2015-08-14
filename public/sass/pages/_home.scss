@@ -1,6 +1,6 @@
 .sections{
   margin: {
-    top: 70px;
+    top: 50px;
     bottom: 40px;
   };
 }
@@ -35,18 +35,13 @@
   &.gradient-darken, .gradient-darken{
     @include gradient-vertical(lighten($alpha-gray, 30%), $alpha-gray);
   }
-  &.forum-issue{
-    max-height: 150px;
-  }
-  &.forum-reply{
-    max-height: 110px;
-  }
+  @include flexbox((display: flex,flex-direction: column));
   .block-head{
     @include clearfix;
     padding: {
       top: 16px;
+      bottom: 15px;
     };
-    margin-bottom: 15px;
 
     h2{
       display: inline-block;
@@ -72,10 +67,69 @@
     }
   }
   .block-body{
+    @include flex(1);
+    margin: {
+      left: 5px;
+    };
     .media{
-      .media-object{
-        max-width: 90px;
+      .title{
+        font:{
+          size: $alpha-font-size-default;
+          weight: bold;
+        }
+        display: block;
+        min-height: 38px;
+        line-height: 14px;
+        text-decoration: underline;
       }
+      .media-object{
+        max-width: 80px;
+        max-height: 120px;
+      }
+      .description{
+        line-height: 1;
+      }
+    }
+  }
+  .block-footer{
+    margin-bottom: 10px;
+  }
+}
+
+.forum{
+  .forum-issue{
+    max-height: 140px;
+
+  }
+  .forum-reply{
+    padding-top: 10px;
+    max-height: 120px;
+  }
+  [class*=-autor]{
+    min-height: 30px;
+    background: $info-block no-repeat;
+    margin-left: -33px;
+    padding-left: 110px;
+    font-weight: bold;
+    .date{
+      font:{
+        weight: normal;
+        size: $alpha-font-size-small;
+      }
+    }
+  }
+  .issue-autor{
+    background-position: sprite-position($info-block, issue);
+  }
+  .reply-autor{
+    background-position: sprite-position($info-block, reply);
+  }
+  .description, .more{
+    font:{
+      size: $alpha-font-size-small;
+    }
+    >a{
+      text-decoration: underline;
     }
   }
 }

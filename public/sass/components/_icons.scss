@@ -1,0 +1,10 @@
+[class*=icon-]{
+  background: $icon-sprite no-repeat;
+}
+.icon-action{
+  padding-left: 35px;
+  background-position: sprite-position($icon-sprite, stocks-index-icon);
+  .btn &{
+    background-position: sprite-position($icon-sprite, stocks-index-icon, 0, 2px);
+  }
+}
