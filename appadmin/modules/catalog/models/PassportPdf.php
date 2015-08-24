@@ -64,8 +64,11 @@ class Catalog_Model_PassportPdf extends TCPDF
         $this->SetFont('', 'B', 16);
 
         // Title
-        $title = 'Паспорт № '. $this->_product->id . '/'.$this->getAliasNumPage().' от '. date('d.m.Y') . ' г.';
-        $this->Cell(0, 0, $title, 0, 1, 'R', false, '', 0, false, 'M');
+        $title = 'Паспорт № '. $this->_product->id . '/'.count($this->getAModificationsProduct()).' от '. date('d.m.Y') . ' г.';
+        $this->Cell(0, 0, $title, 0, 1, 'C', false, '', 0, false, 'M');
+
+        $image_rst = APPLICATION_ROOT .'/files/pdf/znak_rst.png';
+        $this->Image($image_rst, $this->getPageWidth()-$this->original_rMargin, 5, 11, '', 'PNG', '', 'M', true, 300, '', false, false, 0, false, false, false);
 
         $style = array('width' => 0.1, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => $this->footer_line_color);
         $this->SetY(17);

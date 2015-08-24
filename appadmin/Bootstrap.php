@@ -36,8 +36,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 
 	protected function _initPlugins() {
 		$this -> bootstrap('frontController');
-		
-		$pluginsLoader = new Zend_Loader_PluginLoader();
+
+        $pluginsLoader = new Zend_Loader_PluginLoader();
 		$pluginsLoader->addPrefixPath("Plugin", APPLICATION_PATH.'/plugins');
 		
 		$pluginsLoader->load("Layout");
