@@ -22,7 +22,12 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 	public function _initAutoloader() {
 		$autoloader = Zend_Loader_Autoloader::getInstance();
 
-		$resourceLoader = new Zend_Loader_Autoloader_Resource( array('basePath' => APPLICATION_PATH . '/models', 'namespace' => 'Model'));
+		$resourceLoader = new Zend_Loader_Autoloader_Resource(
+            array(
+                'basePath' => APPLICATION_PATH . '/models',
+                'namespace' => 'Model'
+            )
+        );
 		$resourceLoader -> addResourceType('DbTable', 'DbTable/', 'DbTable');
 		$resourceLoader -> addResourceType('DbRow', 'DbRow/', 'DbRow');
 		$resourceLoader -> addResourceType('Static', 'Static/', 'Static');

@@ -31,4 +31,5 @@ frontend/fonts
 # public
 public/images
 public/fonts
+/data
 public/files
