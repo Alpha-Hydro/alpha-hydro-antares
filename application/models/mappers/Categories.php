@@ -89,6 +89,23 @@ class Application_Model_Mapper_Categories
     }
 
     /**
+     * @return array
+     */
+    public function fetch($select)
+    {
+        $resultSet = $this->getDbTable()->fetchAll($select);
+
+        $entries   = array();
+        foreach ($resultSet as $row) {
+        	$entry = new Application_Model_Categories();
+        	$entry = $this->_setDbData($row, $entry);
+        	$entries[] = $entry;
+        }
+
+        return $entries;
+    }
+
+    /**
      * @return mixed
      */
     protected function _getDbPrimary()

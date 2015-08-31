@@ -50,7 +50,7 @@ class Catalog_SidebarController extends Zend_Controller_Action {
 		} else {
 			
 			$category = NULL;
-			$categories = $categoriesModel->fetchAll ( $select->where ( "parent_id IS NULL" ) );
+			$categories = $categoriesModel->fetchAll ( $select->where ( "parent_id = ?", 0 ) );
 		}
 		
 		$this->view->categories = $categories;

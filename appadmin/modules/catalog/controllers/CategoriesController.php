@@ -33,7 +33,7 @@ class Catalog_CategoriesController extends Zend_Controller_Action {
             $select -> where("`parent_id` = ?", $parent_id);
             $this->view->headTitle()->prepend ("Альфа-Гидро: Каталог продукции - ".$category['name']);
         } else{
-            $select -> where("`parent_id` IS NULL");
+            $select -> where("`parent_id` = ?", 0);
             $this->view->headTitle()->prepend ("Альфа-Гидро: Продукция");
         }
       

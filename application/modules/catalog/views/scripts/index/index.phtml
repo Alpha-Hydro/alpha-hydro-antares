@@ -1,4 +1,24 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Index</b> and script/action name <b>index</b></p>
+<?php
+    $this->title = 'Каталог продукции';
+    $this->headTitle($this->title);
+    $this->meta_title = $this->title;
+?>
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-9"><h1><?=$this->title;?></h1></div>
+</div>
+
+<div class="row">
+    <div class="col-md-9 col-md-push-3">
+        <?php $entries = array_chunk($this->entries, 3, true); ?>
+        <?php foreach ($this->entries as $entry): ?>
+            <div class="col-md-3 text-center">
+                <img src="/files/images/category/<?=$entry->image;?>" alt="<?=$entry->name?>">
+                <p><a href=""><?=$entry->name?></a></p>
+            </div>
+        <?php endforeach; ?>
+    </div>
+    <div class="col-md-3 col-md-pull-9">
+    </div>
 </div>

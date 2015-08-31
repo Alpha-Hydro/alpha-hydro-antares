@@ -10,7 +10,16 @@ class Catalog_IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        // action body
+        $categories = new Application_Model_Mapper_Categories();
+
+        $select = $categories->getDbTable()->select();
+        $select->where('parent_id = ?', 0)
+            ->where('active != ?', 0)
+            ->order('sorting ASC');
+
+        $entries = $categories->fetch($select);
+
+        $this->view->entries = $entries;
     }
 
 
