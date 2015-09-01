@@ -20,3 +20,17 @@
 .z-depth-5{
   box-shadow: 0 27px 24px 0 rgba(0, 0, 0, 0.2), 0 40px 77px 0 rgba(0, 0, 0, 0.22);
 }
+
+.crop-bottom-shadow{
+  position: relative;
+  &:after{
+    content: "";
+    width: 90%;
+    height: 0;
+    display: block;
+    position: absolute;
+    left: 5%;
+    z-index: -1;
+    @include box-shadow(rgba(0,0,0,.6) 0 0 8px 2px);
+  }
+}

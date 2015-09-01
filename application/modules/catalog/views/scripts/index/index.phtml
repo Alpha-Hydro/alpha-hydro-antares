@@ -11,14 +11,23 @@
 
 <div class="row">
     <div class="col-md-9 col-md-push-3">
-        <?php $entries = array_chunk($this->entries, 3, true); ?>
         <?php foreach ($this->entries as $entry): ?>
             <div class="col-md-3 text-center">
-                <img src="/files/images/category/<?=$entry->image;?>" alt="<?=$entry->name?>">
-                <p><a href=""><?=$entry->name?></a></p>
+                <a href="">
+                    <img src="/files/images/category/<?=$entry->image;?>" alt="<?=$entry->name?>"/>
+                    <span><?=$entry->name?></span>
+                </a>
             </div>
         <?php endforeach; ?>
     </div>
     <div class="col-md-3 col-md-pull-9">
+        <?= $this->action(
+            "index",
+            "sidebar",
+            "catalog",
+            Zend_Controller_Front::getInstance()
+                ->getRequest()
+                ->getParams()
+        );?>
     </div>
 </div>

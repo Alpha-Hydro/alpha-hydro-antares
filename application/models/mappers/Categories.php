@@ -72,36 +72,20 @@ class Application_Model_Mapper_Categories
     }
 
     /**
+     * @param null $select
      * @return array
      */
-    public function fetchAll()
-    {
-        $resultSet = $this->getDbTable()->fetchAll();
-        
-        $entries   = array();
-        foreach ($resultSet as $row) {
-        	$entry = new Application_Model_Categories();
-        	$entry = $this->_setDbData($row, $entry);
-        	$entries[] = $entry;
-        }
-        
-        return $entries;
-    }
-
-    /**
-     * @return array
-     */
-    public function fetch($select)
+    public function fetchAll($select = null)
     {
         $resultSet = $this->getDbTable()->fetchAll($select);
-
+        
         $entries   = array();
         foreach ($resultSet as $row) {
         	$entry = new Application_Model_Categories();
         	$entry = $this->_setDbData($row, $entry);
         	$entries[] = $entry;
         }
-
+        
         return $entries;
     }
 

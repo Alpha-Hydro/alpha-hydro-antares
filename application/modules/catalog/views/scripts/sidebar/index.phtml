@@ -1,0 +1,18 @@
+<ul class="sidebar_menu crop-bottom-shadow">
+    <?php if($this->current_category):?>
+        <li class="current-item"><a href=""><i class="fa fa-level-up fa-fw"></i><?=$this->current_category->name?></a></li>
+    <?php endif;?>
+    <?php foreach ($this->entries as $entry): ?>
+        <li class="item">
+            <a href=""><?=$entry->name?></a>
+            <?php $subCategories = $this->getSubCategories($entry->id); ?>
+            <?php if(!empty($subCategories)):?>
+                <ul class="submenu col-md-12">
+                    <?php foreach ($subCategories as $subCategory):?>
+                        <li><a href=""><?=$subCategory->name?></a></li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
+        </li>
+    <?php endforeach; ?>
+</ul>

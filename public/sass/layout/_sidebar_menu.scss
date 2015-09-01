@@ -1,0 +1,91 @@
+$menu-line-height: 32px;
+
+.sidebar_menu{
+  list-style: outside none none;
+  margin: 0;
+  padding: 0;
+  .current-item{
+    background-color: $alpha-gray-dark;
+    > a{
+      text-decoration: none;
+      padding-left: 3px;
+      border-bottom: 1px solid darken($alpha-gray-lighter, 42%);
+      display: block;
+      line-height: $menu-line-height;
+      color: #FFFFFF;
+      font-weight: bolder;
+      position: relative;
+      .fa{
+        margin-right: 3px;
+        color: $alpha-gray-dark;
+      }
+    }
+    &:hover{
+      background-color: darken($alpha-gray-dark, 5%);
+      .fa{
+        color: #FFFFFF;
+      }
+    }
+  }
+  .item{
+    font-size: $alpha-font-size-small;
+    background-color: $alpha-gray-lighter;
+    position: relative;
+    > a{
+      text-decoration: none;
+      padding-left: 25px;
+      border-bottom: 1px solid darken($alpha-gray-lighter, 42%);
+      display: block;
+      line-height: $menu-line-height;
+    }
+    &:last-child > a{
+      border-bottom: 1px solid $alpha-gray-lighter;
+    }
+    &:hover{
+      background-color: $alpha-gray-darker;
+      > a{
+        color: #FFFFFF;
+      }
+      > .submenu{
+        display: block;
+      }
+      &::after{
+        content: '';
+        position: absolute;
+        top: 0;
+        right: -$menu-line-height/4;
+        border-top: $menu-line-height/2 solid transparent;
+        border-bottom: $menu-line-height/2 solid transparent;
+        border-left: $menu-line-height/4 solid $alpha-gray-darker;
+        z-index: 1;
+      }
+    }
+    > .submenu{
+      list-style: outside none none;
+      padding: 0;
+      margin: 0;
+      position: absolute;
+      left: 100%;
+      top: 0;
+      display: none;
+      z-index: 1;
+      > li{
+        background-color: $alpha-gray-dark;
+        position: relative;
+        &:hover{
+          background-color: darken($alpha-gray-dark, 5%);
+        }
+        > a{
+          color: #FFFFFF;
+          text-decoration: none;
+          padding:{
+            left: 25px;
+          }
+          border-bottom: 1px solid darken($alpha-gray-lighter, 42%);
+          display: block;
+          line-height: $menu-line-height;
+        }
+      }
+    }
+  }
+}

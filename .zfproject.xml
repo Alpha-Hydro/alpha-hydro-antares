@@ -27,6 +27,7 @@
         </dbTableDirectory>
         <modelMapperDirectory>
           <modelMapperFile modelName="Categories"/>
+          <modelMapperFile modelName="Products"/>
         </modelMapperDirectory>
         <modelColFile modelName="Categories"/>
         <modelColFile modelName="Products"/>
@@ -59,6 +60,9 @@
             <controllerFile controllerName="Index">
               <actionMethod actionName="index"/>
             </controllerFile>
+            <controllerFile controllerName="Sidebar">
+              <actionMethod actionName="index"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory enabled="false"/>
           <layoutsDirectory enabled="false">
@@ -72,6 +76,9 @@
           <viewsDirectory>
             <viewScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Sidebar">
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
@@ -90,6 +97,9 @@
             <viewScriptFile forActionName="error"/>
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Webhook">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Sidebar">
             <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>

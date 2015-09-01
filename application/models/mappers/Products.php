@@ -72,11 +72,12 @@ class Application_Model_Mapper_Products
     }
 
     /**
+     * @param null $select
      * @return array
      */
-    public function fetchAll()
+    public function fetchAll($select = null)
     {
-        $resultSet = $this->getDbTable()->fetchAll();
+        $resultSet = $this->getDbTable()->fetchAll($select);
         
         $entries   = array();
         foreach ($resultSet as $row) {
