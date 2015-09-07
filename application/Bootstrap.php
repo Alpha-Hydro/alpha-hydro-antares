@@ -19,7 +19,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                 $resourceLoader->addResourceType(strtolower($LibraryDir),
                     dirname(APPLICATION_PATH) . '/library/' . $LibraryDir, $LibraryDir);
 
-        return $resourceLoader;
+        //return $resourceLoader;
     }
 
     /**
