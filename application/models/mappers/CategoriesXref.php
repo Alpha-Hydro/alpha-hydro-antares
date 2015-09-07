@@ -1,6 +1,6 @@
 <?php
 
-class Application_Model_Mapper_Categories
+class Application_Model_Mapper_CategoriesXref
 {
 
     protected $_dbTable = null;
@@ -24,25 +24,25 @@ class Application_Model_Mapper_Categories
     }
 
     /**
-     * @return Application_Model_DbTable_Categories
+     * @return Application_Model_DbTable_CategoriesXref
      */
     public function getDbTable()
     {
         if (null === $this->_dbTable)
-        	$this->setDbTable('Application_Model_DbTable_Categories');
+        	$this->setDbTable('Application_Model_DbTable_CategoriesXref');
         
         return $this->_dbTable;
     }
 
     /**
-     * @param Application_Model_Categories $categories
+     * @param Application_Model_CategoriesXref $categoriesxref
      * @return $this
      */
-    public function save(Application_Model_Categories $categories)
+    public function save(Application_Model_CategoriesXref $categoriesxref)
     {
-        $data = $this->_getDbData($categories);
+        $data = $this->_getDbData($categoriesxref);
         
-        if (null == ($id = $categories->getId())) {
+        if (null == ($id = $categoriesxref->getId())) {
         	unset($data[$this->_getDbPrimary()]);
         	$this->getDbTable()->insert($data);
         } else {
@@ -54,10 +54,10 @@ class Application_Model_Mapper_Categories
 
     /**
      * @param $id
-     * @param Application_Model_Categories $categories
-     * @return Application_Model_Categories|null
+     * @param Application_Model_CategoriesXref $categoriesxref
+     * @return Application_Model_CategoriesXref|null
      */
-    public function find($id, Application_Model_Categories $categories)
+    public function find($id, Application_Model_CategoriesXref $categoriesxref)
     {
         $result = $this->getDbTable()->find($id);
         
@@ -66,7 +66,7 @@ class Application_Model_Mapper_Categories
         }
         
         $row = $result->current();
-        $entry = $this->_setDbData($row, $categories);
+        $entry = $this->_setDbData($row, $categoriesxref);
         
         return $entry;
     }
@@ -81,7 +81,7 @@ class Application_Model_Mapper_Categories
         
         $entries   = array();
         foreach ($resultSet as $row) {
-        	$entry = new Application_Model_Categories();
+        	$entry = new Application_Model_CategoriesXref();
         	$entry = $this->_setDbData($row, $entry);
         	$entries[] = $entry;
         }
@@ -100,10 +100,10 @@ class Application_Model_Mapper_Categories
     }
 
     /**
-     * @param Application_Model_Categories $categories
+     * @param Application_Model_CategoriesXref $categoriesxref
      * @return array
      */
-    protected function _getDbData(Application_Model_Categories $categories)
+    protected function _getDbData(Application_Model_CategoriesXref $categoriesxref)
     {
         $info = $this->getDbTable()->info();
         $properties = $info['cols'];
@@ -113,7 +113,7 @@ class Application_Model_Mapper_Categories
         	$name = $this->_normaliseName($property);
         
         	if($property != $this->_getDbPrimary())
-        		$data[$property] = $categories->__get($name);
+        		$data[$property] = $categoriesxref->__get($name);
         }
         
         return $data;
@@ -121,10 +121,10 @@ class Application_Model_Mapper_Categories
 
     /**
      * @param Zend_Db_Table_Rowset $row
-     * @param Application_Model_Categories $entry
-     * @return Application_Model_Categories
+     * @param Application_Model_CategoriesXref $entry
+     * @return Application_Model_CategoriesXref
      */
-    protected function _setDbData($row, Application_Model_Categories $entry)
+    protected function _setDbData($row, Application_Model_CategoriesXref $entry)
     {
         $info = $this->getDbTable()->info();
         $properties = $info['cols'];
@@ -148,64 +148,6 @@ class Application_Model_Mapper_Categories
         return $normaliseName;
     }
 
-    /**
-     * @param $column string
-     * @return array
-     */
-    public function fetchFreeRowColumn($column)
-    {
-        $select = $this->getDbTable()->select();
-        $select->where($column.' = ?', '')
-            ->orWhere($column.' IS NULL');
-        $entries = $this->fetchAll($select);
-
-        return $entries;
-    }
-
-    /**
-     * @param $column string
-     * @return array
-     */
-    public function fetchDublicateRowColumn($column)
-    {
-        $table = $this->getDbTable();
-
-        $select = $table->select()
-            ->from(
-                $table->info('name'),
-                array('count' => 'COUNT(*)', '*')
-            )
-            ->group($column)
-            ->having('count > 1')
-        ;
-        $entries   = $this->fetchAll($select);
-
-        return $entries;
-    }
-
-    /**
-     * @param $id
-     * @return string
-     */
-    public function generateFullPath($id)
-    {
-        $categories = new Application_Model_Categories();
-        $category = $this->find($id, $categories);
-
-        $result = array();
-        $result[] = $category->path;
-
-        while($category->parentId){
-            $category = $this->find($category->parentId, $category);
-            $result[] = $category->path;
-        }
-
-        if(!empty($result)){
-            $result = array_reverse($result);
-        }
-
-        return trim(implode('/',$result));
-    }
 
 }
 

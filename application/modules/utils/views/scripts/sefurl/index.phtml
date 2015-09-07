@@ -1,0 +1,147 @@
+<h1 class="page-header">Categories</h1>
+<table class="table">
+    <caption>Path</caption>
+    <tr>
+        <th class="col-md-2">Пустые</th>
+        <td class="col-md-6" id="free-categories-path">
+            <?= $this->partial('component/_sefurl_list.phtml', array(
+                'entity' => $this->freeCategoriesPath,
+                'id' => 'free-categories-path',
+                'text' => 'Пустых значений нет',
+            ))?>
+        </td>
+        <td><a href="<?= $this->url()?>" class="btn btn-default">Обновить</a></td>
+        <td>
+            <?php if(count($this->freeCategoriesPath) != 0): ?>
+                <button type="button" data-src="/utils/sefurl/generate-categories-path" data-context="free-categories-path" class="btn btn-primary ajax">Генерировать</button>
+            <?php else:?>
+                <button type="button" class="btn btn-default" disabled="disabled">Генерировать</button>
+            <?php endif;?>
+        </td>
+    </tr>
+    <tr>
+        <th class="col-md-2">Дубликаты</th>
+        <td class="col-md-6" id="dublicate-categories-path">
+            <?= $this->partial('component/_sefurl_list.phtml', array(
+                'entity' => $this->dubleCategoriesPath,
+                'id' => 'dublicate-categories-path',
+                'text' => 'Дубликатов нет',
+            ))?>
+        </td>
+        <td><button type="button" data-src="/utils/sefurl/dublicate-categories-path" data-context="dublicate-categories-path" class="btn btn-default ajax">Проверить</button></td>
+        <td>
+            <?php /*if(!empty($this->dubleCategoriesPath)): */?><!--
+                <button type="button" data-src="/utils/sefurl/slugify" data-context="duble-categories-path" class="btn btn-danger ajax">Исправить</button>
+            <?php /*else:*/?>
+                <button type="button" class="btn btn-default" disabled="disabled">Исправить</button>
+            --><?php /*endif;*/?>
+        </td>
+    </tr>
+</table>
+<table class="table">
+    <caption>Full Path</caption>
+    <tr>
+        <th class="col-md-2">Пустые</th>
+        <td class="col-md-6" id="free-categories-fullPath">
+            <?= $this->partial('component/_sefurl_list.phtml', array(
+                'entity' => $this->freeCategoriesFullPath,
+                'id' => 'free-categories-fullPath',
+                'text' => 'Пустых значений нет',
+            ))?>
+        </td>
+        <td><a href="<?= $this->url()?>" class="btn btn-default">Обновить</a></td>
+        <td>
+            <?php if(!empty($this->freeCategoriesFullPath)): ?>
+                <button type="button" data-src="/utils/sefurl/generate-categories-full-path" data-context="free-categories-fullPath" class="btn btn-primary ajax">Генерировать</button>
+            <?php else:?>
+                <button type="button" class="btn btn-default" disabled="disabled">Генерировать</button>
+            <?php endif;?>
+        </td>
+    </tr>
+    <tr>
+        <th class="col-md-2">Дубликаты</th>
+        <td class="col-md-6" id="dublicate-categories-fullPath">
+            <?= $this->partial('component/_sefurl_list.phtml', array(
+                'entity' => $this->dubleCategoriesFullPath,
+                'id' => 'dublicate-categories-fullPath',
+                'text' => 'Дубликатов нет',
+            ))?>
+        </td>
+        <td><a href="<?= $this->url()?>" class="btn btn-default">Обновить</a></td>
+        <td>
+            <?php /*if(!empty($this->dubleCategoriesFullPath)): */?><!--
+                <button type="button" data-src="/utils/sefurl/slugify" data-context="dubleCategoriesFullPath" class="btn btn-danger ajax">Исправить</button>
+            <?php /*else:*/?>
+                <button type="button" class="btn btn-default" disabled="disabled">Исправить</button>
+            --><?php /*endif;*/?>
+        </td>
+    </tr>
+</table>
+
+<h1 class="page-header">Products</h1>
+<table class="table">
+    <caption>Path</caption>
+    <tr>
+        <th class="col-md-2">Пустые</th>
+        <td class="col-md-6" id="free-products-path">
+            <?= $this->partial('component/_sefurl_list.phtml', array(
+                'entity' => $this->freeProductsPath,
+                'id' => 'free-products-path',
+                'text' => 'Пустых значений нет',
+            ))?>
+        </td>
+        <td><a href="<?= $this->url()?>" class="btn btn-default">Обновить</a></td>
+        <td>
+            <?php if(count($this->freeProductsPath) != 0): ?>
+                <button type="button" data-src="/utils/sefurl/generate-products-path" data-context="free-products-path" class="btn btn-primary ajax">Генерировать</button>
+            <?php else:?>
+                <button type="button" class="btn btn-default" disabled="disabled">Генерировать</button>
+            <?php endif;?>
+        </td>
+    </tr>
+    <tr>
+        <th class="col-md-2">Дубликаты</th>
+        <td class="col-md-6" id="dublicate-products-path">
+            <?= $this->partial('component/_sefurl_list.phtml', array(
+                'entity' => $this->dubleProductsPath,
+                'id' => 'dublicate-products-path',
+                'text' => 'Дубликатов нет',
+            ))?>
+        </td>
+        <td><a href="<?= $this->url()?>" class="btn btn-default">Обновить</a></td>
+        <td></td>
+    </tr>
+</table>
+<table class="table">
+    <caption>Full Path</caption>
+    <tr>
+        <th class="col-md-2">Пустые</th>
+        <td class="col-md-6" id="free-products-fullPath">
+            <?= $this->partial('component/_sefurl_list.phtml', array(
+                'entity' => $this->freeProductsFullPath,
+                'id' => 'free-products-fullPath',
+                'text' => 'Пустых значений нет',
+            ))?>
+        </td>
+        <td><a href="<?= $this->url()?>" class="btn btn-default">Обновить</a></td>
+        <td>
+            <?php if(!empty($this->freeProductsFullPath)): ?>
+                <button type="button" data-src="/utils/sefurl/generate-products-full-path" data-context="free-products-fullPath" class="btn btn-primary ajax">Генерировать</button>
+            <?php else:?>
+                <button type="button" class="btn btn-default" disabled="disabled">Генерировать</button>
+            <?php endif;?>
+        </td>
+    </tr>
+    <tr>
+        <th class="col-md-2">Дубликаты</th>
+        <td class="col-md-6" id="dublicate-products-fullPath">
+            <?= $this->partial('component/_sefurl_list.phtml', array(
+                'entity' => $this->dubleProductsFullPath,
+                'id' => 'dublicate-products-fullPath',
+                'text' => 'Дубликатов нет',
+            ))?>
+        </td>
+        <td><a href="<?= $this->url()?>" class="btn btn-default">Обновить</a></td>
+        <td></td>
+    </tr>
+</table>

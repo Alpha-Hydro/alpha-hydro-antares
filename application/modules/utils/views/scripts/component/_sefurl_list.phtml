@@ -1,0 +1,20 @@
+<?php if(!empty($this->entity)):?>
+    <a class="btn btn-link" role="button" data-toggle="collapse" href="#collapse_<?=$this->id?>" aria-expanded="false" aria-controls="collapse_<?=$this->id?>">
+        <?=count($this->entity).' - Показать'?>
+    </a>
+    <div id="collapse_<?=$this->id?>" class="collapse">
+        <div class="well">
+            <?php
+            $id = explode('-', $this->id);
+            foreach($this->entity as $entity) {
+                $path = (array_pop($id) !== 'fullPath')?$entity->path:$entity->fullPath;
+                echo (array_shift($id) !== 'free' && !empty($path))?$path:$entity->name;
+                //echo $entity->name;
+                echo '<br/>';
+            }
+            ?>
+        </div>
+    </div>
+<?php else: ?>
+    <p><?=$this->text?></p>
+<?php endif; ?>

@@ -148,6 +148,102 @@ class Application_Model_Mapper_Products
         return $normaliseName;
     }
 
+    /**
+     * @param $id
+     * @param Application_Model_Categories $categories
+     * @return Application_Model_Categories|null
+     */
+    public function findCategoryRel($id, Application_Model_Categories $categories){
+        $result = $this->getDbTable()->find($id);
+        if (0 == count($result)) {
+            return null;
+        }
+        $row = $result->current();
+
+        $categoryRow = $row->findManyToManyRowset('Application_Model_DbTable_Categories','Application_Model_DbTable_CategoriesXref','ProductsRel')->current();
+
+        $categories->setId($categoryRow->id)
+            ->setParentId($categoryRow->parent_id)
+            ->setName($categoryRow->name)
+            ->setImage($categoryRow->image)
+            ->setDescription($categoryRow->description)
+            ->setAddDate($categoryRow->add_date)
+            ->setModDate($categoryRow->mod_date)
+            ->setMetaTitle($categoryRow->meta_title)
+            ->setMetaDescription($categoryRow->meta_description)
+            ->setMetaKeywords($categoryRow->meta_keywords)
+            ->setPath($categoryRow->path)
+            ->setFullPath($categoryRow->full_path)
+            ->setOrder($categoryRow->order)
+            ->setActive($categoryRow->active)
+        ;
+
+        return $categories;
+    }
+
+    /**
+     * @param $column string
+     * @return array
+     */
+    public function fetchFreeRowColumn($column)
+    {
+        $select = $this->getDbTable()->select();
+        $select->where($column.' = ?', '')
+            ->orWhere($column.' IS NULL');
+        $entries = $this->fetchAll($select);
+
+        return $entries;
+    }
+
+    /**
+     * @param $column string
+     * @return array
+     */
+    public function fetchDublicateRowColumn($column)
+    {
+        $table = $this->getDbTable();
+
+        $select = $table->select()
+            ->from(
+                $table->info('name'),
+                array('count' => 'COUNT(*)', '*')
+            )
+            ->group($column)
+            ->having('count > 1')
+        ;
+        $entries   = $this->fetchAll($select);
+
+        return $entries;
+    }
+
+    /**
+     * @param $id
+     * @return array|string
+     */
+    public function generateFullPath($id)
+    {
+        $products = new Application_Model_Products();
+        $product = $this->find($id, $products);
+
+        $categories = new Application_Model_Categories();
+        $category = $this->findCategoryRel($product->id, $categories);
+
+        if($category->getFullPath() != ''){
+            $result = array();
+            $result[] = $product->path;
+            $result[] = $category->getFullPath();
+
+            if(!empty($result)){
+                $result = array_reverse($result);
+            }
+            $result = trim(implode('/',$result));
+        }
+        else{
+            $result = $product->path;
+        }
+
+        return $result;
+    }
 
 }
 

@@ -8,7 +8,7 @@ class Products extends Akrabat_Db_Schema_AbstractChange
         $tableName = $this->_tablePrefix . 'products';
 
         $sql = "
-                ALTER TABLE $tableName ADD active TINYINT NOT NULL;
+                ALTER TABLE $tableName ADD active TINYINT DEFAULT 1 NOT NULL;
                 ALTER TABLE $tableName ADD full_path VARCHAR(255) NULL;
                 ALTER TABLE $tableName ADD meta_description TEXT NULL;
                 ALTER TABLE $tableName ADD meta_keywords VARCHAR(255) NULL;
@@ -16,6 +16,8 @@ class Products extends Akrabat_Db_Schema_AbstractChange
                 ALTER TABLE $tableName CHANGE parent_id parent_id TINYINT;
                 ALTER TABLE $tableName ADD path VARCHAR(128) NULL;
                 ALTER TABLE $tableName ADD sorting TINYINT NOT NULL;
+
+                UPDATE $tableName SET sorting = `order`;
             ";
 
         $this->_db->query($sql);

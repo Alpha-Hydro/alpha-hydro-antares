@@ -28,9 +28,11 @@
         <modelMapperDirectory>
           <modelMapperFile modelName="Categories"/>
           <modelMapperFile modelName="Products"/>
+          <modelMapperFile modelName="CategoriesXref"/>
         </modelMapperDirectory>
         <modelColFile modelName="Categories"/>
         <modelColFile modelName="Products"/>
+        <modelColFile modelName="CategoriesXref"/>
       </modelsDirectory>
       <modulesDirectory>
         <moduleDirectory moduleName="default">
