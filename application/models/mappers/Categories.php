@@ -193,14 +193,11 @@ class Application_Model_Mapper_Categories
         $category = $this->find($id, $categories);
 
         $result = array();
+        $result[] = $category->getPath();
 
-        if($category && !is_null($category)){
-            $result[] = $category->path;
-
-            while($category->parentId){
-                $category = $this->find($category->parentId, $category);
-                $result[] = $category->path;
-            }
+        while($category->getParentId()){
+            $category = $this->find($category->getParentId(), $category);
+            $result[] = $category->getPath();
         }
 
         if(!empty($result)){
