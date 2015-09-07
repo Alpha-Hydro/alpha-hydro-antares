@@ -7,8 +7,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
      */
     public function _initAutoloader() {
         //Zend_Loader_Autoloader::getInstance();
-        $resourceLoader = new Zend_Loader_Autoloader_Resource(array('namespace' => 'App',
-            'basePath' => APPLICATION_PATH));
+        $resourceLoader = new Zend_Loader_Autoloader_Resource(array(
+            'namespace' => 'App',
+            'basePath' => APPLICATION_PATH
+        ));
 
         $Dir = dirname(APPLICATION_PATH) . '/library/';
         $D = opendir($Dir);
