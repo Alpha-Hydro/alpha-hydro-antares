@@ -6,9 +6,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
      * Initialize auto loader and add resource loaders
      */
     public function _initAutoloader() {
-        Zend_Loader_Autoloader::getInstance();
-        $resourceLoader = new Zend_Loader_Autoloader_Resource(array('namespace' => 'App',
-            'basePath' => APPLICATION_PATH));
+        //Zend_Loader_Autoloader::getInstance();
+        $resourceLoader = new Zend_Loader_Autoloader_Resource();
 
         $Dir = dirname(APPLICATION_PATH) . '/library/';
         $D = opendir($Dir);
@@ -17,6 +16,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                 $resourceLoader->addResourceType(strtolower($LibraryDir),
                     dirname(APPLICATION_PATH) . '/library/' . $LibraryDir, $LibraryDir);
 
+        return $resourceLoader;
     }
 
     /**
