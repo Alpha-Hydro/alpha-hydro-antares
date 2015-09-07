@@ -41,12 +41,18 @@ class Utils_SefurlController extends Zend_Controller_Action
 
     }
 
+    /**
+     * Ajax Data
+     */
     public function dublicateCategoriesPathAction()
     {
         $categories = new Application_Model_Mapper_Categories();
         $this->view->entries = $categories->fetchDublicateRowColumn('path');
     }
 
+    /**
+     * Ajax Data
+     */
     public function generateCategoriesPathAction()
     {
         $filterSlugify = new Vlmeh_Filter_Slugify();
@@ -64,6 +70,9 @@ class Utils_SefurlController extends Zend_Controller_Action
         $this->view->entries = $categories->fetchFreeRowColumn('path');
     }
 
+    /**
+     * Ajax Data
+     */
     public function generateCategoriesFullPathAction()
     {
         $categories = new Application_Model_Mapper_Categories();
