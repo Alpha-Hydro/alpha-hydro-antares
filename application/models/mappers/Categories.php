@@ -193,9 +193,12 @@ class Application_Model_Mapper_Categories
 
         $result = array();
         do{
-            $category = $table->find($id)->current();
-            $result[] = $category->path;
-            $id = $category->parent_id;
+            $category = $table->find($id);
+            if(!empty($category)){
+                $category = $category->current();
+                $result[] = $category->path;
+                $id = $category->parent_id;
+            }
         }
         while($id != 0);
 
