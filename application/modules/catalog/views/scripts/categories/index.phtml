@@ -1,7 +1,6 @@
 <?php
-    $this->title = 'Каталог продукции';
-    $this->headTitle($this->title);
-    $this->meta_title = $this->title;
+$this->headTitle($this->title);
+$this->meta_title = $this->title;
 ?>
 
 <div class="row">
@@ -11,14 +10,15 @@
 
 <div class="row">
     <div class="col-md-9 col-md-push-3">
-        <?php foreach ($this->entries as $entry): ?>
+        <?php /*foreach ($this->entries as $entry): */?><!--
             <div class="col-md-3 text-center">
-                <a href="<?=$this->url(array('fullPath'=>$entry->fullPath),'categories',false) ?>">
-                    <img src="/files/images/category/<?=$entry->image;?>" alt="<?=$entry->name?>"/>
-                    <span><?=$entry->name?></span>
+                <a href="">
+                    <img src="/files/images/category/<?/*=$entry->image;*/?>" alt="<?/*=$entry->name*/?>"/>
+                    <span><?/*=$entry->name*/?></span>
                 </a>
             </div>
-        <?php endforeach; ?>
+        --><?php /*endforeach; */?>
+        <a href="<?= $this->url(array('module'=>'catalog','controller' => 'categories', 'action' => 'index', 'id' => 3), '',true, false) ?>">Default Route</a>
     </div>
     <div class="col-md-3 col-md-pull-9">
         <?= $this->action(

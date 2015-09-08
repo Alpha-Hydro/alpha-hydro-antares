@@ -222,7 +222,6 @@ class Application_Model_Mapper_Products
      */
     public function generateFullPath($id)
     {
-        //$products = new Application_Model_Products();
         $product = $this->getDbTable()->find($id)->current();
 
         $categoryRow = $product->findManyToManyRowset('Application_Model_DbTable_Categories','Application_Model_DbTable_CategoriesXref','ProductsRel');
@@ -240,23 +239,6 @@ class Application_Model_Mapper_Products
             }
             $result = trim(implode('/',$result));
         }
-
-        /*$categories = new Application_Model_Categories();
-        $category = $this->findCategoryRel($product->id, $categories);
-
-        if($category->getFullPath() != ''){
-            $result = array();
-            $result[] = $product->path;
-            $result[] = $category->getFullPath();
-
-            if(!empty($result)){
-                $result = array_reverse($result);
-            }
-            $result = trim(implode('/',$result));
-        }
-        else{
-            $result = $product->path;
-        }*/
 
         return $result;
     }

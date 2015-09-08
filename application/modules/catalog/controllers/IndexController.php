@@ -6,6 +6,8 @@ class Catalog_IndexController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
+        $router = $this->getFrontController()->getRouter();
+        var_dump($router->getCurrentRouteName());
     }
 
     public function indexAction()
