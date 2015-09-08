@@ -189,16 +189,15 @@ class Application_Model_Mapper_Categories
      */
     public function generateFullPath($id)
     {
-        $categories = new Application_Model_Categories();
-        $category = $this->find($id, $categories);
+        $table = $this->getDbTable();
 
         $result = array();
-        $result[] = $category->path;
-
-        while($category->parentId){
-            $category = $this->find($category->parentId, $categories);
+        do{
+            $category = $table->find($id)->current();
             $result[] = $category->path;
+            $id = $category->parent_id;
         }
+        while($id != 0);
 
         if(!empty($result)){
             $result = array_reverse($result);
