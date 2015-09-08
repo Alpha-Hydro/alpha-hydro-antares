@@ -222,10 +222,26 @@ class Application_Model_Mapper_Products
      */
     public function generateFullPath($id)
     {
-        $products = new Application_Model_Products();
-        $product = $this->find($id, $products);
+        //$products = new Application_Model_Products();
+        $product = $this->getDbTable()->find($id)->current();
 
-        $categories = new Application_Model_Categories();
+        $categoryRow = $product->findManyToManyRowset('Application_Model_DbTable_Categories','Application_Model_DbTable_CategoriesXref','ProductsRel');
+        if(0 == count($categoryRow)){
+            $result = $product->path;
+        }
+        else{
+            $result = array();
+            $category = $categoryRow->current();
+            $result[] = $product->path;
+            $result[] = $category->full_path;
+
+            if(!empty($result)){
+                $result = array_reverse($result);
+            }
+            $result = trim(implode('/',$result));
+        }
+
+        /*$categories = new Application_Model_Categories();
         $category = $this->findCategoryRel($product->id, $categories);
 
         if($category->getFullPath() != ''){
@@ -240,7 +256,7 @@ class Application_Model_Mapper_Products
         }
         else{
             $result = $product->path;
-        }
+        }*/
 
         return $result;
     }
