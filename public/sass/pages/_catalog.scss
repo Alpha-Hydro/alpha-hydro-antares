@@ -1,0 +1,27 @@
+.categories-list{
+  .categories-list-item{
+    display: block;
+    position: relative;
+    margin-bottom: 50px;
+    padding: 10px;
+    min-height: 200px;
+    @include transition(all .2s ease-in-out);
+    &:hover{
+      text-decoration: none;
+      @extend .z-depth-2;
+    }
+    img{
+      max-height: 130px;
+      max-width: 160px;
+    }
+    .categories-list-item-name{
+      display: block;
+      margin: 0 auto;
+      padding:{
+        top: 10px;
+        bottom: 5px;
+      };
+      width: 160px;
+    }
+  }
+}

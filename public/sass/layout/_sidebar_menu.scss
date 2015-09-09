@@ -17,7 +17,7 @@ $menu-line-height: 32px;
       position: relative;
       .fa{
         margin-right: 3px;
-        color: $alpha-gray-dark;
+        //color: $alpha-gray-dark;
       }
     }
     &:hover{
@@ -49,16 +49,7 @@ $menu-line-height: 32px;
       > .submenu{
         display: block;
       }
-      &::after{
-        content: '';
-        position: absolute;
-        top: 0;
-        right: -$menu-line-height/4;
-        border-top: $menu-line-height/2 solid transparent;
-        border-bottom: $menu-line-height/2 solid transparent;
-        border-left: $menu-line-height/4 solid $alpha-gray-darker;
-        z-index: 1;
-      }
+
     }
     > .submenu{
       list-style: outside none none;
@@ -69,6 +60,17 @@ $menu-line-height: 32px;
       top: 0;
       display: none;
       z-index: 1;
+      &::before{
+        content: '';
+        position: absolute;
+        top: 0;
+        //right: -$menu-line-height/4;
+        left: 0;
+        border-top: $menu-line-height/2 solid transparent;
+        border-bottom: $menu-line-height/2 solid transparent;
+        border-left: $menu-line-height/4 solid $alpha-gray-darker;
+        z-index: 1;
+      }
       > li{
         background-color: $alpha-gray-dark;
         position: relative;

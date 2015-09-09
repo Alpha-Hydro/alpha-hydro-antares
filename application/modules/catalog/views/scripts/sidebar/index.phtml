@@ -1,15 +1,20 @@
+<?php
+    $parentUrl = ($this->parent_category->id != 0)?$this->url(array('fullPath'=>$this->parent_category->fullPath),'categories', true, false):'/catalog/';
+?>
 <ul class="sidebar_menu crop-bottom-shadow">
     <?php if($this->current_category):?>
-        <li class="current-item"><a href=""><i class="fa fa-level-up fa-fw"></i><?=$this->current_category->name?></a></li>
+        <li class="current-item">
+            <a href="<?=$parentUrl?>"><i class="fa fa-level-up fa-fw"></i><?=($this->parent_category->id != 0)?$this->parent_category->name:'Каталог продукции';?></a>
+        </li>
     <?php endif;?>
     <?php foreach ($this->entries as $entry): ?>
         <li class="item">
-            <a href=""><?=$entry->name?></a>
+            <a href="<?=$this->url(array('fullPath'=>$entry->fullPath),'categories', true, false)?>"><?=$entry->name?></a>
             <?php $subCategories = $this->getSubCategories($entry->id); ?>
             <?php if(!empty($subCategories)):?>
                 <ul class="submenu col-md-12">
                     <?php foreach ($subCategories as $subCategory):?>
-                        <li><a href=""><?=$subCategory->name?></a></li>
+                        <li><a href="<?=$this->url(array('fullPath'=>$subCategory->fullPath),'categories', true, false)?>"><?=$subCategory->name?></a></li>
                     <?php endforeach; ?>
                 </ul>
             <?php endif; ?>

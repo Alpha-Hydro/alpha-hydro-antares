@@ -13,7 +13,7 @@
     <div class="col-md-9 col-md-push-3">
         <?php foreach ($this->entries as $entry): ?>
             <div class="col-md-3 text-center">
-                <a href="<?=$this->url(array('fullPath'=>$entry->fullPath),'categories',false) ?>">
+                <a href="<?=$this->url(array('fullPath'=>$entry->fullPath),'categories',true,false) ?>">
                     <img src="/files/images/category/<?=$entry->image;?>" alt="<?=$entry->name?>"/>
                     <span><?=$entry->name?></span>
                 </a>
@@ -25,9 +25,7 @@
             "index",
             "sidebar",
             "catalog",
-            Zend_Controller_Front::getInstance()
-                ->getRequest()
-                ->getParams()
+            array('category' => 0)
         );?>
     </div>
 </div>
