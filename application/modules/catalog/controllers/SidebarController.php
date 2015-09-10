@@ -21,20 +21,27 @@ class Catalog_SidebarController extends Zend_Controller_Action
 
     public function indexAction()
     {
+        $this->view->current_category = $this->getCurrentCategory();
+        $this->view->parent_category = $this->getParentCategory();
+
+        if(null != $this->getCurrentCategory())
+            $this->view->sidebar_item = $this->getSidebarItem($this->getCurrentCategory()->getParentId());
+
+    }
+
+
+    public function getSidebarItem($category_id)
+    {
         $categories = new Application_Model_Mapper_Categories();
 
         $select = $categories->getDbTable()->select();
-        $select->where('parent_id = ?', $this->getCurrentCategoryId())
+        $select->where('parent_id = ?', $category_id)
             ->where('active != ?', 0)
             ->order('sorting ASC');
 
         $entries = $categories->fetchAll($select);
 
-        var_dump($this->getCurrentCategoryId());
-
-        $this->view->current_category = $this->getCurrentCategory();
-        $this->view->parent_category = $this->getParentCategory();
-        $this->view->entries = $entries;
+        return $entries;
     }
 
     /**

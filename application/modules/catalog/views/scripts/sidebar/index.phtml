@@ -1,22 +1,36 @@
 <?php
-    $parentUrl = ($this->parent_category->id != 0)?$this->url(array('fullPath'=>$this->parent_category->fullPath),'categories', true, false):'/catalog/';
+    if(!$this->sidebar_item)
+        $this->sidebar_item = $this->entries;
 ?>
-<ul class="sidebar_menu crop-bottom-shadow">
+<ul class="list-group sidebar crop-bottom-shadow">
     <?php if($this->current_category):?>
-        <li class="current-item">
-            <a href="<?=$parentUrl?>"><i class="fa fa-level-up fa-fw"></i><?=($this->parent_category->id != 0)?$this->parent_category->name:'Каталог продукции';?></a>
+        <li class="list-group-item sidebar-heading">
+            <span class="badge"><i class="fa fa-level-up fa-fw"></i></span>
+            <a href="<?=($this->parent_category->id != 0)
+                ? $this->url(array('fullPath'=>$this->parent_category->fullPath),'categories', true, false)
+                :'/catalog/';?>">
+                <?=($this->parent_category->id != 0)
+                    ?$this->parent_category->name
+                    :'Каталог продукции';?>
+            </a>
         </li>
     <?php endif;?>
-    <?php foreach ($this->entries as $entry): ?>
-        <li class="item">
-            <a href="<?=$this->url(array('fullPath'=>$entry->fullPath),'categories', true, false)?>"><?=$entry->name?></a>
-            <?php $subCategories = $this->getSubCategories($entry->id); ?>
-            <?php if(!empty($subCategories)):?>
-                <ul class="submenu col-md-12">
-                    <?php foreach ($subCategories as $subCategory):?>
-                        <li><a href="<?=$this->url(array('fullPath'=>$subCategory->fullPath),'categories', true, false)?>"><?=$subCategory->name?></a></li>
-                    <?php endforeach; ?>
-                </ul>
+    <?php foreach ($this->sidebar_item as $entry): ?>
+        <li class="list-group-item sidebar-item <?=($entry->id != $this->current_category->id)?'':'sidebar-item-current';?>">
+            <?php if($entry->id != $this->current_category->id):?>
+                <a href="<?=$this->url(array('fullPath'=>$entry->fullPath),'categories', true, false)?>"><?=$entry->name?></a>
+                <?php $subCategories = $this->getSubCategories($entry->id); ?>
+                <?php if(!empty($subCategories)):?>
+                    <ul class="list-group sidebar-submenu">
+                        <?php foreach ($subCategories as $subCategory):?>
+                            <li class="list-group-item sidebar-submenu-item">
+                                <a href="<?=$this->url(array('fullPath'=>$subCategory->fullPath),'categories', true, false)?>"><?=$subCategory->name?></a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
+            <?php else: ?>
+                <?=$entry->name?>
             <?php endif; ?>
         </li>
     <?php endforeach; ?>

@@ -20,14 +20,14 @@ class ErrorController extends Zend_Controller_Action
                 $this->getResponse()->setHttpResponseCode(404);
                 $priority = Zend_Log::NOTICE;
                 $this->view->message = 'Page not found';
-                $this->_helper->viewRenderer('404');
+                //$this->_helper->viewRenderer('404');
                 break;
             default:
                 // application error
                 $this->getResponse()->setHttpResponseCode(500);
                 $priority = Zend_Log::CRIT;
                 $this->view->message = 'Application error';
-                $this->_helper->viewRenderer('500');
+                //$this->_helper->viewRenderer('500');
                 break;
         }
 
@@ -38,7 +38,7 @@ class ErrorController extends Zend_Controller_Action
             $this->view->message = 'Page not found';
             $this->_helper->viewRenderer('404');
         }*/
-        
+
         // Log exception, if logger available
         if ($log = $this->getLog()) {
             $log->log($this->view->message, $priority, $errors->exception);
