@@ -3,7 +3,7 @@
         $this->sidebar_item = $this->entries;
 ?>
 <ul class="list-group sidebar crop-bottom-shadow">
-    <?php if($this->current_category):?>
+    <?php if($this->parent_category):?>
         <li class="list-group-item sidebar-heading">
             <span class="badge"><i class="fa fa-level-up fa-fw"></i></span>
             <a href="<?=($this->parent_category->id != 0)
