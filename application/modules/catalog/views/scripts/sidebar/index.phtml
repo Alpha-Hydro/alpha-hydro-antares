@@ -5,18 +5,7 @@
     $currentCategoryId = ($this->current_category)? $this->current_category->id : 0;
 ?>
 <ul class="list-group sidebar crop-bottom-shadow">
-    <?php if(isset($this->parent_category)):?>
-        <li class="list-group-item sidebar-heading">
-            <span class="badge"><i class="fa fa-level-up fa-fw"></i></span>
-            <a href="<?=($this->parent_category->id != 0)
-                ? $this->url(array('fullPath'=>$this->parent_category->fullPath),'categories', true, false)
-                :'/catalog/';?>">
-                <?=($this->parent_category->id != 0)
-                    ?$this->parent_category->name
-                    :'Каталог продукции';?>
-            </a>
-        </li>
-    <?php endif;?>
+    <?=$this->sidebarHeading($this->current_category)?>
     <?php foreach ($this->sidebar_item as $entry): ?>
         <li class="list-group-item sidebar-item <?=($entry->id != $currentCategoryId)?'':'sidebar-item-current';?>">
             <?php if($entry->id != $currentCategoryId):?>
