@@ -3,21 +3,28 @@ $this->headTitle($this->title);
 $this->meta_title = $this->title;
 ?>
 
-<div class="row">
-    <!--<div class="col-md-3"></div>-->
-    <div class="col-md-12"><h1><?=$this->title;?></h1></div>
-</div>
+<!--<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-12"></div>
+</div>-->
 
 <div class="row">
     <div class="col-md-9 col-md-push-3 categories-list">
-        <?php foreach ($this->entries as $entry): ?>
-            <div class="col-md-3 text-center ">
-                <a class="categories-list-item z-depth-1" href="<?=$this->url(array('fullPath'=>$entry->fullPath),'categories',true,false) ?>">
-                    <img src="/files/images/category/<?=$entry->image;?>" alt="<?=$entry->name?>"/>
-                    <p class="categories-list-item-name"><?=$entry->name?></p>
-                </a>
+        <div class="row">
+            <div class="col-md-12">
+                <h1><?=$this->title;?></h1>
             </div>
-        <?php endforeach; ?>
+        </div>
+        <div class="row">
+            <?php foreach ($this->entries as $entry): ?>
+                <div class="col-md-3 text-center ">
+                    <a class="categories-list-item z-depth-1" href="<?=$this->url(array('fullPath'=>$entry->fullPath),'categories',true,false) ?>">
+                        <img src="/files/images/category/<?=$entry->image;?>" alt="<?=$entry->name?>"/>
+                        <p class="categories-list-item-name"><?=$entry->name?></p>
+                    </a>
+                </div>
+            <?php endforeach; ?>
+        </div>
     </div>
     <div class="col-md-3 col-md-pull-9">
         <?= $this->action(
