@@ -13,7 +13,7 @@ class Catalog_Bootstrap extends Zend_Application_Module_Bootstrap
         $front = Zend_Controller_Front::getInstance();
         $router = $front->getRouter();
 
-        $config = new Zend_Config_Ini(APPLICATION_PATH . "/modules/" . $this->getModuleName() . '/configs/route.ini', 'production');
+        $config = new Zend_Config_Ini(APPLICATION_PATH . "/modules/" . strtolower($this->getModuleName()) . '/configs/route.ini', 'production');
         $router->addConfig($config,'routes');
     }
 }
