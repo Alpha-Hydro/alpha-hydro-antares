@@ -5,7 +5,7 @@
     $currentCategoryId = ($this->current_category)? $this->current_category->id : 0;
 ?>
 <ul class="list-group sidebar crop-bottom-shadow">
-    <?=$this->sidebarHeading($this->current_category)?>
+    <?php if($this->headers) echo $this->sidebarHeading($this->current_category);?>
     <?php foreach ($this->sidebar_item as $entry): ?>
         <li class="list-group-item sidebar-item <?=($entry->id != $currentCategoryId)?'':'sidebar-item-current';?>">
             <?php if($entry->id != $currentCategoryId):?>

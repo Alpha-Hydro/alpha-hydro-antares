@@ -5,6 +5,7 @@ class Catalog_SidebarController extends Zend_Controller_Action
     protected $_current_category_id = 0;
     protected $_current_category = null;
     protected $_parent_category = null;
+    protected $_show_headers = true;
 
 
     public function init()
@@ -12,6 +13,10 @@ class Catalog_SidebarController extends Zend_Controller_Action
         $categories = new Application_Model_Mapper_Categories();
 
         $this->_current_category_id = $this->_getParam('category');
+
+        if($this->_getParam('headers'))
+            $this->_show_headers = $this->view->headers = $this->_getParam('headers');
+
 
         if($this->getCurrentCategoryId() != 0){
             $this->_current_category = $categories->find($this->getCurrentCategoryId(), new Application_Model_Categories());
