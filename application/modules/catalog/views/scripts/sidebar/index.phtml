@@ -1,9 +1,11 @@
 <?php
     if(!$this->sidebar_item)
         $this->sidebar_item = $this->entries;
+
+    $currentCategoryId = ($this->current_category)? $this->current_category->id : 0;
 ?>
 <ul class="list-group sidebar crop-bottom-shadow">
-    <?php if($this->parent_category):?>
+    <?php if(isset($this->parent_category)):?>
         <li class="list-group-item sidebar-heading">
             <span class="badge"><i class="fa fa-level-up fa-fw"></i></span>
             <a href="<?=($this->parent_category->id != 0)
@@ -16,8 +18,8 @@
         </li>
     <?php endif;?>
     <?php foreach ($this->sidebar_item as $entry): ?>
-        <li class="list-group-item sidebar-item <?=($entry->id != $this->current_category->id)?'':'sidebar-item-current';?>">
-            <?php if($entry->id != $this->current_category->id):?>
+        <li class="list-group-item sidebar-item <?=($entry->id != $currentCategoryId)?'':'sidebar-item-current';?>">
+            <?php if($entry->id != $currentCategoryId):?>
                 <a href="<?=$this->url(array('fullPath'=>$entry->fullPath),'categories', true, false)?>"><?=$entry->name?></a>
                 <?php $subCategories = $this->getSubCategories($entry->id); ?>
                 <?php if(!empty($subCategories)):?>

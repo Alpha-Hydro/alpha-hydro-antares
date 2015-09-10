@@ -22,7 +22,11 @@ class Catalog_SidebarController extends Zend_Controller_Action
     public function indexAction()
     {
         $this->view->current_category = $this->getCurrentCategory();
-        $this->view->parent_category = $this->getParentCategory();
+
+        //var_dump($this->getParentCategory()->id);
+
+        if(null != $this->getParentCategory())
+            $this->view->parent_category = $this->getParentCategory();
 
         if(null != $this->getCurrentCategory())
             $this->view->sidebar_item = $this->getSidebarItem($this->getCurrentCategory()->getParentId());
