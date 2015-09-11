@@ -124,7 +124,7 @@ class Model_Mapper_Products
      * @param Model_Products $entry
      * @return Model_Products
      */
-    protected function _setDbData($row, Model_Products $entry)
+    public function _setDbData($row, Model_Products $entry)
     {
         $info = $this->getDbTable()->info();
         $properties = $info['cols'];

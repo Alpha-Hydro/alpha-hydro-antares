@@ -210,7 +210,6 @@ class Model_Mapper_Categories
         return trim(implode('/',$result));
     }
 
-
     /**
      * @param $id
      * @return array|null
@@ -235,6 +234,11 @@ class Model_Mapper_Categories
         return $result;
     }
 
+    /**
+     * @param $value
+     * @param Model_Categories $categories
+     * @return Model_Categories|null
+     */
     public function findByFulPath($value, Model_Categories $categories)
     {
         $table = $this->getDbTable();
@@ -252,6 +256,36 @@ class Model_Mapper_Categories
         $entry = $this->_setDbData($row, $categories);
 
         return $entry;
+    }
+
+    /**
+     * @param $id
+     * @param null $select
+     * @return array|null
+     * @throws Zend_Db_Table_Exception
+     * @throws Zend_Db_Table_Row_Exception
+     */
+    public function fetchProductsRel($id, $select = null)
+    {
+        $result = $this->getDbTable()->find($id);
+        if (0 == count($result)) {
+            return null;
+        }
+        $category = $result->current();
+
+        $resultSet = $category->findManyToManyRowset("Model_DbTable_Products", "Model_DbTable_CategoriesXref",
+            null, null, $select);
+
+        $entries = array();
+        $products = new Model_Mapper_Products();
+        foreach ($resultSet as $row) {
+            $entry = new Model_Products();
+            $entry = $products->_setDbData($row, $entry);
+            $entries[] = $entry;
+        }
+
+        return $entries;
+
     }
 
 }

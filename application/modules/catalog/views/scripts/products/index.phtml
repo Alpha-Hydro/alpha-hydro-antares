@@ -1,0 +1,52 @@
+<?php
+$this->headTitle($this->title);
+$this->meta_title = $this->title;
+$this->headScript()->appendFile('/js/catalog.min.js');
+?>
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-9">
+        <div class="page-header">
+            <h1><?=$this->title;?></h1>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-9 col-md-push-3 categories-list">
+        <div class="row">
+            <div class="col-md-12">
+                <?= $this->action(
+                    "index",
+                    "breadcrumbs",
+                    "catalog",
+                    array(
+                        'category' => $this->current_category
+                    )
+                );?>
+            </div>
+        </div>
+        <div class="row">
+            <?php foreach ($this->entries as $entry): ?>
+                <div class="col-md-3 text-center ">
+                    <a class="categories-list-item z-depth-1" href="<?=$this->url(array('fullPath'=>$entry->fullPath),'categories',true,false) ?>">
+                        <img src="/files/images/category/<?=$entry->image;?>" alt="<?=$entry->name?>"/>
+                        <p class="categories-list-item-name"><?=$entry->name?></p>
+                    </a>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <div class="col-md-3 col-md-pull-9">
+        <?= $this->action(
+            "index",
+            "sidebar",
+            "catalog",
+            array(
+                'category' => $this->current_category,
+                'headers' => true,
+            )
+        );?>
+    </div>
+</div>

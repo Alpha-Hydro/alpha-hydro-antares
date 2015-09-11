@@ -39,10 +39,21 @@ class Catalog_CategoriesController extends Zend_Controller_Action
 
             $entries = $categories->fetchAll($select);
 
+            if(empty($entries)){
+
+                $productsMapper = new Model_Mapper_Products();
+                $select = $productsMapper->getDbTable()->select()->order('sorting ASC');
+                $entries = $categories->fetchProductsRel($current_category_id, $select);
+
+                /*$this->forward('index', 'products');
+                return;*/
+            }
             $this->view->entries = $entries;
+
         }
         else{
             $this->redirect('/catalog/', array('code'=>301));
+            return;
         }
 
         $this->view->title = $category->getName();
