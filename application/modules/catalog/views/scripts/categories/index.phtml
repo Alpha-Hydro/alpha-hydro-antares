@@ -16,11 +16,14 @@ $this->meta_title = $this->title;
     <div class="col-md-9 col-md-push-3 categories-list">
         <div class="row">
             <div class="col-md-12">
-                <ol class="breadcrumb">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Library</a></li>
-                    <li class="active">Data</li>
-                </ol>
+                <?= $this->action(
+                    "index",
+                    "breadcrumbs",
+                    "catalog",
+                    array(
+                        'category' => $this->current_category
+                    )
+                );?>
             </div>
         </div>
         <div class="row">
@@ -41,7 +44,7 @@ $this->meta_title = $this->title;
             "catalog",
             array(
                 'category' => $this->current_category,
-                'headers' => false,
+                'headers' => true,
             )
         );?>
     </div>

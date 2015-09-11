@@ -5,7 +5,7 @@ class Catalog_SidebarController extends Zend_Controller_Action
     protected $_current_category_id = 0;
     protected $_current_category = null;
     protected $_parent_category = null;
-    protected $_show_headers = true;
+    protected $_show_headers = false;
 
 
     public function init()
@@ -14,9 +14,10 @@ class Catalog_SidebarController extends Zend_Controller_Action
 
         $this->_current_category_id = $this->_getParam('category');
 
-        if($this->_getParam('headers'))
-            $this->_show_headers = $this->view->headers = $this->_getParam('headers');
+        if(!is_null($this->_getParam('headers')))
+            $this->setShowHeaders($this->_getParam('headers'));
 
+        $this->view->headers = $this->getShowHeaders();
 
         if($this->getCurrentCategoryId() != 0){
             $this->_current_category = $categories->find($this->getCurrentCategoryId(), new Application_Model_Categories());
@@ -73,6 +74,24 @@ class Catalog_SidebarController extends Zend_Controller_Action
     public function getCurrentCategoryId()
     {
         return $this->_current_category_id;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getShowHeaders()
+    {
+        return $this->_show_headers;
+    }
+
+    /**
+     * @param boolean $show_headers
+     * @return $this
+     */
+    public function setShowHeaders($show_headers)
+    {
+        $this->_show_headers = $show_headers;
+        return $this;
     }
 
 

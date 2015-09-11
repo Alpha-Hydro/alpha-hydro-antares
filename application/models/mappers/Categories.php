@@ -210,6 +210,31 @@ class Application_Model_Mapper_Categories
         return trim(implode('/',$result));
     }
 
+
+    /**
+     * @param $id
+     * @return array|null
+     * @throws Zend_Db_Table_Exception
+     */
+    public function fetchTreeParentCategories($id)
+    {
+        $table = $this->getDbTable();
+
+        $result = array();
+        do{
+            $category = $table->find($id);
+            if(0 == count($category)){
+                return null;
+            }
+            $category = $category->current();
+            $result[] = $category;
+            $id = $category->parent_id;
+        }
+        while($id != 0);
+
+        return $result;
+    }
+
     public function findByFulPath($value, Application_Model_Categories $categories)
     {
         $table = $this->getDbTable();

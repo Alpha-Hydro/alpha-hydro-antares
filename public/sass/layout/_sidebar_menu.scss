@@ -10,14 +10,16 @@ $menu-line-height: 40px;
     position: relative;
   }
   .sidebar-heading{
-    background-color: $alpha-gray-light;
+    background-color: lighten($alpha-gray-lighter, 3%);
     .badge{
       display: none;
       @include transition(all 0.2s ease-in-out 0s);
     }
     a{
-      //color: #FFFFFF;
-      font-weight: bolder;
+      color: $alpha-gray-darker;
+      //font-weight: bolder;
+      text-transform: uppercase;
+      @include text-shadow(rgb(255, 255, 255) 0 1px 0);
     }
     &:hover{
       .badge{
