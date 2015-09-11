@@ -1,7 +1,7 @@
 <?php
 class Zend_View_Helper_sidebarHeading extends Zend_View_Helper_Abstract
 {
-    public function sidebarHeading(Application_Model_Categories $category = null)
+    public function sidebarHeading(Model_Categories $category = null)
     {
         $html = '<li class="list-group-item sidebar-heading">';
 
@@ -9,11 +9,11 @@ class Zend_View_Helper_sidebarHeading extends Zend_View_Helper_Abstract
 
             $html .= '<span class="badge"><i class="fa fa-level-up fa-fw"></i></span>';
 
-            $categories = new Application_Model_Mapper_Categories();
+            $categories = new Model_Mapper_Categories();
 
             $parent_id = 0;
 
-            if($parentCategory = $categories->find($category->getParentId(), new Application_Model_Categories()))
+            if($parentCategory = $categories->find($category->getParentId(), new Model_Categories()))
                 $parent_id = $parentCategory->getId();
 
             $url = '/catalog/';

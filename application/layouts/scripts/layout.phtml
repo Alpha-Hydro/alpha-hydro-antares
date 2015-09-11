@@ -18,6 +18,9 @@
                 'href' => $this->baseUrl().'/img/favicons/favicon.ico'),
                 'PREPEND');
         echo $this->headLink();
+
+        $this->headScript()
+            ->prependFile('//code.jquery.com/jquery-1.11.3.min.js');
     ?>
 </head>
 <body>

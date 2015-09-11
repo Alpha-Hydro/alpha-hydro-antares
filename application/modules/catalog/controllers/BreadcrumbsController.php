@@ -14,13 +14,10 @@ class Catalog_BreadcrumbsController extends Zend_Controller_Action
     {
         $breadcrumbs = new Zend_Navigation();
 
-        //$breadcrumbs->
-
-        $categoriesMapper = new Application_Model_Mapper_Categories();
-
+        $categoriesMapper = new Model_Mapper_Categories();
 
         $category = ($this->getCategoryId())
-            ? $categoriesMapper->find($this->getCategoryId(), new Application_Model_Categories())
+            ? $categoriesMapper->find($this->getCategoryId(), new Model_Categories())
             : null;
 
         $i = 0;

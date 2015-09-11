@@ -1,6 +1,6 @@
 <?php
 
-class Application_Model_CategoriesXref
+class Model_CategoriesXref
 {
 
     protected $_product_id = null;

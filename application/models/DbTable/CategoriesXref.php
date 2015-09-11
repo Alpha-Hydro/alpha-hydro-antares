@@ -1,6 +1,6 @@
 <?php
 
-class Application_Model_DbTable_CategoriesXref extends Zend_Db_Table_Abstract
+class Model_DbTable_CategoriesXref extends Zend_Db_Table_Abstract
 {
 
     protected $_name = 'categories_xref';
@@ -13,12 +13,12 @@ class Application_Model_DbTable_CategoriesXref extends Zend_Db_Table_Abstract
     protected $_referenceMap = array(
         'CategoriesRel' => array(
             'columns'           =>  array('category_id'),
-            'refTableClass'     =>  'Application_Model_DbTable_Categories',
+            'refTableClass'     =>  'Model_DbTable_Categories',
             'refColumns'        =>  array('id')
         ),
         'ProductsRel' => array(
             'columns'           =>  array('product_id'),
-            'refTableClass'     =>  'Application_Model_DbTable_Products',
+            'refTableClass'     =>  'Model_DbTable_Products',
             'refColumns'        =>  array('id')
         ),
     );

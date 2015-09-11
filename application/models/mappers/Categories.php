@@ -1,6 +1,6 @@
 <?php
 
-class Application_Model_Mapper_Categories
+class Model_Mapper_Categories
 {
 
     protected $_dbTable = null;
@@ -24,21 +24,21 @@ class Application_Model_Mapper_Categories
     }
 
     /**
-     * @return Application_Model_DbTable_Categories
+     * @return Model_DbTable_Categories
      */
     public function getDbTable()
     {
         if (null === $this->_dbTable)
-        	$this->setDbTable('Application_Model_DbTable_Categories');
+        	$this->setDbTable('Model_DbTable_Categories');
         
         return $this->_dbTable;
     }
 
     /**
-     * @param Application_Model_Categories $categories
+     * @param Model_Categories $categories
      * @return $this
      */
-    public function save(Application_Model_Categories $categories)
+    public function save(Model_Categories $categories)
     {
         $data = $this->_getDbData($categories);
         
@@ -54,10 +54,10 @@ class Application_Model_Mapper_Categories
 
     /**
      * @param $id
-     * @param Application_Model_Categories $categories
-     * @return Application_Model_Categories|null
+     * @param Model_Categories $categories
+     * @return Model_Categories|null
      */
-    public function find($id, Application_Model_Categories $categories)
+    public function find($id, Model_Categories $categories)
     {
         $result = $this->getDbTable()->find($id);
         
@@ -81,7 +81,7 @@ class Application_Model_Mapper_Categories
         
         $entries   = array();
         foreach ($resultSet as $row) {
-        	$entry = new Application_Model_Categories();
+        	$entry = new Model_Categories();
         	$entry = $this->_setDbData($row, $entry);
         	$entries[] = $entry;
         }
@@ -100,10 +100,10 @@ class Application_Model_Mapper_Categories
     }
 
     /**
-     * @param Application_Model_Categories $categories
+     * @param Model_Categories $categories
      * @return array
      */
-    protected function _getDbData(Application_Model_Categories $categories)
+    protected function _getDbData(Model_Categories $categories)
     {
         $info = $this->getDbTable()->info();
         $properties = $info['cols'];
@@ -121,10 +121,10 @@ class Application_Model_Mapper_Categories
 
     /**
      * @param Zend_Db_Table_Rowset $row
-     * @param Application_Model_Categories $entry
-     * @return Application_Model_Categories
+     * @param Model_Categories $entry
+     * @return Model_Categories
      */
-    protected function _setDbData($row, Application_Model_Categories $entry)
+    protected function _setDbData($row, Model_Categories $entry)
     {
         $info = $this->getDbTable()->info();
         $properties = $info['cols'];
@@ -235,7 +235,7 @@ class Application_Model_Mapper_Categories
         return $result;
     }
 
-    public function findByFulPath($value, Application_Model_Categories $categories)
+    public function findByFulPath($value, Model_Categories $categories)
     {
         $table = $this->getDbTable();
 

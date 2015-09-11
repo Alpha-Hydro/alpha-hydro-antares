@@ -1,6 +1,6 @@
 <?php
 
-class Application_Model_DbTable_Categories extends Zend_Db_Table_Abstract
+class Model_DbTable_Categories extends Zend_Db_Table_Abstract
 {
 
     protected $_name = 'categories';
@@ -9,7 +9,7 @@ class Application_Model_DbTable_Categories extends Zend_Db_Table_Abstract
      * Подчиненная таблица
      * Dependent tables
      */
-    protected $_dependentTables = array('Application_Model_DbTable_CategoriesXref');
+    protected $_dependentTables = array('Model_DbTable_CategoriesXref');
 
 }
 

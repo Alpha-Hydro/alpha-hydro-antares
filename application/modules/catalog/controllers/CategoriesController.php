@@ -20,8 +20,8 @@ class Catalog_CategoriesController extends Zend_Controller_Action
     public function indexAction()
     {
         $fullPath =  $this->getFullPath();
-        $categories = new Application_Model_Mapper_Categories();
-        $category = new Application_Model_Categories();
+        $categories = new Model_Mapper_Categories();
+        $category = new Model_Categories();
 
         $category = $categories->findByFulPath($fullPath, $category);
 

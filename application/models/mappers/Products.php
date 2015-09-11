@@ -1,6 +1,6 @@
 <?php
 
-class Application_Model_Mapper_Products
+class Model_Mapper_Products
 {
 
     protected $_dbTable = null;
@@ -24,21 +24,21 @@ class Application_Model_Mapper_Products
     }
 
     /**
-     * @return Application_Model_DbTable_Products
+     * @return Model_DbTable_Products
      */
     public function getDbTable()
     {
         if (null === $this->_dbTable)
-        	$this->setDbTable('Application_Model_DbTable_Products');
+        	$this->setDbTable('Model_DbTable_Products');
         
         return $this->_dbTable;
     }
 
     /**
-     * @param Application_Model_Products $products
+     * @param Model_Products $products
      * @return $this
      */
-    public function save(Application_Model_Products $products)
+    public function save(Model_Products $products)
     {
         $data = $this->_getDbData($products);
         
@@ -54,10 +54,10 @@ class Application_Model_Mapper_Products
 
     /**
      * @param $id
-     * @param Application_Model_Products $products
-     * @return Application_Model_Products|null
+     * @param Model_Products $products
+     * @return Model_Products|null
      */
-    public function find($id, Application_Model_Products $products)
+    public function find($id, Model_Products $products)
     {
         $result = $this->getDbTable()->find($id);
         
@@ -81,7 +81,7 @@ class Application_Model_Mapper_Products
         
         $entries   = array();
         foreach ($resultSet as $row) {
-        	$entry = new Application_Model_Products();
+        	$entry = new Model_Products();
         	$entry = $this->_setDbData($row, $entry);
         	$entries[] = $entry;
         }
@@ -100,10 +100,10 @@ class Application_Model_Mapper_Products
     }
 
     /**
-     * @param Application_Model_Products $products
+     * @param Model_Products $products
      * @return array
      */
-    protected function _getDbData(Application_Model_Products $products)
+    protected function _getDbData(Model_Products $products)
     {
         $info = $this->getDbTable()->info();
         $properties = $info['cols'];
@@ -121,10 +121,10 @@ class Application_Model_Mapper_Products
 
     /**
      * @param Zend_Db_Table_Rowset $row
-     * @param Application_Model_Products $entry
-     * @return Application_Model_Products
+     * @param Model_Products $entry
+     * @return Model_Products
      */
-    protected function _setDbData($row, Application_Model_Products $entry)
+    protected function _setDbData($row, Model_Products $entry)
     {
         $info = $this->getDbTable()->info();
         $properties = $info['cols'];
@@ -150,17 +150,17 @@ class Application_Model_Mapper_Products
 
     /**
      * @param $id
-     * @param Application_Model_Categories $categories
-     * @return Application_Model_Categories|null
+     * @param Model_Categories $categories
+     * @return Model_Categories|null
      */
-    public function findCategoryRel($id, Application_Model_Categories $categories){
+    public function findCategoryRel($id, Model_Categories $categories){
         $result = $this->getDbTable()->find($id);
         if (0 == count($result)) {
             return null;
         }
         $row = $result->current();
 
-        $categoryRow = $row->findManyToManyRowset('Application_Model_DbTable_Categories','Application_Model_DbTable_CategoriesXref','ProductsRel')->current();
+        $categoryRow = $row->findManyToManyRowset('Model_DbTable_Categories','Model_DbTable_CategoriesXref','ProductsRel')->current();
 
         $categories->setId($categoryRow->id)
             ->setParentId($categoryRow->parent_id)
@@ -224,7 +224,7 @@ class Application_Model_Mapper_Products
     {
         $product = $this->getDbTable()->find($id)->current();
 
-        $categoryRow = $product->findManyToManyRowset('Application_Model_DbTable_Categories','Application_Model_DbTable_CategoriesXref','ProductsRel');
+        $categoryRow = $product->findManyToManyRowset('Model_DbTable_Categories','Model_DbTable_CategoriesXref','ProductsRel');
         if(0 == count($categoryRow)){
             $result = $product->path;
         }

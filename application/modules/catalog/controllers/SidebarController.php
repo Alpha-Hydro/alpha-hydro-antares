@@ -10,7 +10,7 @@ class Catalog_SidebarController extends Zend_Controller_Action
 
     public function init()
     {
-        $categories = new Application_Model_Mapper_Categories();
+        $categories = new Model_Mapper_Categories();
 
         $this->_current_category_id = $this->_getParam('category');
 
@@ -20,8 +20,8 @@ class Catalog_SidebarController extends Zend_Controller_Action
         $this->view->headers = $this->getShowHeaders();
 
         if($this->getCurrentCategoryId() != 0){
-            $this->_current_category = $categories->find($this->getCurrentCategoryId(), new Application_Model_Categories());
-            $this->_parent_category = $categories->find($this->_current_category->getParentId(), new Application_Model_Categories());
+            $this->_current_category = $categories->find($this->getCurrentCategoryId(), new Model_Categories());
+            $this->_parent_category = $categories->find($this->_current_category->getParentId(), new Model_Categories());
         }
     }
 
@@ -40,7 +40,7 @@ class Catalog_SidebarController extends Zend_Controller_Action
 
     public function getSidebarItem($category_id)
     {
-        $categories = new Application_Model_Mapper_Categories();
+        $categories = new Model_Mapper_Categories();
 
         $select = $categories->getDbTable()->select();
         $select->where('parent_id = ?', $category_id)

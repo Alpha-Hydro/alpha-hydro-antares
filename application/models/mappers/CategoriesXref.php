@@ -1,6 +1,6 @@
 <?php
 
-class Application_Model_Mapper_CategoriesXref
+class Model_Mapper_CategoriesXref
 {
 
     protected $_dbTable = null;
@@ -24,21 +24,21 @@ class Application_Model_Mapper_CategoriesXref
     }
 
     /**
-     * @return Application_Model_DbTable_CategoriesXref
+     * @return Model_DbTable_CategoriesXref
      */
     public function getDbTable()
     {
         if (null === $this->_dbTable)
-        	$this->setDbTable('Application_Model_DbTable_CategoriesXref');
+        	$this->setDbTable('Model_DbTable_CategoriesXref');
         
         return $this->_dbTable;
     }
 
     /**
-     * @param Application_Model_CategoriesXref $categoriesxref
+     * @param Model_CategoriesXref $categoriesxref
      * @return $this
      */
-    public function save(Application_Model_CategoriesXref $categoriesxref)
+    public function save(Model_CategoriesXref $categoriesxref)
     {
         $data = $this->_getDbData($categoriesxref);
         
@@ -54,10 +54,10 @@ class Application_Model_Mapper_CategoriesXref
 
     /**
      * @param $id
-     * @param Application_Model_CategoriesXref $categoriesxref
-     * @return Application_Model_CategoriesXref|null
+     * @param Model_CategoriesXref $categoriesxref
+     * @return Model_CategoriesXref|null
      */
-    public function find($id, Application_Model_CategoriesXref $categoriesxref)
+    public function find($id, Model_CategoriesXref $categoriesxref)
     {
         $result = $this->getDbTable()->find($id);
         
@@ -81,7 +81,7 @@ class Application_Model_Mapper_CategoriesXref
         
         $entries   = array();
         foreach ($resultSet as $row) {
-        	$entry = new Application_Model_CategoriesXref();
+        	$entry = new Model_CategoriesXref();
         	$entry = $this->_setDbData($row, $entry);
         	$entries[] = $entry;
         }
@@ -100,10 +100,10 @@ class Application_Model_Mapper_CategoriesXref
     }
 
     /**
-     * @param Application_Model_CategoriesXref $categoriesxref
+     * @param Model_CategoriesXref $categoriesxref
      * @return array
      */
-    protected function _getDbData(Application_Model_CategoriesXref $categoriesxref)
+    protected function _getDbData(Model_CategoriesXref $categoriesxref)
     {
         $info = $this->getDbTable()->info();
         $properties = $info['cols'];
@@ -121,10 +121,10 @@ class Application_Model_Mapper_CategoriesXref
 
     /**
      * @param Zend_Db_Table_Rowset $row
-     * @param Application_Model_CategoriesXref $entry
-     * @return Application_Model_CategoriesXref
+     * @param Model_CategoriesXref $entry
+     * @return Model_CategoriesXref
      */
-    protected function _setDbData($row, Application_Model_CategoriesXref $entry)
+    protected function _setDbData($row, Model_CategoriesXref $entry)
     {
         $info = $this->getDbTable()->info();
         $properties = $info['cols'];
