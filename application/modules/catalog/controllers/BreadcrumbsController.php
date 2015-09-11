@@ -30,23 +30,26 @@ class Catalog_BreadcrumbsController extends Zend_Controller_Action
             ));
         }
 
-        foreach ($categoriesMapper->fetchTreeParentCategories($category->getParentId()) as $parentCategory) {
-            $breadcrumbs->addPage (
-                array (
-                    "action" => "index",
-                    "controller" => "categories",
-                    "module" => "catalog",
-                    'order'	 => $i,
-                    'route'  => 'categories',
-                    "params" => array(
-                        'fullPath'=>($parentCategory->id != 0) ? $parentCategory->full_path : null,
-                    ),
-                    'reset_params' => true,
-                    'encode_url' => false,
-                    'label' => $parentCategory->name,
-                )
-            );
-            $i--;
+        $parentCategories = $categoriesMapper->fetchTreeParentCategories($category->getParentId());
+        if (!empty($parentCategories)) {
+            foreach ($parentCategories as $parentCategory) {
+                $breadcrumbs->addPage (
+                    array (
+                        "action" => "index",
+                        "controller" => "categories",
+                        "module" => "catalog",
+                        'order'	 => $i,
+                        'route'  => 'categories',
+                        "params" => array(
+                            'fullPath'=>($parentCategory->id != 0) ? $parentCategory->full_path : null,
+                        ),
+                        'reset_params' => true,
+                        'encode_url' => false,
+                        'label' => $parentCategory->name,
+                    )
+                );
+                $i--;
+            }
         }
 
 
