@@ -9,13 +9,13 @@
     <?php foreach ($this->sidebar_item as $entry): ?>
         <li class="list-group-item sidebar-item <?=($entry->id != $currentCategoryId)?'':'sidebar-item-current';?>">
             <?php if($entry->id != $currentCategoryId):?>
-                <a href="<?=$this->url(array('fullPath'=>$entry->fullPath),'categories', true, false)?>"><?=$entry->name?></a>
+                <a href="<?=$this->url(array('fullPath'=>$entry->fullPath),'catalog', true, false)?>"><?=$entry->name?></a>
                 <?php $subCategories = $this->getSubCategories($entry->id); ?>
                 <?php if(!empty($subCategories)):?>
                     <ul class="list-group sidebar-submenu">
                         <?php foreach ($subCategories as $subCategory):?>
                             <li class="list-group-item sidebar-submenu-item">
-                                <a href="<?=$this->url(array('fullPath'=>$subCategory->fullPath),'categories', true, false)?>"><?=$subCategory->name?></a>
+                                <a href="<?=$this->url(array('fullPath'=>$subCategory->fullPath),'catalog', true, false)?>"><?=$subCategory->name?></a>
                             </li>
                         <?php endforeach; ?>
                     </ul>

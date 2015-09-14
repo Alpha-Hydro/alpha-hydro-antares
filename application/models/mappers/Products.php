@@ -243,5 +243,30 @@ class Model_Mapper_Products
         return $result;
     }
 
+    /**
+     * @param $value
+     * @param Model_Categories $categories
+     * @return Model_Categories|null
+     */
+    public function findByFulPath($value, Model_Products $products)
+    {
+        $table = $this->getDbTable();
+
+        $select = $table->select()
+            ->where("full_path = ?", $value);
+
+        $result = $resultSet = $table->fetchAll($select);
+
+        if (0 == count($result)) {
+            return null;
+        }
+
+        $row = $result->current();
+        $entry = $this->_setDbData($row, $products);
+
+        return $entry;
+    }
+
+
 }
 

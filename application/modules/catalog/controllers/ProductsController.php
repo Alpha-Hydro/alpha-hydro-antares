@@ -2,6 +2,7 @@
 
 class Catalog_ProductsController extends Zend_Controller_Action
 {
+
     protected $_fullPath = null;
 
     public function init()
@@ -26,25 +27,35 @@ class Catalog_ProductsController extends Zend_Controller_Action
         $productsMapper = new Model_Mapper_Products();
         $select = $productsMapper->getDbTable()->select()->order('sorting ASC');
 
-        /*$table = $categories
-            ->getDbTable()
-            ->find($current_category_id)
-            ->current()
-            ->findManyToManyRowset("Model_DbTable_Products", "Model_DbTable_CategoriesXref", null, null, $select)
-        ;*/
-
         $entries = $categories->fetchProductsRel($current_category_id, $select);
-        //var_dump(count($entries));
 
         if(!empty($entries))
             $this->view->entries = $entries;
 
+        $this->view->full_path_category = $this->getFullPath();
         $this->view->title = $category->getName();
         $this->view->current_category = $current_category_id;
     }
 
+    public function viewAction()
+    {
+        $fullPath =  $this->getFullPath();
+        $products = new Model_Mapper_Products();
+        $product = new Model_Products();
+
+        $product = $products->findByFulPath($fullPath, $product);
+
+        if(is_null($product))
+            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+        $categoryRel = $products->findCategoryRel($product->getId(), new Model_Categories());
+
+        $this->view->current_category = $categoryRel->getId();
+    }
+
     /**
      * @return null
+     *
      */
     public function getFullPath()
     {
@@ -53,4 +64,6 @@ class Catalog_ProductsController extends Zend_Controller_Action
 
 
 }
+
+
 

@@ -8,6 +8,11 @@
  */
 class Catalog_Bootstrap extends Zend_Application_Module_Bootstrap
 {
+    public function _initBootstrap()
+    {
+
+    }
+
     public function _initRoute(){
 
         $front = Zend_Controller_Front::getInstance();

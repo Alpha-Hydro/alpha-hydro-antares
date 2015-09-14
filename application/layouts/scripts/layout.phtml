@@ -4,12 +4,7 @@
     <?php
         echo $this->headTitle();
 
-        echo $this->partial("components/_meta_head.phtml",
-            array(
-                'meta_title' => $this->meta_title,
-                'meta_description' => $this->meta_description,
-                'meta_keywords' => $this->meta_keywords
-            ));
+        echo $this->render("components/_meta_head.phtml");
 
         $this->headLink()
             ->appendStylesheet($this->baseUrl().'/css/global.css')
@@ -25,15 +20,16 @@
 </head>
 <body>
 <div class="layout">
-    <?php echo $this->partial("components/_header.phtml")?>
+    <?php echo $this->render("components/_header.phtml")?>
     <div class="main" role="main">
         <div class="container">
-            <?php echo $this->layout()->content ?>
+            <?php /*echo $this->layout()->content */?>
+            <?php echo $this->render('_module.phtml') ?>
         </div>
     </div>
     <div class="layout-footer"></div>
 </div>
-<?php echo $this->partial("components/_footer.phtml")?>
+<?php echo $this->render("components/_footer.phtml")?>
 <?php echo $this->headScript();?>
 </body>
 </html>

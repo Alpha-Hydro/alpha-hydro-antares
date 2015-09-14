@@ -39,7 +39,7 @@ class Catalog_BreadcrumbsController extends Zend_Controller_Action
                         "controller" => "categories",
                         "module" => "catalog",
                         'order'	 => $i,
-                        'route'  => 'categories',
+                        'route'  => 'catalog',
                         "params" => array(
                             'fullPath'=>($parentCategory->id != 0) ? $parentCategory->full_path : null,
                         ),

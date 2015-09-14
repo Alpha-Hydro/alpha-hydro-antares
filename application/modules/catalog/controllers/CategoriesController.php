@@ -15,6 +15,7 @@ class Catalog_CategoriesController extends Zend_Controller_Action
     {
         $request = $this->getRequest();
         $this->_fullPath =  $request->getParam('fullPath');
+        //var_dump($this->getAllParams());
     }
 
     public function indexAction()
@@ -25,8 +26,11 @@ class Catalog_CategoriesController extends Zend_Controller_Action
 
         $category = $categories->findByFulPath($fullPath, $category);
 
-        if(is_null($category))
-            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+        if(is_null($category)) {
+            //throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+            $this->forward('view', 'products');
+            return;
+        }
 
         $current_category_id = $category->getId();
 
@@ -41,12 +45,12 @@ class Catalog_CategoriesController extends Zend_Controller_Action
 
             if(empty($entries)){
 
-                $productsMapper = new Model_Mapper_Products();
+                /*$productsMapper = new Model_Mapper_Products();
                 $select = $productsMapper->getDbTable()->select()->order('sorting ASC');
-                $entries = $categories->fetchProductsRel($current_category_id, $select);
+                $entries = $categories->fetchProductsRel($current_category_id, $select);*/
 
-                /*$this->forward('index', 'products');
-                return;*/
+                $this->forward('index', 'products');
+                return;
             }
             $this->view->entries = $entries;
 

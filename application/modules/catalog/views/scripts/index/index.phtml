@@ -2,36 +2,17 @@
     $this->title = 'Каталог продукции';
     $this->headTitle($this->title);
     $this->meta_title = $this->title;
+    $this->sidebar_headers = false;
 ?>
 
-<div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-9">
-        <div class="page-header">
-            <h1><?=$this->title;?></h1>
-        </div>
-    </div>
-</div>
 
-<div class="row">
-    <div class="col-md-9 col-md-push-3">
-        <?php foreach ($this->entries as $entry): ?>
-            <div class="col-md-3 text-center">
-                <a href="<?=$this->url(array('fullPath'=>$entry->fullPath),'categories',true,false) ?>">
-                    <img src="/files/images/category/<?=$entry->image;?>" alt="<?=$entry->name?>"/>
-                    <span><?=$entry->name?></span>
-                </a>
-            </div>
-        <?php endforeach; ?>
-    </div>
-    <div class="col-md-3 col-md-pull-9">
-        <?= $this->action(
-            "index",
-            "sidebar",
-            "catalog",
-            array(
-                'category' => 0,
-            )
-        );?>
-    </div>
+<div class="col-md-12">
+    <?php foreach ($this->entries as $entry): ?>
+        <div class="col-md-3 text-center">
+            <a href="<?=$this->url(array('fullPath'=>$entry->fullPath),'catalog',true,false) ?>">
+                <img src="/files/images/category/<?=$entry->image;?>" alt="<?=$entry->name?>"/>
+                <span><?=$entry->name?></span>
+            </a>
+        </div>
+    <?php endforeach; ?>
 </div>
