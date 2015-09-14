@@ -10,6 +10,8 @@ class Catalog_SidebarController extends Zend_Controller_Action
 
     public function init()
     {
+        //var_dump($this->getFrontController()->getRequest()->getParam('fullPath'));
+
         $categories = new Model_Mapper_Categories();
 
         $this->_current_category_id = $this->_getParam('category');

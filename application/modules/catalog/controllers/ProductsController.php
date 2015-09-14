@@ -11,6 +11,9 @@ class Catalog_ProductsController extends Zend_Controller_Action
         $this->_fullPath =  $request->getParam('fullPath');
     }
 
+    /**
+     * @throws Zend_Controller_Action_Exception
+     */
     public function indexAction()
     {
         $fullPath =  $this->getFullPath();
@@ -37,6 +40,9 @@ class Catalog_ProductsController extends Zend_Controller_Action
         $this->view->current_category = $current_category_id;
     }
 
+    /**
+     * @throws Zend_Controller_Action_Exception
+     */
     public function viewAction()
     {
         $fullPath =  $this->getFullPath();
@@ -45,11 +51,15 @@ class Catalog_ProductsController extends Zend_Controller_Action
 
         $product = $products->findByFulPath($fullPath, $product);
 
+
         if(is_null($product))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
         $categoryRel = $products->findCategoryRel($product->getId(), new Model_Categories());
 
+        $this->view->product = $product;
+        $this->view->title = $product->getSku();
+        $this->view->secondaryHeader = $product->getName();
         $this->view->current_category = $categoryRel->getId();
     }
 

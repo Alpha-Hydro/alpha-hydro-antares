@@ -2,7 +2,12 @@
     <div class="col-md-3"></div>
     <div class="col-md-9">
         <div class="page-header">
-            <h1><?=$this->title;?></h1>
+            <h1>
+                <?=$this->title;?>
+                <? if($this->secondaryHeader):?>
+                    <small><?=$this->secondaryHeader;?></small>
+                <? endif;?>
+            </h1>
         </div>
     </div>
 </div>

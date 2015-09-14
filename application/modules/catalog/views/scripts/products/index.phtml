@@ -13,8 +13,8 @@ $this->sidebar_headers = true;
                 'action'=>'view',
                 'fullPath'=>$entry->fullPath
             ),'catalog',true,false) ?>">
-            <img src="/files/images/category/<?=$entry->image;?>" alt="<?=$entry->name?>"/>
-            <p class="categories-list-item-name"><?=$entry->name?></p>
+            <img src="/files/images/category/<?=$entry->image;?>" alt="<?=$entry->sku?>"/>
+            <p class="categories-list-item-name"><?=$entry->sku?></p>
         </a>
     </div>
 <?php endforeach; ?>

@@ -1,4 +1,17 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Products</b> and script/action name <b>view</b></p>
+<?php
+$this->headTitle($this->title .'. '. $this->secondaryHeader);
+$this->meta_title = $this->title .'. '. $this->secondaryHeader;
+$this->breadcrumbs = true;
+$this->sidebar_headers = true;
+?>
+
+<div class="col-md-3 text-center ">
+	<a class="product-item-image z-depth-1" href="<?=$this->url(
+		array(
+			'controller' => 'products',
+			'action'=>'view',
+			'fullPath'=>$this->product->fullPath
+		),'catalog',true,false) ?>">
+		<img src="/files/images/category/<?=$this->product->image;?>" alt="<?=$this->product->name?>"/>
+	</a>
 </div>
