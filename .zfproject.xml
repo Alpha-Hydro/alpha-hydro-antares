@@ -24,15 +24,18 @@
       <modelsDirectory>
         <dbTableDirectory>
           <dbTableFile dbTableName="Categories"/>
+          <dbTableFile dbTableName="ProductParams"/>
         </dbTableDirectory>
         <modelMapperDirectory>
           <modelMapperFile modelName="Categories"/>
           <modelMapperFile modelName="Products"/>
           <modelMapperFile modelName="CategoriesXref"/>
+          <modelMapperFile modelName="ProductParams"/>
         </modelMapperDirectory>
         <modelColFile modelName="Categories"/>
         <modelColFile modelName="Products"/>
         <modelColFile modelName="CategoriesXref"/>
+        <modelColFile modelName="ProductParams"/>
       </modelsDirectory>
       <modulesDirectory>
         <moduleDirectory moduleName="default">

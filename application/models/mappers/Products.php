@@ -182,6 +182,35 @@ class Model_Mapper_Products
     }
 
     /**
+     * @param $id
+     * @param Zend_Db_Table_Select|null $select
+     * @return array|null
+     * @throws Zend_Db_Table_Exception
+     * @throws Zend_Db_Table_Row_Exception
+     */
+    public function findProductParams($id, Zend_Db_Table_Select $select = null){
+        $result = $this->getDbTable()->find($id);
+
+        if (0 == count($result)) {
+            return null;
+        }
+        $product = $result->current();
+
+        $resultSet = $product->findDependentRowset('Model_DbTable_ProductParams', 'ProductsRel', $select);
+
+        $entries = array();
+        $productParams = new Model_Mapper_ProductParams();
+        foreach ($resultSet as $row) {
+            $entry = new Model_ProductParams();
+            $entry = $productParams->_setDbData($row, $entry);
+            $entries[] = $entry;
+        }
+
+        return $entries;
+
+    }
+
+    /**
      * @param $column string
      * @return array
      */
@@ -245,7 +274,7 @@ class Model_Mapper_Products
 
     /**
      * @param $value
-     * @param Model_Categories $categories
+     * @param Model_Products $products
      * @return Model_Categories|null
      */
     public function findByFulPath($value, Model_Products $products)

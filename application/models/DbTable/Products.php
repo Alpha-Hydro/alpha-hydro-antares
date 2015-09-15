@@ -9,6 +9,6 @@ class Model_DbTable_Products extends Zend_Db_Table_Abstract
      * Подчиненная таблица
      * Dependent tables
      */
-    protected $_dependentTables = array('Model_DbTable_CategoriesXref');
+    protected $_dependentTables = array('Model_DbTable_CategoriesXref', 'Model_DbTable_ProductParams');
 }
 

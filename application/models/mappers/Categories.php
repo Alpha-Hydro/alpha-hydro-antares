@@ -260,12 +260,12 @@ class Model_Mapper_Categories
 
     /**
      * @param $id
-     * @param null $select
+     * @param null|Zend_Db_Table_Select $select
      * @return array|null
      * @throws Zend_Db_Table_Exception
      * @throws Zend_Db_Table_Row_Exception
      */
-    public function fetchProductsRel($id, $select = null)
+    public function fetchProductsRel($id, Zend_Db_Table_Select $select = null)
     {
         $result = $this->getDbTable()->find($id);
         if (0 == count($result)) {

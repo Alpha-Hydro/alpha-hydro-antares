@@ -51,16 +51,27 @@ class Catalog_ProductsController extends Zend_Controller_Action
 
         $product = $products->findByFulPath($fullPath, $product);
 
-
         if(is_null($product))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
-
-        $categoryRel = $products->findCategoryRel($product->getId(), new Model_Categories());
 
         $this->view->product = $product;
         $this->view->title = $product->getSku();
         $this->view->secondaryHeader = $product->getName();
+
+        $categoryRel = $products->findCategoryRel($product->getId(), new Model_Categories());
         $this->view->current_category = $categoryRel->getId();
+
+        if(!is_null($product->getAImages())){
+            $draftImages = unserialize($product->getAImages());
+            if(!empty($draftImages))
+                $this->view->draftImage = $draftImages[0];
+        }
+
+        $productsParams = new Model_Mapper_ProductParams();
+        $select = $productsParams->getDbTable()->select()->order('order ASC');
+        $productProrerty = $products->findProductParams($product->getId(), $select);
+        if(!empty($productProrerty))
+            $this->view->productProperty = $productProrerty;
     }
 
     /**
