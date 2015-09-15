@@ -25,17 +25,26 @@
         <dbTableDirectory>
           <dbTableFile dbTableName="Categories"/>
           <dbTableFile dbTableName="ProductParams"/>
+          <dbTableFile dbTableName="Subproducts"/>
+          <dbTableFile dbTableName="SubproductParams"/>
+          <dbTableFile dbTableName="SubproductParamsValues"/>
         </dbTableDirectory>
         <modelMapperDirectory>
           <modelMapperFile modelName="Categories"/>
           <modelMapperFile modelName="Products"/>
           <modelMapperFile modelName="CategoriesXref"/>
           <modelMapperFile modelName="ProductParams"/>
+          <modelMapperFile modelName="Subproducts"/>
+          <modelMapperFile modelName="SubproductParams"/>
+          <modelMapperFile modelName="SubproductParamsValues"/>
         </modelMapperDirectory>
         <modelColFile modelName="Categories"/>
         <modelColFile modelName="Products"/>
         <modelColFile modelName="CategoriesXref"/>
         <modelColFile modelName="ProductParams"/>
+        <modelColFile modelName="Subproducts"/>
+        <modelColFile modelName="SubproductParams"/>
+        <modelColFile modelName="SubproductParamsValues"/>
       </modelsDirectory>
       <modulesDirectory>
         <moduleDirectory moduleName="default">

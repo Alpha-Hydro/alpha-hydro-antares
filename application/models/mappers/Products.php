@@ -199,15 +199,66 @@ class Model_Mapper_Products
         $resultSet = $product->findDependentRowset('Model_DbTable_ProductParams', 'ProductsRel', $select);
 
         $entries = array();
-        $productParams = new Model_Mapper_ProductParams();
+        $modelMapper = new Model_Mapper_ProductParams();
         foreach ($resultSet as $row) {
             $entry = new Model_ProductParams();
-            $entry = $productParams->_setDbData($row, $entry);
+            $entry = $modelMapper->_setDbData($row, $entry);
             $entries[] = $entry;
         }
 
         return $entries;
 
+    }
+
+    /**
+     * @param $id
+     * @param Zend_Db_Table_Select|null $select
+     * @return array|null
+     * @throws Zend_Db_Table_Exception
+     * @throws Zend_Db_Table_Row_Exception
+     */
+    public function findSubproductsRel($id, Zend_Db_Table_Select $select = null)
+    {
+        $result = $this->getDbTable()->find($id);
+
+        if (0 == count($result)) {
+            return null;
+        }
+        $product = $result->current();
+
+        $resultSet = $product->findDependentRowset('Model_DbTable_Subproducts', 'SubproductsRel', $select);
+
+        $entries = array();
+        $modelMapper = new Model_Mapper_Subproducts();
+        foreach ($resultSet as $row) {
+            $entry = new Model_Subproducts();
+            $entry = $modelMapper->_setDbData($row, $entry);
+            $entries[] = $entry;
+        }
+
+        return $entries;
+    }
+
+    public function findSubproductParams($id, Zend_Db_Table_Select $select = null)
+    {
+        $result = $this->getDbTable()->find($id);
+
+        if (0 == count($result)) {
+            return null;
+        }
+        $product = $result->current();
+
+        $resultSet = $product->findDependentRowset('Model_DbTable_SubproductParams', 'ProductRel', $select);
+
+        $entries = array();
+        $modelMapper = new Model_Mapper_SubproductParams();
+        foreach ($resultSet as $row) {
+            $entry = new Model_SubproductParams();
+            $entry = $modelMapper->_setDbData($row, $entry);
+            $entries[] = $entry;
+        }
+
+        return $entries;
     }
 
     /**

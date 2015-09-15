@@ -20,7 +20,7 @@ $this->sidebar_headers = true;
 <div class="col-xs-6 col-md-8 col-md-offset-1">
     <?php if($this->productProperty):?>
         <h4>Свойства</h4>
-        <table class="table table-striped">
+        <table class="table table-striped product-property">
             <?php foreach ($this->productProperty as $property):?>
                 <tr>
                     <th class="col-md-4"><?= $property->name ?></th>
@@ -30,3 +30,33 @@ $this->sidebar_headers = true;
         </table>
     <?php endif;?>
 </div>
+
+    <div class="col-md-12">
+        <h4>Описание</h4>
+        <?=$this->product->description?>
+    </div>
+<?php if($this->modifications):?>
+    <div class="col-md-12">
+        <!--<h4>Модификации и размеры</h4>-->
+        <table class="table table-striped modifications">
+            <thead>
+            <tr>
+                <td>Название</td>
+                <?php foreach ($this->subproductProperty as $propertyName):?>
+                    <td><?=$propertyName->name?></td>
+                <?php endforeach;?>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($this->modificationsTableValues as $modification):?>
+                <tr>
+                    <?php foreach ($modification as $value):?>
+                        <td><?=$value ?></td>
+                    <?php endforeach;?>
+                </tr>
+            <?php endforeach;?>
+            </tbody>
+        </table>
+    </div>
+<?php endif;?>
+
