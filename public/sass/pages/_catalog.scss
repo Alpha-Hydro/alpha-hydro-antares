@@ -18,13 +18,16 @@ h1 small{
       max-width: 160px;
     }
     .categories-list-item-name{
-      display: block;
       margin: 0 auto;
       padding:{
         top: 10px;
         bottom: 5px;
       };
       width: 160px;
+      flex-direction: column;
+      display: flex;
+      justify-content: center;
+      height: 50%;
     }
   }
 }
