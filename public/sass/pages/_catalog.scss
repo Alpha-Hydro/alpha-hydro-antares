@@ -1,9 +1,13 @@
-.secondary-header{
-  > small{
+h1, h2, h3, h4, h5, h6{
+  > small {
     display: block;
   }
-  margin-bottom: 8px;
+  &.secondary-header{
+    margin-bottom: 8px;
+  }
 }
+
+
 .categories-list{
   .categories-list-item{
     display: block;

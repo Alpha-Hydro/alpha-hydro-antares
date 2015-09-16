@@ -13,7 +13,23 @@ $this->product_id = $this->product->id;
         </div>
         <?php if($this->draftImage):?>
             <div class="thumbnail">
-                <img src="/files/images/product/<?=$this->draftImage;?>" alt="<?=$this->product->name?>"/>
+                <a href="" data-toggle="modal" data-target="#draftImageProduct">
+                    <img src="/files/images/product/<?=$this->draftImage;?>" alt="<?=$this->product->name?>"/>
+                </a>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="draftImageProduct" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Modal title <small>modal title</small></h4>
+                        </div>
+                        <div class="modal-body">
+                            <img src="/files/images/product/<?=$this->draftImage;?>" alt="<?=$this->product->name?>"/>
+                        </div>
+                    </div>
+                </div>
             </div>
         <?php endif;?>
     </div>
@@ -65,3 +81,6 @@ $this->product_id = $this->product->id;
     </div>
 <?php endif;?>
 
+
+<?php $this->headScript()
+    ->appendFile('//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js');?>
