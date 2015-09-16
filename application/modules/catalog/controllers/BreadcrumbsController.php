@@ -3,11 +3,15 @@
 class Catalog_BreadcrumbsController extends Zend_Controller_Action
 {
     protected $_category_id = null;
+    protected $_product_id = null;
 
     public function init()
     {
         if($this->_getParam('category'))
             $this->setCategoryId($this->_getParam('category'));
+
+        if($this->_getParam('product'))
+            $this->setProductId($this->_getParam('product'));
     }
 
     public function indexAction()
@@ -22,7 +26,7 @@ class Catalog_BreadcrumbsController extends Zend_Controller_Action
 
         $i = 0;
 
-        if(isset($category)){
+        if(isset($category) && is_null($this->getProductId())){
             $breadcrumbs->addPage(array(
                 'type' => 'uri',
                 'label' => $category->getName(),
@@ -31,6 +35,10 @@ class Catalog_BreadcrumbsController extends Zend_Controller_Action
         }
 
         $parentCategories = $categoriesMapper->fetchTreeParentCategories($category->getParentId());
+
+        if(!is_null($this->getProductId()))
+            $parentCategories = $categoriesMapper->fetchTreeParentCategories($this->getCategoryId());
+
         if (!empty($parentCategories)) {
             foreach ($parentCategories as $parentCategory) {
                 $breadcrumbs->addPage (
@@ -92,6 +100,24 @@ class Catalog_BreadcrumbsController extends Zend_Controller_Action
     public function getCategoryId()
     {
         return $this->_category_id;
+    }
+
+    /**
+     * @return null
+     */
+    public function getProductId()
+    {
+        return $this->_product_id;
+    }
+
+    /**
+     * @param null $product_id
+     * @return $this
+     */
+    public function setProductId($product_id)
+    {
+        $this->_product_id = $product_id;
+        return $this;
     }
 
 

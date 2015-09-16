@@ -17,7 +17,11 @@
       }
     }
     .mail{
-      font-size: 80%;
+      .fa-envelope{
+        &::before{
+          color: $alpha-blue;
+        }
+      }
     }
   }
 }

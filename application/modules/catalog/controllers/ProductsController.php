@@ -28,7 +28,10 @@ class Catalog_ProductsController extends Zend_Controller_Action
         $current_category_id = $category->getId();
 
         $productsMapper = new Model_Mapper_Products();
-        $select = $productsMapper->getDbTable()->select()->order('sorting ASC');
+        $select = $productsMapper->getDbTable()
+            ->select()
+            ->where('active != ?', 0)
+            ->order('sorting ASC');
 
         $entries = $categories->fetchProductsRel($current_category_id, $select);
 
@@ -67,9 +70,11 @@ class Catalog_ProductsController extends Zend_Controller_Action
                 $this->view->draftImage = $draftImages[0];
         }
 
+        //$productProrerty = $this->view->getProductProperty($product->getId());
         $productsParams = new Model_Mapper_ProductParams();
         $select = $productsParams->getDbTable()->select()->order('order ASC');
         $productProrerty = $products->findProductParams($product->getId(), $select);
+
         if(!empty($productProrerty))
             $this->view->productProperty = $productProrerty;
 
@@ -79,7 +84,6 @@ class Catalog_ProductsController extends Zend_Controller_Action
 
         if(!empty($modifications)){
             $modificationsTableValues = array();
-            $modificationMapper = new Model_Mapper_Subproducts();
             foreach ($modifications as $modification) {
                 $modificationPropertyValues = $subproducts->findSubProductParamValue($modification->getId());
                 $values = array();

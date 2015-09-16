@@ -40,6 +40,10 @@ class Catalog_SidebarController extends Zend_Controller_Action
     }
 
 
+    /**
+     * @param $category_id
+     * @return array
+     */
     public function getSidebarItem($category_id)
     {
         $categories = new Model_Mapper_Categories();

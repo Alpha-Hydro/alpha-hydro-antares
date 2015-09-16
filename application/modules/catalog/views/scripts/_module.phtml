@@ -15,7 +15,8 @@ $this->headScript()->appendFile('/js/catalog.min.js');
                     "breadcrumbs",
                     "catalog",
                     array(
-                        'category' => $this->current_category
+                        'category' => $this->current_category,
+                        'product' => $this->product_id,
                     )
                 );?>
             </div>

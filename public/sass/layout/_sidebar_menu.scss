@@ -17,8 +17,8 @@ $menu-line-height: 40px;
     }
     a{
       color: $alpha-gray-darker;
-      //font-weight: bolder;
-      text-transform: uppercase;
+      font-weight: bolder;
+      //text-transform: uppercase;
       @include text-shadow(rgb(255, 255, 255) 0 1px 0);
     }
     &:hover{
@@ -60,6 +60,9 @@ $menu-line-height: 40px;
         border-bottom: $menu-line-height/2 solid transparent;
         border-left: $menu-line-height/4 solid $alpha-gray-dark;
         z-index: 1;
+      }
+      &.products{
+        width: 70%;
       }
       .sidebar-submenu-item{
         background-color: lighten($alpha-gray-dark, 5%);

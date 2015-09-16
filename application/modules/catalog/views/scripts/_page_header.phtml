@@ -2,11 +2,11 @@
     <div class="col-md-3"></div>
     <div class="col-md-9">
         <div class="page-header">
-            <h1>
+            <h1 <?php if($this->secondaryHeader) echo 'class = "h3 secondary-header"'?>>
                 <?=$this->title;?>
-                <? if($this->secondaryHeader):?>
+                <?php if($this->secondaryHeader):?>
                     <small><?=$this->secondaryHeader;?></small>
-                <? endif;?>
+                <?php endif;?>
             </h1>
         </div>
     </div>

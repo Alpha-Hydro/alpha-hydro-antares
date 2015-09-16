@@ -1,5 +1,8 @@
-h1 small{
-  display: block;
+.secondary-header{
+  > small{
+    display: block;
+  }
+  margin-bottom: 8px;
 }
 .categories-list{
   .categories-list-item{
@@ -31,10 +34,29 @@ h1 small{
     }
   }
 }
+.product-list{
+  .product-item{
+    margin-bottom: 30px;
+    border-bottom: 1px dashed $alpha-gray-lighter;
+    &:last-child{
+      border-bottom: none;
+    }
+    .product-images{
+      @include transition(all .2s ease-in-out);
+      &:hover{
+        text-decoration: none;
+        @extend .z-depth-1;
+      }
+    }
+  }
+}
 .product-images{
   margin:{
     top: 10px;
   };
+}
+.footnote{
+  margin-bottom: 30px;
 }
 .modifications,
 .product-property{

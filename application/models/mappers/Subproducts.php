@@ -150,12 +150,10 @@ class Model_Mapper_Subproducts
 
     /**
      * @param $id
-     * @param Zend_Db_Table_Select|null $select
      * @return array|null
      * @throws Zend_Db_Table_Exception
-     * @throws Zend_Db_Table_Row_Exception
      */
-    public function findSubProductParamValue($id, Zend_Db_Table_Select $select = null)
+    public function findSubProductParamValue($id)
     {
         $result = $this->getDbTable()->find($id);
 
@@ -163,9 +161,18 @@ class Model_Mapper_Subproducts
             return null;
         }
 
-        $subProduct = $result->current();
+        $db = $this->getDbTable()->getAdapter();
+        $select  = $db->select()
+            ->from("subproduct_params_values")
+            ->join("subproduct_params","subproduct_params_values.param_id = subproduct_params.id")
+            ->where('subproduct_id = ?',$id)
+            ->order('subproduct_params.order ASC');
 
-        $resultSet = $subProduct->findDependentRowset('Model_DbTable_SubproductParamsValues', 'SubproductRel', $select);
+        $stmt = $db->query($select);
+        $resultSet = array();
+        while ($param = $stmt->fetchObject()) {
+            $resultSet[] = $param;
+        }
 
         $entries = array();
         $modelMapper = new Model_Mapper_SubproductParamsValues();

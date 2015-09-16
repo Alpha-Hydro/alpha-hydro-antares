@@ -22,6 +22,16 @@
                 <?php endif; ?>
             <?php else: ?>
                 <?=$entry->name?>
+                <?php $productsCategory = $this->getProductsCategory($entry->id); ?>
+                <?php if(!empty($productsCategory)):?>
+                    <ul class="list-group sidebar-submenu products">
+                        <?php foreach ($productsCategory as $product):?>
+                            <li class="list-group-item sidebar-submenu-item">
+                                <a href="<?=$this->url(array('fullPath'=>$product->fullPath),'catalog', true, false)?>"><?=$product->sku?></a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
             <?php endif; ?>
         </li>
     <?php endforeach; ?>
