@@ -100,12 +100,14 @@ class Utils_SefurlController extends Zend_Controller_Action
         $freePathProducts = $products->fetchFreeRowColumn('path');
 
         foreach ($freePathProducts as $product) {
-            $filterSlugify->setSeparator('-');
-            $product->path = $filterSlugify->filter($product->sku);
+            $filterSlugify->setSeparator('');
+            $productPath = $filterSlugify->filter($product->sku);
+            $product->path = strtoupper($productPath);
 
-            if(!$this->_validateColumn($product->path, 'products', 'path')){
-                $filterSlugify->setSeparator('_');
-                $product->path = $filterSlugify->filter($product->sku);
+            if(!$this->_validateColumn($productPath, 'products', 'path')){
+                $filterSlugify->setSeparator('-');
+                $productPath = $filterSlugify->filter($product->sku);
+                $product->path = strtoupper($productPath);
             }
 
             $mapper = new Model_Mapper_Products();

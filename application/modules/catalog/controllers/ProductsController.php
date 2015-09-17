@@ -13,6 +13,7 @@ class Catalog_ProductsController extends Zend_Controller_Action
 
     /**
      * @throws Zend_Controller_Action_Exception
+     *
      */
     public function indexAction()
     {
@@ -45,6 +46,7 @@ class Catalog_ProductsController extends Zend_Controller_Action
 
     /**
      * @throws Zend_Controller_Action_Exception
+     *
      */
     public function viewAction()
     {
@@ -111,14 +113,51 @@ class Catalog_ProductsController extends Zend_Controller_Action
     /**
      * @return null
      *
+     *
      */
     public function getFullPath()
     {
         return $this->_fullPath;
     }
 
+    public function printAction()
+    {
+        $fullPath =  $this->getFullPath();
+        $products = new Model_Mapper_Products();
+        $product = new Model_Products();
+
+        $product = $products->findByFulPath($fullPath, $product);
+
+        $pdf = new Catalog_Model_PrintPdf();
+
+        // set document information
+        $pdf->SetAuthor('Альфа Гидро');
+        $pdf->SetTitle($product->getSku().'. '.$product->getName());
+        $pdf->SetSubject($product->getSku().'. '.$product->getName());
+        $pdf->SetKeywords($product->getSku().', '.$product->getName());
+
+        $pdf->SetFont('', '', 12, '', true);
+
+        $pdf->setProduct($product);
+
+        // Add a page
+        $pdf->AddPage();
+
+        $pdf->showImages()
+            ->showProperty()
+        ;
+
+        $pdf->Output();
+
+        $this->getResponse()
+            ->setHeader('Content-Type', 'application/pdf');
+        $this->_helper->layout()->disableLayout();
+    }
+
 
 }
+
+
 
 
 

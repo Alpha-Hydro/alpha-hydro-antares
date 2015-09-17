@@ -514,7 +514,7 @@ EOD;
 		$pdf->SetSubject('Паспорт');
 		$pdf->SetKeywords('Паспорт, PDF');
 
-		$pdf->SetFont('times', '', 12, '', true);
+		$pdf->SetFont('', '', 12, '', true);
 
 		// Set Product
 		$pdf->setProduct($product);

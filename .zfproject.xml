@@ -86,6 +86,7 @@
             <controllerFile controllerName="Products">
               <actionMethod actionName="index"/>
               <actionMethod actionName="view"/>
+              <actionMethod actionName="print"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory enabled="false"/>
@@ -95,6 +96,7 @@
           <modelsDirectory>
             <dbTableDirectory enabled="false"/>
             <modelMapperDirectory enabled="false"/>
+            <modelFile modelName="PrintPdf"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
@@ -117,7 +119,31 @@
               <viewControllerScriptsDirectory forControllerName="Products">
                 <viewScriptFile forActionName="view"/>
               </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Products">
+                <viewScriptFile forActionName="print"/>
+              </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
+            <viewHelpersDirectory/>
+            <viewFiltersDirectory/>
+          </viewsDirectory>
+        </moduleDirectory>
+        <moduleDirectory moduleName="pdf">
+          <configsDirectory enabled="false"/>
+          <controllersDirectory/>
+          <formsDirectory enabled="false"/>
+          <layoutsDirectory enabled="false">
+            <layoutScriptsDirectory enabled="false"/>
+          </layoutsDirectory>
+          <modelsDirectory>
+            <dbTableDirectory enabled="false"/>
+            <modelMapperDirectory enabled="false"/>
+            <modelFile modelName="Book"/>
+            <modelFile modelName="Page"/>
+            <modelFile modelName="Fonts"/>
+          </modelsDirectory>
+          <servicesDirectory enabled="false"/>
+          <viewsDirectory>
+            <viewScriptsDirectory/>
             <viewHelpersDirectory/>
             <viewFiltersDirectory/>
           </viewsDirectory>

@@ -88,6 +88,7 @@ class Model_Static_PdfPage extends Zend_Pdf_Page {
     protected $MARGIN = array('top' => 0, 'right' => 0, 'bottom' => 0, 'left' => 0);
     
     protected $pageFormat;
+
     /**
      * Side icons
      */
@@ -215,7 +216,7 @@ class Model_Static_PdfPage extends Zend_Pdf_Page {
 
         $this -> pageNum = $page;
 	$this -> pageFormat = $format;
-	$this -> print = $print;
+	$this ->print = $print;
 	
 	if($this -> pageFormat == 'A4'){
 		$this->fontSizeFormat = 7.0;

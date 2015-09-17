@@ -229,6 +229,11 @@ class Model_Static_PdfBook {
             $paramsLinesCount += count(explode("\n", $param->value));
         }
         $paramsLinesCount++;
+
+        $subproductsModel = new Model_DbTable_Subproducts ();
+        $select = $subproductsModel->select()->order('order ASC');
+        $subProducts = $product->findDependentRowset ( "Model_DbTable_Subproducts", 'SubproductsRel' , $select );
+
         // расчет высоты всего продукта, проверка влезает ли он на страницу, если не влезает смотрим сколько именно не влезает и есть ли субпродукты,
         // которые мы може отрисовать на этой странице и перенести отстаток на другую страницу
 	    $productHeightWithoutTable = 10 + max(array(80, ($this->format == 'A4')?$paramsLinesCount * 12: $paramsLinesCount * 8 )) + (($product->description) ? $page->getTextBlockHeight(trim($product -> description), $style, 3) : 0);
@@ -351,10 +356,6 @@ class Model_Static_PdfBook {
         // --- block / sub products
 
         $params = array();
-
-        $subproductsModel = new Model_DbTable_Subproducts ();
-        $select = $subproductsModel->select()->order('order ASC');
-        $subProducts = $product->findDependentRowset ( "Model_DbTable_Subproducts", 'SubproductsRel' , $select );
 
         $subproductParams = $product->getSubParams();
 
@@ -647,7 +648,7 @@ class Model_Static_PdfBook {
         if ( $page % 2 == 0 ) $this->margins = $this->swapMargins($this->margins);
 	
 	$page = $this->createBook( $page, false );
-	$page -> print = $print;
+	$page ->print = $print;
 		try {
 			for( $i = 1; $i < 3; $i++){
 				//Здесь происходит изменение картинок нашего продукта.
@@ -760,4 +761,3 @@ class Model_Static_PdfBook {
         return $this->book;
     }
 }
-?>

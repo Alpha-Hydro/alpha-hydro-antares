@@ -7,7 +7,6 @@ h1, h2, h3, h4, h5, h6{
   }
 }
 
-
 .categories-list{
   .categories-list-item{
     display: block;
@@ -34,7 +33,7 @@ h1, h2, h3, h4, h5, h6{
       flex-direction: column;
       display: flex;
       justify-content: center;
-      height: 50%;
+      height: 40%;
     }
   }
 }
@@ -58,6 +57,14 @@ h1, h2, h3, h4, h5, h6{
   margin:{
     top: 10px;
   };
+  .modal-draft-images{
+    margin: {
+      top: 30px;
+      bottom: 30px;
+      left: auto;
+      right: auto;
+    };
+  }
 }
 .footnote{
   margin-bottom: 30px;
