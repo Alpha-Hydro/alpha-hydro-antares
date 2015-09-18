@@ -36,7 +36,7 @@ class Catalog_Model_PrintPdf extends TCPDF
         //$this->setPrintHeader(false);
         //$this->setPrintFooter(false);
 
-        $this->setWidthWorkspacePage($this->getPageWidth()-$this->original_rMargin-$this->original_lMargin);
+        $this->setWidthWorkspacePage($this->getPageWidth()-PDF_MARGIN_LEFT-PDF_MARGIN_RIGHT);
     }
 
     public function Close() {
@@ -98,7 +98,6 @@ class Catalog_Model_PrintPdf extends TCPDF
     {
         $product = $this->getProduct();
 
-        //$this->SetXY($this->x, $this->y);
         $image_file = APPLICATION_ROOT . '/files/images/product/' . $product->image;
         $this->Image($image_file,$this->x,$this->y,'', 25, '', '', 'T');
         $this->SetX($this->getImageRBX() + 5);
@@ -109,8 +108,6 @@ class Catalog_Model_PrintPdf extends TCPDF
             $this->Image($image_draft_file,$this->x,$this->y, '', 25, '', '', 'T',true,190);
             $this->SetX($this->x + 5);
         }
-        $this->SetY($this->getImageRBY());
-        $this->ln(5);
 
         return $this;
     }
@@ -132,26 +129,65 @@ class Catalog_Model_PrintPdf extends TCPDF
 
         if(!empty($properties)){
 
-            //$this->SetXY($this->original_lMargin, $this->y);
-
-            $w = array(40, $this->getPageWidth()-$this->original_lMargin-$this->original_rMargin-40);
+            $x = $this->getImageRBX()+5;
+            $w = array(40, $this->getPageWidth()-$this->original_rMargin-$x-40);
             foreach($properties as $property){
-
                 $this->SetFont('','B',10);
-                $this->Cell($w[0], 5, $property->name, 0, 0, 'L', false);
+                $this->MultiCell($w[0], 0, $property->name, 0, 'L', false, 0, $x, '', true, 0, false, true, 0);
                 $this->SetFont('','',10);
-                $this->Cell($w[1], 5, $property->value, 0, 0,'L', false);
-                //$this->MultiCell($w[1], 0, $property->value, 0, 'L', false, 0, '', '', true, 0, false, true, 0);
+
+                $this->MultiCell($w[1], 0, $property->value, 0, 'L', false, 0, '', '', true, 0, false, true, 0);
                 $this->Ln();
             }
-            //$this->Cell(array_sum($w), count($properties)*5, '', 0);
         }
 
         $this->Ln(5);
 
+        if($product->description != ''){
+            $this->Write(0, '*'.$product->description);
+            $this->Ln(10);
+        }
+
         return $this;
     }
 
+
+    /**
+     * Таблица модификаций
+     *
+     * @param $table
+     * @return $this
+     */
+    public function showModificatonTable($table)
+    {
+        $this->SetFont('','',8);
+        $headTable = array_shift ($table);
+        $widthName = 25;
+        $w = array($widthName, ($this->getWidthWorkspacePage()-$widthName)/(count($headTable)-1));
+
+        $this->setCellPaddings('', 1, '', 1);
+        $this->SetFillColor(0,148,218);
+        $this->SetTextColor(255);
+        foreach ($headTable as $key => $column) {
+            $wKew = ($key == 0)? $w[0]: $w[1];
+            $this->MultiCell($wKew, 17, $column, 0, 'C', true, 0, '', '', true, 0, false, true, 0, 'M', true);
+        }
+        $this->ln();
+        $this->SetTextColor(0);
+        foreach ($table as $key => $row) {
+            $this->SetFillColor(255,255,255);
+            if($key & 1)
+                $this->SetFillColor(228,228,228);
+            foreach ($row as $k => $value) {
+                $wk = ($k == 0)? $w[0]: $w[1];
+                $this->Cell($wk, 0, $value, 0, 0, 'C', true);
+            }
+            $this->ln();
+        }
+
+
+        return $this;
+    }
 
 
     /**

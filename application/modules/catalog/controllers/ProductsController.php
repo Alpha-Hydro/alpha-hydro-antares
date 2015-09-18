@@ -72,7 +72,6 @@ class Catalog_ProductsController extends Zend_Controller_Action
                 $this->view->draftImage = $draftImages[0];
         }
 
-        //$productProrerty = $this->view->getProductProperty($product->getId());
         $productsParams = new Model_Mapper_ProductParams();
         $select = $productsParams->getDbTable()->select()->order('order ASC');
         $productProrerty = $products->findProductParams($product->getId(), $select);
@@ -85,39 +84,18 @@ class Catalog_ProductsController extends Zend_Controller_Action
         $modifications = $products->findSubproductsRel($product->getId(), $select);
 
         if(!empty($modifications)){
-            $modificationsTableValues = array();
-            foreach ($modifications as $modification) {
-                $modificationPropertyValues = $subproducts->findSubProductParamValue($modification->getId());
-                $values = array();
-                $values['name'] = $modification->getSku();
-                foreach ($modificationPropertyValues as $modificationPropertyValue) {
-                    $values[] = $modificationPropertyValue->getValue();
-                }
-
-                $modificationsTableValues[] = $values;
-            }
-
-            $this->view->modificationsTableValues = $modificationsTableValues;
-
+            $this->view->modificationsTableValues = $this->modificationsTableValues($modifications);
             $this->view->modifications = $modifications;
         }
-
 
         $subproductParams = new Model_Mapper_SubproductParams();
         $select = $subproductParams->getDbTable()->select()->order('order ASC');
         $subproductProperty = $products->findSubproductParams($product->getId(), $select);
-        if(!empty($subproductProperty))
+        if(!empty($subproductProperty)){
             $this->view->subproductProperty = $subproductProperty;
-    }
 
-    /**
-     * @return null
-     *
-     *
-     */
-    public function getFullPath()
-    {
-        return $this->_fullPath;
+        }
+
     }
 
     public function printAction()
@@ -127,6 +105,28 @@ class Catalog_ProductsController extends Zend_Controller_Action
         $product = new Model_Products();
 
         $product = $products->findByFulPath($fullPath, $product);
+
+        $subproducts = new Model_Mapper_Subproducts();
+        $select = $subproducts->getDbTable()->select()->order('order ASC');
+        $modifications = $products->findSubproductsRel($product->getId(), $select);
+
+        $tableModifications = array();
+        $headTable = array();
+
+        if(!empty($modifications)){
+            $subproductParams = new Model_Mapper_SubproductParams();
+            $select = $subproductParams->getDbTable()->select()->order('order ASC');
+            $subproductProperty = $products->findSubproductParams($product->getId(), $select);
+
+            $headTable[] = 'Название';
+            foreach ($subproductProperty as $property) {
+                $headTable[] = $property->name;
+            }
+
+            $tableModifications = $this->modificationsTableValues($modifications);
+            array_unshift($tableModifications, $headTable);
+        }
+        //print_r($tableModifications);
 
         $pdf = new Catalog_Model_PrintPdf();
 
@@ -145,6 +145,7 @@ class Catalog_ProductsController extends Zend_Controller_Action
 
         $pdf->showImages()
             ->showProperty()
+            ->showModificatonTable($tableModifications)
         ;
 
         $pdf->Output();
@@ -154,6 +155,39 @@ class Catalog_ProductsController extends Zend_Controller_Action
         $this->_helper->layout()->disableLayout();
     }
 
+    /**
+     * @param array $modifications
+     * @return array
+     */
+    public function modificationsTableValues($modifications)
+    {
+        $subproducts = new Model_Mapper_Subproducts();
+        $modificationsTableValues = array();
+        if(!empty($modifications)){
+            foreach ($modifications as $modification) {
+                $modificationPropertyValues = $subproducts->findSubProductParamValue($modification->getId());
+                $values = array();
+                $values[] = $modification->getSku();
+                foreach ($modificationPropertyValues as $modificationPropertyValue) {
+                    $values[] = $modificationPropertyValue->getValue();
+                }
+
+                $modificationsTableValues[] = $values;
+            }
+        }
+
+        return $modificationsTableValues;
+    }
+
+    /**
+     * @return null
+     *
+     *
+     */
+    public function getFullPath()
+    {
+        return $this->_fullPath;
+    }
 
 }
 

@@ -479,7 +479,7 @@ class Catalog_ProductsController extends Zend_Controller_Action {
 				$html = <<<EOD
 <style>
 .modification{
-	width: 100%;
+	width: 700px;
 	font-size: 8pt;
 	background-color: #aaa;
 	text-align: center;
@@ -488,9 +488,12 @@ th, td{
 	background-color: #fff;
 	vertical-align: middle;
 }
+th{
+    background-color: #F9F9F9;
+}
 
 </style>
-<table cellspacing="1" cellpadding="5" width="600px" class="modification">
+<table cellspacing="1" cellpadding="5" width="700px" class="modification">
 	<thead>
 		<tr>
 			{$thTable}
