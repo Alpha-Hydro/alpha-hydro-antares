@@ -141,7 +141,7 @@ class Catalog_Model_PrintPdf extends TCPDF
             }
         }
 
-        $this->Ln(5);
+        $this->Ln(10);
 
         if($product->description != ''){
             $this->Write(0, '*'.$product->description);

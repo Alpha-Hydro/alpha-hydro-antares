@@ -6,8 +6,8 @@
                 <h1 class = "h3 secondary-header"><?=$this->title;?>
                     <small><?=$this->secondaryHeader;?></small>
                 </h1>
-                <div class="pull-right">
-                    <a href="<?= $this->url(array('fullPath' => $this->product->fullPath), 'printPdf', true, false) ?>">Печать</a>
+                <div class="pull-right print">
+                    <a class="icon-print" href="<?= $this->url(array('fullPath' => $this->product->fullPath), 'printPdf', true, false) ?>" target="_blank">Печать</a>
                 </div>
             <?php else: ?>
                 <h1><?=$this->title;?></h1>

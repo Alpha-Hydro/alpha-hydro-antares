@@ -8,3 +8,10 @@
     background-position: sprite-position($icon-sprite, stocks-index-icon, 0, 2px);
   }
 }
+.icon-print{
+  padding-left: 25px;
+  background-position: sprite-position($icon-sprite, print);
+  .btn &{
+    background-position: sprite-position($icon-sprite, print, 0, 8px);
+  }
+}
