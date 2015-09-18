@@ -53,6 +53,12 @@
             <controllerFile controllerName="Webhook">
               <actionMethod actionName="index"/>
             </controllerFile>
+            <controllerFile controllerName="About">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Contacts">
+              <actionMethod actionName="index"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory enabled="false"/>
           <layoutsDirectory enabled="false"/>
@@ -61,6 +67,12 @@
           <viewsDirectory>
             <viewScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Webhook">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="About">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Contacts">
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
