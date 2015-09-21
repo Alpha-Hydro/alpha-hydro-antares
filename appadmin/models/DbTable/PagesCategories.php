@@ -19,7 +19,7 @@ class Model_DbTable_PagesCategories extends Zend_Db_Table_Abstract {
     /**
      * Table name
      */
-    protected $_name = 'pages_categories';
+    protected $_name = 'media_categories';
 
     /**
      * Dependent tables
