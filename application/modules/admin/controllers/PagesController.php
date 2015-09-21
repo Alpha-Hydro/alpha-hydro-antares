@@ -1,6 +1,6 @@
 <?php
 use \Michelf\Markdown;
-include_once '\Michelf\Markdown.php';
+include_once 'Michelf/Markdown.php';
 
 class Admin_PagesController extends Zend_Controller_Action
 {
