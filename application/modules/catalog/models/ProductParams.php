@@ -1,19 +1,15 @@
 <?php
 
-class Model_Subproducts
+class Catalog_Model_ProductParams
 {
 
     protected $_id = null;
 
-    protected $_parent_id = null;
-
-    protected $_sku = null;
+    protected $_product_id = null;
 
     protected $_name = null;
 
-    protected $_add_date = null;
-
-    protected $_mod_date = null;
+    protected $_value = null;
 
     protected $_order = null;
 
@@ -97,47 +93,25 @@ class Model_Subproducts
     }
 
     /**
-     * Set value ParentId
+     * Set value ProductId
      *
      * @return $this 
-     * @param $parent_id
+     * @param $product_id
      */
-    public function setParentId($parent_id)
+    public function setProductId($product_id)
     {
-        $this->_parent_id = $parent_id;
+        $this->_product_id = $product_id;
         return $this;
     }
 
     /**
-     * Get value ParentId
+     * Get value ProductId
      *
      * @return mixed
      */
-    public function getParentId()
+    public function getProductId()
     {
-        return $this->_parent_id;
-    }
-
-    /**
-     * Set value Sku
-     *
-     * @return $this 
-     * @param $sku
-     */
-    public function setSku($sku)
-    {
-        $this->_sku = $sku;
-        return $this;
-    }
-
-    /**
-     * Get value Sku
-     *
-     * @return mixed
-     */
-    public function getSku()
-    {
-        return $this->_sku;
+        return $this->_product_id;
     }
 
     /**
@@ -163,47 +137,25 @@ class Model_Subproducts
     }
 
     /**
-     * Set value AddDate
+     * Set value Value
      *
      * @return $this 
-     * @param $add_date
+     * @param $value
      */
-    public function setAddDate($add_date)
+    public function setValue($value)
     {
-        $this->_add_date = $add_date;
+        $this->_value = $value;
         return $this;
     }
 
     /**
-     * Get value AddDate
+     * Get value Value
      *
      * @return mixed
      */
-    public function getAddDate()
+    public function getValue()
     {
-        return $this->_add_date;
-    }
-
-    /**
-     * Set value ModDate
-     *
-     * @return $this 
-     * @param $mod_date
-     */
-    public function setModDate($mod_date)
-    {
-        $this->_mod_date = $mod_date;
-        return $this;
-    }
-
-    /**
-     * Get value ModDate
-     *
-     * @return mixed
-     */
-    public function getModDate()
-    {
-        return $this->_mod_date;
+        return $this->_value;
     }
 
     /**

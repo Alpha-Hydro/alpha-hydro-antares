@@ -10,7 +10,7 @@ class Catalog_IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $categories = new Model_Mapper_Categories();
+        $categories = new Catalog_Model_Mapper_Categories();
 
         $select = $categories->getDbTable()->select();
         $select->where('parent_id = ?', 0)

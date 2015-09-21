@@ -120,10 +120,10 @@ class Catalog_Model_PrintPdf extends TCPDF
      */
     public function showProperty()
     {
-        $products = new Model_Mapper_Products();
+        $products = new Catalog_Model_Mapper_Products();
 
         $product = $this->getProduct();
-        $productsParams = new Model_Mapper_ProductParams();
+        $productsParams = new Catalog_Model_Mapper_ProductParams();
         $select = $productsParams->getDbTable()->select()->order('order ASC');
         $properties = $products->findProductParams($product->getId(), $select);
 

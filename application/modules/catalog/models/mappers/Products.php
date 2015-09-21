@@ -1,6 +1,6 @@
 <?php
 
-class Model_Mapper_Products
+class Catalog_Model_Mapper_Products
 {
 
     protected $_dbTable = null;
@@ -29,16 +29,16 @@ class Model_Mapper_Products
     public function getDbTable()
     {
         if (null === $this->_dbTable)
-        	$this->setDbTable('Model_DbTable_Products');
+        	$this->setDbTable('Catalog_Model_DbTable_Products');
         
         return $this->_dbTable;
     }
 
     /**
-     * @param Model_Products $products
+     * @param Catalog_Model_Products $products
      * @return $this
      */
-    public function save(Model_Products $products)
+    public function save(Catalog_Model_Products $products)
     {
         $data = $this->_getDbData($products);
         
@@ -54,10 +54,10 @@ class Model_Mapper_Products
 
     /**
      * @param $id
-     * @param Model_Products $products
-     * @return Model_Products|null
+     * @param Catalog_Model_Products $products
+     * @return Catalog_Model_Products|null
      */
-    public function find($id, Model_Products $products)
+    public function find($id, Catalog_Model_Products $products)
     {
         $result = $this->getDbTable()->find($id);
         
@@ -81,7 +81,7 @@ class Model_Mapper_Products
         
         $entries   = array();
         foreach ($resultSet as $row) {
-        	$entry = new Model_Products();
+        	$entry = new Catalog_Model_Products();
         	$entry = $this->_setDbData($row, $entry);
         	$entries[] = $entry;
         }
@@ -100,10 +100,10 @@ class Model_Mapper_Products
     }
 
     /**
-     * @param Model_Products $products
+     * @param Catalog_Model_Products $products
      * @return array
      */
-    protected function _getDbData(Model_Products $products)
+    protected function _getDbData(Catalog_Model_Products $products)
     {
         $info = $this->getDbTable()->info();
         $properties = $info['cols'];
@@ -121,10 +121,10 @@ class Model_Mapper_Products
 
     /**
      * @param Zend_Db_Table_Rowset $row
-     * @param Model_Products $entry
-     * @return Model_Products
+     * @param Catalog_Model_Products $entry
+     * @return Catalog_Model_Products
      */
-    public function _setDbData($row, Model_Products $entry)
+    public function _setDbData($row, Catalog_Model_Products $entry)
     {
         $info = $this->getDbTable()->info();
         $properties = $info['cols'];
@@ -150,17 +150,17 @@ class Model_Mapper_Products
 
     /**
      * @param $id
-     * @param Model_Categories $categories
-     * @return Model_Categories|null
+     * @param Catalog_Model_Categories $categories
+     * @return Catalog_Model_Categories|null
      */
-    public function findCategoryRel($id, Model_Categories $categories){
+    public function findCategoryRel($id, Catalog_Model_Categories $categories){
         $result = $this->getDbTable()->find($id);
         if (0 == count($result)) {
             return null;
         }
         $row = $result->current();
 
-        $categoryRow = $row->findManyToManyRowset('Model_DbTable_Categories','Model_DbTable_CategoriesXref','ProductsRel')->current();
+        $categoryRow = $row->findManyToManyRowset('Catalog_Model_DbTable_Categories','Catalog_Model_DbTable_CategoriesXref','ProductsRel')->current();
 
         $categories->setId($categoryRow->id)
             ->setParentId($categoryRow->parent_id)
@@ -196,12 +196,12 @@ class Model_Mapper_Products
         }
         $product = $result->current();
 
-        $resultSet = $product->findDependentRowset('Model_DbTable_ProductParams', 'ProductsRel', $select);
+        $resultSet = $product->findDependentRowset('Catalog_Model_DbTable_ProductParams', 'ProductsRel', $select);
 
         $entries = array();
-        $modelMapper = new Model_Mapper_ProductParams();
+        $modelMapper = new Catalog_Model_Mapper_ProductParams();
         foreach ($resultSet as $row) {
-            $entry = new Model_ProductParams();
+            $entry = new Catalog_Model_ProductParams();
             $entry = $modelMapper->_setDbData($row, $entry);
             $entries[] = $entry;
         }
@@ -226,12 +226,12 @@ class Model_Mapper_Products
         }
         $product = $result->current();
 
-        $resultSet = $product->findDependentRowset('Model_DbTable_Subproducts', 'SubproductsRel', $select);
+        $resultSet = $product->findDependentRowset('Catalog_Model_DbTable_Subproducts', 'SubproductsRel', $select);
 
         $entries = array();
-        $modelMapper = new Model_Mapper_Subproducts();
+        $modelMapper = new Catalog_Model_Mapper_Subproducts();
         foreach ($resultSet as $row) {
-            $entry = new Model_Subproducts();
+            $entry = new Catalog_Model_Subproducts();
             $entry = $modelMapper->_setDbData($row, $entry);
             $entries[] = $entry;
         }
@@ -248,12 +248,12 @@ class Model_Mapper_Products
         }
         $product = $result->current();
 
-        $resultSet = $product->findDependentRowset('Model_DbTable_SubproductParams', 'ProductRel', $select);
+        $resultSet = $product->findDependentRowset('Catalog_Model_DbTable_SubproductParams', 'ProductRel', $select);
 
         $entries = array();
-        $modelMapper = new Model_Mapper_SubproductParams();
+        $modelMapper = new Catalog_Model_Mapper_SubproductParams();
         foreach ($resultSet as $row) {
-            $entry = new Model_SubproductParams();
+            $entry = new Catalog_Model_SubproductParams();
             $entry = $modelMapper->_setDbData($row, $entry);
             $entries[] = $entry;
         }
@@ -304,7 +304,7 @@ class Model_Mapper_Products
     {
         $product = $this->getDbTable()->find($id)->current();
 
-        $categoryRow = $product->findManyToManyRowset('Model_DbTable_Categories','Model_DbTable_CategoriesXref','ProductsRel');
+        $categoryRow = $product->findManyToManyRowset('Catalog_Model_DbTable_Categories','Catalog_Model_DbTable_CategoriesXref','ProductsRel');
         if(0 == count($categoryRow)){
             $result = $product->path;
         }
@@ -325,10 +325,10 @@ class Model_Mapper_Products
 
     /**
      * @param $value
-     * @param Model_Products $products
-     * @return Model_Categories|null
+     * @param Catalog_Model_Products $products
+     * @return Catalog_Model_Categories|null
      */
-    public function findByFulPath($value, Model_Products $products)
+    public function findByFulPath($value, Catalog_Model_Products $products)
     {
         $table = $this->getDbTable();
 

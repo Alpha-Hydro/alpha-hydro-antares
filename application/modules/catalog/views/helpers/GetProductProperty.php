@@ -10,8 +10,8 @@ class Zend_View_Helper_getProductProperty extends Zend_View_Helper_Abstract
 {
     function GetProductProperty($product_id){
 
-        $products = new Model_Mapper_Products();
-        $productsParams = new Model_Mapper_ProductParams();
+        $products = new Catalog_Model_Mapper_Products();
+        $productsParams = new Catalog_Model_Mapper_ProductParams();
         $select = $productsParams->getDbTable()->select()->order('order ASC');
 
         $entries = $products->findProductParams($product_id, $select);

@@ -18,8 +18,8 @@ class Catalog_ProductsController extends Zend_Controller_Action
     public function indexAction()
     {
         $fullPath =  $this->getFullPath();
-        $categories = new Model_Mapper_Categories();
-        $category = new Model_Categories();
+        $categories = new Catalog_Model_Mapper_Categories();
+        $category = new Catalog_Model_Categories();
 
         $category = $categories->findByFulPath($fullPath, $category);
 
@@ -28,7 +28,7 @@ class Catalog_ProductsController extends Zend_Controller_Action
 
         $current_category_id = $category->getId();
 
-        $productsMapper = new Model_Mapper_Products();
+        $productsMapper = new Catalog_Model_Mapper_Products();
         $select = $productsMapper->getDbTable()
             ->select()
             ->where('active != ?', 0)
@@ -51,8 +51,8 @@ class Catalog_ProductsController extends Zend_Controller_Action
     public function viewAction()
     {
         $fullPath =  $this->getFullPath();
-        $products = new Model_Mapper_Products();
-        $product = new Model_Products();
+        $products = new Catalog_Model_Mapper_Products();
+        $product = new Catalog_Model_Products();
 
         $product = $products->findByFulPath($fullPath, $product);
 
@@ -63,7 +63,7 @@ class Catalog_ProductsController extends Zend_Controller_Action
         $this->view->title = $product->getSku();
         $this->view->secondaryHeader = $product->getName();
 
-        $categoryRel = $products->findCategoryRel($product->getId(), new Model_Categories());
+        $categoryRel = $products->findCategoryRel($product->getId(), new Catalog_Model_Categories());
         $this->view->current_category = $categoryRel->getId();
 
         if(!is_null($product->getAImages())){
@@ -72,14 +72,14 @@ class Catalog_ProductsController extends Zend_Controller_Action
                 $this->view->draftImage = $draftImages[0];
         }
 
-        $productsParams = new Model_Mapper_ProductParams();
+        $productsParams = new Catalog_Model_Mapper_ProductParams();
         $select = $productsParams->getDbTable()->select()->order('order ASC');
         $productProrerty = $products->findProductParams($product->getId(), $select);
 
         if(!empty($productProrerty))
             $this->view->productProperty = $productProrerty;
 
-        $subproducts = new Model_Mapper_Subproducts();
+        $subproducts = new Catalog_Model_Mapper_Subproducts();
         $select = $subproducts->getDbTable()->select()->order('order ASC');
         $modifications = $products->findSubproductsRel($product->getId(), $select);
 
@@ -88,7 +88,7 @@ class Catalog_ProductsController extends Zend_Controller_Action
             $this->view->modifications = $modifications;
         }
 
-        $subproductParams = new Model_Mapper_SubproductParams();
+        $subproductParams = new Catalog_Model_Mapper_SubproductParams();
         $select = $subproductParams->getDbTable()->select()->order('order ASC');
         $subproductProperty = $products->findSubproductParams($product->getId(), $select);
         if(!empty($subproductProperty)){
@@ -101,12 +101,12 @@ class Catalog_ProductsController extends Zend_Controller_Action
     public function printAction()
     {
         $fullPath =  $this->getFullPath();
-        $products = new Model_Mapper_Products();
-        $product = new Model_Products();
+        $products = new Catalog_Model_Mapper_Products();
+        $product = new Catalog_Model_Products();
 
         $product = $products->findByFulPath($fullPath, $product);
 
-        $subproducts = new Model_Mapper_Subproducts();
+        $subproducts = new Catalog_Model_Mapper_Subproducts();
         $select = $subproducts->getDbTable()->select()->order('order ASC');
         $modifications = $products->findSubproductsRel($product->getId(), $select);
 
@@ -114,7 +114,7 @@ class Catalog_ProductsController extends Zend_Controller_Action
         $headTable = array();
 
         if(!empty($modifications)){
-            $subproductParams = new Model_Mapper_SubproductParams();
+            $subproductParams = new Catalog_Model_Mapper_SubproductParams();
             $select = $subproductParams->getDbTable()->select()->order('order ASC');
             $subproductProperty = $products->findSubproductParams($product->getId(), $select);
 
@@ -161,7 +161,7 @@ class Catalog_ProductsController extends Zend_Controller_Action
      */
     public function modificationsTableValues($modifications)
     {
-        $subproducts = new Model_Mapper_Subproducts();
+        $subproducts = new Catalog_Model_Mapper_Subproducts();
         $modificationsTableValues = array();
         if(!empty($modifications)){
             foreach ($modifications as $modification) {

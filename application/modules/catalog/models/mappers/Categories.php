@@ -1,6 +1,6 @@
 <?php
 
-class Model_Mapper_Categories
+class Catalog_Model_Mapper_Categories
 {
 
     protected $_dbTable = null;
@@ -29,16 +29,16 @@ class Model_Mapper_Categories
     public function getDbTable()
     {
         if (null === $this->_dbTable)
-        	$this->setDbTable('Model_DbTable_Categories');
+        	$this->setDbTable('Catalog_Model_DbTable_Categories');
         
         return $this->_dbTable;
     }
 
     /**
-     * @param Model_Categories $categories
+     * @param Catalog_Model_Categories $categories
      * @return $this
      */
-    public function save(Model_Categories $categories)
+    public function save(Catalog_Model_Categories $categories)
     {
         $data = $this->_getDbData($categories);
         
@@ -54,10 +54,10 @@ class Model_Mapper_Categories
 
     /**
      * @param $id
-     * @param Model_Categories $categories
-     * @return Model_Categories|null
+     * @param Catalog_Model_Categories $categories
+     * @return Catalog_Model_Categories|null
      */
-    public function find($id, Model_Categories $categories)
+    public function find($id, Catalog_Model_Categories $categories)
     {
         $result = $this->getDbTable()->find($id);
         
@@ -81,7 +81,7 @@ class Model_Mapper_Categories
         
         $entries   = array();
         foreach ($resultSet as $row) {
-        	$entry = new Model_Categories();
+        	$entry = new Catalog_Model_Categories();
         	$entry = $this->_setDbData($row, $entry);
         	$entries[] = $entry;
         }
@@ -100,10 +100,10 @@ class Model_Mapper_Categories
     }
 
     /**
-     * @param Model_Categories $categories
+     * @param Catalog_Model_Categories $categories
      * @return array
      */
-    protected function _getDbData(Model_Categories $categories)
+    protected function _getDbData(Catalog_Model_Categories $categories)
     {
         $info = $this->getDbTable()->info();
         $properties = $info['cols'];
@@ -121,10 +121,10 @@ class Model_Mapper_Categories
 
     /**
      * @param Zend_Db_Table_Rowset $row
-     * @param Model_Categories $entry
-     * @return Model_Categories
+     * @param Catalog_Model_Categories $entry
+     * @return Catalog_Model_Categories
      */
-    protected function _setDbData($row, Model_Categories $entry)
+    protected function _setDbData($row, Catalog_Model_Categories $entry)
     {
         $info = $this->getDbTable()->info();
         $properties = $info['cols'];
@@ -236,10 +236,10 @@ class Model_Mapper_Categories
 
     /**
      * @param $value
-     * @param Model_Categories $categories
-     * @return Model_Categories|null
+     * @param Catalog_Model_Categories $categories
+     * @return Catalog_Model_Categories|null
      */
-    public function findByFulPath($value, Model_Categories $categories)
+    public function findByFulPath($value, Catalog_Model_Categories $categories)
     {
         $table = $this->getDbTable();
 
@@ -273,13 +273,13 @@ class Model_Mapper_Categories
         }
         $category = $result->current();
 
-        $resultSet = $category->findManyToManyRowset("Model_DbTable_Products", "Model_DbTable_CategoriesXref",
+        $resultSet = $category->findManyToManyRowset("Catalog_Model_DbTable_Products", "Catalog_Model_DbTable_CategoriesXref",
             null, null, $select);
 
         $entries = array();
-        $products = new Model_Mapper_Products();
+        $products = new Catalog_Model_Mapper_Products();
         foreach ($resultSet as $row) {
-            $entry = new Model_Products();
+            $entry = new Catalog_Model_Products();
             $entry = $products->_setDbData($row, $entry);
             $entries[] = $entry;
         }

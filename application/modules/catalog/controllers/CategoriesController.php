@@ -21,8 +21,8 @@ class Catalog_CategoriesController extends Zend_Controller_Action
     public function indexAction()
     {
         $fullPath =  $this->getFullPath();
-        $categories = new Model_Mapper_Categories();
-        $category = new Model_Categories();
+        $categories = new Catalog_Model_Mapper_Categories();
+        $category = new Catalog_Model_Categories();
 
         $category = $categories->findByFulPath($fullPath, $category);
 
@@ -45,7 +45,7 @@ class Catalog_CategoriesController extends Zend_Controller_Action
 
             if(empty($entries)){
 
-                /*$productsMapper = new Model_Mapper_Products();
+                /*$productsMapper = new Catalog_Model_Mapper_Products();
                 $select = $productsMapper->getDbTable()->select()->order('sorting ASC');
                 $entries = $categories->fetchProductsRel($current_category_id, $select);*/
 

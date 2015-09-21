@@ -1,6 +1,6 @@
 <?php
 
-class Model_DbTable_ProductParams extends Zend_Db_Table_Abstract
+class Catalog_Model_DbTable_ProductParams extends Zend_Db_Table_Abstract
 {
 
     protected $_name = 'product_params';
@@ -8,7 +8,7 @@ class Model_DbTable_ProductParams extends Zend_Db_Table_Abstract
     protected $_referenceMap = array(
         'ProductsRel' => array(
             'columns'           =>  array('product_id'),
-            'refTableClass'     =>  'Model_DbTable_Products',
+            'refTableClass'     =>  'Catalog_Model_DbTable_Products',
             'refColumns'        =>  array('id'),
             'onDelete'			=>	self::CASCADE
         )

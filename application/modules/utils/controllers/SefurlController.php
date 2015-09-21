@@ -18,7 +18,7 @@ class Utils_SefurlController extends Zend_Controller_Action
     public function indexAction()
     {
         //Categories
-        $categories = new Model_Mapper_Categories();
+        $categories = new Catalog_Model_Mapper_Categories();
         //пустые значения Path
         $this->view->freeCategoriesPath = $categories->fetchFreeRowColumn('path');
         //пустые значения Full Path
@@ -29,7 +29,7 @@ class Utils_SefurlController extends Zend_Controller_Action
         $this->view->dubleCategoriesFullPath = $categories->fetchDublicateRowColumn('full_path');
 
         //Products
-        $products = new Model_Mapper_Products();
+        $products = new Catalog_Model_Mapper_Products();
         //пустые значения Path
         $this->view->freeProductsPath = $products->fetchFreeRowColumn('path');
         //пустые значения Full Path
@@ -46,7 +46,7 @@ class Utils_SefurlController extends Zend_Controller_Action
      */
     public function dublicateCategoriesPathAction()
     {
-        $categories = new Model_Mapper_Categories();
+        $categories = new Catalog_Model_Mapper_Categories();
         $this->view->entries = $categories->fetchDublicateRowColumn('path');
     }
 
@@ -56,14 +56,14 @@ class Utils_SefurlController extends Zend_Controller_Action
     public function generateCategoriesPathAction()
     {
         $filterSlugify = new Vlmeh_Filter_Slugify();
-        $categories = new Model_Mapper_Categories();
+        $categories = new Catalog_Model_Mapper_Categories();
         $freePathCategories = $categories->fetchFreeRowColumn('path');
 
         foreach($freePathCategories as $category){
             $path = $category->path;
             if(empty($path))
                 $category->path = $filterSlugify->filter($category->name);
-            $mapper = new Model_Mapper_Categories();
+            $mapper = new Catalog_Model_Mapper_Categories();
             $mapper->save($category);
         }
 
@@ -75,7 +75,7 @@ class Utils_SefurlController extends Zend_Controller_Action
      */
     public function generateCategoriesFullPathAction()
     {
-        $categories = new Model_Mapper_Categories();
+        $categories = new Catalog_Model_Mapper_Categories();
         $freePathCategories = $categories->fetchFreeRowColumn('full_path');
 
         foreach ($freePathCategories as $category) {
@@ -84,7 +84,7 @@ class Utils_SefurlController extends Zend_Controller_Action
             $category->fullPath = $fullPath;
 
             //if($this->_validateColumn($category->fullPath, 'categories', 'full_path')){
-                $mapper = new Model_Mapper_Categories();
+                $mapper = new Catalog_Model_Mapper_Categories();
                 $mapper->save($category);
             //}
         }
@@ -96,7 +96,7 @@ class Utils_SefurlController extends Zend_Controller_Action
     public function generateProductsPathAction()
     {
         $filterSlugify = new Vlmeh_Filter_Slugify();
-        $products = new Model_Mapper_Products();
+        $products = new Catalog_Model_Mapper_Products();
         $freePathProducts = $products->fetchFreeRowColumn('path');
 
         foreach ($freePathProducts as $product) {
@@ -110,7 +110,7 @@ class Utils_SefurlController extends Zend_Controller_Action
                 $product->path = strtoupper($productPath);
             }
 
-            $mapper = new Model_Mapper_Products();
+            $mapper = new Catalog_Model_Mapper_Products();
             $mapper->save($product);
         }
 
@@ -120,12 +120,12 @@ class Utils_SefurlController extends Zend_Controller_Action
 
     public function generateProductsFullPathAction()
     {
-        $products = new Model_Mapper_Products();
+        $products = new Catalog_Model_Mapper_Products();
         $freePathProducts = $products->fetchFreeRowColumn('full_path');
 
         foreach ($freePathProducts as $product) {
             $product->fullPath = $products->generateFullPath($product->id);
-            $mapper = new Model_Mapper_Products();
+            $mapper = new Catalog_Model_Mapper_Products();
             $mapper->save($product);
         }
 

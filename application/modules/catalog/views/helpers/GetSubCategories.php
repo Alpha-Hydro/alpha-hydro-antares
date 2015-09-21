@@ -9,7 +9,7 @@ class Zend_View_Helper_getSubCategories
      */
     function GetSubCategories($category_id, $active = 0){
 
-        $categories = new Model_Mapper_Categories();
+        $categories = new Catalog_Model_Mapper_Categories();
 
         $select = $categories->getDbTable()->select();
         $select->where('parent_id = ?', $category_id)

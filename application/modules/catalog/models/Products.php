@@ -1,6 +1,6 @@
 <?php
 
-class Model_Products
+class Catalog_Model_Products
 {
 
     protected $_id = null;

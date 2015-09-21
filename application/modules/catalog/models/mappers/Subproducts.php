@@ -1,6 +1,6 @@
 <?php
 
-class Model_Mapper_SubproductParamsValues
+class Catalog_Model_Mapper_Subproducts
 {
 
     protected $_dbTable = null;
@@ -24,25 +24,25 @@ class Model_Mapper_SubproductParamsValues
     }
 
     /**
-     * @return Model_DbTable_SubproductParamsValues
+     * @return Model_DbTable_Subproducts
      */
     public function getDbTable()
     {
         if (null === $this->_dbTable)
-        	$this->setDbTable('Model_DbTable_SubproductParamsValues');
+        	$this->setDbTable('Catalog_Model_DbTable_Subproducts');
         
         return $this->_dbTable;
     }
 
     /**
-     * @param Model_SubproductParamsValues $subproductparamsvalues
+     * @param Catalog_Model_Subproducts $subproducts
      * @return $this
      */
-    public function save(Model_SubproductParamsValues $subproductparamsvalues)
+    public function save(Catalog_Model_Subproducts $subproducts)
     {
-        $data = $this->_getDbData($subproductparamsvalues);
+        $data = $this->_getDbData($subproducts);
         
-        if (null == ($id = $subproductparamsvalues->getId())) {
+        if (null == ($id = $subproducts->getId())) {
         	unset($data[$this->_getDbPrimary()]);
         	$this->getDbTable()->insert($data);
         } else {
@@ -54,10 +54,10 @@ class Model_Mapper_SubproductParamsValues
 
     /**
      * @param $id
-     * @param Model_SubproductParamsValues $subproductparamsvalues
-     * @return Model_SubproductParamsValues|null
+     * @param Catalog_Model_Subproducts $subproducts
+     * @return Catalog_Model_Subproducts|null
      */
-    public function find($id, Model_SubproductParamsValues $subproductparamsvalues)
+    public function find($id, Catalog_Model_Subproducts $subproducts)
     {
         $result = $this->getDbTable()->find($id);
         
@@ -66,7 +66,7 @@ class Model_Mapper_SubproductParamsValues
         }
         
         $row = $result->current();
-        $entry = $this->_setDbData($row, $subproductparamsvalues);
+        $entry = $this->_setDbData($row, $subproducts);
         
         return $entry;
     }
@@ -81,7 +81,7 @@ class Model_Mapper_SubproductParamsValues
         
         $entries   = array();
         foreach ($resultSet as $row) {
-        	$entry = new Model_SubproductParamsValues();
+        	$entry = new Catalog_Model_Subproducts();
         	$entry = $this->_setDbData($row, $entry);
         	$entries[] = $entry;
         }
@@ -100,10 +100,10 @@ class Model_Mapper_SubproductParamsValues
     }
 
     /**
-     * @param Model_SubproductParamsValues $subproductparamsvalues
+     * @param Catalog_Model_Subproducts $subproducts
      * @return array
      */
-    protected function _getDbData(Model_SubproductParamsValues $subproductparamsvalues)
+    protected function _getDbData(Catalog_Model_Subproducts $subproducts)
     {
         $info = $this->getDbTable()->info();
         $properties = $info['cols'];
@@ -113,7 +113,7 @@ class Model_Mapper_SubproductParamsValues
         	$name = $this->_normaliseName($property);
         
         	if($property != $this->_getDbPrimary())
-        		$data[$property] = $subproductparamsvalues->__get($name);
+        		$data[$property] = $subproducts->__get($name);
         }
         
         return $data;
@@ -121,10 +121,10 @@ class Model_Mapper_SubproductParamsValues
 
     /**
      * @param Zend_Db_Table_Rowset $row
-     * @param Model_SubproductParamsValues $entry
-     * @return Model_SubproductParamsValues
+     * @param Catalog_Model_Subproducts $entry
+     * @return Catalog_Model_Subproducts
      */
-    public function _setDbData($row, Model_SubproductParamsValues $entry)
+    public function _setDbData($row, Catalog_Model_Subproducts $entry)
     {
         $info = $this->getDbTable()->info();
         $properties = $info['cols'];
@@ -148,6 +148,42 @@ class Model_Mapper_SubproductParamsValues
         return $normaliseName;
     }
 
+    /**
+     * @param $id
+     * @return array|null
+     * @throws Zend_Db_Table_Exception
+     */
+    public function findSubProductParamValue($id)
+    {
+        $result = $this->getDbTable()->find($id);
+
+        if (0 == count($result)) {
+            return null;
+        }
+
+        $db = $this->getDbTable()->getAdapter();
+        $select  = $db->select()
+            ->from("subproduct_params_values")
+            ->join("subproduct_params","subproduct_params_values.param_id = subproduct_params.id")
+            ->where('subproduct_id = ?',$id)
+            ->order('subproduct_params.order ASC');
+
+        $stmt = $db->query($select);
+        $resultSet = array();
+        while ($param = $stmt->fetchObject()) {
+            $resultSet[] = $param;
+        }
+
+        $entries = array();
+        $modelMapper = new Catalog_Model_Mapper_SubproductParamsValues();
+        foreach ($resultSet as $row) {
+            $entry = new Catalog_Model_SubproductParamsValues();
+            $entry = $modelMapper->_setDbData($row, $entry);
+            $entries[] = $entry;
+        }
+
+        return $entries;
+    }
 
 }
 

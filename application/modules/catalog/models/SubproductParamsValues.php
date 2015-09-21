@@ -1,11 +1,13 @@
 <?php
 
-class Model_CategoriesXref
+class Catalog_Model_SubproductParamsValues
 {
 
-    protected $_product_id = null;
+    protected $_subproduct_id = null;
 
-    protected $_category_id = null;
+    protected $_param_id = null;
+
+    protected $_value = null;
 
     /**
      * @param $options
@@ -65,47 +67,69 @@ class Model_CategoriesXref
     }
 
     /**
-     * Set value ProductId
+     * Set value SubproductId
      *
      * @return $this 
-     * @param $product_id
+     * @param $subproduct_id
      */
-    public function setProductId($product_id)
+    public function setSubproductId($subproduct_id)
     {
-        $this->_product_id = $product_id;
+        $this->_subproduct_id = $subproduct_id;
         return $this;
     }
 
     /**
-     * Get value ProductId
+     * Get value SubproductId
      *
      * @return mixed
      */
-    public function getProductId()
+    public function getSubproductId()
     {
-        return $this->_product_id;
+        return $this->_subproduct_id;
     }
 
     /**
-     * Set value CategoryId
+     * Set value ParamId
      *
      * @return $this 
-     * @param $category_id
+     * @param $param_id
      */
-    public function setCategoryId($category_id)
+    public function setParamId($param_id)
     {
-        $this->_category_id = $category_id;
+        $this->_param_id = $param_id;
         return $this;
     }
 
     /**
-     * Get value CategoryId
+     * Get value ParamId
      *
      * @return mixed
      */
-    public function getCategoryId()
+    public function getParamId()
     {
-        return $this->_category_id;
+        return $this->_param_id;
+    }
+
+    /**
+     * Set value Value
+     *
+     * @return $this 
+     * @param $value
+     */
+    public function setValue($value)
+    {
+        $this->_value = $value;
+        return $this;
+    }
+
+    /**
+     * Get value Value
+     *
+     * @return mixed
+     */
+    public function getValue()
+    {
+        return $this->_value;
     }
 
 

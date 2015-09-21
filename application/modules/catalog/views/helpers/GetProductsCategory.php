@@ -9,9 +9,9 @@ class Zend_View_Helper_getProductsCategory
      */
     function GetProductsCategory($category_id, $active = 0){
 
-        $categories = new Model_Mapper_Categories();
+        $categories = new Catalog_Model_Mapper_Categories();
 
-        $productsMapper = new Model_Mapper_Products();
+        $productsMapper = new Catalog_Model_Mapper_Products();
         $select = $productsMapper->getDbTable()->select();
         $select->where('active != ?', $active)
             ->order('sorting ASC');

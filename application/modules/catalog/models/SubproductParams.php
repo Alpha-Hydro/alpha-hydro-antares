@@ -1,6 +1,6 @@
 <?php
 
-class Model_SubproductParams
+class Catalog_Model_SubproductParams
 {
 
     protected $_id = null;

@@ -1,6 +1,6 @@
 <?php
 
-class Model_Mapper_CategoriesXref
+class Catalog_Model_Mapper_SubproductParams
 {
 
     protected $_dbTable = null;
@@ -24,25 +24,25 @@ class Model_Mapper_CategoriesXref
     }
 
     /**
-     * @return Model_DbTable_CategoriesXref
+     * @return Model_DbTable_SubproductParams
      */
     public function getDbTable()
     {
         if (null === $this->_dbTable)
-        	$this->setDbTable('Model_DbTable_CategoriesXref');
+        	$this->setDbTable('Catalog_Model_DbTable_SubproductParams');
         
         return $this->_dbTable;
     }
 
     /**
-     * @param Model_CategoriesXref $categoriesxref
+     * @param Catalog_Model_SubproductParams $subproductparams
      * @return $this
      */
-    public function save(Model_CategoriesXref $categoriesxref)
+    public function save(Catalog_Model_SubproductParams $subproductparams)
     {
-        $data = $this->_getDbData($categoriesxref);
+        $data = $this->_getDbData($subproductparams);
         
-        if (null == ($id = $categoriesxref->getId())) {
+        if (null == ($id = $subproductparams->getId())) {
         	unset($data[$this->_getDbPrimary()]);
         	$this->getDbTable()->insert($data);
         } else {
@@ -54,10 +54,10 @@ class Model_Mapper_CategoriesXref
 
     /**
      * @param $id
-     * @param Model_CategoriesXref $categoriesxref
-     * @return Model_CategoriesXref|null
+     * @param Catalog_Model_SubproductParams $subproductparams
+     * @return Catalog_Model_SubproductParams|null
      */
-    public function find($id, Model_CategoriesXref $categoriesxref)
+    public function find($id, Catalog_Model_SubproductParams $subproductparams)
     {
         $result = $this->getDbTable()->find($id);
         
@@ -66,7 +66,7 @@ class Model_Mapper_CategoriesXref
         }
         
         $row = $result->current();
-        $entry = $this->_setDbData($row, $categoriesxref);
+        $entry = $this->_setDbData($row, $subproductparams);
         
         return $entry;
     }
@@ -81,7 +81,7 @@ class Model_Mapper_CategoriesXref
         
         $entries   = array();
         foreach ($resultSet as $row) {
-        	$entry = new Model_CategoriesXref();
+        	$entry = new Catalog_Model_SubproductParams();
         	$entry = $this->_setDbData($row, $entry);
         	$entries[] = $entry;
         }
@@ -100,10 +100,10 @@ class Model_Mapper_CategoriesXref
     }
 
     /**
-     * @param Model_CategoriesXref $categoriesxref
+     * @param Catalog_Model_SubproductParams $subproductparams
      * @return array
      */
-    protected function _getDbData(Model_CategoriesXref $categoriesxref)
+    protected function _getDbData(Catalog_Model_SubproductParams $subproductparams)
     {
         $info = $this->getDbTable()->info();
         $properties = $info['cols'];
@@ -113,7 +113,7 @@ class Model_Mapper_CategoriesXref
         	$name = $this->_normaliseName($property);
         
         	if($property != $this->_getDbPrimary())
-        		$data[$property] = $categoriesxref->__get($name);
+        		$data[$property] = $subproductparams->__get($name);
         }
         
         return $data;
@@ -121,10 +121,10 @@ class Model_Mapper_CategoriesXref
 
     /**
      * @param Zend_Db_Table_Rowset $row
-     * @param Model_CategoriesXref $entry
-     * @return Model_CategoriesXref
+     * @param Catalog_Model_SubproductParams $entry
+     * @return Catalog_Model_SubproductParams
      */
-    protected function _setDbData($row, Model_CategoriesXref $entry)
+    public function _setDbData($row, Catalog_Model_SubproductParams $entry)
     {
         $info = $this->getDbTable()->info();
         $properties = $info['cols'];
