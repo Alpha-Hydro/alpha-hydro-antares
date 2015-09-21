@@ -191,7 +191,7 @@ abstract class Twitter_Bootstrap_Form extends Zend_Form
              * https://github.com/manticorp
              */
             if ($eachElement->isRequired()) {
-                $eachElement->setAttrib('required', '');
+                $eachElement->setAttrib('required', 'required');
             }
 
             /**

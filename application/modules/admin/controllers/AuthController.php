@@ -1,6 +1,6 @@
 <?php
 
-class Utils_AuthController extends Zend_Controller_Action
+class Admin_AuthController extends Zend_Controller_Action
 {
 
     public function init()
@@ -17,8 +17,8 @@ class Utils_AuthController extends Zend_Controller_Action
         }
 
         // создаём форму и передаём её во view
-        /*$form = new Utils_Form_Login();
-        $this->view->form = $form;*/
+        $form = new Utils_Form_Login();
+        $this->view->form = $form;
 
         // создаём форму и передаём её во view
         $form = new Utils_Form_Auth();
@@ -78,8 +78,4 @@ class Utils_AuthController extends Zend_Controller_Action
 
 
 }
-
-
-
-
 

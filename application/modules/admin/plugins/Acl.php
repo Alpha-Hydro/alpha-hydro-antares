@@ -17,8 +17,9 @@ class Plugin_Acl extends Zend_Controller_Plugin_Abstract {
 
         $module = $request->getModuleName();
 
-		if ($module == 'utils'){
+		if ($module == 'admin'){
 
+            // получаем имя controller
             $controller = $request->getControllerName();
 
             // получаем имя action
@@ -31,10 +32,7 @@ class Plugin_Acl extends Zend_Controller_Plugin_Abstract {
             // если в хранилище ничего нет, то значит мы имеем дело с гостем
             $role = !empty($identity->role) ? $identity->role : 'guest';
 
-    //		var_dump($controller);
-    //		var_dump($this->_acl->isAllowed($role, $controller));
-
-            // если пользователь не допущен до данного ресурса,
+            // если пользователь не допущен до данного ресурса (controller),
             // то отсылаем его на страницу авторизации
             if (!$this->_acl->isAllowed($role, $controller))
                 $request->setControllerName('auth')->setActionName('index');

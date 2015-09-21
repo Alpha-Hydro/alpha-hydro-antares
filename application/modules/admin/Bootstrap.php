@@ -1,33 +1,28 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: mvl
- * Date: 24.06.2015
- * Time: 11:49
+ * Date: 21.09.2015
+ * Time: 12:14
  */
-
-class Utils_Bootstrap extends Zend_Application_Module_Bootstrap
+class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
 {
-    protected function _initBootstrap()
-    {
-        /*$_conf = new Zend_Config_Ini(APPLICATION_PATH . "/modules/" . $this->getModuleName() . "/configs/module.ini", APPLICATION_ENV);
-        $this->_options = array_merge($this->_options, $_conf->toArray());*/
-    }
-
     protected function _initPlugins()
     {
         $this->bootstrap('frontController');
 
         $pluginsLoader = new Zend_Loader_PluginLoader();
         $pluginsLoader->addPrefixPath('Plugin', $this->getResourceLoader()->getBasePath().'/plugins');
-        $pluginsLoader->load("LayoutLoader");
         $pluginsLoader->load("Acl");
+        $pluginsLoader->addPrefixPath('Plugin', APPLICATION_PATH.'/plugins');
+        $pluginsLoader->load("LayoutLoader");
 
         if($pluginsLoader->isLoaded('LayoutLoader'))
             Zend_Controller_Front::getInstance()->registerPlugin(new Plugin_LayoutLoader());
     }
 
-    /*protected function _initAlc()
+    protected function _initAlc()
     {
         // Создаём объект Zend_Acl
         $acl = new Zend_Acl();
@@ -36,9 +31,7 @@ class Utils_Bootstrap extends Zend_Application_Module_Bootstrap
         //$acl->addResource(new Zend_Acl_Resource('error'));
         $acl->addResource(new Zend_Acl_Resource('auth'));
         $acl->addResource(new Zend_Acl_Resource('index'));
-        $acl->addResource(new Zend_Acl_Resource('models-generator'));
-        $acl->addResource(new Zend_Acl_Resource('slugify'));
-        $acl->addResource(new Zend_Acl_Resource('sefurl'));
+        $acl->addResource(new Zend_Acl_Resource('pages'));
 
         // далее переходим к созданию ролей, которых у нас 2:
         // гость (неавторизированный пользователь)
@@ -58,6 +51,5 @@ class Utils_Bootstrap extends Zend_Application_Module_Bootstrap
         // регистрируем плагин с названием Acl, в который передаём
         // на ACL и экземпляр Zend_Auth
         $fc->registerPlugin(new Plugin_Acl($acl, Zend_Auth::getInstance()));
-    }*/
-
+    }
 }
