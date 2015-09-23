@@ -2,11 +2,17 @@
 $this->title = "Редактирование страницы";
 ?>
 <div class="row">
-    <div class="col-md-12">
-        <?php
-        echo $this->form;
-        ?>
+    <div class="col-md-3">
+        <div class="affix">
+
+        </div>
+    </div>
+    <div class="col-md-9">
+        <ul class="nav nav-tabs nav-justified"  role="tablist">
+            <li role="presentation" class="active"><a href="#fieldset-basic" aria-controls="fieldset-basic" role="tab" data-toggle="tab">Основные</a></li>
+            <li role="presentation"><a href="#fieldset-seo" aria-controls="fieldset-seo" role="tab" data-toggle="tab">SEO</a></li>
+            <li role="presentation"><a href="#fieldset-additionally" aria-controls="fieldset-additionally" role="tab" data-toggle="tab">Дополнительно</a></li>
+        </ul>
+        <?=$this->form;?>
     </div>
 </div>
-<pre><?php var_dump($this->formData)?></pre>
-<?=$this->html?>

@@ -52,4 +52,13 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         // на ACL и экземпляр Zend_Auth
         $fc->registerPlugin(new Plugin_Acl($acl, Zend_Auth::getInstance()));
     }
+
+    public function _initRoute(){
+
+        $front = Zend_Controller_Front::getInstance();
+        $router = $front->getRouter();
+
+        $config = new Zend_Config_Ini(APPLICATION_PATH . "/modules/" . strtolower($this->getModuleName()) . '/configs/route.ini', 'production');
+        $router->addConfig($config,'routes');
+    }
 }
