@@ -11,6 +11,8 @@ class Default_Model_Pages
 
     protected $_description = null;
 
+    protected $_content_markdown = null;
+
     protected $_content_html = null;
 
     protected $_meta_title = null;
@@ -168,6 +170,28 @@ class Default_Model_Pages
     public function getDescription()
     {
         return $this->_description;
+    }
+
+    /**
+     * Set value ContentMarkdown
+     *
+     * @return $this 
+     * @param $content_markdown
+     */
+    public function setContentMarkdown($content_markdown)
+    {
+        $this->_content_markdown = $content_markdown;
+        return $this;
+    }
+
+    /**
+     * Get value ContentMarkdown
+     *
+     * @return mixed
+     */
+    public function getContentMarkdown()
+    {
+        return $this->_content_markdown;
     }
 
     /**

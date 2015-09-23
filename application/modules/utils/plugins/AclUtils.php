@@ -1,5 +1,5 @@
 <?php
-class Plugin_Acl extends Zend_Controller_Plugin_Abstract {
+class Plugin_AclUtils extends Zend_Controller_Plugin_Abstract {
 
 	private $_acl = null;
 	private $_auth = null;

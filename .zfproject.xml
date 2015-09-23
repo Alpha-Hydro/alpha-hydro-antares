@@ -180,6 +180,7 @@
             <controllerFile controllerName="Pages">
               <actionMethod actionName="index"/>
               <actionMethod actionName="edit"/>
+              <actionMethod actionName="add"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -206,6 +207,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Pages">
                 <viewScriptFile forActionName="edit"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Pages">
+                <viewScriptFile forActionName="add"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>

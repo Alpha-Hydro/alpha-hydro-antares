@@ -5,7 +5,7 @@ class Admin_Form_PageEdit extends Twitter_Bootstrap_Form_Horizontal
 
     public function init()
     {
-        $this->setIsArray(true);
+        //$this->setIsArray(true);
 
         $this->addElement('hidden', 'id', array());
 
@@ -16,8 +16,8 @@ class Admin_Form_PageEdit extends Twitter_Bootstrap_Form_Horizontal
         ));
 
         $this->addElement('text', 'title', array(
-            'label'         => 'Название страницы',
-            'placeholder'   => 'Название страницы',
+            'label'         => 'Заголовок страницы',
+            'placeholder'   => 'Заголовок страницы',
             'required'      => true,
         ));
 
@@ -27,16 +27,35 @@ class Admin_Form_PageEdit extends Twitter_Bootstrap_Form_Horizontal
             'rows'          => '8',
         ));
 
-        $this->addElement('textarea', 'content_html', array(
+        $this->addElement('textarea', 'content_markdown', array(
             'label'         => 'Код страницы',
             'placeholder'   => 'Код страницы',
         ));
+
+        $this->addElement('text', 'sorting', array(
+            'label'         => 'Сортировка',
+        ));
+
+        $this->addElement('checkbox', 'active', array(
+            'label'         => 'Активность',
+        ));
+
+        $this->addElement('checkbox', 'deleted', array(
+            'label'         => 'Cтраница удалена',
+        ));
+
+
 
         $this->addElement('button', 'submit', array(
             'label'         => 'Sing in',
             'type'          => 'submit',
             'buttonType'    => 'success',
+            'ignore' => true,
             //'escape'        => false
+        ));
+
+        $this->addElement('hash', 'csrf', array(
+            'ignore' => true,
         ));
     }
 

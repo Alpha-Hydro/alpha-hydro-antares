@@ -4,6 +4,7 @@ CREATE TABLE pages
          path VARCHAR(128) DEFAULT '' NOT NULL,
          title VARCHAR(255) DEFAULT '' NOT NULL,
          description TEXT,
+         content_markdown TEXT,
          content_html TEXT,
          meta_title VARCHAR(255),
          meta_description TEXT,

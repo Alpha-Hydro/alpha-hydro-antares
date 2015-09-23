@@ -19,19 +19,18 @@ class Admin_PagesController extends Zend_Controller_Action
     {
         $form = new Admin_Form_PageEdit();
         /*$form->setDefaults(array(
-            'id' => 10,
-            'title' => 'Страница',
-            'path' => 'home',
-            'description' => 'Описание страницы'
+            'sorting'   => 0,
+            'active'    => 1,
+            'deleted'   => 0,
         ));*/
 
 
         if ($this->getRequest()->isPost()){
             $formData = $this->getRequest()->getPost();
 
-            $markdown = $this->getRequest()->getPost('content_html');
-
+            $markdown = $formData['content_markdown'];
             $context_html = Markdown::defaultTransform($markdown);
+
             $this->view->html = $context_html;
 
             $form->setDefaults($formData);
@@ -41,8 +40,44 @@ class Admin_PagesController extends Zend_Controller_Action
         $this->view->form = $form;
     }
 
+    public function addAction()
+    {
+        $request = $this->getRequest();
+        $form = new Admin_Form_PageEdit();
+
+        $form->setDefaults(array(
+            'sorting'   => 0,
+            'active'    => 1,
+            'deleted'   => 0,
+        ));
+
+        if ($this->getRequest()->isPost()){
+            if ($form->isValid($request->getPost())) {
+
+                $page = new Default_Model_Pages($form->getValues());
+                $markdown = $request->getParam('content_markdown');
+                $context_html = Markdown::defaultTransform($markdown);
+                $page->setContentHtml($context_html);
+                $pageMapper = new Default_Model_Mapper_Pages();
+                $pageMapper->save($page);
+
+                $this->view->html = $context_html;
+                $this->view->value = $page->getPath();
+
+                //return $this->_helper->redirector('index');
+            }
+
+            $form->setDefaults($request->getPost());
+            $this->view->formData = $form->getValues();
+        }
+
+        $this->view->form = $form;
+    }
+
 
 }
+
+
 
 
 
