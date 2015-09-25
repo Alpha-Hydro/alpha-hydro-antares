@@ -221,10 +221,10 @@ class SectionsController extends Zend_Controller_Action {
 		$categories = $categoriesModel->getMedia ();
 		
 		if (isset ( $categories ["news"] )) {
-			$this->view->news = $categories ["news"]->findDependentRowset ( "Model_DbTable_Pages", NULL, $pagesModel->select ()->order ( "timestamp DESC" ) );
+			$this->view->news = $categories ["news"]->findDependentRowset ( "Model_DbTable_Pages", NULL, $pagesModel->select ()->order ( "id DESC" ) );
 		}
 		if (isset ( $categories ["stocks"] )) {
-			$this->view->stocks = $categories ["stocks"]->findDependentRowset ( "Model_DbTable_Pages", NULL, $pagesModel->select ()->order ( "timestamp DESC" )  );
+			$this->view->stocks = $categories ["stocks"]->findDependentRowset ( "Model_DbTable_Pages", NULL, $pagesModel->select ()->order ( "id DESC" )  );
 		}
 		
 		if (isset ( $categories ["posts"] )) {
@@ -265,6 +265,8 @@ class SectionsController extends Zend_Controller_Action {
 		
 		$this->view->post = $pagesModel->find ( $id )->current ();
 	}
+
+
 	public function editAction() {
 		if (! Zend_Auth::getInstance ()->hasIdentity ())
 			throw new Zend_Exception ( "You cant edit this item" );

@@ -22,7 +22,7 @@ $this->headScript ()->appendFile ( "/scripts/tabs.my.js" );
                 <div class="news item">
                     <?php if ( $item->thumb ) : ?>
                         <div class="thumb"><a href="<?=$this->url(array("action"=>"news", "id"=>$item->id))?>"><img src="<?=$item -> thumb ?>"
-						alt="<?=$item -> name ?>" /></a></div>
+						alt="<?=$this->escape($item->name)?>" /></a></div>
                     <?php endif; ?>
                     <div>
 						<h3>
