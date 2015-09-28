@@ -2,8 +2,8 @@
   position: relative;
 
   padding: {
-    top: 0;
-    bottom: 0;
+    top: 0 !important;
+    bottom: 0 !important;
     left: 6px;
     right: 6px;
   };
@@ -45,6 +45,13 @@
     &:hover{
       background: sprite($btn-sprite, btn-bg) transparent repeat-x;
     }
+    .active &{
+      @include btn-alpha-color($alpha-orange);
+    }
+  }
+  &.active{
+    background-image: none;
+    @include btn-alpha-color($alpha-orange);
   }
 
   &.inverse{

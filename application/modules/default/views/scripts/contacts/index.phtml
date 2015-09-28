@@ -1,7 +1,15 @@
-<div class="row">
-    <div class="col-md-3">
+<?php
+$this->title = $this->escape($this->page->title);
+$this->meta_title = $this->escape($this->page->metaTitle);
+$this->headTitle($this->meta_title);
+$this->meta_description = $this->escape($this->page->metaDescription);
+$this->meta_keywords = $this->escape($this->page->metaKeywords);
 
-    </div>
+$this->headScript()
+    ->appendFile('//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js');
+?>
+<div class="row">
+    <div class="col-md-3"></div>
     <div class="col-md-9">
         <div class="page-header">
             <h1><?= $this->title ?></h1>
@@ -9,6 +17,35 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-9"></div>
+    <div class="col-md-3">
+        <div class="contact-info crop-bottom-shadow">
+            <h3>ALPHA-HYDRO</h3>
+            <img src="/files/images/company-photo.png" alt="ALPHA-HYDRO">
+            <p class="address">г. Санкт-Петербург,  ул. Кржижановского, д.12/1</p>
+            <p class="phone">+ 7(812) <span class="text-size-large">44-949-44</span></p>
+            <p class="phone">+ 7(812) <span class="text-size-large">33-636-59</span></p>
+            <div class="phone">+ 7(800) <span class="text-size-large">700-27-80</span></div>
+            <p class="text-center"><small><em>Бесплатно по России</em></small></p>
+            <p class="mail"><a href="mailto:info@alpha-hydro.com"><i class="fa fa-envelope"></i> info@alpha-hydro.com</a></p>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <ul class="nav nav-pills contact" role="tablist">
+            <li role="presentation" class="pill-item active"><a href="#scheme" class="btn-alpha default" aria-controls="scheme" role="tab" data-toggle="tab">Схема проезда</a></li>
+            <li role="presentation" class="pill-item"><a href="#googleMap" class="btn-alpha default" aria-controls="googleMap" role="tab" data-toggle="tab">На карте</a></li>
+            <li role="presentation" class="pill-item"><a href="#" class="btn-alpha default">Печать (pdf)</a></li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="scheme"><img src="/files/images/map-access.png" alt="Схема проезда"></div>
+            <div role="tabpanel" class="tab-pane" id="googleMap">
+                <div id="map_canvas" style="width:600px; height:450px"></div>
+                <?php
+                $this->headScript()
+                    ->prependFile("http://maps.google.com/maps/api/js?sensor=false")
+                    ->appendFile("/js/map.js");
+                ?>
+            </div>
+        </div>
+    </div>
 </div>

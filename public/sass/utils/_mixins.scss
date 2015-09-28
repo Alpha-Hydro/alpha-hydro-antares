@@ -13,6 +13,7 @@
 }
 
 @mixin btn-alpha-color($background-color:#000, $color:#fff){
+  background-image: none;
   background-color: $background-color;
   color: $color;
   margin:{
@@ -20,19 +21,24 @@
     left: 6px;
   }
   padding: {
-    right: 8px;
-    left: 8px;
+    right: 16px;
+    left: 16px;
   };
-  &::before{
+  &::before, &::after{
+    background-image: none;
     border-top: 10px solid transparent;
-    border-right: 6px solid $background-color;
     border-bottom: 10px solid transparent;
+    width: 0;
+  }
+  &::before{
+    border-right: 6px solid $background-color;
     left: -6px;
   }
   &::after{
-    border-top: 10px solid transparent;
     border-left: 6px solid $background-color;
-    border-bottom: 10px solid transparent;
     right: -6px;
+  }
+  &:hover,&:focus,&:active{
+    background-color: $background-color;
   }
 }
