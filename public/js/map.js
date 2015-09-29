@@ -1,13 +1,14 @@
 map_init = false;
 
 function mapInit(){
+    console.log(map_init);
 	if ( map_init ) return false;
 	
 	var myLatlng = new google.maps.LatLng(59.930348, 30.484946);
 	var myOptions = {
 		zoom : 16,
 		center : myLatlng,
-		mapTypeId : google.maps.MapTypeId.ROADMAP,
+		mapTypeId : google.maps.MapTypeId.ROADMAP
 	};
 	
 	var map = new google.maps.Map(document.getElementById("map_canvas"),

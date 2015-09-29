@@ -6,7 +6,11 @@ $this->meta_description = $this->escape($this->page->metaDescription);
 $this->meta_keywords = $this->escape($this->page->metaKeywords);
 
 $this->headScript()
-    ->appendFile('//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js');
+    ->appendFile('//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js')
+    ->appendFile("/js/googleMap.js")
+    //->appendFile("https://maps.googleapis.com/maps/api/js?key=AIzaSyC3hSTbROR3iIiugMkzjewtl9YGZvuV9s0&signed_in=true&libraries=places&callback=initMap");
+    ->appendFile("https://maps.googleapis.com/maps/api/js?key=AIzaSyBBimbxN47sblFkQwnLb5LyiFk69vPJJ9A&signed_in=true&libraries=places&callback=initMap");
+    //->appendFile("maps.google.com/maps/api/js?sensor=false&callback=initMap");
 ?>
 <div class="row">
     <div class="col-md-3"></div>
@@ -33,18 +37,13 @@ $this->headScript()
         <ul class="nav nav-pills contact" role="tablist">
             <li role="presentation" class="pill-item active"><a href="#scheme" class="btn-alpha default" aria-controls="scheme" role="tab" data-toggle="tab">Схема проезда</a></li>
             <li role="presentation" class="pill-item"><a href="#googleMap" class="btn-alpha default" aria-controls="googleMap" role="tab" data-toggle="tab">На карте</a></li>
-            <li role="presentation" class="pill-item"><a href="#" class="btn-alpha default">Печать (pdf)</a></li>
+            <li role="presentation" class="pill-item"><a href="/files/pdf/alpha_hydro_map.pdf" class="btn-alpha default" target="_blank">Печать (pdf)</a></li>
         </ul>
         <!-- Tab panes -->
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="scheme"><img src="/files/images/map-access.png" alt="Схема проезда"></div>
             <div role="tabpanel" class="tab-pane" id="googleMap">
                 <div id="map_canvas" style="width:600px; height:450px"></div>
-                <?php
-                $this->headScript()
-                    ->prependFile("http://maps.google.com/maps/api/js?sensor=false")
-                    ->appendFile("/js/map.js");
-                ?>
             </div>
         </div>
     </div>
