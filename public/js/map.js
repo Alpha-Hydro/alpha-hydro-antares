@@ -1,30 +1,31 @@
-map_init = false;
+function initMap() {
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 17,
+        center: {lat: 59.9306, lng: 30.484946}
+    });
 
-function mapInit(){
-    console.log(map_init);
-	if ( map_init ) return false;
-	
-	var myLatlng = new google.maps.LatLng(59.930348, 30.484946);
-	var myOptions = {
-		zoom : 16,
-		center : myLatlng,
-		mapTypeId : google.maps.MapTypeId.ROADMAP
-	};
-	
-	var map = new google.maps.Map(document.getElementById("map_canvas"),
-			myOptions);
-	var contentString = '<div style="color: #3e3e3e;"><b>«Альфа-Гидро»</b><br />г. Санкт-Петербург, ул. Кржижановского, д.12/1 </div>';
-	var infowindow = new google.maps.InfoWindow({
-		content : contentString
-	});
-	var marker = new google.maps.Marker({
-		position : myLatlng,
-		map : map,
-		title : 'Офис "Альфа-Гидро"'
-	});
-	google.maps.event.addListener(marker, 'click', function() {
-		infowindow.open(map, marker);
-	});
-	
-	map_init = true;
+    var marker = new google.maps.Marker({
+        map: map,
+        // Define the place with a location, and a query string.
+        place: {
+            location: {lat: 59.930348, lng: 30.484946},
+            query: 'Alpha-Hydro, Санкт-Петербург, Россия'
+
+        },
+        // Attributions help users find your site again.
+        attribution: {
+            source: 'Альфа Гидро. Гидравлика',
+            webUrl: 'http://www.alpha-hydro.com'
+        }
+    });
+
+    // Construct a new InfoWindow.
+    var infoWindow = new google.maps.InfoWindow({
+        content: '<h3>Альфа-Гидро</h3> Санкт-Петербург, ул. Кржижановского, д.12/1'
+    });
+
+    // Opens the InfoWindow when marker is clicked.
+    marker.addListener('click', function() {
+        infoWindow.open(map, marker);
+    });
 }
