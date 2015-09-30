@@ -8,28 +8,6 @@
 </div>
 <div class="row">
     <div class="col-md-9 col-md-push-3">
-        <?php
-            $this->form('ask');
-        ?>
-        <form action="/forum/ask" method="post" id="forum">
-            <h3>Написать нам:</h3>
-            <div class="inline">
-                <label for="author">Имя:</label>
-                <input type="text" name="author" id="author" required="required"/>
-                <label for="email">Е-mail:</label>
-                <input type="text" name="email" id="email" required="required"/>
-                <label for="category">В форум:</label>
-                <select name="category" id="category" style="width: 168px; resize: none;">
-                    <option>Вопросы и запросы</option>
-                    <option>Отзывы и предложения</option>
-                    <option>Книга жалоб</option>
-                </select>
-            </div>
-            <label for="form_content" style="width: auto">Ваш вопрос:</label>
-            <textarea name="content" id="form_content"></textarea>
-            <div class="help">* Все поля обязательны для заполнения</div>
-            <input type="submit" value="Отправить" />
-        </form>
         <?=$this->layout()->content?>
     </div>
     <div class="col-md-3 col-md-pull-9">

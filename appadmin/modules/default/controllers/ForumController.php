@@ -88,37 +88,42 @@ class ForumController extends Zend_Controller_Action {
 		$this -> view -> topics = $topics;
 		$this -> view -> pages = $pages;
 	}
+
 	public function askAction() {
-		$form = Model_Static_Loader::loadForm ( 'forum' );
+		$form = Model_Static_Loader::loadForm('forum');
 		$forumModel = new Model_DbTable_Forum ();
-		if ($this->getRequest ()->isPost () && $form->isValid ( $_POST )) {
-			$question = $forumModel->createRow ( $form->getValues () );
-			if(preg_match( '/^\w+[\w-\.]*\@\w+((-\w+)|(\w*))\.[a-z]{2,3}$/', $question->email) && (
-                                        $question->category == 'Вопросы и запросы' || $question->category == 'Отзывы и предложения' || $question->category == 'Книга жалоб')){
-                            $question -> content = str_replace("\n", "<br/>\n", $question -> content);
-                            $question->save ();
-			
-                            $users = new Zend_Config_Xml ( APPLICATION_PATH . "/config/admins.xml" );
-                            $users = $users->toArray ();
-                            $mailer = new Zend_Mail ("UTF-8");
-                            $mailer->setFrom (  $question->email,  $question->author );
-                            $mailer->setSubject ( "форум" );
-                            // wdaemon 2013-02-08  $mailer->setBodyHtml ( "Новый вопрос: " . $question->content, "utf8", "UTF-8");
-                            $mailer->setBodyHtml ( "Новый вопрос: " . $question->content);
-                            $mailer -> addTo ("info@alpha-hydro.com", "ALPHA-HYDRO info");
-                            $mailer -> addBcc("fra@alpha-hydro.com", "Fedonov Roman A.");
-                            $mailer -> addBcc("daemon007@mail.ru", "Быков Дмитрий Владимирович");			
+		if ($this->getRequest()->isPost () && $form->isValid ( $_POST )){
 
-                            foreach ( $users as $user ) if ( $user["role"] == "administrator" )
-                                    $mailer->addTo ( $user ['email'], $user ['name'] );
+			$question = $forumModel->createRow($form->getValues());
 
-                            $mailer->send ();
-                            $this->view->error = 0;
-                        }else{
-                            $this->view->error = 1;
-                        }    
+			if(preg_match( '/^\w+[\w-\.]*\@\w+((-\w+)|(\w*))\.[a-z]{2,3}$/', $question->email)
+                && ($question->category == 'Вопросы и запросы'
+                    || $question->category == 'Отзывы и предложения'
+                    || $question->category == 'Книга жалоб')){
 
-                       
+                $question -> content = str_replace("\n", "<br/>\n", $question -> content);
+                $question->save ();
+
+                $users = new Zend_Config_Xml ( APPLICATION_PATH . "/config/admins.xml" );
+                $users = $users->toArray ();
+                $mailer = new Zend_Mail("UTF-8");
+                $mailer->setFrom (  $question->email,  $question->author );
+                $mailer->setSubject ( "форум" );
+                // wdaemon 2013-02-08  $mailer->setBodyHtml ( "Новый вопрос: " . $question->content, "utf8", "UTF-8");
+                $mailer->setBodyHtml ( "Новый вопрос: " . $question->content);
+                $mailer -> addTo ("info@alpha-hydro.com", "ALPHA-HYDRO info");
+                $mailer -> addBcc("fra@alpha-hydro.com", "Fedonov Roman A.");
+                $mailer -> addBcc("daemon007@mail.ru", "Быков Дмитрий Владимирович");
+
+                foreach($users as $user){
+                    if($user["role"] == "administrator")
+                        $mailer->addTo($user['email'], $user['name'] );
+                }
+                $mailer->send ();
+                $this->view->error = 0;
+            }else{
+                $this->view->error = 1;
+            }
 		} else {
 			$this->_redirect ( $this->view->url ( array (
 					"action" => "index" 

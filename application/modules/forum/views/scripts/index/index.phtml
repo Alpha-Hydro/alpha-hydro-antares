@@ -1,4 +1,17 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Index</b> and script/action name <b>index</b></p>
+<div class="form-ask">
+    <h3>Написать нам:</h3>
+    <form action="/forum/index/ask" method="post" id="forum">
+        <div class="form-inline clearfix">
+            <div class="pull-left">
+                <?=$this->form_ask->autor?>
+            </div>
+            <?=$this->form_ask->email?>
+            <div class="pull-right">
+                <?=$this->form_ask->category?>
+            </div>
+        </div>
+        <?=$this->form_ask->content?>
+        <p class="help-block text-danger">* Все поля обязательны для заполнения</p>
+        <input type="submit" value="Отправить" class="forum-send"/>
+    </form>
 </div>

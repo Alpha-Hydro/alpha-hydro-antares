@@ -58,3 +58,11 @@
    @include btn-alpha-color($alpha-gray-darker);
   }
 }
+.send-form-right{
+  background: sprite($btn-sprite, forum-send) transparent no-repeat;
+  width: 142px;
+  height: 45px;
+  color: transparent;
+  border: medium none;
+  cursor: pointer;
+}
