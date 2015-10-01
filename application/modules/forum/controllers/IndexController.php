@@ -56,7 +56,7 @@ class Forum_IndexController extends Zend_Controller_Action
                 $mailToUser->setFrom("admin@alpha-hydro.com", "ALPHA-HYDRO admin");
                 $mailToUser->setSubject('Cообщение на форуме ALPHA-HYDRO');
 
-                $textHtml = '<h2>Вы разместили сообщение на форуме сайта http://alpha-hydro.com/forum</h2>';
+                $textHtml = '<h3>Вы разместили сообщение на форуме сайта <a href="http://alpha-hydro.com/forum">ALPHA-HYDRO</a></h3>';
                 $textHtml .= '<p>Категория: '.$newPost->getCategory().'</p>';
                 $textHtml .= '<p>Сообщение: '.$newPost->getContent().'</p>';
                 $textHtml .= '<p>Ваше сообщение обязательно будет рассмотрено и в ближайшее время наши менеджеры Вам на него ответят.</p>';
@@ -73,8 +73,8 @@ class Forum_IndexController extends Zend_Controller_Action
             }
             else{
                 $messages = $form_ask->getMessages();
-                foreach ($messages as $messageId => $message) {
-                    foreach ($message as $value) {
+                foreach ($messages as $messageId => $messageValue) {
+                    foreach ($messageValue as $value) {
                         $message .= $value."\n\r";
                     }
                 }
