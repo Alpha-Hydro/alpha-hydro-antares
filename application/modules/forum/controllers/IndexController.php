@@ -17,7 +17,12 @@ class Forum_IndexController extends Zend_Controller_Action
         $this->view->form_ask = $form_ask;
 
         $forumMapper = new Forum_Model_Mapper_Forum();
-        $forumItemsAll = $forumMapper->fetchAll();
+        $select = $forumMapper->getDbTable()->select();
+        $select->where('parent_id is null')
+            ->order('timestamp DESC')
+            ->limit(10,0);
+
+        $forumItemsAll = $forumMapper->fetchAll($select);
 
         $this->view->title = 'Форум';
 
@@ -36,7 +41,7 @@ class Forum_IndexController extends Zend_Controller_Action
 
                 $newPost = new Forum_Model_Forum($form_ask->getValues());
                 $forumMapper = new Forum_Model_Mapper_Forum();
-                /*$forumMapper->save($newPost);*/
+                $forumMapper->save($newPost);
 
                 //Письмо администратору
                 $mailToAdmin = new Zend_Mail("UTF-8");
