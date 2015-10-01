@@ -38,21 +38,34 @@ class Forum_IndexController extends Zend_Controller_Action
                 $forumMapper = new Forum_Model_Mapper_Forum();
                 /*$forumMapper->save($newPost);*/
 
-                $mail = new Zend_Mail("UTF-8");
-                $mail->setFrom($newPost->getEmail(), $newPost->getAuthor());
-                $mail->setSubject('Форум');
+                //Письмо администратору
+                $mailToAdmin = new Zend_Mail("UTF-8");
+                $mailToAdmin->setFrom($newPost->getEmail(), $newPost->getAuthor());
+                $mailToAdmin->setSubject('Новое сообщение с форума');
 
-                $textHtml = '<h1>Новое сообщение с форума</h1>';
+                $textHtml = '<h1>$newPost->getCategory()</h1>';
+                $textHtml .= '<p>Сообщение: '.$newPost->getContent().'</p>';
+                $textHtml .= '<p>Автор: '.$newPost->getAuthor().' ('.$newPost->getEmail().')</p>';
+
+                $mailToAdmin->setBodyHtml($textHtml);
+                $mailToAdmin->addTo("admin@alpha-hydro.com", "ALPHA-HYDRO admin");
+                $mailToAdmin->send();
+
+                //Письмо пользователю
+                $mailToUser = new Zend_Mail("UTF-8");
+                $mailToUser->setFrom("admin@alpha-hydro.com", "ALPHA-HYDRO admin");
+                $mailToUser->setSubject('Cообщение на форуме ALPHA-HYDRO');
+
+                $textHtml = '<h2>Вы разместили сообщение на форуме сайта <a href="alpha-hydro.com/forum/">ALPHA-HYDRO</a></h2>';
                 $textHtml .= '<p>Категория: '.$newPost->getCategory().'</p>';
                 $textHtml .= '<p>Сообщение: '.$newPost->getContent().'</p>';
-                $textHtml .= '<p>Отправитель: '.$newPost->getAuthor().' ('.$newPost->getEmail().')</p>';
+                $textHtml .= '<p>Ваше сообщение обязательно будет рассмотрено и в ближайшее время наши менеджеры на него Вам ответят.</p>';
+                $textHtml .= '<p>Спасибо за проявленный интерес к нашей компании.</p>';
 
-                $mail->setBodyHtml($textHtml);
+                $mailToUser->setBodyHtml($textHtml);
+                $mailToUser->addTo($newPost->getEmail(), $newPost->getAuthor());
+                $mailToUser->send();
 
-                $mail->addTo("admin@alpha-hydro.com", "ALPHA-HYDRO admin");
-                $mail->addTo($newPost->getEmail(), $newPost->getAuthor());
-
-                $mail->send();
 
                 $error = false;
                 $message .= 'Ваше сообщение успешно отправлено.' . "<br/>";
