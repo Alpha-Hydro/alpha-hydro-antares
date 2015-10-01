@@ -43,7 +43,7 @@ class Forum_IndexController extends Zend_Controller_Action
                 $mailToAdmin->setFrom($newPost->getEmail(), $newPost->getAuthor());
                 $mailToAdmin->setSubject('Новое сообщение с форума');
 
-                $textHtml = '<h1>$newPost->getCategory()</h1>';
+                $textHtml = '<h1>'.$newPost->getCategory().'</h1>';
                 $textHtml .= '<p>Сообщение: '.$newPost->getContent().'</p>';
                 $textHtml .= '<p>Автор: '.$newPost->getAuthor().' ('.$newPost->getEmail().')</p>';
 
@@ -56,10 +56,10 @@ class Forum_IndexController extends Zend_Controller_Action
                 $mailToUser->setFrom("admin@alpha-hydro.com", "ALPHA-HYDRO admin");
                 $mailToUser->setSubject('Cообщение на форуме ALPHA-HYDRO');
 
-                $textHtml = '<h2>Вы разместили сообщение на форуме сайта <a href="alpha-hydro.com/forum/">ALPHA-HYDRO</a></h2>';
+                $textHtml = '<h2>Вы разместили сообщение на форуме сайта <a href="alpha-hydro.com">ALPHA-HYDRO</a></h2>';
                 $textHtml .= '<p>Категория: '.$newPost->getCategory().'</p>';
                 $textHtml .= '<p>Сообщение: '.$newPost->getContent().'</p>';
-                $textHtml .= '<p>Ваше сообщение обязательно будет рассмотрено и в ближайшее время наши менеджеры на него Вам ответят.</p>';
+                $textHtml .= '<p>Ваше сообщение обязательно будет рассмотрено и в ближайшее время наши менеджеры Вам на него ответят.</p>';
                 $textHtml .= '<p>Спасибо за проявленный интерес к нашей компании.</p>';
 
                 $mailToUser->setBodyHtml($textHtml);
