@@ -5,7 +5,7 @@ class Forum_Form_ForumAsk extends Twitter_Bootstrap_Form_Vertical
 
     public function init()
     {
-        $this->addElement('text', 'autor', array(
+        $this->addElement('text', 'author', array(
             'label'         => 'Имя',
             'placeholder'   => 'Ваше имя',
             'required'      => true,
@@ -17,16 +17,16 @@ class Forum_Form_ForumAsk extends Twitter_Bootstrap_Form_Vertical
             'required'      => true,
         ));
 
-        $this->getElement('email')->addValidator('email', true);
+        $this->getElement('email')->addValidator('EmailAddress', true);
 
         $this->addElement('select', 'category',
             array(
                 'label'         => 'В форум',
                 'required'      => true,
                 'multiOptions'  => array(
-                    'Вопросы и запросы',
-                    'Отзывы и предложения',
-                    'Книга жалоб',
+                    'Вопросы и запросы'     =>'Вопросы и запросы',
+                    'Отзывы и предложения'  =>'Отзывы и предложения',
+                    'Книга жалоб'           =>'Книга жалоб',
                 ),
             )
         );
@@ -39,6 +39,13 @@ class Forum_Form_ForumAsk extends Twitter_Bootstrap_Form_Vertical
                 'rows'  => 5,
             )
         );
+
+        $elements = $this->getElements();
+        foreach ($elements as $element){
+            if ($element->isRequired()) {
+                $element->setAttrib('required', 'required');
+            }
+        }
 
     }
 
