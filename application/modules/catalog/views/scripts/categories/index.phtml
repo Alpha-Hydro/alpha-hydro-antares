@@ -9,6 +9,7 @@ $this->sidebar_headers = true;
     <div class="col-md-3 text-center ">
         <a class="categories-list-item z-depth-1" href="<?=$this->url(
             array(
+                'module' => 'catalog',
                 'controller' => 'categories',
                 'action' => 'index',
                 'fullPath'=>$entry->fullPath,
