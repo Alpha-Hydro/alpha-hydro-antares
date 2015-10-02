@@ -24,9 +24,21 @@
         return modalResponseForm.modal('show');
       }, 300);
     });
-    return $(document).on('click', '#resetForm', function() {
+    $(document).on('click', '#resetForm', function() {
       return $('#forum_ask').trigger('reset');
     });
+    $(document).on('click', '#toFormAsk', function(event) {
+      var target, target_offset, url;
+      event.preventDefault();
+      url = $(this).attr('href');
+      target_offset = $(url).offset();
+      target = target_offset.top;
+      $('html, body').animate({
+        scrollTop: target
+      }, 500);
+      return console.log(target);
+    });
+    return false;
   })(jQuery);
 
 }).call(this);

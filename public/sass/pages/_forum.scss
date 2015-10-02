@@ -41,3 +41,48 @@
     @extend .send-form-right;
   }
 }
+.topic{
+  margin-bottom: 35px;
+  .topic-question,
+  .topic-reply{
+    position: relative;
+    border: 1px solid $alpha-gray-light;
+    padding: {
+      top: 10px;
+      bottom: 20px;
+      right: 20px;
+      left: 110px;
+    };
+    &:before{
+      position: absolute;
+      content: '';
+      display: block;
+      height: 30px;
+      width: 100px;
+      top: 10px;
+      left: -17px;
+      background: $info-block no-repeat;
+    }
+    .topic-title{
+      border-bottom: 1px dotted $alpha-gray-light;
+    }
+    .topic-content{
+      margin: {
+        top: 10px;
+      };
+    }
+  }
+  .topic-question{
+    @include gradient-vertical(lighten($alpha-gray-lighter, 10%), $alpha-gray-lighter);
+    &:before{
+      background-position: sprite-position($info-block, issue);
+    }
+  }
+  .topic-reply{
+    border-top: none;
+    margin-left: 30px;
+    &:before{
+      background-position: sprite-position($info-block, reply);
+    }
+  }
+}

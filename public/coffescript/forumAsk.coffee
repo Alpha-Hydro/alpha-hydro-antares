@@ -23,4 +23,17 @@
   $(document).on 'click', '#resetForm', ()->
     $('#forum_ask').trigger 'reset'
 
+  $(document).on 'click', '#toFormAsk', (event)->
+    event.preventDefault()
+    url = $(@).attr('href')
+    target_offset = $(url).offset()
+    target = target_offset.top
+    $('html, body').animate
+      scrollTop: target
+      1000
+
+    console.log(target)
+
+  false
+
 ) jQuery

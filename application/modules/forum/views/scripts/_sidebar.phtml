@@ -1,0 +1,48 @@
+<nav>
+    <ul class="list-group sidebar crop-bottom-shadow">
+        <li class="list-group-item sidebar-item <?=($this->category != 'question')?'':'sidebar-item-current';?>">
+            <?php if($this->category != 'question'):?>
+                <a href="<?=$this->url(array(
+                    'module' => 'forum',
+                    'controller' => 'index',
+                    'action' => 'index',
+                    'category' => 'question'
+                ), 'forumCategory', true, false)?>/">Вопросы и запросы</a>
+                <?php else: ?>
+            Вопросы и запросы
+            <?php endif; ?>
+        </li>
+        <li class="list-group-item sidebar-item <?=($this->category != 'review')?'':'sidebar-item-current';?>">
+            <?php if($this->category != 'review'):?>
+                <a href="<?=$this->url(array(
+                    'module' => 'forum',
+                    'controller' => 'index',
+                    'action' => 'index',
+                    'category' => 'review'
+                ), 'forumCategory', true, false)?>/">Отзывы и предложения</a>
+            <?php else: ?>
+                Отзывы и предложения
+            <?php endif; ?>
+        </li>
+        <li class="list-group-item sidebar-item <?=($this->category != 'gravamen')?'':'sidebar-item-current';?>">
+            <?php if($this->category != 'gravamen'):?>
+                <a href="<?=$this->url(array(
+                    'module' => 'forum',
+                    'controller' => 'index',
+                    'action' => 'index',
+                    'category' => 'gravamen'
+                ), 'forumCategory', true, false)?>/">Книга жалоб</a>
+            <?php else: ?>
+                Книга жалоб
+            <?php endif; ?>
+        </li>
+        <li class="list-group-item sidebar-item">
+            <a href="/forum/">Все</a>
+        </li>
+    </ul>
+    <ul class="list-group sidebar crop-bottom-shadow">
+        <li class="list-group-item sidebar-heading">
+            <a href="#formAsk" id="toFormAsk">Написать нам</a>
+        </li>
+    </ul>
+</nav>

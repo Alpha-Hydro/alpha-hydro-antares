@@ -13,20 +13,68 @@ class Forum_IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
+        $this->view->title = 'Форум';
+
+        $request = $this->getRequest();
+
         $form_ask = new Forum_Form_ForumAsk();
         $this->view->form_ask = $form_ask;
 
         $forumMapper = new Forum_Model_Mapper_Forum();
         $select = $forumMapper->getDbTable()->select();
         $select->where('parent_id is null')
-            ->order('timestamp DESC')
-            ->limit(10,0);
+            ->order('timestamp DESC');
 
-        $forumItemsAll = $forumMapper->fetchAll($select);
+        $category = array(
+            'question' => 'Вопросы и запросы',
+            'review' => 'Отзывы и предложения',
+            'gravamen' => 'Книга жалоб',
+        );
 
-        $this->view->title = 'Форум';
+        if($request->getParam('category')){
+            $select->where('category = ?', $category[$request->getParam('category')]);
+            $this->view->category = $request->getParam('category');
+            $this->view->title = $category[$request->getParam('category')];
+        }
 
-        $this->view->forumItemsAll = $forumItemsAll;
+
+        $forumItems = $forumMapper->fetchAll($select);
+
+        if(!empty($forumItems)){
+            $forums = array();
+            foreach ($forumItems as $forumItem) {
+                $topic = array();
+
+                $select->reset()
+                    ->where('parent_id = ?', $forumItem->getId())
+                    ->order('timestamp ASC');
+
+                $reply = $forumMapper->fetchAll($select);
+
+                if(0 !== count($reply)){
+                    $topic['question'] = $forumItem;
+                    $topic['reply'] = $reply;
+                }
+
+                if(!empty($topic))
+                    $forums[] = $topic;
+            }
+
+            $forumPages = array_chunk($forums, 10);
+
+            $currentPage = 0;
+
+            if($request->getParam('page') && $request->getParam('page')>0)
+                $currentPage = $request->getParam('page')-1;
+
+            if($request->getParam('page') && $request->getParam('page')>count($forumPages))
+                $currentPage = count($forumPages)-1;
+
+            $this->view->countPage = count($forumPages);
+            $this->view->currentPage = $currentPage+1;
+            $this->view->forumItems = $forumPages[$currentPage];
+
+        }
     }
 
     public function askAction()

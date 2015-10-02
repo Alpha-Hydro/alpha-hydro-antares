@@ -1,34 +1,30 @@
 <?php
-    $this->headScript()
-        ->appendFile('//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js')
-        ->appendFile('/js/forumAsk.min.js');
+$this->headTitle($this->title);
+$this->meta_title = $this->title;
+$this->sidebar_headers = false;
 ?>
-<div class="form-ask">
-    <h3>Написать нам:</h3>
-    <form action="/forum/index/ask" method="post" id="forum_ask">
-        <div class="form-inline clearfix">
-            <div class="pull-left">
-                <?=$this->form_ask->author?>
+<?php if($this->forumItems):?>
+    <?php foreach ($this->forumItems as $forumItems):?>
+    <div class="topic">
+        <div class="topic-question">
+            <div class="topic-title">
+                <strong><?=$forumItems['question']->getAuthor();?></strong>
+                <small><em> - <?=date("d.m.Y", strtotime($forumItems['question']->getTimestamp()));?> г.</em></small>
+                <small class="pull-right"><?=$forumItems['question']->getCategory();?></small>
             </div>
-            <?=$this->form_ask->email?>
-            <div class="pull-right">
-                <?=$this->form_ask->category?>
+            <div class="topic-content"><?=$forumItems['question']->getContent()?></div>
+        </div>
+        <?php foreach ($forumItems['reply'] as $itemsReply):?>
+            <div class="topic-reply">
+                <div class="topic-title">
+                    <strong><?=$itemsReply->getAuthor();?></strong>
+                    <small><em> - <?=date("d.m.Y", strtotime($itemsReply->getTimestamp()));?> г.</em></small>
+                </div>
+                <div class="topic-content"><?=$itemsReply->getContent()?></div>
             </div>
-        </div>
-        <?=$this->form_ask->content?>
-        <p class="help-block text-danger">* Все поля обязательны для заполнения</p>
-        <input type="submit" value="Отправить" class="forum-send" id="forum_send_ask"/>
-    </form>
-</div>
-<!-- Modal -->
-<div class="modal fade" id="modalResponseForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content" id="ajaxResponseForm">
-
-        </div>
+        <?php endforeach; ?>
     </div>
-</div>
-
-<pre>
-    <?php var_dump($this->forumItemsAll)?>
-</pre>
+    <?php endforeach; ?>
+    <?= $this->render('_paginator.phtml')?>
+<?php endif;?>
+<?= $this->render('_form_ask.phtml')?>
