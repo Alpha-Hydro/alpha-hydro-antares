@@ -104,6 +104,9 @@
   .forum-reply{
     padding-top: 10px;
     max-height: 120px;
+    .description{
+      margin-bottom: 10px;
+    }
   }
   [class*=-autor]{
     min-height: 30px;

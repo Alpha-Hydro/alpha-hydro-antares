@@ -1,0 +1,25 @@
+<div class="forum">
+    <div class="home-i-block gradient-darken z-depth-1 forum-issue">
+        <div class="block-head">
+            <h2 class="pull-left inverse">Форум</h2>
+            <a href="/forum/#formAsk" class="btn btn-alpha inverse pull-right">Задать вопрос</a>
+        </div>
+        <div class="issue-autor">
+            <?=$this->forum_question->getAuthor()?>
+            <span class="date">- <?=date("d.m.Y", strtotime($this->forum_question->getTimestamp()));?> г.</span>
+        </div>
+        <div class="description">
+            <?=$this->strCrop($this->forum_question->getContent());?>
+        </div>
+    </div>
+    <div class="home-i-block gradient z-depth-1 forum-reply">
+        <div class="reply-autor">
+            <?=$this->forum_reply->getAuthor()?>
+            <span class="date">- <?=date("d.m.Y", strtotime($this->forum_reply->getTimestamp()));?> г.</span>
+        </div>
+        <div class="description">
+            <?=$this->strCrop($this->forum_reply->getContent());?>
+        </div>
+        <div class="more"><a href="/forum/" class="pull-right">Читать полностью >>></a></div>
+    </div>
+</div>

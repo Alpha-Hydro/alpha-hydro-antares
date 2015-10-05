@@ -11,7 +11,7 @@
             <div class="section">
                 <h2 class="caption">Каталог продукции</h2>
                 <a href="/catalog">
-                    <img src="/images/sections/catalog560x325.png" alt="" class="img-responsive">
+                    <img src="/images/sections/catalog560x325.png" alt="Каталог продукции" class="img-responsive">
                 </a>
             </div>
         </div>
@@ -19,7 +19,7 @@
             <div class="section">
                 <h2 class="caption">Наше производство</h2>
                 <a href="/production">
-                    <img src="/images/sections/production560x325.png" alt="" class="img-responsive">
+                    <img src="/images/sections/production560x325.png" alt="Наше производство" class="img-responsive">
                 </a>
             </div>
         </div>
@@ -29,7 +29,7 @@
             <div class="section">
                 <h2 class="caption">Масла</h2>
                 <a href="/oil">
-                    <img src="/images/sections/oils560x325.png" alt="" class="img-responsive">
+                    <img src="/images/sections/oils560x325.png" alt="Масла" class="img-responsive">
                 </a>
             </div>
         </div>
@@ -37,7 +37,7 @@
             <div class="section">
                 <h2 class="caption">Трубопроводная арматура</h2>
                 <a href="/pipeline">
-                    <img src="/images/sections/pipeline-access560x325.png" alt="" class="img-responsive">
+                    <img src="/images/sections/pipeline-access560x325.png" alt="Трубопроводная арматура" class="img-responsive">
                 </a>
             </div>
         </div>
@@ -86,30 +86,6 @@
         </div>
     </div>
     <div class="col-md-4">
-        <div class="forum">
-            <div class="home-i-block gradient-darken z-depth-1 forum-issue">
-                <div class="block-head">
-                    <h2 class="pull-left inverse">Форум</h2>
-                    <a href="" class="btn btn-alpha inverse pull-right">Задать вопрос</a>
-                </div>
-                <div class="issue-autor">
-                    Адель Вакилевич
-                    <span class="date">- 08.05.2014 г.</span>
-                </div>
-                <div class="description">
-                    Здравствуйте! Возможно ли использование Ваших изделий в авиации? Вся ли продукция РФ?
-                </div>
-            </div>
-            <div class="home-i-block gradient z-depth-1 forum-reply">
-                <div class="reply-autor">
-                    Виктор Ш.
-                    <span class="date">- 08.05.2014 г.</span>
-                </div>
-                <div class="description">
-                    Добрый день, Адель Вакилевич! Наша гидравлика используется во всех отраслях промышленности, в том числе и в авиации. Мы...
-                </div>
-                <div class="more"><a href="" class="pull-right">Читать полностью >>></a></div>
-            </div>
-        </div>
+        <?=$this->render('index/_block_forum.phtml');?>
     </div>
 </div>
