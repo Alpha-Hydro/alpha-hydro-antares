@@ -31,10 +31,11 @@ class Forum_IndexController extends Zend_Controller_Action
             'gravamen' => 'Книга жалоб',
         );
 
-        if($request->getParam('category')){
-            $select->where('category = ?', $category[$request->getParam('category')]);
-            $this->view->category = $request->getParam('category');
-            $this->view->title = $category[$request->getParam('category')];
+        if($request->getParam('section')){
+            var_dump($request->getParam('section'));
+            $select->where('category = ?', $category[$request->getParam('section')]);
+            $this->view->category = $request->getParam('section');
+            $this->view->title = $category[$request->getParam('section')];
         }
 
 

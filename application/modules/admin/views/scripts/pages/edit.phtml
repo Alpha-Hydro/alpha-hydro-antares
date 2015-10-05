@@ -5,9 +5,18 @@ $this->title = "Редактирование страницы";
     <div class="col-md-2">
         <nav class="affix">
             <ul class="nav">
-                <li><a href="<?=$this->url(array('module'=>'admin', 'controller' => 'pages', 'action' => 'index'), 'adminList', false, true)?>">Список</a></li>
-                <li><a href="<?=$this->url(array('module'=>'admin', 'controller' => 'pages', 'action' => 'add'), 'adminAdd', false, true)?>">Новая страница</a></li>
-                <li><a href="<?=$this->url(array('module'=>'admin', 'controller' => 'pages', 'action' => 'delete'), 'adminEdit')?>">Удалить</a></li>
+                <li><a href="<?=$this->url(
+                        array('module'=>'admin', 'controller' => 'pages'),
+                        false,true
+                    )?>">Список</a></li>
+                <li><a href="<?=$this->url(
+                        array('module'=>'admin', 'controller' => 'pages', 'action' => 'add'),
+                        false,true
+                    )?>">Новая страница</a></li>
+                <li><a href="<?=$this->url(
+                        array('module'=>'admin', 'controller' => 'pages', 'action' => 'delete'),
+                        'adminEdit'
+                    )?>">Удалить</a></li>
             </ul>
         </nav>
     </div>

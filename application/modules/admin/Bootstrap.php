@@ -58,9 +58,19 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         $front = Zend_Controller_Front::getInstance();
         $router = $front->getRouter();
 
-        if($this->getModuleName() == 'Admin'){
-            $config = new Zend_Config_Ini(APPLICATION_PATH . "/modules/" . strtolower($this->getModuleName()) . '/configs/route.ini', 'production');
-            $router->addConfig($config,'routes');
-        }
+        $route = new Zend_Controller_Router_Route(
+            'admin/:controller/:action/:id',
+            array(
+                'module' => 'admin',
+                'action' => 'index',
+                'id' => null,
+            ),
+            array(
+                'controller' => '\w+',
+                'id' => '\d+',
+            )
+        );
+        $router->addRoute('adminEdit', $route);
+
     }
 }

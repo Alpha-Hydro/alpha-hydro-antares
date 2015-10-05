@@ -18,11 +18,16 @@ class Forum_Bootstrap extends Zend_Application_Module_Bootstrap
         $front = Zend_Controller_Front::getInstance();
         $router = $front->getRouter();
 
-        //var_dump($this->getModuleName());
+        $route = new Zend_Controller_Router_Route(
+            'forum/:section',
+            array(
+                'module' => 'forum',
+                'controller' => 'index',
+                'action'     => 'index'
+            )
+        );
 
-        if($this->getModuleName() == 'Forum'){
-            $config = new Zend_Config_Ini(APPLICATION_PATH . "/modules/" . strtolower($this->getModuleName()) . '/configs/route.ini', 'production');
-            $router->addConfig($config,'routes');
-        }
+        $router->addRoute('forumCategory', $route);
+
     }
 }

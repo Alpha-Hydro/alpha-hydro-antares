@@ -32,7 +32,7 @@
                         <li class="<?/*=($controller == 'sefurl')?'active':'';*/?>"><a href="<?/*= $this->url(array('controller'=>'sefurl', 'action'=>'index'));*/?>">SEF URLs</a></li>-->
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="<?= $this->url(array('module'=>'default','controller'=>'index', 'action'=>'index'));?>">На сайт</a></li>
+                        <li><a href="/">На сайт</a></li>
                         <?php if (Zend_Auth::getInstance()->hasIdentity()): ?>
                             <li><a href="<?= $this->url(array('controller'=>'auth', 'action'=>'logout'));?>">Выход</a></li>
                         <?php endif; ?>
