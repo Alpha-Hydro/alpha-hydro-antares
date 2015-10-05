@@ -35,7 +35,7 @@ class Forum_IndexController extends Zend_Controller_Action
             var_dump($request->getParam('section'));
             $select->where('category = ?', $category[$request->getParam('section')]);
             $this->view->category = $request->getParam('section');
-            $this->view->title = $category[$request->getParam('section')];
+            $this->view->title .= '. '.$category[$request->getParam('section')].'.';
         }
 
 
