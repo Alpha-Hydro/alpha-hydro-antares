@@ -1,5 +1,7 @@
 <?php
 
+include_once 'Vlmeh\Filter\Slugify.php';
+
 class Utils_SefurlController extends Zend_Controller_Action
 {
 
