@@ -145,3 +145,71 @@
         <td></td>
     </tr>
 </table>
+
+<h1 class="page-header">Media</h1>
+<table class="table">
+    <caption>Path</caption>
+    <tr>
+        <th class="col-md-2">Пустые</th>
+        <td class="col-md-6" id="free-media-path">
+            <?= $this->partial('component/_sefurl_list.phtml', array(
+                'entity' => $this->freeMediaPath,
+                'id' => 'free-media-path',
+                'text' => 'Пустых значений нет',
+            ))?>
+        </td>
+        <td><a href="<?= $this->url()?>" class="btn btn-default">Обновить</a></td>
+        <td>
+            <?php if(count($this->freeMediaPath) != 0): ?>
+                <button type="button" data-src="/utils/sefurl/generate-media-path" data-context="free-media-path" class="btn btn-primary ajax">Генерировать</button>
+            <?php else:?>
+                <button type="button" class="btn btn-default" disabled="disabled">Генерировать</button>
+            <?php endif;?>
+        </td>
+    </tr>
+    <tr>
+        <th class="col-md-2">Дубликаты</th>
+        <td class="col-md-6" id="dublicate-media-path">
+            <?= $this->partial('component/_sefurl_list.phtml', array(
+                'entity' => $this->dubleMediaPath,
+                'id' => 'dublicate-media-path',
+                'text' => 'Дубликатов нет',
+            ))?>
+        </td>
+        <td><a href="<?= $this->url()?>" class="btn btn-default">Обновить</a></td>
+        <td></td>
+    </tr>
+</table>
+<table class="table">
+    <caption>Full Path</caption>
+    <tr>
+        <th class="col-md-2">Пустые</th>
+        <td class="col-md-6" id="free-media-fullPath">
+            <?= $this->partial('component/_sefurl_list.phtml', array(
+                'entity' => $this->freeMediaFullPath,
+                'id' => 'free-media-fullPath',
+                'text' => 'Пустых значений нет',
+            ))?>
+        </td>
+        <td><a href="<?= $this->url()?>" class="btn btn-default">Обновить</a></td>
+        <td>
+            <?php if(!empty($this->freeMediaFullPath)): ?>
+                <button type="button" data-src="/utils/sefurl/generate-media-full-path" data-context="free-media-fullPath" class="btn btn-primary ajax">Генерировать</button>
+            <?php else:?>
+                <button type="button" class="btn btn-default" disabled="disabled">Генерировать</button>
+            <?php endif;?>
+        </td>
+    </tr>
+    <tr>
+        <th class="col-md-2">Дубликаты</th>
+        <td class="col-md-6" id="dublicate-media-fullPath">
+            <?= $this->partial('component/_sefurl_list.phtml', array(
+                'entity' => $this->dubleMediaFullPath,
+                'id' => 'dublicate-media-fullPath',
+                'text' => 'Дубликатов нет',
+            ))?>
+        </td>
+        <td><a href="<?= $this->url()?>" class="btn btn-default">Обновить</a></td>
+        <td></td>
+    </tr>
+</table>

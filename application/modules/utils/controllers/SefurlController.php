@@ -12,6 +12,8 @@ class Utils_SefurlController extends Zend_Controller_Action
             ->addActionContext('generate-categories-full-path', 'html')
             ->addActionContext('generate-products-path', 'html')
             ->addActionContext('generate-products-full-path', 'html')
+            ->addActionContext('generate-media-path', 'html')
+            ->addActionContext('generate-media-full-path', 'html')
             ->initContext('html');
     }
 
@@ -39,6 +41,16 @@ class Utils_SefurlController extends Zend_Controller_Action
         //дубликаты Full Path
         $this->view->dubleProductsFullPath = $products->fetchDublicateRowColumn('full_path');
 
+        //Media
+        $mediaMapper = new Media_Model_Mapper_Media();
+        //пустые значения Path
+        $this->view->freeMediaPath = $mediaMapper->fetchFreeRowColumn('path');
+        //пустые значения Full Path
+        $this->view->freeMediaFullPath = $mediaMapper->fetchFreeRowColumn('full_path');
+        //дубликаты Path
+        $this->view->dubleMediaPath = $mediaMapper->fetchDublicateRowColumn('path');
+        //дубликаты Full Path
+        $this->view->dubleMediaFullPath = $mediaMapper->fetchDublicateRowColumn('full_path');
     }
 
     /**
@@ -130,6 +142,45 @@ class Utils_SefurlController extends Zend_Controller_Action
         }
 
         return $this->view->entries = $products->fetchFreeRowColumn('full_path');
+    }
+
+    public function generateMediaPathAction()
+    {
+        $filterSlugify = new Vlmeh_Filter_Slugify();
+        $mediaMapper = new Media_Model_Mapper_Media();
+        $freePathMedia = $mediaMapper->fetchFreeRowColumn('path');
+
+        foreach ($freePathMedia as $media) {
+            $filterSlugify->setSeparator('_');
+            $mediaPath = $filterSlugify->filter($media->name);
+            $media->path = $mediaPath;
+
+            if(!$this->_validateColumn($mediaPath, 'products', 'path')){
+                $filterSlugify->setSeparator('-');
+                $mediaPath = $filterSlugify->filter($media->name);
+                $media->path = $mediaPath;
+            }
+
+            $mediaMapper = new Media_Model_Mapper_Media();
+            $mediaMapper->save($media);
+        }
+
+        return $this->view->entries = $mediaMapper->fetchFreeRowColumn('path');
+
+    }
+
+    public function generateMediaFullPathAction()
+    {
+        $mediaMapper = new Media_Model_Mapper_Media();
+        $freePathProducts = $mediaMapper->fetchFreeRowColumn('full_path');
+
+        foreach ($freePathProducts as $media) {
+            $media->fullPath = $mediaMapper->generateFullPath($media->id);
+            $mapper = new Media_Model_Mapper_Media();
+            $mapper->save($media);
+        }
+
+        return $this->view->entries = $mediaMapper->fetchFreeRowColumn('full_path');
     }
 
     /**

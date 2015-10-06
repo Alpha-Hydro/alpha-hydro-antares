@@ -3,6 +3,7 @@ ALTER TABLE pages_categories RENAME TO media_categories;
 
 # Media
 ALTER TABLE media ADD path VARCHAR(255) NOT NULL DEFAULT '';
+ALTER TABLE media ADD full_path VARCHAR(255) NOT NULL DEFAULT '';
 ALTER TABLE media ADD content_markdown TEXT;
 ALTER TABLE media ADD meta_title VARCHAR(255);
 ALTER TABLE media ADD meta_description TEXT;

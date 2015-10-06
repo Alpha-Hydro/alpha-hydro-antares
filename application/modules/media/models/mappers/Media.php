@@ -1,6 +1,6 @@
 <?php
 
-class Catalog_Model_Mapper_Categories
+class Media_Model_Mapper_Media
 {
 
     protected $_dbTable = null;
@@ -24,25 +24,25 @@ class Catalog_Model_Mapper_Categories
     }
 
     /**
-     * @return Model_DbTable_Categories
+     * @return Media_Model_DbTable_Media
      */
     public function getDbTable()
     {
         if (null === $this->_dbTable)
-        	$this->setDbTable('Catalog_Model_DbTable_Categories');
+        	$this->setDbTable('Media_Model_DbTable_Media');
         
         return $this->_dbTable;
     }
 
     /**
-     * @param Catalog_Model_Categories $categories
+     * @param Media_Model_Media $media
      * @return $this
      */
-    public function save(Catalog_Model_Categories $categories)
+    public function save(Media_Model_Media $media)
     {
-        $data = $this->_getDbData($categories);
+        $data = $this->_getDbData($media);
         
-        if (null == ($id = $categories->getId())) {
+        if (null == ($id = $media->getId())) {
         	unset($data[$this->_getDbPrimary()]);
         	$this->getDbTable()->insert($data);
         } else {
@@ -54,10 +54,10 @@ class Catalog_Model_Mapper_Categories
 
     /**
      * @param $id
-     * @param Catalog_Model_Categories $categories
-     * @return Catalog_Model_Categories|null
+     * @param Media_Model_Media $media
+     * @return Media_Model_Media|null
      */
-    public function find($id, Catalog_Model_Categories $categories)
+    public function find($id, Media_Model_Media $media)
     {
         $result = $this->getDbTable()->find($id);
         
@@ -66,7 +66,7 @@ class Catalog_Model_Mapper_Categories
         }
         
         $row = $result->current();
-        $entry = $this->_setDbData($row, $categories);
+        $entry = $this->_setDbData($row, $media);
         
         return $entry;
     }
@@ -81,7 +81,7 @@ class Catalog_Model_Mapper_Categories
         
         $entries   = array();
         foreach ($resultSet as $row) {
-        	$entry = new Catalog_Model_Categories();
+        	$entry = new Media_Model_Media();
         	$entry = $this->_setDbData($row, $entry);
         	$entries[] = $entry;
         }
@@ -100,10 +100,10 @@ class Catalog_Model_Mapper_Categories
     }
 
     /**
-     * @param Catalog_Model_Categories $categories
+     * @param Media_Model_Media $media
      * @return array
      */
-    protected function _getDbData(Catalog_Model_Categories $categories)
+    protected function _getDbData(Media_Model_Media $media)
     {
         $info = $this->getDbTable()->info();
         $properties = $info['cols'];
@@ -113,7 +113,7 @@ class Catalog_Model_Mapper_Categories
         	$name = $this->_normaliseName($property);
         
         	if($property != $this->_getDbPrimary())
-        		$data[$property] = $categories->__get($name);
+        		$data[$property] = $media->__get($name);
         }
         
         return $data;
@@ -121,10 +121,10 @@ class Catalog_Model_Mapper_Categories
 
     /**
      * @param Zend_Db_Table_Rowset $row
-     * @param Catalog_Model_Categories $entry
-     * @return Catalog_Model_Categories
+     * @param Media_Model_Media $entry
+     * @return Media_Model_Media
      */
-    protected function _setDbData($row, Catalog_Model_Categories $entry)
+    protected function _setDbData($row, Media_Model_Media $entry)
     {
         $info = $this->getDbTable()->info();
         $properties = $info['cols'];
@@ -185,107 +185,28 @@ class Catalog_Model_Mapper_Categories
 
     /**
      * @param $id
-     * @return string
+     * @return array|string
      */
     public function generateFullPath($id)
     {
-        $table = $this->getDbTable();
+        $empty = $this->getDbTable()->find($id)->current();
 
-        $result = array();
-        do{
-            $category = $table->find($id);
-            if(0 == count($category)){
-                return null;
-            }
-            $category = $category->current();
+        $category = $empty->findParentRow('Media_Model_DbTable_MediaCategories','CategoriesRel');
+        if(is_null($category)){
+            $result = $empty->path;
+        }
+        else{
+            $result = array();
+            $result[] = $empty->path;
             $result[] = $category->path;
-            $id = $category->parent_id;
-        }
-        while($id != 0);
 
-        if(!empty($result)){
-            $result = array_reverse($result);
-        }
-
-        return trim(implode('/',$result));
-    }
-
-    /**
-     * @param $id
-     * @return array|null
-     * @throws Zend_Db_Table_Exception
-     */
-    public function fetchTreeParentCategories($id)
-    {
-        $table = $this->getDbTable();
-
-        $result = array();
-        do{
-            $category = $table->find($id);
-            if(0 == count($category)){
-                return null;
+            if(!empty($result)){
+                $result = array_reverse($result);
             }
-            $category = $category->current();
-            $result[] = $category;
-            $id = $category->parent_id;
+            $result = trim(implode('/',$result));
         }
-        while($id != 0);
 
         return $result;
-    }
-
-    /**
-     * @param $value
-     * @param Catalog_Model_Categories $categories
-     * @return Catalog_Model_Categories|null
-     */
-    public function findByFulPath($value, Catalog_Model_Categories $categories)
-    {
-        $table = $this->getDbTable();
-
-        $select = $table->select()
-            ->where("full_path = ?", $value);
-
-        $result = $table->fetchAll($select);
-
-        if (0 == count($result)) {
-            return null;
-        }
-
-        $row = $result->current();
-        $entry = $this->_setDbData($row, $categories);
-
-        return $entry;
-    }
-
-    /**
-     * @param $id
-     * @param null|Zend_Db_Table_Select $select
-     * @return array|null
-     * @throws Zend_Db_Table_Exception
-     * @throws Zend_Db_Table_Row_Exception
-     */
-    public function fetchProductsRel($id, Zend_Db_Table_Select $select = null)
-    {
-        $result = $this->getDbTable()->find($id);
-        if (0 == count($result)) {
-            return null;
-        }
-        $category = $result->current();
-
-        $resultSet = $category->findManyToManyRowset("Catalog_Model_DbTable_Products", "Catalog_Model_DbTable_CategoriesXref",
-            null, null, $select);
-
-        $entries = array();
-        $products = new Catalog_Model_Mapper_Products();
-        foreach ($resultSet as $row) {
-            $entry = new Catalog_Model_Products();
-            $entry = $products->_setDbData($row, $entry);
-            $entries[] = $entry;
-        }
-
-        return $entries;
-
     }
 
 }

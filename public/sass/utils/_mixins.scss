@@ -42,3 +42,11 @@
     background-color: $background-color;
   }
 }
+
+@mixin hover-shadow($z-depth: 1){
+  @include transition(all .2s ease-in-out);
+  &:hover{
+    text-decoration: none;
+    @extend .z-depth-#{$z-depth};
+  }
+}

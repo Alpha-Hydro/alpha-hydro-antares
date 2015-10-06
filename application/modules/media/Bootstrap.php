@@ -13,12 +13,21 @@ class Media_Bootstrap extends Zend_Application_Module_Bootstrap
 
     }
 
-    /*public function _initRoute(){
+    public function _initRoute(){
 
         $front = Zend_Controller_Front::getInstance();
         $router = $front->getRouter();
 
-        $config = new Zend_Config_Ini(APPLICATION_PATH . "/modules/" . strtolower($this->getModuleName()) . '/configs/route.ini', 'production');
-        $router->addConfig($config,'routes');
-    }*/
+        $route = new Zend_Controller_Router_Route(
+            'media/:media_path',
+            array(
+                'module' => 'media',
+                'controller' => 'index',
+                'action'     => 'index'
+            )
+        );
+
+        $router->addRoute('mediaCategory', $route);
+
+    }
 }
