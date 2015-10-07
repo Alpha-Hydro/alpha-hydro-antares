@@ -287,8 +287,13 @@
             <layoutScriptsDirectory enabled="false"/>
           </layoutsDirectory>
           <modelsDirectory>
-            <dbTableDirectory enabled="false"/>
-            <modelMapperDirectory enabled="false"/>
+            <dbTableDirectory>
+              <dbTableFile dbTableName="Oil"/>
+            </dbTableDirectory>
+            <modelMapperDirectory>
+              <modelMapperFile modelName="Oil"/>
+            </modelMapperDirectory>
+            <modelColFile modelName="Oil"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
