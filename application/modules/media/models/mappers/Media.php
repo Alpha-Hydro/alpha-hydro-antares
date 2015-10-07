@@ -209,5 +209,27 @@ class Media_Model_Mapper_Media
         return $result;
     }
 
+    /**
+     * @param $fullPath
+     * @param Media_Model_Media $media
+     * @return Media_Model_Media|null
+     */
+    public function findByFullPath($fullPath, Media_Model_Media $media)
+    {
+        $table = $this->getDbTable();
+        $select = $table->select()
+            ->where('full_path = ?', $fullPath);
+
+        $result = $table->fetchAll($select);
+
+        if(0 == count($result))
+            return null;
+
+        $row = $result->current();
+        $entry = $this->_setDbData($row, $media);
+
+        return $entry;
+    }
+
 }
 

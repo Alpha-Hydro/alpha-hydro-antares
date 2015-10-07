@@ -148,6 +148,11 @@ class Media_Model_Mapper_MediaCategories
         return $normaliseName;
     }
 
+    /**
+     * @param $path
+     * @param Media_Model_MediaCategories $categories
+     * @return Media_Model_MediaCategories|null
+     */
     public function findByPath($path, Media_Model_MediaCategories $categories)
     {
         $table = $this->getDbTable();

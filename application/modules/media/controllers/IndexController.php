@@ -7,6 +7,8 @@ class Media_IndexController extends Zend_Controller_Action
 
     protected $_count_item_on_page = null;
 
+    protected $_categories = array();
+
     public function init()
     {
         $this->_categories_default_id = 2;
@@ -21,18 +23,22 @@ class Media_IndexController extends Zend_Controller_Action
             ->where('id IN(?)', array(2, 3, 4))
             ->order('sorting ASC');
         $mediaCategories = $mediaCategoryMapper->fetchAll($select);
-        $this->view->categories = $mediaCategories;
+        $this->setCategories($mediaCategories);
+
+        $this->view->categories = $this->getCategories();
     }
 
     public function indexAction()
     {
+        //var_dump($this->getAllParams());
+
         $this->view->title = 'Пресса';
         $mediaCategoryMapper = new Media_Model_Mapper_MediaCategories();
 
         $request = $this->getRequest();
-        if($request->getParam('media_path')){
+        if($request->getParam('media_path_category')){
             $mediaCategory = $mediaCategoryMapper
-                ->findByPath($request->getParam('media_path'), new Media_Model_MediaCategories());
+                ->findByPath($request->getParam('media_path_category'), new Media_Model_MediaCategories());
             $this->setCategoriesDefaultId($mediaCategory->getId());
         }
 
@@ -72,7 +78,7 @@ class Media_IndexController extends Zend_Controller_Action
 
 
             if (isset($mediaCategory))
-                $this->view->currentCategory = $mediaCategory->getId();
+                $this->view->currentCategory = $mediaCategory;
 
             $this->view->title = $mediaCategory->getName();
             $this->view->mediaItems = $mediaItems;
@@ -80,9 +86,37 @@ class Media_IndexController extends Zend_Controller_Action
 
     }
 
+    public function viewAction()
+    {
+        $request = $this->getRequest();
+
+        $mediaPathCategory = $request->getParam('media_path_category');
+        $mediaCategoryMapper = new Media_Model_Mapper_MediaCategories();
+        $currentCategory = $mediaCategoryMapper->findByPath($mediaPathCategory, new Media_Model_MediaCategories());
+
+        if(is_null($currentCategory))
+            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+
+        $this->view->currentCategory = $currentCategory;
+
+        $mediaPathItem = $request->getParam('media_path_item');
+        $mediaMapper = new Media_Model_Mapper_Media();
+        $fullPath = $mediaPathCategory.'/'.$mediaPathItem;
+        $mediaItem = $mediaMapper->findByFullPath($fullPath, new Media_Model_Media());
+
+        if(is_null($mediaItem))
+            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+        $this->view->mediaItem = $mediaItem;
+
+        //var_dump($mediaItem);
+    }
+
     /**
      * @param mixed $categories_default_id
      * @return Media_IndexController
+     *
      *
      */
     public function setCategoriesDefaultId($categories_default_id)
@@ -94,6 +128,7 @@ class Media_IndexController extends Zend_Controller_Action
     /**
      * @return mixed
      *
+     *
      */
     public function getCategoriesDefaultId()
     {
@@ -103,19 +138,36 @@ class Media_IndexController extends Zend_Controller_Action
     /**
      * @return mixed
      *
+     *
      */
     public function getCountItemOnPage()
     {
         return $this->_count_item_on_page;
     }
 
-    public function viewAction()
+    /**
+     * @param array $categories
+     * @return Media_IndexController
+     *
+     */
+    public function setCategories($categories)
     {
-        // action body
+        $this->_categories = $categories;
+        return $this;
     }
 
+    /**
+     * @return array
+     *
+     */
+    public function getCategories()
+    {
+        return $this->_categories;
+    }
 
 }
+
+
 
 
 

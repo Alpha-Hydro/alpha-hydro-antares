@@ -8,7 +8,26 @@
 </div>
 <div class="row">
     <div class="col-md-9 col-md-push-3">
-        <?=$this->layout()->content?>
+        <?php if($this->breadcrumbs):?>
+            <div class="row">
+                <div class="col-md-12">
+                    <?= $this->action(
+                        "index",
+                        "breadcrumbs",
+                        "media",
+                        array(
+                            'media_category' => $this->currentCategory,
+                            'media_item' => (!$this->mediaItem)
+                                ? null
+                                :$this->mediaItem,
+                        )
+                    );?>
+                </div>
+            </div>
+        <?php endif; ?>
+        <div class="row">
+            <?=$this->layout()->content?>
+        </div>
     </div>
     <div class="col-md-3 col-md-pull-9">
         <?=$this->render('_sidebar.phtml')?>
