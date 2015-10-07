@@ -6,7 +6,8 @@ $this->sidebar_headers = true;
 ?>
 
 <div class="container-fluid product-list">
-    <?php foreach ($this->entries as $entry): ?>
+    <?php if($this->entries): ?>
+        <?php foreach ($this->entries as $entry): ?>
         <div class="row product-item">
             <div class="col-md-3">
                 <div class="thumbnail product-images">
@@ -48,4 +49,5 @@ $this->sidebar_headers = true;
             </div>
         </div>
     <?php endforeach; ?>
+    <?php endif; ?>
 </div>
