@@ -8,9 +8,25 @@
 </div>
 <div class="row">
     <div class="col-md-9 col-md-push-3">
-
+        <?php if($this->breadcrumbs):?>
+            <div class="row">
+                <div class="col-md-12">
+                    <?= $this->action(
+                        "index",
+                        "breadcrumbs",
+                        "oil",
+                        array(
+                            'page_item' => $this->pageItem,
+                        )
+                    );?>
+                </div>
+            </div>
+        <?php endif; ?>
+        <div class="row">
+            <?=$this->layout()->content?>
+        </div>
     </div>
     <div class="col-md-3 col-md-pull-9">
-
+        <?=$this->partial('components/_sidebar_contact_info.phtml')?>
     </div>
 </div>

@@ -12,7 +12,7 @@ $this->breadcrumbs = true;
                     <div class="media-left col-md-3">
                         <div class="thumbnail col-md-10 hover-shadow">
                             <a href="<?=$this->url(array(
-                                'module' => 'forum',
+                                'module' => 'media',
                                 'controller' => 'index',
                                 'action' => 'view',
                                 'media_path_category' => $this->escape($this->currentCategory->getPath()),
@@ -26,7 +26,7 @@ $this->breadcrumbs = true;
                 <div class="media-body">
                     <h4 class="media-heading">
                         <a href="<?=$this->url(array(
-                            'module' => 'forum',
+                            'module' => 'media',
                             'controller' => 'index',
                             'action' => 'view',
                             'media_path_category' => $this->escape($this->currentCategory->getPath()),
@@ -39,6 +39,6 @@ $this->breadcrumbs = true;
                 </div>
             </div>
         <?php endforeach;?>
-        <?= $this->render('_paginator.phtml')?>
+        <?= $this->render('components/_paginator.phtml')?>
     <?php endif;?>
 </div>

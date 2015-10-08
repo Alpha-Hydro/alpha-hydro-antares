@@ -11,7 +11,7 @@ class Oil_Model_Oil
 
     protected $_path = null;
 
-    protected $_descroption = null;
+    protected $_description = null;
 
     protected $_content_html = null;
 
@@ -208,11 +208,11 @@ class Oil_Model_Oil
      * Set value Descroption
      *
      * @return $this 
-     * @param $descroption
+     * @param $description
      */
-    public function setDescroption($descroption)
+    public function setDescription($description)
     {
-        $this->_descroption = $descroption;
+        $this->_description = $description;
         return $this;
     }
 
@@ -221,9 +221,9 @@ class Oil_Model_Oil
      *
      * @return mixed
      */
-    public function getDescroption()
+    public function getDescription()
     {
-        return $this->_descroption;
+        return $this->_description;
     }
 
     /**
