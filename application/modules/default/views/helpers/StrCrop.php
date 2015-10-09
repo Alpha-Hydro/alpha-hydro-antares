@@ -5,12 +5,12 @@ class Zend_View_Helper_StrCrop extends Zend_View_Helper_Abstract {
 
 		$string = strip_tags($string);
 		
-		if (strlen($string) > $len)
+		if (strlen($string) > $len){
             $string = substr($string, 0, $len);
-
-        $string = rtrim($string, "!,.-");
-        $string = substr($string, 0, strrpos($string, ' '));
-        $string .= "… ";
+            $string = rtrim($string, "!,.-");
+            $string = substr($string, 0, strrpos($string, ' '));
+            $string .= "… ";
+        }
 
         return $string;
 	}

@@ -1,0 +1,24 @@
+<div class="home-i-block gradient z-depth-1">
+    <div class="block-head">
+        <h2 class="pull-left">Новости</h2>
+        <a href="/media/news/" class="btn btn-alpha default pull-right">Все новости</a>
+    </div>
+    <div class="block-body">
+        <div class="media">
+            <?php if($this->newsItem):?>
+                <h4 class="media-heading">
+                    <a href="/media/<?=$this->newsItem->getFullPath()?>/" class="title"><?=$this->newsItem->getName()?></a>
+                </h4>
+                <div class="media-left">
+                    <img class="media-object" src="<?=$this->newsItem->getThumb()?>" alt="...">
+                </div>
+                <div class="media-body">
+                    <p class="description"><?=$this->strCrop($this->newsItem->getSContent(), 300)?></p>
+                </div>
+            <?php endif;?>
+        </div>
+    </div>
+    <div class="block-footer">
+        <a href="/media/action/" class="btn btn-link icon-action">Акции >>></a>
+    </div>
+</div>

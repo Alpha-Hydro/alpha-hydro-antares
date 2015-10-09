@@ -33,6 +33,33 @@ class IndexController extends Zend_Controller_Action
             }
         }
 
+        $mediaMapper = new Media_Model_Mapper_Media();
+        $select = $mediaMapper->getDbTable()->select();
+
+        //News
+        $select
+            ->where('deleted != ?', 1)
+            ->where('active != ?', 0)
+            ->where('category_id = ?', 2)
+            ->order('timestamp DESC')
+            ->limit(1,0);
+        $newsItem = $mediaMapper->fetchAll($select);
+
+        if(!empty($newsItem))
+            $this->view->newsItem = array_shift($newsItem);
+
+        //article
+        $select->reset()
+            ->where('deleted != ?', 1)
+            ->where('active != ?', 0)
+            ->where('category_id = ?', 4)
+            ->order('timestamp DESC')
+            ->limit(1,0);
+        $articleItem = $mediaMapper->fetchAll($select);
+
+        if(!empty($articleItem))
+            $this->view->articleItem = array_shift($articleItem);
+
         $this->view->page = $page;
     }
 

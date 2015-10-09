@@ -1,0 +1,11 @@
+<?php
+    $image = '/images/sections/oils560x325.png';
+    $image_alt = 'ALPHA-HYDRO. Масла';
+    if($this->pageItem && $this->pageItem->getImage() !== ''){
+        $image = $this->pageItem->getImage();
+        $image_alt = $this->pageItem->getTitle();
+    }
+?>
+<div class="sidebar-image crop-bottom-shadow thumbnail">
+    <img src="<?=$image?>" alt="<?=$image_alt?>">
+</div>
