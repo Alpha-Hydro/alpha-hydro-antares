@@ -1,0 +1,13 @@
+<?php
+    $this->title = $this->escape($this->page->getTitle());
+    $this->headTitle($this->title);
+    $this->meta_title = $this->title;
+    $this->sidebar_headers = false;
+    $this->breadcrumbs = false;
+?>
+<div class="page-content">
+    <?php if(!is_null($this->page->getImage())):?>
+        <img src="<?= $this->page->getImage() ?>" alt="<?=$this->page->getTitle()?>" class="pull-right"/>
+    <?php endif;?>
+    <?=$this->page->getContentHtml();?>
+</div>

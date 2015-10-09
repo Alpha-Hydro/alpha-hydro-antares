@@ -15,3 +15,6 @@ CREATE TABLE pages
          );
 ALTER TABLE pages ADD CONSTRAINT unique_id UNIQUE (id);
 ALTER TABLE pages ADD CONSTRAINT unique_path UNIQUE (path);
+
+ALTER TABLE pages ADD image VARCHAR(255) NULL;
+ALTER TABLE pages ADD date_create TIMESTAMP NOT NULL;

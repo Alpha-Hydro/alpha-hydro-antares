@@ -10,7 +10,10 @@ class Manufacture_IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $this->view->title = 'Наше производство';
+        $pageMapper = new Default_Model_Mapper_Pages();
+        $page = $pageMapper->find(4, new Default_Model_Pages());
+
+        $this->view->page = $page;
     }
 
 

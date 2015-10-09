@@ -11,6 +11,8 @@ class Default_Model_Pages
 
     protected $_description = null;
 
+    protected $_content_markdown = null;
+
     protected $_content_html = null;
 
     protected $_meta_title = null;
@@ -24,12 +26,6 @@ class Default_Model_Pages
     protected $_active = null;
 
     protected $_deleted = null;
-
-    protected $_content_markdown = null;
-
-    protected $_image = null;
-
-    protected $_date_create = null;
 
     /**
      * @param $options
@@ -86,32 +82,6 @@ class Default_Model_Pages
         }
         
         return $this;
-    }
-
-    /**
-     * @return array|null
-     */
-    public function getOptions()
-    {
-        $class = new ReflectionClass($this);
-        $properties = $class->getProperties(ReflectionProperty::IS_PROTECTED);
-        
-        if(0 === count($properties))
-        	return null;
-        
-        $data = array();
-        foreach ($properties as $property) {
-        	$name = preg_split("~_~", $property->getName());
-        	$normaliseName = implode(array_map("ucwords", $name));
-        	$option = lcfirst($normaliseName);
-        
-        	if ($property->isProtected()) {
-        		$property->setAccessible(TRUE);
-        		$data[$option] = $property->getValue($this);
-        	}
-        }
-        
-        return $data;
     }
 
     /**
@@ -200,6 +170,28 @@ class Default_Model_Pages
     public function getDescription()
     {
         return $this->_description;
+    }
+
+    /**
+     * Set value ContentMarkdown
+     *
+     * @return $this 
+     * @param $content_markdown
+     */
+    public function setContentMarkdown($content_markdown)
+    {
+        $this->_content_markdown = $content_markdown;
+        return $this;
+    }
+
+    /**
+     * Get value ContentMarkdown
+     *
+     * @return mixed
+     */
+    public function getContentMarkdown()
+    {
+        return $this->_content_markdown;
     }
 
     /**
@@ -357,71 +349,29 @@ class Default_Model_Pages
     }
 
     /**
-     * Set value ContentMarkdown
-     *
-     * @return $this 
-     * @param $content_markdown
+     * @return array|null
      */
-    public function setContentMarkdown($content_markdown)
+    public function getOptions()
     {
-        $this->_content_markdown = $content_markdown;
-        return $this;
+        $class = new ReflectionClass($this);
+        $properties = $class->getProperties(ReflectionProperty::IS_PROTECTED);
+
+        if(0 === count($properties))
+            return null;
+
+        $data = array();
+        foreach ($properties as $property) {
+            $name = preg_split('~_~', $property->getName());
+            $normaliseName = implode(array_map('ucwords', $name));
+            $option = lcfirst($normaliseName);
+
+            if ($property->isProtected()) {
+                $property->setAccessible(TRUE);
+                $data[$option] = $property->getValue($this);
+            }
+        }
+
+        return $data;
     }
-
-    /**
-     * Get value ContentMarkdown
-     *
-     * @return mixed
-     */
-    public function getContentMarkdown()
-    {
-        return $this->_content_markdown;
-    }
-
-    /**
-     * Set value Image
-     *
-     * @return $this 
-     * @param $image
-     */
-    public function setImage($image)
-    {
-        $this->_image = $image;
-        return $this;
-    }
-
-    /**
-     * Get value Image
-     *
-     * @return mixed
-     */
-    public function getImage()
-    {
-        return $this->_image;
-    }
-
-    /**
-     * Set value DateCreate
-     *
-     * @return $this 
-     * @param $date_create
-     */
-    public function setDateCreate($date_create)
-    {
-        $this->_date_create = $date_create;
-        return $this;
-    }
-
-    /**
-     * Get value DateCreate
-     *
-     * @return mixed
-     */
-    public function getDateCreate()
-    {
-        return $this->_date_create;
-    }
-
-
 }
 

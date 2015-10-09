@@ -21,6 +21,40 @@ class Admin_Form_PageEdit extends Twitter_Bootstrap_Form_Horizontal
             'required'      => true,
         ));
 
+        $this->addElement('file', 'image', array(
+            'label'         => 'Image',
+            'valueDisabled' => false,
+        ));
+
+        $element = $this->getElement('image');
+        //$element->addDecorator('Wrapper');
+        /*$element->setDecorators(
+            array(
+//                        array('FieldSize'),
+                array('File'),
+//                        array('ElementErrors'),
+//                        array('Description',
+//                            array(
+//                                'tag' => 'p',
+//                                'class' => 'help-block'
+//                            )
+//                        ),
+//                        array('Addon'),
+                array(
+                    'HtmlTag',
+                    array(
+                        'tag' => 'div',
+//                                'class' => 'col-md-10'
+                    )
+                ),
+                array(
+                    'Label',
+                    array('class' => 'control-label')
+                ),
+                array('Wrapper'),
+            )
+        );*/
+
         $this->addElement('textarea', 'description', array(
             'label'         => 'Краткое описание страницы',
             'placeholder'   => 'Краткое описание страницы',
@@ -37,6 +71,7 @@ class Admin_Form_PageEdit extends Twitter_Bootstrap_Form_Horizontal
             array(
                 'title',
                 'path',
+                'image',
                 'description',
                 'contentMarkdown',
             ),

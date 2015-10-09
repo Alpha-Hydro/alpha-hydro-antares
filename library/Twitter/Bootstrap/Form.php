@@ -60,7 +60,9 @@ abstract class Twitter_Bootstrap_Form extends Zend_Form
                     and !$element instanceof Zend_Form_Element_Image
                     and !$element instanceof Zend_Form_Element_Checkbox
                     and !$element instanceof Zend_Form_Element_MultiCheckbox
-                    and !$element instanceof Zend_Form_Element_Radio)
+                    and !$element instanceof Zend_Form_Element_Radio
+                    and !$element instanceof Zend_Form_Element_File
+            )
             {
                 $this->_addClassNames(array(
                     'form-control',

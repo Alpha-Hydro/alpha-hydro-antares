@@ -7,10 +7,9 @@
         <th>ID</th>
         <th>Заголовок</th>
         <th>Url</th>
-        <!--<th>Описание</th>-->
-        <th>Активность</th>
+        <th>Дата создания</th>
         <th>Сортировка</th>
-        <th>Архив</th>
+        <th>Активность</th>
         <th></th>
     </tr>
     </thead>
@@ -19,10 +18,9 @@
             <td><?=$page->getId()?></td>
             <td><?=$page->getTitle()?></td>
             <td><?=$page->getPath()?></td>
-            <!--<td><?/*=$page->getDescription()*/?></td>-->
-            <td><input type="checkbox" value="<?=$page->getActive()?>" <?=($page->getActive() != 0)?'checked':'';?>></td>
+            <td><?=date("Y-m-d", strtotime($page->getDateCreate()));?></td>
             <td><?=$page->getSorting()?></td>
-            <td><input type="checkbox" value="<?=$page->getDeleted()?>" <?=($page->getDeleted() != 0)?'checked':'';?>></td>
+            <td><input type="checkbox" value="<?=$page->getActive()?>" <?=($page->getActive() != 0)?'checked':'';?>></td>
             <td width="100px">
                 <a href="<?=$this->url(array(
                     'module' => 'admin',

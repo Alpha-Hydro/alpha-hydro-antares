@@ -30,6 +30,9 @@ class Pages extends Akrabat_Db_Schema_AbstractChange
                      );
                 ALTER TABLE $tableName ADD CONSTRAINT unique_id UNIQUE (id);
                 ALTER TABLE $tableName ADD CONSTRAINT unique_path UNIQUE (path);
+
+                ALTER TABLE $tableName ADD image VARCHAR(255) NULL;
+                ALTER TABLE $tableName ADD date_create TIMESTAMP NOT NULL;
             ";
 
         $this->_db->query($sql);
