@@ -8,7 +8,7 @@
     </products>
     <production>
         <label>Производство</label>
-        <module>production</module>
+        <module>manufacture</module>
         <controller>index</controller>
         <route>default</route>
     </production>	

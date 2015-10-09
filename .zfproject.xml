@@ -448,6 +448,40 @@
             <viewFiltersDirectory/>
           </viewsDirectory>
         </moduleDirectory>
+        <moduleDirectory moduleName="manufacture">
+          <configsDirectory enabled="false"/>
+          <controllersDirectory>
+            <controllerFile controllerName="Index">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+          </controllersDirectory>
+          <formsDirectory enabled="false"/>
+          <layoutsDirectory enabled="false">
+            <layoutScriptsDirectory enabled="false"/>
+          </layoutsDirectory>
+          <modelsDirectory>
+            <dbTableDirectory>
+              <dbTableFile dbTableName="Manufacture"/>
+              <dbTableFile dbTableName="ManufactureCategories"/>
+            </dbTableDirectory>
+            <modelMapperDirectory>
+              <modelMapperFile modelName="Manufacture"/>
+              <modelMapperFile modelName="ManufactureCategories"/>
+            </modelMapperDirectory>
+            <modelColFile modelName="Manufacture"/>
+            <modelColFile modelName="ManufactureCategories"/>
+          </modelsDirectory>
+          <servicesDirectory enabled="false"/>
+          <viewsDirectory>
+            <viewScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+            </viewScriptsDirectory>
+            <viewHelpersDirectory/>
+            <viewFiltersDirectory/>
+          </viewsDirectory>
+        </moduleDirectory>
       </modulesDirectory>
       <servicesDirectory enabled="false"/>
       <viewsDirectory>
