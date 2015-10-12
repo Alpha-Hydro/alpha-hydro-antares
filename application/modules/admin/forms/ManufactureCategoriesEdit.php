@@ -1,16 +1,15 @@
 <?php
 
-class Admin_Form_PageEdit extends Twitter_Bootstrap_Form_Horizontal
+class Admin_Form_ManufactureCategoriesEdit extends Twitter_Bootstrap_Form_Horizontal
 {
 
     public function init()
     {
-        //$this->setIsArray(true);
-
         $this->addElement('hidden', 'id');
+        $this->addElement('hidden', 'parentId');
 
         $image = new Zend_Form_Element_File('imageLoadFile');
-        $image->setDestination(APPLICATION_ROOT.'/upload/pages')
+        $image->setDestination(APPLICATION_ROOT.'/upload/manufacture/category/')
             ->addValidator('Size', false, 1024000)
             ->addValidator('Extension', false, 'jpg,png,gif')
             ->setAttrib('class', 'hidden');
@@ -21,6 +20,8 @@ class Admin_Form_PageEdit extends Twitter_Bootstrap_Form_Horizontal
             'label'         => 'Заголовок страницы',
             'placeholder'   => 'Заголовок страницы',
             'required'      => true,
+            'class'         => 'slugify',
+            'data-slugify'  => 'path',
         ));
 
         $this->addElement('text', 'path', array(
@@ -145,6 +146,7 @@ class Admin_Form_PageEdit extends Twitter_Bootstrap_Form_Horizontal
             'class' => 'tab-content '.$classForm,
         ));
     }
+
 
 }
 

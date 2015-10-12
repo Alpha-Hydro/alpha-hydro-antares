@@ -42,7 +42,6 @@ class Admin_PagesController extends Zend_Controller_Action
                 $newPage = new Default_Model_Pages($form->getValues());
 
                 $file = $form->imageLoadFile->getFileInfo();
-                var_dump($file);
                 if(!empty($file)){
                     $form->imageLoadFile->receive();
                     $newPage->setImage('/upload/pages/'.$file['imageLoadFile']['name']);
@@ -84,6 +83,12 @@ class Admin_PagesController extends Zend_Controller_Action
             if ($form->isValid($request->getPost())) {
 
                 $page = new Default_Model_Pages($form->getValues());
+
+                $file = $form->imageLoadFile->getFileInfo();
+                if(!empty($file)){
+                    $form->imageLoadFile->receive();
+                    $page->setImage('/upload/pages/'.$file['imageLoadFile']['name']);
+                }
 
                 $markdown = $request->getParam('contentMarkdown');
                 $context_html = Markdown::defaultTransform($markdown);

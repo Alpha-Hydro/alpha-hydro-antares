@@ -76,39 +76,55 @@ class Admin_OilController extends Zend_Controller_Action
         ));
 
         if ($this->getRequest()->isPost()){
-            if ($form->isValid($request->getPost())) {
+        if ($form->isValid($request->getPost())) {
 
-                $oilItem = new Oil_Model_Oil($form->getValues());
+            $oilItem = new Oil_Model_Oil($form->getValues());
 
-                $markdown = $request->getParam('contentMarkdown');
-                $context_html = Markdown::defaultTransform($markdown);
-                $oilItem->setContentHtml($context_html);
+            $markdown = $request->getParam('contentMarkdown');
+            $context_html = Markdown::defaultTransform($markdown);
+            $oilItem->setContentHtml($context_html);
 
-                $metaTitle = $request->getParam('metaTitle');
-                if(empty($metaTitle))
-                    $oilItem->setMetaTitle($request->getParam('title'));
+            $metaTitle = $request->getParam('metaTitle');
+            if(empty($metaTitle))
+                $oilItem->setMetaTitle($request->getParam('title'));
 
-                $description = $request->getParam('description');
-                $metaDescription = $request->getParam('metaDescription');
-                if(empty($metaDescription) && !empty($description))
-                    $oilItem->setMetaDescription($description);
+            $description = $request->getParam('description');
+            $metaDescription = $request->getParam('metaDescription');
+            if(empty($metaDescription) && !empty($description))
+                $oilItem->setMetaDescription($description);
 
-                $oilMapper = new Oil_Model_Mapper_Oil();
-                $oilMapper->save($oilItem);
+            $oilMapper = new Oil_Model_Mapper_Oil();
+            $oilMapper->save($oilItem);
 
-                return $this->_helper->redirector('index');
-            }
-
-            $form->setDefaults($request->getPost());
-            $this->view->formData = $form->getValues();
+            return $this->_helper->redirector('index');
         }
+
+        $form->setDefaults($request->getPost());
+        $this->view->formData = $form->getValues();
+    }
 
         $this->view->form = $form;
     }
 
     public function deleteAction()
     {
-        // action body
+        $request = $this->getRequest();
+        $oilId = $request->getParam('id');
+
+        if(is_null($oilId))
+            return $this->_helper->redirector('index');
+
+        $oilMapper = new Oil_Model_Mapper_Oil();
+        $oilItem = $oilMapper->find($oilId, new Oil_Model_Oil());
+
+        if(is_null($oilItem))
+            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+        $page = $oilMapper->find($oilId, new Oil_Model_Oil());
+        $page->setDeleted(1);
+        $oilMapper->save($page);
+
+        return $this->_helper->redirector('index');
     }
 
 

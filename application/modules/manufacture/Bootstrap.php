@@ -13,12 +13,40 @@ class Manufacture_Bootstrap extends Zend_Application_Module_Bootstrap
 
     }
 
-    /*public function _initRoute(){
+    public function _initRoute(){
 
         $front = Zend_Controller_Front::getInstance();
         $router = $front->getRouter();
 
-        $config = new Zend_Config_Ini(APPLICATION_PATH . "/modules/" . strtolower($this->getModuleName()) . '/configs/route.ini', 'production');
-        $router->addConfig($config,'routes');
-    }*/
+        $routeCategory = new Zend_Controller_Router_Route(
+            'manufacture/:manufacture_path_category',
+            array(
+                'module'                    => 'manufacture',
+                'controller'                => 'index',
+                'action'                    => 'categories',
+            ),
+            array(
+                'manufacture_path_category' => '\w+',
+            )
+        );
+        $router->addRoute('manufactureCategory', $routeCategory);
+
+        $routeItem = new Zend_Controller_Router_Route(
+            ':manufacture_path_item',
+            array(
+                'module'                    => 'manufacture',
+                'controller'                => 'index',
+                'action'                    => 'view',
+            ),
+            array(
+                'manufacture_path_item' => '\w+',
+            )
+        );
+
+        $routeFullPath = new Zend_Controller_Router_Route_Chain();
+        $routeFullPath
+            ->chain($routeCategory)
+            ->chain($routeItem);
+        $router->addRoute('manufactureFullPath', $routeFullPath);
+    }
 }
