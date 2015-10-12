@@ -1,3 +1,4 @@
+
 # IntelliJ project files
 .idea
 
@@ -33,4 +34,5 @@ frontend/fonts
 public/images
 public/fonts
 public/files
+public/upload
 public/D
