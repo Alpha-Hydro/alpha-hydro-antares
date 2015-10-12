@@ -9,6 +9,14 @@ class Admin_Form_PageEdit extends Twitter_Bootstrap_Form_Horizontal
 
         $this->addElement('hidden', 'id');
 
+        $image = new Zend_Form_Element_File('imageLoadFile');
+        $image->setDestination(APPLICATION_ROOT.'/upload/pages')
+            ->addValidator('Size', false, 1024000)
+            ->addValidator('Extension', false, 'jpg,png,gif')
+            ->setAttrib('class', 'hidden');
+        $this->addElement($image);
+
+
         $this->addElement('text', 'title', array(
             'label'         => 'Заголовок страницы',
             'placeholder'   => 'Заголовок страницы',
@@ -21,39 +29,16 @@ class Admin_Form_PageEdit extends Twitter_Bootstrap_Form_Horizontal
             'required'      => true,
         ));
 
-        $this->addElement('file', 'image', array(
-            'label'         => 'Image',
-            'valueDisabled' => false,
+        $this->addElement('text', 'image', array(
+            'label'         => 'Изображение',
+            'prepend' => '<i class="glyphicon glyphicon-eye-open"></i>'
         ));
-
-        $element = $this->getElement('image');
-        //$element->addDecorator('Wrapper');
-        /*$element->setDecorators(
-            array(
-//                        array('FieldSize'),
-                array('File'),
-//                        array('ElementErrors'),
-//                        array('Description',
-//                            array(
-//                                'tag' => 'p',
-//                                'class' => 'help-block'
-//                            )
-//                        ),
-//                        array('Addon'),
-                array(
-                    'HtmlTag',
-                    array(
-                        'tag' => 'div',
-//                                'class' => 'col-md-10'
-                    )
-                ),
-                array(
-                    'Label',
-                    array('class' => 'control-label')
-                ),
-                array('Wrapper'),
-            )
-        );*/
+        $this->addElement('button', 'imageLoad', array(
+            'label'         => 'Загрузить изображение',
+            'type'          => 'button',
+            'class'         => 'image-btn',
+            'ignore' => true,
+        ));
 
         $this->addElement('textarea', 'description', array(
             'label'         => 'Краткое описание страницы',
@@ -72,6 +57,7 @@ class Admin_Form_PageEdit extends Twitter_Bootstrap_Form_Horizontal
                 'title',
                 'path',
                 'image',
+                'imageLoad',
                 'description',
                 'contentMarkdown',
             ),

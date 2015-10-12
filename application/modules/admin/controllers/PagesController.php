@@ -39,8 +39,14 @@ class Admin_PagesController extends Zend_Controller_Action
 
         if ($this->getRequest()->isPost()){
             if ($form->isValid($request->getPost())) {
-
                 $newPage = new Default_Model_Pages($form->getValues());
+
+                $file = $form->imageLoadFile->getFileInfo();
+                var_dump($file);
+                if(!empty($file)){
+                    $form->imageLoadFile->receive();
+                    $newPage->setImage('/upload/pages/'.$file['imageLoadFile']['name']);
+                }
 
                 $markdown = $request->getParam('contentMarkdown');
                 $context_html = Markdown::defaultTransform($markdown);

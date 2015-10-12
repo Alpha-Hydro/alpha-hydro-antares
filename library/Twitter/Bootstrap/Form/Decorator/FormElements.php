@@ -83,31 +83,21 @@ class Twitter_Bootstrap_Form_Decorator_FormElements extends Zend_Form_Decorator_
             }
 
             if ($item instanceof Zend_Form_Element_File) {
-//                $item->clearDecorators()->addDecorator('File');
                 $item->setDecorators(
                     array(
-//                        array('FieldSize'),
                         array('File'),
-//                        array('ElementErrors'),
-//                        array('Description',
+//                        array(
+//                            'HtmlTag',
 //                            array(
-//                                'tag' => 'p',
-//                                'class' => 'help-block'
+//                                'tag' => 'div',
+//                                'class' => 'col-md-10'
 //                            )
 //                        ),
-//                        array('Addon'),
-                        array(
-                            'HtmlTag',
-                            array(
-                                'tag' => 'div',
-                                'class' => 'col-md-10'
-                            )
-                        ),
-                        array(
-                            'Label',
-                            array('class' => 'control-label col-md-2')
-                        ),
-                        array('Wrapper'),
+//                        array(
+//                            'Label',
+//                            array('class' => 'control-label col-md-2')
+//                        ),
+//                        array('Wrapper'),
                     )
                 );
             }
