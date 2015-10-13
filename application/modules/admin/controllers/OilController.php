@@ -120,9 +120,8 @@ class Admin_OilController extends Zend_Controller_Action
         if(is_null($oilItem))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
-        $page = $oilMapper->find($oilId, new Oil_Model_Oil());
-        $page->setDeleted(1);
-        $oilMapper->save($page);
+        $oilItem->setDeleted(1);
+        $oilMapper->save($oilItem);
 
         return $this->_helper->redirector('index');
     }

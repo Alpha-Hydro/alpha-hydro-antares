@@ -25,11 +25,6 @@ class Admin_IndexController extends Zend_Controller_Action
 
         $result = $filterSlugify->filter($slug);
 
-        /*if(!$this->_validateColumn($result, 'products', 'path')){
-            $filterSlugify->setSeparator('-');
-            $result = $filterSlugify->filter($slug);
-        }*/
-
         echo $this->_helper->json($result);
     }
 

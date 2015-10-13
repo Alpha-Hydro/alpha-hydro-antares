@@ -130,7 +130,6 @@ class Admin_PagesController extends Zend_Controller_Action
         if(is_null($page))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
-        $page = $pagesMapper->find($pageId, new Default_Model_Pages());
         $page->setDeleted(1);
         $pagesMapper->save($page);
 

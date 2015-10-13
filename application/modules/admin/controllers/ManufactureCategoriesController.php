@@ -119,7 +119,22 @@ class Admin_ManufactureCategoriesController extends Zend_Controller_Action
 
     public function deleteAction()
     {
-        // action body
+        $request = $this->getRequest();
+        $categoryId = $request->getParam('id');
+
+        if(is_null($categoryId))
+            return $this->_helper->redirector('index');
+
+        $manufactureCategoryMapper = new Manufacture_Model_Mapper_ManufactureCategories();
+        $manufactureCategory = $manufactureCategoryMapper->find($categoryId, new Manufacture_Model_ManufactureCategories());
+
+        if(is_null($manufactureCategory))
+            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+        $manufactureCategory->setDeleted(1);
+        $manufactureCategoryMapper->save($manufactureCategory);
+
+        return $this->_helper->redirector('index');
     }
 
 

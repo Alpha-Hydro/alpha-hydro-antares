@@ -10,16 +10,16 @@
         <img src="<?= $this->page->getImage() ?>" alt="<?=$this->page->getTitle()?>" class="pull-right"/>
     <?php endif;?>
     <?=$this->page->getContentHtml();?>
-    <?php if($this->manufactureCategories):?>
+    <?php if($this->categories):?>
         <div class="manufacture-categories">
-        <?php foreach ($this->manufactureCategories as $manufactureCategories):?>
+        <?php foreach ($this->categories as $manufactureCategories):?>
             <div class="col-md-4 col-md-offset-1">
                 <a href="<?=$this->url(array(
                     'module'                    => 'manufacture',
                     'controller'                => 'index',
                     'action'                    => 'categories',
                     'manufacture_path_category' => $manufactureCategories->getPath(),
-                ),'manufactureCategory', true, true)?>/" class="thumbnail hover-shadow">
+                ),'manufactureCategory', true, false)?>/" class="thumbnail hover-shadow">
                     <img src="<?=$manufactureCategories->getImage()?>" alt="<?=$manufactureCategories->getTitle()?>"/>
                 </a>
             </div>
