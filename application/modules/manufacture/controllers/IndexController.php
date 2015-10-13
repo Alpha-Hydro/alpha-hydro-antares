@@ -29,17 +29,6 @@ class Manufacture_IndexController extends Zend_Controller_Action
 
         $this->view->page = $page;
 
-        /*$manufactureCategoriesMapper = new Manufacture_Model_Mapper_ManufactureCategories();
-        $select = $manufactureCategoriesMapper->getDbTable()->select();
-        $select->where('deleted != ?', 1)
-            ->where('active != ?', 0)
-            ->order('sorting ASC');
-
-        $manufactureCategories = $manufactureCategoriesMapper->fetchAll($select);
-
-        if(!empty($manufactureCategories))
-            $this->view->manufactureCategories = $manufactureCategories;*/
-
     }
 
     public function categoriesAction()

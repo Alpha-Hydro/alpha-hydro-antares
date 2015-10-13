@@ -34,6 +34,7 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         $acl->addResource(new Zend_Acl_Resource('pages'));
         $acl->addResource(new Zend_Acl_Resource('oil'));
         $acl->addResource(new Zend_Acl_Resource('manufacture-categories'));
+        $acl->addResource(new Zend_Acl_Resource('manufacture'));
 
         // далее переходим к созданию ролей, которых у нас 2:
         // гость (неавторизированный пользователь)

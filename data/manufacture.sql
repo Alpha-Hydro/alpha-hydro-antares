@@ -17,4 +17,8 @@ CREATE TABLE `manufacture` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_id` (`id`),
   UNIQUE KEY `unique_path` (`path`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE manufacture ADD full_path VARCHAR(255) DEFAULT '' NOT NULL;
+ALTER TABLE manufacture ADD CONSTRAINT unique_full_path UNIQUE (full_path);
+DROP INDEX unique_path ON manufacture;

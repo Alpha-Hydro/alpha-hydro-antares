@@ -33,6 +33,8 @@ class Manufacture_Model_Manufacture
 
     protected $_deleted = null;
 
+    protected $_full_path = null;
+
     /**
      * @param $options
      */
@@ -444,6 +446,28 @@ class Manufacture_Model_Manufacture
     public function getDeleted()
     {
         return $this->_deleted;
+    }
+
+    /**
+     * Set value FullPath
+     *
+     * @return $this 
+     * @param $full_path
+     */
+    public function setFullPath($full_path)
+    {
+        $this->_full_path = $full_path;
+        return $this;
+    }
+
+    /**
+     * Get value FullPath
+     *
+     * @return mixed
+     */
+    public function getFullPath()
+    {
+        return $this->_full_path;
     }
 
 
