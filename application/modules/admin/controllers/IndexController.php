@@ -1,4 +1,5 @@
 <?php
+include_once 'vlmeh/Filter/Slugify.php';
 
 class Admin_IndexController extends Zend_Controller_Action
 {
