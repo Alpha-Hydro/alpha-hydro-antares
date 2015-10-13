@@ -45,7 +45,9 @@ class Manufacture_IndexController extends Zend_Controller_Action
 
         $this->view->category = $manufactureCategory;
 
-        var_dump($manufactureCategory->getTitle());
+        $manufactureItems = $manufactureCategoriesMapper->fetchManufactureRel($manufactureCategory->getId());
+        $this->view->manufactureItems = $manufactureItems;
+        //var_dump(count($manufactureItems));
     }
 
     public function viewAction()

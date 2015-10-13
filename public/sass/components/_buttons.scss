@@ -49,6 +49,7 @@
       @include btn-alpha-color($alpha-orange);
     }
   }
+  &.orange,
   &.active{
     background-image: none;
     @include btn-alpha-color($alpha-orange);

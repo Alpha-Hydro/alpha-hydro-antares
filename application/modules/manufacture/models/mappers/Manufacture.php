@@ -124,7 +124,7 @@ class Manufacture_Model_Mapper_Manufacture
      * @param Manufacture_Model_Manufacture $entry
      * @return Manufacture_Model_Manufacture
      */
-    protected function _setDbData($row, Manufacture_Model_Manufacture $entry)
+    public function _setDbData($row, Manufacture_Model_Manufacture $entry)
     {
         $info = $this->getDbTable()->info();
         $properties = $info['cols'];
@@ -147,7 +147,6 @@ class Manufacture_Model_Mapper_Manufacture
         
         return $normaliseName;
     }
-
 
 }
 

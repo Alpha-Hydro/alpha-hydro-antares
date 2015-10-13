@@ -167,5 +167,34 @@ class Manufacture_Model_Mapper_ManufactureCategories
         return $entry;
     }
 
+    /**
+     * @param $id
+     * @param Zend_Db_Table_Select|null $select
+     * @return array|null
+     * @throws Zend_Db_Table_Exception
+     * @throws Zend_Db_Table_Row_Exception
+     */
+    public function fetchManufactureRel($id, Zend_Db_Table_Select $select = null)
+    {
+        $result = $this->getDbTable()->find($id);
+        if (0 == count($result)) {
+            return null;
+        }
+        $category = $result->current();
+
+        $resultSet = $category->findDependentRowset('Manufacture_Model_DbTable_Manufacture',
+            'CategoriesRel', $select);
+
+        $entries = array();
+        $manufactureMapper = new Manufacture_Model_Mapper_Manufacture();
+        foreach ($resultSet as $row) {
+            $entry = new Manufacture_Model_Manufacture();
+            $entry = $manufactureMapper->_setDbData($row, $entry);
+            $entries[] = $entry;
+        }
+
+        return $entries;
+    }
+
 }
 

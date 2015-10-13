@@ -34,7 +34,7 @@ class Admin_ManufactureCategoriesController extends Zend_Controller_Action
                 $manufactureCategory = new Manufacture_Model_ManufactureCategories($form->getValues());
 
                 $file = $form->imageLoadFile->getFileInfo();
-                if(!empty($file)){
+                if(!empty($file) && $file['imageLoadFile']['name'] !== ''){
                     $form->imageLoadFile->receive();
                     $manufactureCategory->setImage('/upload/manufacture/category/'.$file['imageLoadFile']['name']);
                 }

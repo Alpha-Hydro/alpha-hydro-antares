@@ -1,6 +1,6 @@
 <?php
 
-class Zend_View_Helper_getProductsCategory
+class Zend_View_Helper_getProductsCategory extends Zend_View_Helper_Abstract
 {
     /**
      * @param int $category_id
