@@ -12,7 +12,7 @@ $this->breadcrumbs = false;
                 <div class="thumbnail manufacture-item">
                     <img src="<?=$manufacture->getImage()?>" alt="<?=$manufacture->getTitle()?>">
                     <div class="caption">
-                        <h3 class="manufacture-title"><?=$manufacture->getTitle()?></h3>
+                        <h4 class="manufacture-title"><?=$manufacture->getTitle()?></h4>
                         <p class="manufacture-description"><?=$this->strCrop($manufacture->getDescription(), 150)?></p>
                         <p class="text-right manufacture-link"><a href="/manufacture/<?=$manufacture->getFullPath()?>/" class="btn btn-alpha orange" title="<?=$manufacture->getTitle()?>">Подробнее</a></p>
                     </div>
