@@ -43,7 +43,7 @@ class Admin_Form_ManufactureEdit extends Twitter_Bootstrap_Form_Horizontal
         $this->addElement('text', 'image', array(
             'label'         => 'Изображение',
             'prepend'       => '<i class="glyphicon glyphicon-eye-open"></i>',
-            'disabled'      => true,
+            //'disabled'      => true,
         ));
         $this->addElement('button', 'imageLoad', array(
             'label'         => 'Загрузить изображение',

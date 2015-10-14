@@ -51,6 +51,7 @@
         </tr>
     <?php endforeach;?>
 </table>
+<?= $this->render('components/_paginator.phtml')?>
 <div class="pull-right">
     <a href="<?=$this->url(
         array('module'=>'admin', 'controller' => 'manufacture-categories', 'action' => 'add'),

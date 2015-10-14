@@ -4,16 +4,39 @@ include_once 'Michelf/Markdown.php';
 
 class Admin_ManufactureController extends Zend_Controller_Action
 {
+    protected $_count_item_on_page = null;
 
     public function init()
     {
-        /* Initialize action controller here */
+        $this->_count_item_on_page = 10;
     }
 
     public function indexAction()
     {
+        $request = $this->getRequest();
+
         $manufactureMapper = new Manufacture_Model_Mapper_Manufacture();
-        $this->view->pages = $manufactureMapper->fetchAll();
+        $manufactureItems = $manufactureMapper->fetchAll();
+
+        if(!empty($manufactureItems)){
+            if(count($manufactureItems) > $this->getCountItemOnPage()){
+                $manufacturePages = array_chunk($manufactureItems, $this->getCountItemOnPage());
+
+                $currentPage = 0;
+
+                if($request->getParam('page') && $request->getParam('page')>0)
+                    $currentPage = $request->getParam('page')-1;
+
+                if($request->getParam('page') && $request->getParam('page')>count($manufacturePages))
+                    $currentPage = count($manufacturePages)-1;
+
+                $manufactureItems = $manufacturePages[$currentPage];
+                $this->view->countPage = count($manufacturePages);
+                $this->view->currentPage = $currentPage+1;
+            }
+        }
+
+        $this->view->pages = $manufactureItems;
     }
 
     public function addAction()
@@ -108,6 +131,7 @@ class Admin_ManufactureController extends Zend_Controller_Action
                 $manufacture->setFullPath($fullPath);
 
                 $file = $form->imageLoadFile->getFileInfo();
+                //var_dump($file);
                 if(!empty($file) && $file['imageLoadFile']['name'] !== ''){
                     $form->imageLoadFile->receive();
                     $manufacture->setImage('/upload/manufacture/items/'.$file['imageLoadFile']['name']);
@@ -143,6 +167,24 @@ class Admin_ManufactureController extends Zend_Controller_Action
     public function deleteAction()
     {
         // action body
+    }
+
+    /**
+     * @param null $count_item_on_page
+     * @return Admin_ManufactureController
+     */
+    public function setCountItemOnPage($count_item_on_page)
+    {
+        $this->_count_item_on_page = $count_item_on_page;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getCountItemOnPage()
+    {
+        return $this->_count_item_on_page;
     }
 
 

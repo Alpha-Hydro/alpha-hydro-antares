@@ -4,16 +4,39 @@ include_once 'Michelf/Markdown.php';
 
 class Admin_ManufactureCategoriesController extends Zend_Controller_Action
 {
+    protected $_count_item_on_page = null;
 
     public function init()
     {
-        /* Initialize action controller here */
+        $this->_count_item_on_page = 10;
     }
 
     public function indexAction()
     {
+        $request = $this->getRequest();
+
         $manufactureCategoriesMapper = new Manufacture_Model_Mapper_ManufactureCategories();
-        $this->view->pages = $manufactureCategoriesMapper->fetchAll();
+        $manufactureCategories = $manufactureCategoriesMapper->fetchAll();
+
+        if(!empty($manufactureCategories)){
+            if(count($manufactureCategories) > $this->getCountItemOnPage()){
+                $manufactureCategoriesPages = array_chunk($manufactureCategories, $this->getCountItemOnPage());
+
+                $currentPage = 0;
+
+                if($request->getParam('page') && $request->getParam('page')>0)
+                    $currentPage = $request->getParam('page')-1;
+
+                if($request->getParam('page') && $request->getParam('page')>count($manufactureCategoriesPages))
+                    $currentPage = count($manufactureCategoriesPages)-1;
+
+                $manufactureCategories = $manufactureCategoriesPages[$currentPage];
+                $this->view->countPage = count($manufactureCategoriesPages);
+                $this->view->currentPage = $currentPage+1;
+            }
+        }
+
+        $this->view->pages = $manufactureCategories;
     }
 
     public function addAction()
@@ -135,6 +158,24 @@ class Admin_ManufactureCategoriesController extends Zend_Controller_Action
         $manufactureCategoryMapper->save($manufactureCategory);
 
         return $this->_helper->redirector('index');
+    }
+
+    /**
+     * @param null $count_item_on_page
+     * @return Admin_ManufactureCategoriesController
+     */
+    public function setCountItemOnPage($count_item_on_page)
+    {
+        $this->_count_item_on_page = $count_item_on_page;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getCountItemOnPage()
+    {
+        return $this->_count_item_on_page;
     }
 
 

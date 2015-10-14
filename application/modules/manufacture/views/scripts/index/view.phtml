@@ -1,4 +1,16 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Index</b> and script/action name <b>view</b></p>
+<?php
+$this->title = $this->escape($this->manufacture->getTitle());
+$this->headTitle($this->title);
+$this->meta_title = $this->title;
+$this->sidebar_headers = false;
+$this->breadcrumbs = true;
+?>
+<div class="row">
+    <div class="col-md-4">
+        <div class="thumbnail"><img src="<?= $this->manufacture->getImage() ?>" alt="<?=$this->manufacture->getTitle()?>"></div>
+    </div>
+    <div class="col-md-8">
+        <p class="lead product-description"><?= $this->manufacture->getDescription() ?></p>
+        <p class="product-content-html"><?=$this->manufacture->getContentHtml()?></p>
+    </div>
 </div>

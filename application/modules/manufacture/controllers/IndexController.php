@@ -8,7 +8,7 @@ class Manufacture_IndexController extends Zend_Controller_Action
 
     public function init()
     {
-        $this->_count_item_on_page = 10;
+        $this->_count_item_on_page = 6;
 
         $manufactureCategoriesMapper = new Manufacture_Model_Mapper_ManufactureCategories();
         $select = $manufactureCategoriesMapper->getDbTable()->select();
@@ -46,14 +46,55 @@ class Manufacture_IndexController extends Zend_Controller_Action
         $this->view->category = $manufactureCategory;
 
         $manufactureItems = $manufactureCategoriesMapper->fetchManufactureRel($manufactureCategory->getId());
+
+        if(!empty($manufactureItems)){
+            if(count($manufactureItems) > $this->getCountItemOnPage()){
+                $manufacturePages = array_chunk($manufactureItems, $this->getCountItemOnPage());
+
+                $currentPage = 0;
+
+                if($request->getParam('page') && $request->getParam('page')>0)
+                    $currentPage = $request->getParam('page')-1;
+
+                if($request->getParam('page') && $request->getParam('page')>count($manufacturePages))
+                    $currentPage = count($manufacturePages)-1;
+
+                $manufactureItems = $manufacturePages[$currentPage];
+                $this->view->countPage = count($manufacturePages);
+                $this->view->currentPage = $currentPage+1;
+            }
+        }
+
         $this->view->manufactureItems = $manufactureItems;
-        //var_dump(count($manufactureItems));
     }
 
     public function viewAction()
     {
         $request = $this->getRequest();
-        var_dump($this->getAllParams());
+        $categoryPath = $request->getParam('manufacture_path_category');
+
+        $manufactureCategoriesMapper = new Manufacture_Model_Mapper_ManufactureCategories();
+        $manufactureCategory = $manufactureCategoriesMapper
+            ->findByPath($categoryPath, new Manufacture_Model_ManufactureCategories());
+
+        if(is_null($manufactureCategory))
+            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+        $this->view->category = $manufactureCategory;
+
+        $manufacturePath = $request->getParam('manufacture_path_item');
+        $manufactureFullPath = $categoryPath.'/'.$manufacturePath;
+
+        $manufactureMapper = new Manufacture_Model_Mapper_Manufacture();
+        $manufacture = $manufactureMapper
+            ->findByFullPath($manufactureFullPath, new Manufacture_Model_Manufacture());
+
+        if(is_null($manufacture))
+            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+        $this->view->manufacture = $manufacture;
+
+        //var_dump($this->getAllParams());
     }
 
     /**

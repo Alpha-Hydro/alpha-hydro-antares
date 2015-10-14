@@ -3,7 +3,7 @@ $this->title = $this->escape($this->category->getTitle());
 $this->headTitle($this->title);
 $this->meta_title = $this->title;
 $this->sidebar_headers = false;
-$this->breadcrumbs = false;
+$this->breadcrumbs = true;
 ?>
 <div class="row">
     <?php if($this->manufactureItems):?>
@@ -21,3 +21,4 @@ $this->breadcrumbs = false;
         <?php endforeach;?>
     <?php endif;?>
 </div>
+<?= $this->render('components/_paginator.phtml')?>

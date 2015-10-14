@@ -148,5 +148,24 @@ class Manufacture_Model_Mapper_Manufacture
         return $normaliseName;
     }
 
+    public function findByFullPath($value, Manufacture_Model_Manufacture $manufacture)
+    {
+        $table = $this->getDbTable();
+
+        $select = $table->select()
+            ->where("full_path = ?", $value);
+
+        $result = $table->fetchAll($select);
+
+        if (0 == count($result)) {
+            return null;
+        }
+
+        $row = $result->current();
+        $entry = $this->_setDbData($row, $manufacture);
+
+        return $entry;
+    }
+
 }
 

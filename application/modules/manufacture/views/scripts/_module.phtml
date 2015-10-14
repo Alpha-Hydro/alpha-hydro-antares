@@ -8,6 +8,21 @@
 </div>
 <div class="row">
     <div class="col-md-9 col-md-push-3">
+        <?php if($this->breadcrumbs):?>
+            <div class="row">
+                <div class="col-md-12">
+                    <?= $this->action(
+                        "index",
+                        "breadcrumbs",
+                        "manufacture",
+                        array(
+                            'page_category' => $this->category,
+                            'page_item' => $this->manufacture,
+                        )
+                    );?>
+                </div>
+            </div>
+        <?php endif; ?>
         <?=$this->layout()->content?>
     </div>
     <div class="col-md-3 col-md-pull-9">

@@ -38,6 +38,9 @@ $menu-line-height: 40px;
       background-color: $alpha-gray-dark;
       color: #FFFFFF;
       cursor: default;
+      >a{
+        color: #ffffff;
+      }
     }
     &:hover{
       background-color: $alpha-gray-dark;
