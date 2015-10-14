@@ -1,4 +1,15 @@
+<?php $this->headScript()->appendFile('/js/search.min.js'); ?>
 <form id="search" action="/search/" method="get" class="">
-    <input type="text" name="query" autocomplete="off" value="" class="col-md-8" placeholder="Поиск по каталогу"/>
+    <div class="dropdown">
+        <input
+            type="text"
+            name="query"
+            autocomplete="off"
+            value=""
+            class="col-md-8"
+            placeholder="Поиск"
+            id="search-query"/>
+        <ul id="search-autocomplete" class="dropdown-menu search-autocomplete col-md-8"></ul>
+    </div>
     <input type="submit" value="Поиск" class="col-md-3 col-md-offset-1"/>
 </form>

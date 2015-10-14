@@ -27,9 +27,8 @@ $(function() {
 		
 		goTo: function(){
                     	window.location.assign( __self.attr('href') );
-		},
-		
-	}
+		}
+	};
 
 	function searchProduct() {
 		if ($(this).val() != '' )
@@ -38,7 +37,7 @@ $(function() {
 			}, function(response) {
 				$("#search-result").html(response);
 				current.init(true);
-			})
+			});
 //			.error(function() {
 //				alert("error occurred");
 //			});
@@ -61,8 +60,7 @@ $(function() {
 					$(this).addClass("stored");
 				}
 
-				$("#search-result").is(":hover") ? $(this).focus() : $(
-						"#search-result").hide();
+				$("#search-result").is(":hover") ? $(this).focus() : $("#search-result").hide();
 
 			}).keyup(
 			function(e) {

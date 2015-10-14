@@ -1,0 +1,7 @@
+<?php if($this->products):?>
+    <li class="dropdown-header">В каталоге:</li>
+    <!--<li class="divider" role="separator"></li>-->
+    <?php foreach ($this->products as $product):?>
+        <li><a href="/catalog/<?=$product->getFullPath()?>/" title="<?=$product->getName()?>"><?=$product->getSku();?></a></li>
+    <?php endforeach;?>
+<?php endif;?>

@@ -23,7 +23,7 @@
     right: 0;
     background: sprite($main-menu, menu-bg-right) #fff no-repeat;
   }
-  ul{
+  >ul{
     float: left;
     margin: 0;
     padding-left: 0;
@@ -49,25 +49,6 @@
         &:hover{
           background: image_url('menu-item-active.png') transparent no-repeat center bottom / contain;
         }
-      }
-    }
-  }
-  .search-form{
-    padding-right: 10px;
-    form{
-      input[type='text']{
-        border: 1px solid $alpha-gray;
-        @include box-shadow(inset $alpha-gray-light 0px 0px 8px);
-        color: $alpha-gray-dark;
-        font-size: $alpha-font-size-small;
-        margin-top: 8px;
-      }
-      input[type='submit']{
-        height: 38px;
-        border: medium none;
-        padding-bottom: 3px;
-        background: sprite($main-menu, menu-bg-seach);
-        color: #fff;
       }
     }
   }
