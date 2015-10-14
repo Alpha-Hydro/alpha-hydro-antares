@@ -2,9 +2,9 @@
   ajaxResponseContent = $('#search-autocomplete')
   dropdoun            = $('.dropdown')
 
-  $(document).on 'keyup', '#search-query', ()->
+  $(document).on 'keyup', '#search-query', (e)->
     value = $(@).val()
-    console.log(value)
+    console.log(e.keyCode)
     $.ajax
       url: '/search/index/autocomplete/'
       type: 'post'
@@ -14,7 +14,7 @@
       error: (jqXHR, textStatus, errorThrown) ->
         ajaxResponseContent.html "AJAX Error: #{textStatus}"
       success: (data, textStatus, jqXHR) ->
-        console.log(data)
+#        console.log(data)
         ajaxResponseContent.html data
         if data isnt ''
           dropdoun.addClass 'open'

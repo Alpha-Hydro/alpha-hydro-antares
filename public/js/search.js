@@ -4,10 +4,10 @@
     var ajaxResponseContent, dropdoun;
     ajaxResponseContent = $('#search-autocomplete');
     dropdoun = $('.dropdown');
-    return $(document).on('keyup', '#search-query', function() {
+    return $(document).on('keyup', '#search-query', function(e) {
       var value;
       value = $(this).val();
-      console.log(value);
+      console.log(e.keyCode);
       return $.ajax({
         url: '/search/index/autocomplete/',
         type: 'post',
@@ -19,7 +19,6 @@
           return ajaxResponseContent.html("AJAX Error: " + textStatus);
         },
         success: function(data, textStatus, jqXHR) {
-          console.log(data);
           ajaxResponseContent.html(data);
           if (data !== '') {
             return dropdoun.addClass('open');
