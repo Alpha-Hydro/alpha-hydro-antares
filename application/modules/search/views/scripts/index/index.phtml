@@ -1,4 +1,28 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Index</b> and script/action name <b>index</b></p>
+<?php
+$this->headTitle($this->title);
+$this->meta_title = $this->title;
+$this->breadcrumbs = false;
+$this->sidebar_headers = false;
+$this->headScript()->appendFile('/js/catalog.min.js');
+?>
+<div class="categories-list">
+    <?php if($this->products): ?>
+        <?php foreach ($this->products as $product): ?>
+            <div class="col-md-3 text-center ">
+                <a class="categories-list-item z-depth-1" href="<?=$this->url(
+                    array(
+                        'module' => 'catalog',
+                        'controller' => 'products',
+                        'action' => 'view',
+                        'fullPath'=>$product->getFullPath(),
+                    ),'catalog',true,false) ?>">
+                    <img src="/files/images/category/<?=$product->getImage();?>" alt="<?=$product->getName();?>"/>
+                    <p class="categories-list-item-name"><?=$product->getName()?></p>
+                </a>
+            </div>
+        <?php endforeach; ?>
+        <div class="col-md-12">
+            <?= $this->render('_paginator.phtml')?>
+        </div>
+    <?php endif; ?>
 </div>

@@ -6,19 +6,48 @@
                 <span aria-hidden="true">«</span>
             </a>
         </li>
+        <li <?=($this->currentPage == 1)?'class="active"':''?>>
+            <a href="<?=$this->url()?>/" aria-label="Previous">
+                <span aria-hidden="true">1</span>
+            </a>
+        </li>
         <?php
-            for ($i = 1; $i <= $this->countPage; $i++) {
-                $href = ($i != 1)
-                    ? $this->url().'/?page='.$i
-                    : $this->url().'/';
-                $item = '<li><a href="'.$href.'">'.$i.'</a></li>';
+        $pageRange = 7;
+        $n = floor($pageRange/2);
+        $k = 2;
+        $z = $pageRange;
 
-                if($i == $this->currentPage)
-                    $item = '<li class="active"><a href="'.$href.'">'.$i.' <span class="sr-only">(current)</span></a></li>';
-
-                echo $item;
+        if($this->currentPage > $pageRange-1){
+            $k = $this->currentPage-$n;
+            $z = $this->currentPage+$n;
+            if($z > $this->countPage-1){
+                $k = $this->countPage-$pageRange+1;
+                $z = $this->countPage-1;
             }
+            echo '<li class="free"><a></a></li>';
+        }
+
+        for ($i = $k; $i <= $z; $i++) {
+            $href = ($i != 1)
+                ? $this->url().'/?page='.$i
+                : $this->url().'/';
+            $item = '<li><a href="'.$href.'">'.$i.'</a></li>';
+
+            if($i == $this->currentPage)
+                $item = '<li class="active"><a href="'.$href.'">'.$i.' <span class="sr-only">(current)</span></a></li>';
+
+            echo $item;
+        }
+
+        if($this->currentPage < $this->countPage-$pageRange+$n){
+            echo '<li class="free"><a></a></li>';
+        }
         ?>
+        <li <?=($this->currentPage == $this->countPage)?'class="active"':''?>>
+            <a href="<?=$this->url()?>/?page=<?=$this->countPage;?>" aria-label="Previous">
+                <span aria-hidden="true"><?=$this->countPage;?></span>
+            </a>
+        </li>
         <li <?=($this->currentPage == $this->countPage)?'class="disabled"':''?>>
             <a href="<?=$this->url()?>/?page=<?=($this->currentPage != $this->countPage)?$this->currentPage+1:$this->countPage?>" aria-label="Next">
                 <span aria-hidden="true">»</span>
