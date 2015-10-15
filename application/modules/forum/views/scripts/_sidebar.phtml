@@ -1,5 +1,8 @@
 <nav>
     <ul class="list-group sidebar crop-bottom-shadow">
+        <li class="list-group-item sidebar-item <?=(!$this->category)?'sidebar-item-current':'';?>">
+            <a href="/forum/">Все</a>
+        </li>
         <li class="list-group-item sidebar-item <?=($this->category != 'question')?'':'sidebar-item-current';?>">
             <?php if($this->category != 'question'):?>
                 <a href="<?=$this->url(array(
@@ -35,9 +38,6 @@
             <?php else: ?>
                 Книга жалоб
             <?php endif; ?>
-        </li>
-        <li class="list-group-item sidebar-item">
-            <a href="/forum/">Все</a>
         </li>
     </ul>
     <ul class="list-group sidebar crop-bottom-shadow">

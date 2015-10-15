@@ -15,7 +15,7 @@
         $pageRange = 7;
         $n = floor($pageRange/2);
         $k = 2;
-        $z = $pageRange;
+        $z = $this->countPage-1;
 
         if($this->currentPage > $pageRange-1){
             $k = $this->currentPage-$n;

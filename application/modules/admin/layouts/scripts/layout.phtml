@@ -29,8 +29,10 @@
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <!--<li class="<?/*=($controller == 'models-generator')?'active':'';*/?>"><a href="<?/*= $this->url(array('controller'=>'models-generator', 'action'=>'index'));*/?>">Model mappers</a></li>
-                        <li class="<?/*=($controller == 'sefurl')?'active':'';*/?>"><a href="<?/*= $this->url(array('controller'=>'sefurl', 'action'=>'index'));*/?>">SEF URLs</a></li>-->
+                        <li class="<?=($controller == 'pages')?'active':'';?>"><a href="<?= $this->url(array('controller'=>'pages', 'action'=>'index'));?>">Страницы</a></li>
+                        <li class="<?=($controller == 'manufacture')?'active':'';?>"><a href="<?= $this->url(array('controller'=>'manufacture', 'action'=>'index'));?>">Производство</a></li>
+                        <li class="<?=($controller == 'oil')?'active':'';?>"><a href="<?= $this->url(array('controller'=>'oil', 'action'=>'index'));?>">Масла</a></li>
+                        <li><a href="/utils/">Утилиты</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="/">На сайт</a></li>
