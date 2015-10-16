@@ -53,6 +53,7 @@ class Search_IndexController extends Zend_Controller_Action
                 $this->view->products = $products;
             }
         }
+
     }
 
     public function autocompleteAction()

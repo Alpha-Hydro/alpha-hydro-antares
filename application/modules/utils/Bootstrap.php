@@ -41,6 +41,7 @@ class Utils_Bootstrap extends Zend_Application_Module_Bootstrap
         $acl->addResource(new Zend_Acl_Resource('models-generator'));
         $acl->addResource(new Zend_Acl_Resource('slugify'));
         $acl->addResource(new Zend_Acl_Resource('sefurl'));
+        $acl->addResource(new Zend_Acl_Resource('search-index'));
 
         // далее переходим к созданию ролей, которых у нас 2:
         // гость (неавторизированный пользователь)

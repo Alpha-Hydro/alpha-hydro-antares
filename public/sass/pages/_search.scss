@@ -1,3 +1,40 @@
+.gsc-above-wrapper-area,
+.gcsc-branding,
+.gsc-adBlockVertical,
 .gsc-adBlock{
   @extend .hidden;
+}
+.gs-result{
+  font-family: $font-family-base;
+  font-size: $alpha-font-size-default;
+  .gsc-thumbnail-inside,
+  .gsc-url-top{
+    padding-left: 0;
+  }
+  .gsc-thumbnail-inside{
+    .gs-title{
+      @extend .media-heading;
+      text-decoration: none;
+      * {
+        font:{
+          weight: bolder;
+        }
+        color: #000000;
+      }
+      a.gs-title{
+        color: #000000 !important;
+        &:link{
+          color: #000000;
+        }
+      }
+    }
+  }
+}
+.gs-no-results-result{
+  .gs-snippet{
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    background-color: transparent !important;
+  }
 }
