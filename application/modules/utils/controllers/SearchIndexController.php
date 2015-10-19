@@ -11,7 +11,7 @@ class Utils_SearchIndexController extends Zend_Controller_Action
     public function indexAction()
     {
         $indexName = 'my-index';
-        $index = Zend_Search_Lucene::open('/data/'.$indexName);
+        $index = Zend_Search_Lucene::open(APPLICATION_ROOT.'/data/'.$indexName);
         $indexSize = $index->count();
         $indexDocuments = $index->numDocs();
 
