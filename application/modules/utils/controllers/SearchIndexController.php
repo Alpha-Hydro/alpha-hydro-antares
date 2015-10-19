@@ -26,7 +26,7 @@ class Utils_SearchIndexController extends Zend_Controller_Action
             new Zend_Search_Lucene_Analysis_Analyzer_Common_Utf8_CaseInsensitive());
 
         // Создание индекса
-        $index = Zend_Search_Lucene::create('/data/my-index');
+        $index = Zend_Search_Lucene::create(APPLICATION_ROOT.'/data/my-index');
 
         $mediaMapper = new Media_Model_Mapper_Media();
         $select = $mediaMapper->getDbTable()->select();
@@ -72,7 +72,7 @@ class Utils_SearchIndexController extends Zend_Controller_Action
             new Zend_Search_Lucene_Analysis_Analyzer_Common_Utf8_CaseInsensitive());
 
         // Создание индекса
-        $index = Zend_Search_Lucene::create('/data/my-index');
+        $index = Zend_Search_Lucene::create(APPLICATION_ROOT.'/data/my-index');
 
         $mediaMapper = new Media_Model_Mapper_Media();
         $select = $mediaMapper->getDbTable()->select();
