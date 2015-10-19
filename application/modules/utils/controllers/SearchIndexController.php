@@ -129,7 +129,7 @@ class Utils_SearchIndexController extends Zend_Controller_Action
 
         Zend_Search_Lucene_Search_QueryParser::setDefaultEncoding('UTF-8');
 
-        $index = Zend_Search_Lucene::open('/data/my-index');
+        $index = Zend_Search_Lucene::open(APPLICATION_ROOT.'/data/my-index');
 
         $phrase = 'альфа';
         $query = Zend_Search_Lucene_Search_QueryParser::parse($phrase);
