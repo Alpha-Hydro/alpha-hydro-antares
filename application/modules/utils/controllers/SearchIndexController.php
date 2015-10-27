@@ -18,6 +18,12 @@ class Utils_SearchIndexController extends Zend_Controller_Action
         $this->view->indexName = $indexName;
         $this->view->indexSize = $indexSize;
         $this->view->indexDocuments = $indexDocuments;
+
+        $request = $this->getRequest();
+        $query = $request->getParam('query');
+
+        if($query)
+            $this->forward('test', null, null, array('query' => $query));
     }
 
     public function createAction()
@@ -132,8 +138,11 @@ class Utils_SearchIndexController extends Zend_Controller_Action
         $index = Zend_Search_Lucene::open(APPLICATION_ROOT.'/data/my-index');
 
         $phrase = 'альфа';
-        $query = Zend_Search_Lucene_Search_QueryParser::parse($phrase);
 
+        if($this->_getParam('query'))
+            $phrase = $this->_getParam('query');
+
+        $query = Zend_Search_Lucene_Search_QueryParser::parse($phrase);
         $hits = $index->find(strtolower($query));
 
         //var_dump($hits);
