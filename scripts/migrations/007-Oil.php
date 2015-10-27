@@ -19,7 +19,7 @@ class Oil extends Akrabat_Db_Schema_AbstractChange
                     category_id INT DEFAULT 0 NOT NULL,
                     title VARCHAR(255) DEFAULT '' NOT NULL,
                     path VARCHAR(128) DEFAULT '' NOT NULL,
-                    descroption TEXT,
+                    description TEXT,
                     content_html TEXT,
                     content_markdown TEXT,
                     image VARCHAR(128),
