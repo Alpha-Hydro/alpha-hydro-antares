@@ -1,5 +1,3 @@
-/data/my-index
-
 # IntelliJ project files
 .idea
 
@@ -37,3 +35,6 @@ public/fonts
 public/files
 public/upload
 public/D
+
+/data/my-index
+/old
