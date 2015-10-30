@@ -20,6 +20,7 @@ class Search_IndexController extends Zend_Controller_Action
         $request = $this->getRequest();
         $query = $request->getParam('query');
 
+
         if(!empty($query)){
             $query = str_replace(array('.',',',' ','-','_','/','\\','*','+','&','^','%','#','@','!','(',')','~','<','>',':',';','"',"'","|"), '', $query);
             $nameQuery = $request->getParam('query');

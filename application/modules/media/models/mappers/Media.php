@@ -231,5 +231,53 @@ class Media_Model_Mapper_Media
         return $entry;
     }
 
-}
+    /**
+     * @return Zend_Search_Lucene_Interface
+     */
+    public function addSearchIndex()
+    {
+        Zend_Search_Lucene_Analysis_Analyzer::setDefault(
+            new Zend_Search_Lucene_Analysis_Analyzer_Common_Utf8_CaseInsensitive());
 
+        // Создание индекса
+        $index = Zend_Search_Lucene::open(APPLICATION_ROOT.'/data/media-index');
+
+        $select = $this->getDbTable()->select();
+        $select
+            ->where('deleted != ?', 1)
+            ->where('active != ?', 0)
+            ->where('category_id IN(?)', array(2, 3, 4))
+            ->order('timestamp DESC');
+
+        $mediaItems = $this->fetchAll($select);
+
+        if(!empty($mediaItems)){
+            foreach ($mediaItems as $mediaItem) {
+                $doc = new Zend_Search_Lucene_Document();
+
+                // Сохранение Name документа для того, чтобы идентифицировать его
+                // в результатах поиска
+                $doc->addField(Zend_Search_Lucene_Field::Text('title', strtolower($mediaItem->getName())));
+
+                // Сохранение URL документа для того, чтобы идентифицировать его
+                // в результатах поиска
+                $doc->addField(Zend_Search_Lucene_Field::Text('url', '/media/'.$mediaItem->getFullPath()));
+
+                // Сохранение Description документа для того, чтобы идентифицировать его
+                // в результатах поиска
+                // $doc->addField(Zend_Search_Lucene_Field::Text('description', strtolower($mediaItem->getSContent())));
+
+                // Индексирование keyWords содержимого документа
+                $doc->addField(Zend_Search_Lucene_Field::UnStored('keyword', strtolower($mediaItem->getMetaKeywords())));
+
+                // Индексирование содержимого документа
+                $doc->addField(Zend_Search_Lucene_Field::UnStored('contents', strtolower($mediaItem->getContent())));
+
+                // Добавление документа в индекс
+                $index->addDocument($doc);
+            }
+        }
+
+        return $index;
+    }
+}

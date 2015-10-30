@@ -26,7 +26,7 @@
     result = new RegExp('[\?&]' + name + '=([^&#]*)').exec(document.location.search)
     result[1] or 0
 
-  googleSearch = (q)->
+  ###googleSearch = (q)->
     $.ajax
       url: 'https://www.googleapis.com/customsearch/v1'
       type: 'get'
@@ -39,9 +39,9 @@
         console.log "AJAX Error: #{textStatus}"
       success: (data, textStatus, jqXHR) ->
 #        console.log data.searchInformation.totalResults
-        searchResult data
+        searchResult data###
 
-  searchResult = (data)->
+  ###searchResult = (data)->
 #    console.log data
     items = data.items
     for item in items
@@ -52,12 +52,12 @@
       html = '<div>'+title+'</div>'
       html += '<div>'+snippet+'</div>'
       html += '<div>'+link+'</div>'
-      googleResponseContent.append html
+      googleResponseContent.append html###
 
 
-  query = urlParam 'query'
+  ###query = urlParam 'query'
   console.log decodeURIComponent query
 
-  googleSearch decodeURIComponent query if query?
+  googleSearch decodeURIComponent query if query?###
 
 ) jQuery

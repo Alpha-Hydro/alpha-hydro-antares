@@ -205,18 +205,32 @@
               <actionMethod actionName="edit"/>
               <actionMethod actionName="delete"/>
             </controllerFile>
+            <controllerFile controllerName="SearchIndex">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="create"/>
+              <actionMethod actionName="update"/>
+              <actionMethod actionName="delete"/>
+              <actionMethod actionName="optimize"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="PageEdit"/>
             <formFile formName="ManufactureCategoriesEdit"/>
             <formFile formName="ManufactureEdit"/>
+            <formFile formName="CreateIndex"/>
+            <formFile formName="CreateSearchIndex"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
           </layoutsDirectory>
           <modelsDirectory>
-            <dbTableDirectory enabled="false"/>
-            <modelMapperDirectory enabled="false"/>
+            <dbTableDirectory>
+              <dbTableFile dbTableName="SearchIndex"/>
+            </dbTableDirectory>
+            <modelMapperDirectory>
+              <modelMapperFile modelName="SearchIndex"/>
+            </modelMapperDirectory>
+            <modelColFile modelName="SearchIndex"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
@@ -277,6 +291,21 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Manufacture">
                 <viewScriptFile forActionName="delete"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="SearchIndex">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="SearchIndex">
+                <viewScriptFile forActionName="create"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="SearchIndex">
+                <viewScriptFile forActionName="update"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="SearchIndex">
+                <viewScriptFile forActionName="delete"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="SearchIndex">
+                <viewScriptFile forActionName="optimize"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -473,8 +502,13 @@
             <layoutScriptsDirectory enabled="false"/>
           </layoutsDirectory>
           <modelsDirectory>
-            <dbTableDirectory enabled="false"/>
-            <modelMapperDirectory enabled="false"/>
+            <dbTableDirectory>
+              <dbTableFile dbTableName="SearchIndex"/>
+            </dbTableDirectory>
+            <modelMapperDirectory>
+              <modelMapperFile modelName="SearchIndex"/>
+            </modelMapperDirectory>
+            <modelColFile modelName="SearchIndex"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
@@ -556,8 +590,13 @@
             <layoutScriptsDirectory enabled="false"/>
           </layoutsDirectory>
           <modelsDirectory>
-            <dbTableDirectory enabled="false"/>
-            <modelMapperDirectory enabled="false"/>
+            <dbTableDirectory>
+              <dbTableFile dbTableName="SearchIndex"/>
+            </dbTableDirectory>
+            <modelMapperDirectory>
+              <modelMapperFile modelName="SearchIndex"/>
+            </modelMapperDirectory>
+            <modelColFile modelName="SearchIndex"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
