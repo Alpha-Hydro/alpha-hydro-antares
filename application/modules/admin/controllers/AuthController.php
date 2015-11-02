@@ -17,11 +17,7 @@ class Admin_AuthController extends Zend_Controller_Action
         }
 
         // создаём форму и передаём её во view
-        $form = new Utils_Form_Login();
-        $this->view->form = $form;
-
-        // создаём форму и передаём её во view
-        $form = new Utils_Form_Auth();
+        $form = new Admin_Form_Auth();
         $this->view->form_auth = $form;
 
         // Если к нам идёт Post запрос
@@ -36,7 +32,7 @@ class Admin_AuthController extends Zend_Controller_Action
                 $username = $this->getRequest()->getPost('username');
                 $password = $this->getRequest()->getPost('password');
 
-                $authAdapter = new Utils_Model_Auth($username, $password);
+                $authAdapter = new Admin_Model_Auth($username, $password);
 
                 // получаем экземпляр Zend_Auth
                 $auth = Zend_Auth::getInstance();

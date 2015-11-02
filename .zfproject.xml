@@ -212,6 +212,21 @@
               <actionMethod actionName="delete"/>
               <actionMethod actionName="optimize"/>
             </controllerFile>
+            <controllerFile controllerName="Pipeline">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="add"/>
+              <actionMethod actionName="edit"/>
+              <actionMethod actionName="delete"/>
+            </controllerFile>
+            <controllerFile controllerName="PipelineCategories">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="add"/>
+              <actionMethod actionName="edit"/>
+              <actionMethod actionName="delete"/>
+            </controllerFile>
+            <controllerFile controllerName="BaseCrud">
+              <actionMethod actionName="index"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="PageEdit"/>
@@ -219,6 +234,7 @@
             <formFile formName="ManufactureEdit"/>
             <formFile formName="CreateIndex"/>
             <formFile formName="CreateSearchIndex"/>
+            <formFile formName="PipelineEdit"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -307,6 +323,33 @@
               <viewControllerScriptsDirectory forControllerName="SearchIndex">
                 <viewScriptFile forActionName="optimize"/>
               </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Pipeline">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Pipeline">
+                <viewScriptFile forActionName="add"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Pipeline">
+                <viewScriptFile forActionName="edit"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Pipeline">
+                <viewScriptFile forActionName="delete"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="PipelineCategories">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="PipelineCategories">
+                <viewScriptFile forActionName="add"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="PipelineCategories">
+                <viewScriptFile forActionName="edit"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="PipelineCategories">
+                <viewScriptFile forActionName="delete"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="BaseCrud">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
             <viewFiltersDirectory/>
@@ -350,8 +393,16 @@
             <layoutScriptsDirectory enabled="false"/>
           </layoutsDirectory>
           <modelsDirectory>
-            <dbTableDirectory enabled="false"/>
-            <modelMapperDirectory enabled="false"/>
+            <dbTableDirectory>
+              <dbTableFile dbTableName="Pipeline"/>
+              <dbTableFile dbTableName="PipelineCategories"/>
+            </dbTableDirectory>
+            <modelMapperDirectory>
+              <modelMapperFile modelName="Pipeline"/>
+              <modelMapperFile modelName="PipelineCategories"/>
+            </modelMapperDirectory>
+            <modelColFile modelName="Pipeline"/>
+            <modelColFile modelName="PipelineCategories"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
