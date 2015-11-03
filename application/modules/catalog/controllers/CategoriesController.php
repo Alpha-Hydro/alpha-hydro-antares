@@ -34,7 +34,7 @@ class Catalog_CategoriesController extends Zend_Controller_Action
 
         $current_category_id = $category->getId();
 
-        if($current_category_id != 0){
+        if($current_category_id !== 0){
 
             $select = $categories->getDbTable()->select();
             $select->where('parent_id = ?', $current_category_id)

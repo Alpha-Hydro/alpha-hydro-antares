@@ -13,12 +13,24 @@ class Pipeline_Bootstrap extends Zend_Application_Module_Bootstrap
 
     }
 
-    /*public function _initRoute(){
+    public function _initRoute(){
 
         $front = Zend_Controller_Front::getInstance();
         $router = $front->getRouter();
 
-        $config = new Zend_Config_Ini(APPLICATION_PATH . "/modules/" . strtolower($this->getModuleName()) . '/configs/route.ini', 'production');
-        $router->addConfig($config,'routes');
-    }*/
+        $route_pipeline = new Zend_Controller_Router_Route_Regex(
+            'pipeline/([\w\-\/]+)',
+            array(
+                'module' => 'pipeline',
+                'controller' => 'categories',
+                'action' => 'index',
+                1 => null,
+            ),
+            array(
+                1 => 'fullPath',
+            ),
+            'pipeline/%s/'
+        );
+        $router->addRoute('pipeline', $route_pipeline);
+    }
 }

@@ -148,6 +148,23 @@ class Pipeline_Model_Mapper_PipelineCategories
         return $normaliseName;
     }
 
+    public function findByFulPath($value, Pipeline_Model_PipelineCategories $categories)
+    {
+        $table = $this->getDbTable();
 
+        $select = $table->select()
+            ->where("full_path = ?", $value);
+
+        $result = $table->fetchAll($select);
+
+        if (0 == count($result)) {
+            return null;
+        }
+
+        $row = $result->current();
+        $entry = $this->_setDbData($row, $categories);
+
+        return $entry;
+    }
 }
 

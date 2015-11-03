@@ -1,3 +1,6 @@
+<?php
+$this->headScript()->appendFile('/js/catalog.min.js');
+?>
 <div class="row">
     <div class="col-md-3"></div>
     <div class="col-md-9">
@@ -7,10 +10,12 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-9 col-md-push-3">
-        <?=$this->layout()->content?>
+    <div class="col-md-9 col-md-push-3 categories-list">
+        <div class="row">
+            <?=$this->layout()->content?>
+        </div>
     </div>
     <div class="col-md-3 col-md-pull-9">
-
+        <?=$this->render('_sidebar.phtml')?>
     </div>
 </div>
