@@ -169,7 +169,7 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Horizontal
             ->order('sorting ASC');
 
         $categoryArray = array();
-        $categoryArray[] = '...';
+        $categoryArray[] = 'нет';
 
         $pipelineCategories = $pipelineCategoryMapper->fetchAll();
 

@@ -166,7 +166,22 @@ class Admin_ManufactureController extends Zend_Controller_Action
 
     public function deleteAction()
     {
-        // action body
+        $request = $this->getRequest();
+        $itemId = $request->getParam('id');
+
+        if(is_null($itemId))
+            return $this->_helper->redirector('index');
+
+        $manufactureMapper = new Manufacture_Model_Mapper_Manufacture();
+        $manufacture = $manufactureMapper->find($itemId, new Manufacture_Model_Manufacture());
+
+        if(is_null($manufacture))
+            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+        $manufacture->setDeleted(1);
+        $manufactureMapper->save($manufacture);
+
+        return $this->_helper->redirector('index');
     }
 
     /**

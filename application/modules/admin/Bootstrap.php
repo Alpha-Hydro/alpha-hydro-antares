@@ -37,6 +37,7 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         $acl->addResource(new Zend_Acl_Resource('manufacture'));
         $acl->addResource(new Zend_Acl_Resource('pipeline'));
         $acl->addResource(new Zend_Acl_Resource('pipeline-categories'));
+        $acl->addResource(new Zend_Acl_Resource('pipeline-property'));
         $acl->addResource(new Zend_Acl_Resource('search-index'));
 
         // далее переходим к созданию ролей, которых у нас 2:
@@ -52,7 +53,7 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         $acl->deny();
         //$acl->allow('guest', array('default', 'catalog', 'error'));
         $acl->allow('guest', 'auth');
-        $acl->allow('manager', array('index','pipeline', 'pipeline-categories'));
+        $acl->allow('manager', array('index','pipeline', 'pipeline-categories', 'pipeline-property'));
         $acl->allow('admin');
 
         // получаем экземпляр главного контроллера

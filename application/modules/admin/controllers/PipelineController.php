@@ -101,6 +101,78 @@ class Admin_PipelineController extends Zend_Controller_Action
         $this->view->form = $form;
     }
 
+    public function editAction()
+    {
+        $request = $this->getRequest();
+        $itemId = $request->getParam('id');
+
+        if(is_null($itemId))
+            return $this->_helper->redirector('index');
+
+        $pipelineMapper = new Pipeline_Model_Mapper_Pipeline();
+        $pipeline = $pipelineMapper->find($itemId, new Pipeline_Model_Pipeline());
+
+        if(is_null($pipeline))
+            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+        $form = new Admin_Form_PipelineEdit();
+        $dataPage = $pipeline->getOptions();
+        var_dump($dataPage);
+        foreach ($dataPage as $key => $value) {
+            $form->setDefault($key, $value);
+        }
+
+
+        if ($this->getRequest()->isPost()){
+            if ($form->isValid($request->getPost())){
+                $pipeline = new Pipeline_Model_Pipeline($form->getValues());
+                $pipelineMapper = new Pipeline_Model_Mapper_Pipeline();
+
+                $pipelineCategoryMapper = new Pipeline_Model_Mapper_PipelineCategories();
+                $pipelineCategory = $pipelineCategoryMapper->find($request->getParam('categoryId'),
+                    new Pipeline_Model_PipelineCategories());
+
+                $fullPath = (!is_null($pipelineCategory))
+                    ?$pipelineCategory->getPath().'/'.$this->getParam('path')
+                    :$this->getParam('path');
+                $pipeline->setFullPath($fullPath);
+
+                $file = $form->imageLoadFile->getFileInfo();
+                if(!empty($file) && $file['imageLoadFile']['name'] !== ''){
+                    $form->imageLoadFile->receive();
+                    $pipeline->setImage('/upload/pipeline/items/'.$file['imageLoadFile']['name']);
+                }
+
+                $markdown = $request->getParam('contentMarkdown');
+                $context_html = Markdown::defaultTransform($markdown);
+                $pipeline->setContentHtml($context_html);
+
+                $metaTitle = $request->getParam('metaTitle');
+                if(empty($metaTitle))
+                    $pipeline->setMetaTitle($request->getParam('title'));
+
+                $description = $request->getParam('description');
+                $metaDescription = $request->getParam('metaDescription');
+                if(empty($metaDescription) && !empty($description))
+                    $pipeline->setMetaDescription($description);
+
+                $pipelineMapper->save($pipeline);
+
+                return $this->_helper->redirector('index');
+            }
+
+            $form->setDefaults($request->getPost());
+            $this->view->formData = $form->getValues();
+        }
+
+        $this->view->form = $form;
+    }
+
+    public function deleteAction()
+    {
+        // action body
+    }
+
     /**
      * @param null $count_item_on_page
      * @return Admin_PipelineController
@@ -124,17 +196,6 @@ class Admin_PipelineController extends Zend_Controller_Action
     {
         return $this->_count_item_on_page;
     }
-
-    public function editAction()
-    {
-        // action body
-    }
-
-    public function deleteAction()
-    {
-        // action body
-    }
-
 
 }
 

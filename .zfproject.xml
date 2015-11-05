@@ -17,6 +17,9 @@
         <controllerFile controllerName="Breadcrumbs">
           <actionMethod actionName="index"/>
         </controllerFile>
+        <controllerFile controllerName="PipelineProperty">
+          <actionMethod actionName="index"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory>
         <formFile formName="PipelineCategoriesEdit"/>
@@ -229,6 +232,12 @@
             <controllerFile controllerName="BaseCrud">
               <actionMethod actionName="index"/>
             </controllerFile>
+            <controllerFile controllerName="PipelineProperty">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="add"/>
+              <actionMethod actionName="update"/>
+              <actionMethod actionName="delete"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="PageEdit"/>
@@ -238,6 +247,7 @@
             <formFile formName="CreateSearchIndex"/>
             <formFile formName="PipelineEdit"/>
             <formFile formName="PipelineCategoriesEdit"/>
+            <formFile formName="PipelinePropertyEdit"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -353,6 +363,18 @@
               <viewControllerScriptsDirectory forControllerName="BaseCrud">
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="PipelineProperty">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="PipelineProperty">
+                <viewScriptFile forActionName="add"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="PipelineProperty">
+                <viewScriptFile forActionName="update"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="PipelineProperty">
+                <viewScriptFile forActionName="delete"/>
+              </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
             <viewFiltersDirectory/>
@@ -409,13 +431,19 @@
             <dbTableDirectory>
               <dbTableFile dbTableName="Pipeline"/>
               <dbTableFile dbTableName="PipelineCategories"/>
+              <dbTableFile dbTableName="PipelineProperty"/>
+              <dbTableFile dbTableName="PipelinePropertyValues"/>
             </dbTableDirectory>
             <modelMapperDirectory>
               <modelMapperFile modelName="Pipeline"/>
               <modelMapperFile modelName="PipelineCategories"/>
+              <modelMapperFile modelName="PipelineProperty"/>
+              <modelMapperFile modelName="PipelinePropertyValues"/>
             </modelMapperDirectory>
             <modelColFile modelName="Pipeline"/>
             <modelColFile modelName="PipelineCategories"/>
+            <modelColFile modelName="PipelineProperty"/>
+            <modelColFile modelName="PipelinePropertyValues"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
@@ -720,6 +748,9 @@
             <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Breadcrumbs">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="PipelineProperty">
             <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
