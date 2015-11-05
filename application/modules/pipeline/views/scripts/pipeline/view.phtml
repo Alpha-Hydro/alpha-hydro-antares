@@ -1,0 +1,15 @@
+<?php
+$this->headTitle($this->title);
+$this->meta_title = $this->title;
+$this->breadcrumbs = true;
+$this->sidebar_headers = true;
+?>
+<div class="col-xs-6 col-md-3">
+    <div class="product-images">
+        <div class="thumbnail">
+            <img src="<?= ($this->pipeline->getImage())
+                ? $this->pipeline->getImage
+                : '/files/images/product/2012-05-22_foto_nv.jpg'; ?>" alt="<?= $this->escape($this->pipeline->getTitle()); ?>">
+        </div>
+    </div>
+</div>

@@ -395,6 +395,10 @@
             </controllerFile>
             <controllerFile controllerName="Pipeline">
               <actionMethod actionName="index"/>
+              <actionMethod actionName="view"/>
+            </controllerFile>
+            <controllerFile controllerName="Breadcrumbs">
+              <actionMethod actionName="index"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory enabled="false"/>
@@ -423,6 +427,12 @@
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Pipeline">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Pipeline">
+                <viewScriptFile forActionName="view"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Breadcrumbs">
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>

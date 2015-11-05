@@ -148,6 +148,28 @@ class Pipeline_Model_Mapper_Pipeline
         return $normaliseName;
     }
 
+    /**
+     * @param $value
+     * @param Pipeline_Model_Pipeline $pipeline
+     * @return null|Pipeline_Model_Pipeline
+     */
+    public function findByFulPath($value, Pipeline_Model_Pipeline $pipeline)
+    {
+        $table = $this->getDbTable();
 
+        $select = $table->select()
+            ->where("full_path = ?", $value);
+
+        $result = $table->fetchAll($select);
+
+        if (0 == count($result)) {
+            return null;
+        }
+
+        $row = $result->current();
+        $entry = $this->_setDbData($row, $pipeline);
+
+        return $entry;
+    }
 }
 

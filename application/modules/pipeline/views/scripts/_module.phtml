@@ -11,6 +11,21 @@ $this->headScript()->appendFile('/js/catalog.min.js');
 </div>
 <div class="row">
     <div class="col-md-9 col-md-push-3 categories-list">
+        <?php if($this->breadcrumbs):?>
+            <div class="row">
+                <div class="col-md-12">
+                    <?= $this->action(
+                        "index",
+                        "breadcrumbs",
+                        "pipeline",
+                        array(
+                            'page_category' => $this->category,
+                            'page_item' => $this->pipeline,
+                        )
+                    );?>
+                </div>
+            </div>
+        <?php endif; ?>
         <div class="row">
             <?=$this->layout()->content?>
         </div>

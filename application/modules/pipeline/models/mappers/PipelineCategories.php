@@ -148,6 +148,11 @@ class Pipeline_Model_Mapper_PipelineCategories
         return $normaliseName;
     }
 
+    /**
+     * @param $value
+     * @param Pipeline_Model_PipelineCategories $categories
+     * @return null|Pipeline_Model_PipelineCategories
+     */
     public function findByFulPath($value, Pipeline_Model_PipelineCategories $categories)
     {
         $table = $this->getDbTable();

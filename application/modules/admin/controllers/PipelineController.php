@@ -39,8 +39,6 @@ class Admin_PipelineController extends Zend_Controller_Action
                 $this->view->countPage = count($pipelinePages);
                 $this->view->currentPage = $currentPage+1;
             }
-
-
         }
 
         $this->view->pages = $pipelineItems;

@@ -1,4 +1,36 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Pipeline</b> and script/action name <b>index</b></p>
+<?php
+$this->headTitle($this->title);
+$this->meta_title = $this->title;
+$this->breadcrumbs = true;
+$this->sidebar_headers = true;
+?>
+
+<div class="container-fluid product-list">
+    <?php if($this->listItems): ?>
+        <?php foreach ($this->listItems as $item): ?>
+            <div class="row product-item">
+                <div class="col-md-3">
+                    <div class="thumbnail product-images">
+                        <a href="<?=$this->url(
+                            array(
+                                'controller' => 'pipeline',
+                                'action' => 'view',
+                                'fullPath' => $item->getFullPath()
+                            ),'pipeline',true,false);?>">
+                            <img src="<?=($item->getImage())
+                                ?$item->getImage
+                                :'/files/images/product/2012-05-22_foto_nv.jpg';?>"
+                                 alt="<?=$this->escape($item->getTitle());?>">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <h2 class="h4">
+                        <a href="<?=$this->url()?>"><?=$this->escape($item->getTitle());?></a>
+                        <small><?=$this->escape($item->getTitle());?></small>
+                    </h2>
+                </div>
+            </div>
+        <?php endforeach;?>
+    <?php endif;?>
 </div>
