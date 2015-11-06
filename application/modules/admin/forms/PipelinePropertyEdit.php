@@ -21,6 +21,20 @@ class Admin_Form_PipelinePropertyEdit extends Twitter_Bootstrap_Form_Horizontal
             'required'      => true,
         ));
 
+        $this->addElement('select', 'type', array(
+            'label'         => 'Тип',
+            'placeholder'   => 'Тип',
+            'required'      => true,
+            'multiOptions'  => array(
+                '0' => 'string', //tetx
+                '1' => 'text', //textarea
+                '2' => 'image', //file
+                '3' => 'file', //file
+                '4' => 'checkbox',
+                '5' => 'radio',
+            ),
+        ));
+
         $this->addElement('text', 'sorting', array(
             'label'         => 'Сортировка',
         ));

@@ -17,6 +17,8 @@ class Pipeline_Model_PipelineProperty
 
     protected $_sistem_name = null;
 
+    protected $_type = null;
+
     /**
      * @param $options
      */
@@ -252,6 +254,28 @@ class Pipeline_Model_PipelineProperty
     public function getSistemName()
     {
         return $this->_sistem_name;
+    }
+
+    /**
+     * Set value Type
+     *
+     * @return $this 
+     * @param $type
+     */
+    public function setType($type)
+    {
+        $this->_type = $type;
+        return $this;
+    }
+
+    /**
+     * Get value Type
+     *
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->_type;
     }
 
 

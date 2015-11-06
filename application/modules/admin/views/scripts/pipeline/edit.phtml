@@ -2,12 +2,38 @@
 $this->title = "Новый товар";
 ?>
 <div class="row">
-    <div class="col-md-2"></div>
+    <div class="col-md-2">
+        <div class="clearfix">
+            <nav class="affix">
+                <ul class="nav">
+                    <li><a href="<?=$this->url()?>">Свойства товара</a></li>
+                    <li><a href="<?=$this->url(
+                            array('module'=>'admin', 'controller' => 'pipeline', 'action' => 'add'),
+                            false,true
+                        )?>">Добавить товар</a></li>
+                    <li><a href="<?=$this->url(
+                            array('module'=>'admin', 'controller' => 'pipeline', 'action' => 'delete'),
+                            'adminEdit'
+                        )?>">Удалить</a></li>
+                    <li class="nav-divider"></li>
+                    <li><a href="<?=$this->url(
+                            array('module'=>'admin', 'controller' => 'pipeline'),
+                            false,true
+                        )?>">Список</a></li>
+                    <li><a href="<?=$this->url(
+                            array('module'=>'admin', 'controller' => 'pipeline-categories'),
+                            false,true
+                        )?>">Категории</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
     <div class="col-md-10">
         <div class="row">
             <div class="col-md-12">
                 <ul class="nav nav-tabs nav-justified"  role="tablist">
                     <li role="presentation" class="active"><a href="#fieldset-basic" aria-controls="fieldset-basic" role="tab" data-toggle="tab">Основные</a></li>
+                    <li role="presentation"><a href="#fieldset-property" aria-controls="fieldset-property" role="tab" data-toggle="tab">Свойства товара</a></li>
                     <li role="presentation"><a href="#fieldset-seo" aria-controls="fieldset-seo" role="tab" data-toggle="tab">SEO</a></li>
                     <li role="presentation"><a href="#fieldset-additionally" aria-controls="fieldset-additionally" role="tab" data-toggle="tab">Дополнительно</a></li>
                 </ul>

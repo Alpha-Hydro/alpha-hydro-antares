@@ -117,7 +117,7 @@ class Admin_PipelineController extends Zend_Controller_Action
 
         $form = new Admin_Form_PipelineEdit();
         $dataPage = $pipeline->getOptions();
-        var_dump($dataPage);
+
         foreach ($dataPage as $key => $value) {
             $form->setDefault($key, $value);
         }

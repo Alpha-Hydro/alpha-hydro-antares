@@ -70,7 +70,10 @@ class Twitter_Bootstrap_Form_Decorator_Addon extends Zend_Form_Decorator_Abstrac
      */
     protected function _prepareAddon(&$addon)
     {
-        $addonClass = 'input-group-addon';
+        $addonClass = $this->getElement()->getAttrib('addonClass');
+
+        if(null === $addonClass)
+            $addonClass = 'input-group-addon';
 
         // Convert into a Zend_Config object if we recieved an array
         if (is_array($addon)) {

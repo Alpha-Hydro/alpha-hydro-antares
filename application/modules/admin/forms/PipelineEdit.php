@@ -82,6 +82,34 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Horizontal
             )
         );
 
+        $this->addElement('text', 'draft', array(
+            'label'         => 'Чертеж',
+            'placeholder'   => 'Чертеж',
+            'addonClass'    => 'input-group-btn',
+            'append'        => '<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>',
+            'prepend'       => '<button class="btn btn-default" type="button">Загрузить  <i class="glyphicon glyphicon-save"></i></button>',
+        ));
+
+        $this->addElement('text', 'size', array(
+            'label'         => 'Размеры',
+            'placeholder'   => 'Размеры',
+            'addonClass'    => 'input-group-btn',
+            'append'        => '<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>',
+            'prepend'       => '<button class="btn btn-default" type="button">Загрузить  <i class="glyphicon glyphicon-save"></i></button>',
+        ));
+
+        $this->addDisplayGroup(
+            array(
+                'draft',
+                'size',
+            ),
+            'property',
+            array(
+                'class' => 'tab-pane active',
+                'role'  => 'tabpanel'
+            )
+        );
+
         $this->addElement('text', 'metaTitle', array(
             'label'         => 'SEO title',
             'placeholder'   => 'meta title',

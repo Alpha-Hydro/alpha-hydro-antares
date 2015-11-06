@@ -23,6 +23,7 @@
       </controllersDirectory>
       <formsDirectory>
         <formFile formName="PipelineCategoriesEdit"/>
+        <formFile formName="PipelinePropertyValue"/>
       </formsDirectory>
       <layoutsDirectory>
         <layoutScriptsDirectory>
@@ -238,6 +239,10 @@
               <actionMethod actionName="update"/>
               <actionMethod actionName="delete"/>
             </controllerFile>
+            <controllerFile controllerName="PipelinePropertyValue">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="add"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="PageEdit"/>
@@ -248,6 +253,8 @@
             <formFile formName="PipelineEdit"/>
             <formFile formName="PipelineCategoriesEdit"/>
             <formFile formName="PipelinePropertyEdit"/>
+            <formFile formName="PipelinePropertyValue"/>
+            <formFile formName="PipelinePropertyValueAdd"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -374,6 +381,12 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="PipelineProperty">
                 <viewScriptFile forActionName="delete"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="PipelinePropertyValue">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="PipelinePropertyValue">
+                <viewScriptFile forActionName="add"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>

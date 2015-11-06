@@ -38,6 +38,7 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         $acl->addResource(new Zend_Acl_Resource('pipeline'));
         $acl->addResource(new Zend_Acl_Resource('pipeline-categories'));
         $acl->addResource(new Zend_Acl_Resource('pipeline-property'));
+        $acl->addResource(new Zend_Acl_Resource('pipeline-property-value'));
         $acl->addResource(new Zend_Acl_Resource('search-index'));
 
         // далее переходим к созданию ролей, которых у нас 2:

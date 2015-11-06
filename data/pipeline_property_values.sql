@@ -3,4 +3,6 @@ CREATE TABLE `pipeline_property_values` (
   `pipeline_id` int(11) NOT NULL,
   `value` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`property_id`,`pipeline_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE pipeline_property_values CHANGE value value TEXT;

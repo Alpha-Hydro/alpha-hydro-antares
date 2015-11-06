@@ -18,6 +18,7 @@
                     <th>ID</th>
                     <th>Наименование</th>
                     <th>Системное имя</th>
+                    <th>Тип</th>
                     <th>Показывать в списке</th>
                     <th>Сортировка</th>
                     <th>Активность</th>
@@ -29,6 +30,7 @@
                         <td><?=$page->getId()?></td>
                         <td><?=$page->getName()?></td>
                         <td><?=$page->getSistemName()?></td>
+                        <td><?=$this->getTypeText($page->getType())?></td>
                         <td><input type="checkbox" value="<?=$page->getShowList()?>" <?=($page->getShowList() != 0)?'checked':'';?>></td>
                         <td><?=$page->getSorting()?></td>
                         <td><input type="checkbox" value="<?=$page->getActive()?>" <?=($page->getActive() != 0)?'checked':'';?>></td>
