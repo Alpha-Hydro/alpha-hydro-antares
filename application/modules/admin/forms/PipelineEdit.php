@@ -1,6 +1,6 @@
 <?php
 
-class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Horizontal
+class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
 {
 
     public function init()
@@ -11,8 +11,20 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Horizontal
         $image->setDestination(APPLICATION_ROOT.'/upload/pipeline/items/')
             ->addValidator('Size', false, 1024000)
             ->addValidator('Extension', false, 'jpg,png,gif')
-            ->setAttrib('class', 'hidden');
+            ->setAttribs(
+                array(
+                    'class' => 'hidden',
+                )
+            );
         $this->addElement($image);
+
+        $this->addElement('text', 'title', array(
+            'label'         => 'Наименование товара',
+            'placeholder'   => 'Наименование товара',
+            'required'      => true,
+            'class'         => 'slugify',
+            'data-slugify'  => 'path',
+        ));
 
         $this->addElement('select', 'categoryId', array(
             'label'     => 'Категория',
@@ -20,13 +32,6 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Horizontal
             'multiOptions' => $this->getCategoryArray(),
         ));
 
-        $this->addElement('text', 'title', array(
-            'label'         => 'Заголовок страницы',
-            'placeholder'   => 'Заголовок страницы',
-            'required'      => true,
-            'class'         => 'slugify',
-            'data-slugify'  => 'path',
-        ));
 
         $this->addElement('text', 'path', array(
             'label'         => 'Url страницы',
@@ -40,75 +45,25 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Horizontal
             'required'      => true,
         ));*/
 
-        $this->addElement('text', 'image', array(
-            'label'         => 'Изображение',
-            'prepend'       => '<i class="glyphicon glyphicon-eye-open"></i>',
-            //'disabled'      => true,
-        ));
-        $this->addElement('button', 'imageLoad', array(
-            'label'         => 'Загрузить изображение',
-            'type'          => 'button',
-            'class'         => 'image-btn',
-            'ignore' => true,
+        $this->addElement('image', 'image', array(
+            'label'         => null,
+            'class'         => 'img-thumbnail mt2',
+            'data-toggle'   => 'tooltip',
+            'data-placement'=> 'bottom',
+            'title'         => 'Загрузить изображение',
         ));
 
         $this->addElement('textarea', 'description', array(
             'label'         => 'Краткое описание страницы',
             'placeholder'   => 'Краткое описание страницы',
-            'rows'          => '8',
+            'rows'          => '4',
         ));
 
         $this->addElement('textarea', 'contentMarkdown', array(
             'label'         => 'Текст на странице (markdown)',
             'placeholder'   => 'Текст',
-            'rows'          => '15',
+            'rows'          => '8',
         ));
-
-        $this->addDisplayGroup(
-            array(
-                'categoryId',
-                'title',
-                'path',
-                'image',
-                'imageLoad',
-                'description',
-                'contentMarkdown',
-            ),
-            'basic',
-            array(
-                //'legend' => 'Основные',
-                'class' => 'tab-pane active',
-                'role'  => 'tabpanel'
-            )
-        );
-
-        $this->addElement('text', 'draft', array(
-            'label'         => 'Чертеж',
-            'placeholder'   => 'Чертеж',
-            'addonClass'    => 'input-group-btn',
-            'append'        => '<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>',
-            'prepend'       => '<button class="btn btn-default" type="button">Загрузить  <i class="glyphicon glyphicon-save"></i></button>',
-        ));
-
-        $this->addElement('text', 'size', array(
-            'label'         => 'Размеры',
-            'placeholder'   => 'Размеры',
-            'addonClass'    => 'input-group-btn',
-            'append'        => '<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>',
-            'prepend'       => '<button class="btn btn-default" type="button">Загрузить  <i class="glyphicon glyphicon-save"></i></button>',
-        ));
-
-        $this->addDisplayGroup(
-            array(
-                'draft',
-                'size',
-            ),
-            'property',
-            array(
-                'class' => 'tab-pane active',
-                'role'  => 'tabpanel'
-            )
-        );
 
         $this->addElement('text', 'metaTitle', array(
             'label'         => 'SEO title',
@@ -124,23 +79,8 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Horizontal
         $this->addElement('textarea', 'metaKeywords', array(
             'label'         => 'SEO keywords',
             'placeholder'   => 'meta keywords',
-            'rows'          => '8',
+            'rows'          => '4',
         ));
-
-        $this->addDisplayGroup(
-            array(
-                'metaTitle',
-                'metaDescription',
-                'metaKeywords',
-            ),
-            'seo',
-            array(
-                //'legend' => 'SEO',
-                'class' => 'tab-pane',
-                'role'  => 'tabpanel',
-
-            )
-        );
 
         $this->addElement('text', 'sorting', array(
             'label'         => 'Сортировка',
@@ -156,34 +96,80 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Horizontal
 
         $this->addDisplayGroup(
             array(
+                'id',
+                'title',
+                'categoryId',
+                'path',
+            ),
+            'basic',
+            array()
+        );
+
+        $this->addDisplayGroup(
+            array(
+                'image',
+                'imageLoadFile',
+            ),
+            'imageGroup',
+            array()
+        );
+
+        $this->addDisplayGroup(
+            array(
+                'description',
+                'contentMarkdown',
+            ),
+            'desc',
+            array(
+                'class' => 'tab-pane active',
+                'role'  => 'tabpanel'
+            )
+        );
+        $this->addDisplayGroup(
+            array(
+                'metaTitle',
+                'metaDescription',
+                'metaKeywords',
+            ),
+            'seo',
+            array(
+                'class' => 'tab-pane',
+                'role'  => 'tabpanel',
+
+            )
+        );
+        $this->addDisplayGroup(
+            array(
                 'sorting',
                 'active',
                 'deleted'
             ),
             'additionally',
             array(
-                //'legend' => 'Дополнительно',
                 'class' => 'tab-pane',
                 'role'  => 'tabpanel'
             )
         );
 
         $this->addElement('button', 'submit', array(
-            'label'         => 'Сохранить',
+            'label'         => 'Сохранить изменения',
             'type'          => 'submit',
             'buttonType'    => 'success',
-            'ignore' => true,
-            //'escape'        => false
+            'ignore'        => true,
+            'form'          => 'pipelineEdit'
+            //'escape'        => true
         ));
+
+        $this->getElement('submit')->removeDecorator('label');
 
         /*$this->addElement('hash', 'csrf', array(
             'ignore' => true,
         ));*/
 
-        $classForm = $this->getAttrib('class');
+        /*$classForm = $this->getAttrib('class');
         $this->addAttribs(array(
             'class' => 'tab-content '.$classForm,
-        ));
+        ));*/
     }
 
     /**

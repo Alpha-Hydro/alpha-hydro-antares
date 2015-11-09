@@ -15,9 +15,15 @@ class Admin_PipelinePropertyValueController extends Zend_Controller_Action
 
     public function addAction()
     {
-        $form = new Admin_Form_PipelinePropertyValue();
+        $request = $this->getRequest();
 
-        $this->view->form = $form;
+        if ($request->isPost()){
+            var_dump($request->getPost());
+        }
+
+        /*$form = new Admin_Form_PipelinePropertyValue();
+
+        $this->view->form = $form;*/
     }
 
 

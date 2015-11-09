@@ -9,6 +9,11 @@ class Admin_PipelineController extends Zend_Controller_Action
 
     public function init()
     {
+        $ajaxContext = $this->_helper->getHelper('AjaxContext');
+        $ajaxContext
+            ->addActionContext('select-add-property', 'html')
+            ->initContext('html');
+
         $this->_count_item_on_page = 10;
     }
 
@@ -50,9 +55,10 @@ class Admin_PipelineController extends Zend_Controller_Action
         $form = new Admin_Form_PipelineEdit();
 
         $form->setDefaults(array(
-            'sorting'       => 0,
-            'active'        => 1,
-            'deleted'       => 0,
+            'sorting'   => 0,
+            'active'    => 1,
+            'deleted'   => 0,
+            'image'     => '/files/images/product/2012-05-22_foto_nv.jpg',
         ));
 
         if ($this->getRequest()->isPost()){
@@ -117,11 +123,13 @@ class Admin_PipelineController extends Zend_Controller_Action
 
         $form = new Admin_Form_PipelineEdit();
         $dataPage = $pipeline->getOptions();
+        $image = $dataPage['image'];
 
         foreach ($dataPage as $key => $value) {
             $form->setDefault($key, $value);
+            if(empty($image))
+                 $form->setDefault('image', '/files/images/product/2012-05-22_foto_nv.jpg');
         }
-
 
         if ($this->getRequest()->isPost()){
             if ($form->isValid($request->getPost())){
@@ -141,6 +149,9 @@ class Admin_PipelineController extends Zend_Controller_Action
                 if(!empty($file) && $file['imageLoadFile']['name'] !== ''){
                     $form->imageLoadFile->receive();
                     $pipeline->setImage('/upload/pipeline/items/'.$file['imageLoadFile']['name']);
+                }
+                else{
+                    $pipeline->setImage($image);
                 }
 
                 $markdown = $request->getParam('contentMarkdown');
@@ -165,6 +176,7 @@ class Admin_PipelineController extends Zend_Controller_Action
             $this->view->formData = $form->getValues();
         }
 
+        $this->view->properties = $this->_getPropertyArray();
         $this->view->form = $form;
     }
 
@@ -176,9 +188,6 @@ class Admin_PipelineController extends Zend_Controller_Action
     /**
      * @param null $count_item_on_page
      * @return Admin_PipelineController
-     *
-     *
-     *
      */
     public function setCountItemOnPage($count_item_on_page)
     {
@@ -188,16 +197,50 @@ class Admin_PipelineController extends Zend_Controller_Action
 
     /**
      * @return null
-     *
-     *
-     *
      */
     public function getCountItemOnPage()
     {
         return $this->_count_item_on_page;
     }
 
+    protected function _getPropertyArray()
+    {
+        $pipelinePropertyMapper = new Pipeline_Model_Mapper_PipelineProperty();
+        $select = $pipelinePropertyMapper->getDbTable()->select();
+        $select->where('deleted != ?', 1)
+            ->where('active != ?', 0)
+            ->order('sorting ASC');
+
+        $pipelinePropertyArray = array();
+        $pipelinePropertyArray[] = '...';
+        $pipelineProperty = $pipelinePropertyMapper->fetchAll($select);
+
+        if(!empty($pipelineProperty)){
+            foreach ($pipelineProperty as $property) {
+                $pipelinePropertyArray[$property->getId()] = $property->getName();
+            }
+        }
+
+        return $pipelinePropertyArray;
+
+    }
+
+    public function selectAddPropertyAction()
+    {
+        $request = $this->getRequest();
+        $propertyId = $request->getParam('propertyId');
+
+        $pipelinePropertyMapper = new Pipeline_Model_Mapper_PipelineProperty();
+        $pipelineProperty = $pipelinePropertyMapper
+            ->find($propertyId, new Pipeline_Model_PipelineProperty());
+
+        $this->view->property = $pipelineProperty;
+    }
+
+
 }
+
+
 
 
 

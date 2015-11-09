@@ -223,6 +223,7 @@
               <actionMethod actionName="add"/>
               <actionMethod actionName="edit"/>
               <actionMethod actionName="delete"/>
+              <actionMethod actionName="selectAddProperty"/>
             </controllerFile>
             <controllerFile controllerName="PipelineCategories">
               <actionMethod actionName="index"/>
@@ -387,6 +388,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="PipelinePropertyValue">
                 <viewScriptFile forActionName="add"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Pipeline">
+                <viewScriptFile forActionName="selectAddProperty"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>

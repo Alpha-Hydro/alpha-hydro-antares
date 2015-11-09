@@ -30,7 +30,6 @@
                     <th>ID</th>
                     <th>Категория</th>
                     <th>Заголовок</th>
-                    <th>Url</th>
                     <th>Дата создания</th>
                     <th>Сортировка</th>
                     <th>Активность</th>
@@ -42,7 +41,6 @@
                         <td><?=$page->getId()?></td>
                         <td><?=$this->getCategory($page->getCategoryId(),'pipeline')->getTitle()?></td>
                         <td><?=$page->getTitle()?></td>
-                        <td><?=$page->getFullPath()?></td>
                         <td><?=date("Y-m-d", strtotime($page->getCreateDate()));?></td>
                         <td><?=$page->getSorting()?></td>
                         <td><input type="checkbox" value="<?=$page->getActive()?>" <?=($page->getActive() != 0)?'checked':'';?>></td>
