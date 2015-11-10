@@ -2,32 +2,23 @@
 
 class Zend_View_Helper_getTypeInput extends Zend_View_Helper_Abstract
 {
-    function getTypeInput($type, $name, $value = null, $attribs = null, $options = null){
+    function getTypeInput($typeInput){
 
-        switch ($type) {
-            case  0:
-                $input = $this->view->formText($name, $value, $attribs);
+        $form = new Admin_Form_PipelinePropertyValueAdd();
+
+        switch ($typeInput) {
+            case 0:
+                return $form->getElement('valueText')->setAttrib('required', 'required');
                 break;
-            case  1:
-                $input = $this->view->formTextarea($name, $value, $attribs);
+            case 1:
+                return $form->getElement('valueTextArea')->setAttrib('required', 'required');
                 break;
-            case  2:
-                $input = $this->view->formFile($name, null);
-                break;
-            case  3:
-                $input = $this->view->formFile($name, null);
-                break;
-            case  4:
-                $input = $this->view->formCheckbox($name, $value, $attribs, $options);
-                break;
-            case  5:
-                $input = $this->view->formRadio($name, $value, $attribs, $options);
+            case 2:
+            case 3:
+                return $form->getElement('valueLoadFile')->setAttrib('required', 'required');
                 break;
             default;
-                $input = $this->view->formText($name, $value, $attribs);
+                return $form->getElement('value');
         }
-
-        return $input;
-
     }
 }

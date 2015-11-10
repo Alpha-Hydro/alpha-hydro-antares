@@ -3,8 +3,6 @@
 class Pipeline_Model_PipelinePropertyValues
 {
 
-    protected $_id = null;
-
     protected $_property_id = null;
 
     protected $_pipeline_id = null;
@@ -92,28 +90,6 @@ class Pipeline_Model_PipelinePropertyValues
         }
         
         return $data;
-    }
-
-    /**
-     * Set value Id
-     *
-     * @return $this 
-     * @param $id
-     */
-    public function setId($id)
-    {
-        $this->_id = $id;
-        return $this;
-    }
-
-    /**
-     * Get value Id
-     *
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->_id;
     }
 
     /**

@@ -1,5 +1,6 @@
 <?php
-    $typeInput = $this->getTypeInput($this->property->getType(), 'value', null, array('class' => 'form-control'), null);
-?>
-<label for="value">Значение</label>
-<?=$typeInput?>
+    $typeInput = 100;
+    if($this->property)
+        $typeInput = $this->property->getType();
+
+    echo $this->getTypeInput($typeInput);

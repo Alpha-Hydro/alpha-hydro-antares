@@ -178,6 +178,13 @@ class Admin_PipelineController extends Zend_Controller_Action
 
         $this->view->properties = $this->_getPropertyArray();
         $this->view->form = $form;
+
+        $formValueAdd = new Admin_Form_PipelinePropertyValueAdd();
+        $formValueAdd->setDefaults(array(
+            'pipelineId' => $itemId,
+            'propertyId' => 0,
+        ));
+        $this->view->formValueAdd = $formValueAdd;
     }
 
     public function deleteAction()
@@ -222,22 +229,22 @@ class Admin_PipelineController extends Zend_Controller_Action
         }
 
         return $pipelinePropertyArray;
-
     }
 
     public function selectAddPropertyAction()
     {
         $request = $this->getRequest();
-        $propertyId = $request->getParam('propertyId');
 
-        $pipelinePropertyMapper = new Pipeline_Model_Mapper_PipelineProperty();
-        $pipelineProperty = $pipelinePropertyMapper
-            ->find($propertyId, new Pipeline_Model_PipelineProperty());
+        if($request->getParam('propertyId')){
+            $propertyId = $request->getParam('propertyId');
 
-        $this->view->property = $pipelineProperty;
+            $pipelinePropertyMapper = new Pipeline_Model_Mapper_PipelineProperty();
+            $pipelineProperty = $pipelinePropertyMapper
+                ->find($propertyId, new Pipeline_Model_PipelineProperty());
+
+            $this->view->property = $pipelineProperty;
+        }
     }
-
-
 }
 
 

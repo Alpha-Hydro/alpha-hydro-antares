@@ -54,6 +54,7 @@
         <modelColFile modelName="Subproducts"/>
         <modelColFile modelName="SubproductParams"/>
         <modelColFile modelName="SubproductParamsValues"/>
+        <modelColFile modelName="PipelinePropertyValues"/>
       </modelsDirectory>
       <modulesDirectory>
         <moduleDirectory moduleName="default">

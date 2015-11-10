@@ -18,10 +18,11 @@ loadFile = (event)->
   $(document).on 'change', '#propertyId', ()->
     val = $(@).val()
     src = '/admin/pipeline/select-add-property'
-    ajaxContent = $('.ajax-content')
+    ajaxContent = $('#ajaxContent')
     console.log val
+    getInput(src, val, ajaxContent) if val isnt 0
 
-
+  getInput = (src, val, ajaxContent)->
     $.ajax
       url: src
       type: 'POST'
@@ -31,8 +32,10 @@ loadFile = (event)->
       error: (jqXHR, textStatus, errorThrown) ->
         console.log "AJAX Error: #{textStatus}"
       success: (data, textStatus, jqXHR)->
+        console.log data
         ajaxContent.html data
-      false
+    false
+
 
 
 ) jQuery

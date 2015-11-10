@@ -14,6 +14,7 @@
   };
 
   (function($) {
+    var getInput;
     $('[data-toggle="tooltip"]').tooltip();
     $('#image').click(function() {
       $('#imageLoadFile').trigger('click');
@@ -22,13 +23,18 @@
     $('#imageLoadFile').change(function(event) {
       return loadFile(event);
     });
-    return $(document).on('change', '#propertyId', function() {
+    $(document).on('change', '#propertyId', function() {
       var ajaxContent, src, val;
       val = $(this).val();
       src = '/admin/pipeline/select-add-property';
-      ajaxContent = $('.ajax-content');
+      ajaxContent = $('#ajaxContent');
       console.log(val);
-      return $.ajax({
+      if (val !== 0) {
+        return getInput(src, val, ajaxContent);
+      }
+    });
+    return getInput = function(src, val, ajaxContent) {
+      $.ajax({
         url: src,
         type: 'POST',
         dataType: 'html',
@@ -39,10 +45,12 @@
           return console.log("AJAX Error: " + textStatus);
         },
         success: function(data, textStatus, jqXHR) {
+          console.log(data);
           return ajaxContent.html(data);
         }
-      }, false);
-    });
+      });
+      return false;
+    };
   })(jQuery);
 
 }).call(this);
