@@ -89,6 +89,7 @@ class Pipeline_Model_Mapper_PipelineProperty
         return $entries;
     }
 
+
     /**
      * @return mixed
      */
@@ -124,7 +125,7 @@ class Pipeline_Model_Mapper_PipelineProperty
      * @param Pipeline_Model_PipelineProperty $entry
      * @return Pipeline_Model_PipelineProperty
      */
-    protected function _setDbData($row, Pipeline_Model_PipelineProperty $entry)
+    public function _setDbData($row, Pipeline_Model_PipelineProperty $entry)
     {
         $info = $this->getDbTable()->info();
         $properties = $info['cols'];

@@ -33,7 +33,7 @@
         return getInput(src, val, ajaxContent);
       }
     });
-    return getInput = function(src, val, ajaxContent) {
+    getInput = function(src, val, ajaxContent) {
       $.ajax({
         url: src,
         type: 'POST',
@@ -51,6 +51,7 @@
       });
       return false;
     };
+    return $('#pipelineProperties').editTable();
   })(jQuery);
 
 }).call(this);

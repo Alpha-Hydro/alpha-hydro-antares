@@ -36,7 +36,11 @@ loadFile = (event)->
         ajaxContent.html data
     false
 
-
+  $('#pipelineProperties').editTable()
+#    url: 'example.php'
+#    columns:
+#      identifier: [0, 'id'],
+#      editable: [[1, 'propertyValue']]
 
 ) jQuery
 

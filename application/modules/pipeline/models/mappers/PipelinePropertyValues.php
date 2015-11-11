@@ -41,14 +41,14 @@ class Pipeline_Model_Mapper_PipelinePropertyValues
     public function save(Pipeline_Model_PipelinePropertyValues $pipelinepropertyvalues)
     {
         $data = $this->_getDbData($pipelinepropertyvalues);
-        
+
         if (null == ($id = $pipelinepropertyvalues->getId())) {
-        	unset($data[$this->_getDbPrimary()]);
+        	unset($data['id']);
         	$this->getDbTable()->insert($data);
         } else {
-        	$this->getDbTable()->update($data, array($this->_getDbPrimary(). ' = ?' => $id));
+        	$this->getDbTable()->update($data, array('id = ?' => $id));
         }
-        
+
         return $this;
     }
 
@@ -68,6 +68,27 @@ class Pipeline_Model_Mapper_PipelinePropertyValues
         $row = $result->current();
         $entry = $this->_setDbData($row, $pipelinepropertyvalues);
         
+        return $entry;
+    }
+
+
+    /**
+     * @param $pipeline_id
+     * @param $property_id
+     * @param Pipeline_Model_PipelinePropertyValues $pipelinepropertyvalues
+     * @return null|Pipeline_Model_PipelinePropertyValues
+     * @throws Zend_Db_Table_Exception
+     */
+    public function findByKey($pipeline_id, $property_id, Pipeline_Model_PipelinePropertyValues $pipelinepropertyvalues)
+    {
+        $result = $this->getDbTable()->find($pipeline_id, $property_id);
+        if (0 == count($result)) {
+            return null;
+        }
+
+        $row = $result->current();
+        $entry = $this->_setDbData($row, $pipelinepropertyvalues);
+
         return $entry;
     }
 
@@ -112,7 +133,7 @@ class Pipeline_Model_Mapper_PipelinePropertyValues
         foreach ($properties as $property) {
         	$name = $this->_normaliseName($property);
         
-        	if($property != $this->_getDbPrimary())
+        	if($property != 'id')
         		$data[$property] = $pipelinepropertyvalues->__get($name);
         }
         

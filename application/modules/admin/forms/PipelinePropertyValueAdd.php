@@ -65,7 +65,6 @@ class Admin_Form_PipelinePropertyValueAdd extends Twitter_Bootstrap_Form_Vertica
         }
 
         return $pipelinePropertyArray;
-
     }
 
 }

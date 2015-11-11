@@ -44,8 +44,8 @@ class Admin_PipelinePropertyValueController extends Zend_Controller_Action
             $pipelinePropertyValuesMapper->save($pipelinePropertyValues);
         }
 
-//        $this->_helper->redirector('edit','pipeline','admin',array('id' => $request->getParam('pipelineId')));
-//        return;
+        $this->_helper->redirector('edit','pipeline','admin',array('id' => $request->getParam('pipelineId')));
+        return;
     }
 
 

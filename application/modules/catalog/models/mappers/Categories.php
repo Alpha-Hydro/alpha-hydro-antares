@@ -285,7 +285,6 @@ class Catalog_Model_Mapper_Categories
         }
 
         return $entries;
-
     }
 
 }

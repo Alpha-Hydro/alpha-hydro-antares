@@ -176,8 +176,21 @@ class Admin_PipelineController extends Zend_Controller_Action
             $this->view->formData = $form->getValues();
         }
 
-        $this->view->properties = $this->_getPropertyArray();
         $this->view->form = $form;
+
+        $pipelineProperties = $pipelineMapper->fetchPropertyRel($itemId);
+
+        if(!empty($pipelineProperties)){
+            $propertyValuesMapper = new Pipeline_Model_Mapper_PipelinePropertyValues();
+
+            $viewProperties = array();
+            foreach ($pipelineProperties as $property) {
+                $propertyValues = $propertyValuesMapper->findByKey($itemId, $property->getId(), new Pipeline_Model_PipelinePropertyValues());
+                $viewProperties[$property->getName()] = $propertyValues;
+            }
+            //var_dump($viewProperties);
+            $this->view->properties = $viewProperties;
+        }
 
         $formValueAdd = new Admin_Form_PipelinePropertyValueAdd();
         $formValueAdd->setDefaults(array(

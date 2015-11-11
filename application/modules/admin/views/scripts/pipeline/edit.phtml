@@ -54,9 +54,7 @@ $this->title = "Новый товар";
                         <?= $this->form->seo?>
                         <?= $this->form->additionally?>
                         <div class="tab-pane" id="property" role="tabpanel">
-                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addPropertyModal">
-                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить свойство
-                            </button>
+                            <?=$this->render('pipeline/_property_table_edit.phtml')?>
                         </div>
                     </div>
                 </form>

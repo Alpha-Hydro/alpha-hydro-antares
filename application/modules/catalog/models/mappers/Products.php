@@ -326,7 +326,7 @@ class Catalog_Model_Mapper_Products
     /**
      * @param $value
      * @param Catalog_Model_Products $products
-     * @return Catalog_Model_Categories|null
+     * @return Catalog_Model_Products|null
      */
     public function findByFulPath($value, Catalog_Model_Products $products)
     {

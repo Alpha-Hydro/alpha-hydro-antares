@@ -15,7 +15,6 @@ CREATE TABLE `pipeline_property_values` (
   `pipeline_id` int(11) NOT NULL,
   `value` text,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_id` (`id`),
   KEY `property_id` (`property_id`),
   KEY `pipeline_id` (`pipeline_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8

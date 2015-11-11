@@ -1,0 +1,16 @@
+<?php
+$this->headScript()->appendFile('/js/editTable.min.js');
+?>
+<?php if($this->properties):?>
+    <table class="table" id="pipelineProperties">
+        <?php foreach ($this->properties as $property => $value):?>
+            <tr id="<?=$value->getId()?>">
+                <td><?= $property ?></td>
+                <td data-table="edit"><?= $value->getValue() ?></td>
+            </tr>
+        <?php endforeach;?>
+    </table>
+<?php endif;?>
+<button type="button" class="btn btn-default" data-toggle="modal" data-target="#addPropertyModal">
+    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить свойство
+</button>

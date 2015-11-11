@@ -171,5 +171,27 @@ class Pipeline_Model_Mapper_Pipeline
 
         return $entry;
     }
+
+    public function fetchPropertyRel($id, Zend_Db_Table_Select $select = null)
+    {
+        $result = $this->getDbTable()->find($id);
+        if (0 == count($result)) {
+            return null;
+        }
+        $item = $result->current();
+
+        $resultSet = $item->findManyToManyRowset("Pipeline_Model_DbTable_PipelineProperty", "Pipeline_Model_DbTable_PipelinePropertyValues",
+            null, null, $select);
+
+        $entries = array();
+        $property = new Pipeline_Model_Mapper_PipelineProperty();
+        foreach ($resultSet as $row) {
+            $entry = new Pipeline_Model_PipelineProperty();
+            $entry = $property->_setDbData($row, $entry);
+            $entries[] = $entry;
+        }
+
+        return $entries;
+    }
 }
 
