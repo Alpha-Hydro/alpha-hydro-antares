@@ -8,6 +8,7 @@
         inputFormClass: 'form-control input-sm',
         groupBtnClass: 'btn-group btn-group-sm',
         eventType: 'click',
+        rowIdentifier: 'id',
         buttons: {
           edit: {
             "class": 'btn btn-sm btn-default',
@@ -37,8 +38,14 @@
         columns: {
           identifier: function() {
             var $td;
-            $td = $table.find('td').data('table');
-            return console.log($td);
+            $td = $table.find('td[data-table = "edit"]');
+            console.log($td);
+            return $td.each(function() {
+              var input, span;
+              span = "<span>" + ($(this).text()) + "</span>";
+              input = "<input type='hidden' name='" + ($(this).data('table')) + "_" + ($(this).parent('tr').attr(settings.rowIdentifier)) + "' value='" + ($(this).text()) + "' disabled='disabled'/>";
+              return $(this).html(span + input);
+            });
           },
           toolbar: function() {
             var $tr, deleteButton, editButton, headTable, removeButton, saveButton, toolbar;
@@ -46,7 +53,7 @@
             deleteButton = '<button type="button" class="' + settings.buttons["delete"]["class"] + '">' + settings.buttons["delete"].html + '</button>';
             saveButton = '<button type="button" class="' + settings.buttons.save["class"] + ' hidden">' + settings.buttons.save.html + '</button>';
             removeButton = '<button type="button" class="' + settings.buttons.remove["class"] + ' hidden">' + settings.buttons.remove.html + '</button>';
-            toolbar = '<div class="' + settings.groupBtnClass + '">' + editButton + deleteButton + '</div>\n' + saveButton + '\n' + removeButton;
+            toolbar = "<div class='" + settings.groupBtnClass + "'>" + (editButton + deleteButton) + "</div>" + (saveButton + removeButton);
             headTable = $table.find('th');
             if (headTable.length !== 0) {
               $table.find('tr:first').append("<th></th>");
