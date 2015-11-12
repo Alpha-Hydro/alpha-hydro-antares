@@ -13,7 +13,7 @@ $this->product_id = $this->product->id;
         </div>
         <?php if($this->draftImage):?>
             <div class="thumbnail">
-                <a href="" data-toggle="modal" data-target="#draftImageProduct">
+                <a href="#" data-toggle="modal" data-target="#draftImageProduct">
                     <img src="/files/images/product/<?=$this->draftImage;?>" alt="<?=$this->product->name?>"/>
                 </a>
             </div>
@@ -50,14 +50,14 @@ $this->product_id = $this->product->id;
     <?php endif;?>
 </div>
 
-    <div class="col-md-12">
-        <div class="footnote">
-            <?php if($this->product->description != ''):?>
-                <h4>Примечание</h4>
-                <?=$this->product->description?>
-            <?php endif;?>
-        </div>
+<div class="col-md-12">
+    <div class="footnote">
+        <?php if($this->product->description != ''):?>
+            <h4>Примечание</h4>
+            <?=$this->product->description?>
+        <?php endif;?>
     </div>
+</div>
 <?php if($this->modifications):?>
     <div class="col-md-12">
         <!--<h4>Модификации и размеры</h4>-->

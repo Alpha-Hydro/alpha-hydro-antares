@@ -30,6 +30,7 @@ class Twitter_Bootstrap_Form_Inline extends Twitter_Bootstrap_Form
             array('ViewHelper'),
             array('Description', array('tag' => 'span', 'class' => 'help-block')),
             array('Addon'),
+            array('AddonGroupBtn'),
             array('ElementErrors'),
             array('Label', array('class' => 'sr-only')),
             array('Wrapper')

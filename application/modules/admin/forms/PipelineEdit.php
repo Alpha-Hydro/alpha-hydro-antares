@@ -37,7 +37,8 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
                 array(
                     'class' => 'hidden',
                 )
-            );
+            )
+            ->setLabel('Таблица');
         $this->addElement($imageTable);
 
         $this->addElement('text', 'title', array(
@@ -68,27 +69,26 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
         ));*/
 
         $this->addElement('image', 'image', array(
-            'label'         => null,
-            'class'         => 'img-thumbnail mt2',
+            'label'         => 'Изображение',
+            'class'         => 'img-thumbnail',
             'data-toggle'   => 'tooltip',
             'data-placement'=> 'bottom',
             'title'         => 'Загрузить изображение',
         ));
 
         $this->addElement('image', 'imageDraft', array(
-            'label'         => null,
-            'class'         => 'img-thumbnail mt2',
+            'label'         => 'Чертеж',
+            'class'         => 'img-thumbnail',
             'data-toggle'   => 'tooltip',
             'data-placement'=> 'bottom',
             'title'         => 'Загрузить чертеж',
         ));
 
-        $this->addElement('image', 'imageTable', array(
-            'label'         => null,
-            'class'         => 'img-thumbnail mt2',
-            'data-toggle'   => 'tooltip',
-            'data-placement'=> 'bottom',
-            'title'         => 'Загрузить таблицу',
+        $this->addElement('text', 'imageTable', array(
+            'label'         => 'Таблица',
+            'placeholder'   => 'Таблица размеров',
+            //'prepend_btn'       => '<a class="btn btn-default"><span class="glyphicon glyphicon-eye-open"></span></a>',
+            'class'         => '',
         ));
 
         $this->addElement('textarea', 'description', array(
@@ -134,10 +134,10 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
 
         $this->addDisplayGroup(
             array(
-                'id',
                 'title',
                 'categoryId',
                 'path',
+                'id',
             ),
             'basic',
             array()
@@ -149,6 +149,24 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
                 'imageLoadFile',
             ),
             'imageGroup',
+            array()
+        );
+
+        $this->addDisplayGroup(
+            array(
+                'imageTable',
+                'imageTableLoadFile',
+            ),
+            'imageTableGroup',
+            array()
+        );
+
+        $this->addDisplayGroup(
+            array(
+                'imageDraft',
+                'imageDraftLoadFile',
+            ),
+            'imageDraftGroup',
             array()
         );
 
@@ -194,7 +212,9 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
             'type'          => 'submit',
             'buttonType'    => 'success',
             'ignore'        => true,
-            'form'          => 'pipelineEdit'
+            'form'          => 'itemEdit',
+            'id'            => 'saveItemEdit',
+            'class'         => 'hidden'
             //'escape'        => true
         ));
 

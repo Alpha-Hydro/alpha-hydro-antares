@@ -11,16 +11,16 @@
 </div>
 <div class="row">
     <div class="col-md-2">
-        <div class="list-group">
-            <a href="<?=$this->url(
+        <ul class="list-group">
+            <li class="list-group-item"><a href="<?=$this->url(
                     array('module'=>'admin', 'controller' => 'pipeline', 'action' => 'index'),
                     false,true
-                )?>" class="list-group-item">Товары</a>
-            <a href="<?=$this->url(
+                )?>">Товары</a></li>
+            <!--<li class="list-group-item"><a href="<?/*=$this->url(
                     array('module'=>'admin', 'controller' => 'pipeline-categories', 'action' => 'add'),
                     false,true
-                )?>" class="list-group-item">Добавить</a>
-        </div>
+                )*/?>">Добавить</a></li>-->
+        </ul>
     </div>
     <div class="col-md-10">
         <?php if(!empty($this->pages)):?>

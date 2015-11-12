@@ -55,11 +55,16 @@ class Admin_PipelineController extends Zend_Controller_Action
         $form = new Admin_Form_PipelineEdit();
 
         $form->setDefaults(array(
-            'sorting'   => 0,
-            'active'    => 1,
-            'deleted'   => 0,
-            'image'     => '/files/images/product/2012-05-22_foto_nv.jpg',
+            'sorting'       => 0,
+            'active'        => 1,
+            'deleted'       => 0,
+            'image'         => '/files/images/product/2012-05-22_foto_nv.jpg',
+            'imageDraft'    => '/files/images/product/2012-05-22_foto_nv.jpg',
         ));
+
+        $imageTableElement = $form->getElement('imageTable');
+        $imageTablePrepend = '<button type="button" class="btn btn-default" id="imageTableLoadBtn"><span class="glyphicon glyphicon-save"></span></button>';
+        $imageTableElement->setAttrib('prepend_btn', $imageTablePrepend);
 
         if ($this->getRequest()->isPost()){
             if ($form->isValid($request->getPost())){
@@ -75,10 +80,25 @@ class Admin_PipelineController extends Zend_Controller_Action
                     :$this->getParam('path');
                 $pipeline->setFullPath($fullPath);
 
+                //set Image
                 $file = $form->imageLoadFile->getFileInfo();
                 if(!empty($file) && $file['imageLoadFile']['name'] !== ''){
                     $form->imageLoadFile->receive();
                     $pipeline->setImage('/upload/pipeline/items/'.$file['imageLoadFile']['name']);
+                }
+
+                //set imageDraft
+                $fileDraftImage = $form->imageDraftLoadFile->getFileInfo();
+                if(!empty($fileDraftImage) && $fileDraftImage['imageDraftLoadFile']['name'] !== ''){
+                    $form->imageDraftLoadFile->receive();
+                    $pipeline->setImageDraft('/upload/pipeline/items/'.$fileDraftImage['imageDraftLoadFile']['name']);
+                }
+
+                //set imageTable
+                $fileTableImage = $form->imageTableLoadFile->getFileInfo();
+                if(!empty($fileTableImage) && $fileTableImage['imageTableLoadFile']['name'] !== ''){
+                    $form->imageTableLoadFile->receive();
+                    $pipeline->setImageTable('/upload/pipeline/items/'.$fileTableImage['imageTableLoadFile']['name']);
                 }
 
                 $markdown = $request->getParam('contentMarkdown');
@@ -97,7 +117,6 @@ class Admin_PipelineController extends Zend_Controller_Action
                 $pipelineMapper->save($pipeline);
 
                 return $this->_helper->redirector('index');
-
             }
 
             $form->setDefaults($request->getPost());
@@ -124,12 +143,29 @@ class Admin_PipelineController extends Zend_Controller_Action
         $form = new Admin_Form_PipelineEdit();
         $dataPage = $pipeline->getOptions();
         $image = $dataPage['image'];
+        $imageDraft = $dataPage['imageDraft'];
+        $imageTable = $dataPage['imageTable'];
 
         foreach ($dataPage as $key => $value) {
             $form->setDefault($key, $value);
-            if(empty($image))
-                 $form->setDefault('image', '/files/images/product/2012-05-22_foto_nv.jpg');
         }
+
+        if(empty($image))
+            $form->setDefault('image', '/files/images/product/2012-05-22_foto_nv.jpg');
+        if(empty($imageDraft))
+            $form->setDefault('imageDraft', '/files/images/product/2012-05-22_foto_nv.jpg');
+//        if(empty($imageTable))
+//            $form->setDefault('imageTable', '/files/images/product/2012-05-22_foto_nv.jpg');
+
+        $imageTableElement = $form->getElement('imageTable');
+        $imageTablePrepend = '<button type="button" class="btn btn-default" id="imageTableLoadBtn"><span class="glyphicon glyphicon-save"></span></button>';
+        $imageTableValue = $imageTableElement->getValue();
+        if(!is_null($imageTableValue)){
+            $imageTablePrepend .= '<a href="'.$imageTableValue.'" class="btn btn-default" target="_blank"><span class="glyphicon glyphicon-eye-open"></span></a>';
+            $imageTablePrepend .= '<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span></button>';
+        }
+        $imageTableElement->setAttrib('prepend_btn', $imageTablePrepend);
+
 
         if ($this->getRequest()->isPost()){
             if ($form->isValid($request->getPost())){
@@ -140,28 +176,53 @@ class Admin_PipelineController extends Zend_Controller_Action
                 $pipelineCategory = $pipelineCategoryMapper->find($request->getParam('categoryId'),
                     new Pipeline_Model_PipelineCategories());
 
+                //set FullPath
                 $fullPath = (!is_null($pipelineCategory))
                     ?$pipelineCategory->getPath().'/'.$this->getParam('path')
                     :$this->getParam('path');
                 $pipeline->setFullPath($fullPath);
 
-                $file = $form->imageLoadFile->getFileInfo();
-                if(!empty($file) && $file['imageLoadFile']['name'] !== ''){
+                //set Image
+                $fileImage = $form->imageLoadFile->getFileInfo();
+                if(!empty($fileImage) && $fileImage['imageLoadFile']['name'] !== ''){
                     $form->imageLoadFile->receive();
-                    $pipeline->setImage('/upload/pipeline/items/'.$file['imageLoadFile']['name']);
+                    $pipeline->setImage('/upload/pipeline/items/'.$fileImage['imageLoadFile']['name']);
                 }
                 else{
                     $pipeline->setImage($image);
                 }
 
+                //set imageDraft
+                $fileDraftImage = $form->imageDraftLoadFile->getFileInfo();
+                if(!empty($fileDraftImage) && $fileDraftImage['imageDraftLoadFile']['name'] !== ''){
+                    $form->imageDraftLoadFile->receive();
+                    $pipeline->setImageDraft('/upload/pipeline/items/'.$fileDraftImage['imageDraftLoadFile']['name']);
+                }
+                else{
+                    $pipeline->setImageDraft($imageDraft);
+                }
+
+                //set imageTable
+                $fileTableImage = $form->imageTableLoadFile->getFileInfo();
+                if(!empty($fileTableImage) && $fileTableImage['imageTableLoadFile']['name'] !== ''){
+                    $form->imageTableLoadFile->receive();
+                    $pipeline->setImageTable('/upload/pipeline/items/'.$fileTableImage['imageTableLoadFile']['name']);
+                }
+                else{
+                    $pipeline->setImageTable($imageTable);
+                }
+
+                //set Content (html)
                 $markdown = $request->getParam('contentMarkdown');
                 $context_html = Markdown::defaultTransform($markdown);
                 $pipeline->setContentHtml($context_html);
 
+                //set meta title
                 $metaTitle = $request->getParam('metaTitle');
                 if(empty($metaTitle))
                     $pipeline->setMetaTitle($request->getParam('title'));
 
+                //set meta Description
                 $description = $request->getParam('description');
                 $metaDescription = $request->getParam('metaDescription');
                 if(empty($metaDescription) && !empty($description))

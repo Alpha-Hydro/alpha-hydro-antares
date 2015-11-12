@@ -6,26 +6,45 @@ $this->title = "Редактирование страницы";
         <nav class="affix">
             <ul class="nav">
                 <li><a href="<?=$this->url(
-                        array('module'=>'admin', 'controller' => 'pipeline-categories'),
-                        false,true
-                    )?>">Список</a></li>
-                <li><a href="<?=$this->url(
                         array('module'=>'admin', 'controller' => 'pipeline-categories', 'action' => 'add'),
                         false,true
-                    )?>">Новая страница</a></li>
+                    )?>">Добавить категорию</a></li>
                 <li><a href="<?=$this->url(
                         array('module'=>'admin', 'controller' => 'pipeline-categories', 'action' => 'delete'),
                         'adminEdit'
-                    )?>">Удалить</a></li>
+                    )?>">Удалить категорию</a></li>
+                <li class="nav-divider"></li>
+                <li><a href="<?=$this->url(
+                        array('module'=>'admin', 'controller' => 'pipeline-categories'),
+                        false,true
+                    )?>">Список категорий</a></li>
+                <li><a href="<?=$this->url(
+                        array('module'=>'admin', 'controller' => 'pipeline'),
+                        false,true
+                    )?>">Список товаров</a></li>
+                <li class="nav-divider"></li>
+                <li>
+                    <?= $this->form->submit?>
+                </li>
             </ul>
         </nav>
     </div>
-    <div class="col-md-10">
-        <ul class="nav nav-tabs nav-justified"  role="tablist">
-            <li role="presentation" class="active"><a href="#fieldset-basic" aria-controls="fieldset-basic" role="tab" data-toggle="tab">Основные</a></li>
-            <li role="presentation"><a href="#fieldset-seo" aria-controls="fieldset-seo" role="tab" data-toggle="tab">SEO</a></li>
-            <li role="presentation"><a href="#fieldset-additionally" aria-controls="fieldset-additionally" role="tab" data-toggle="tab">Дополнительно</a></li>
-        </ul>
-        <?=$this->form;?>
+    <div class="col-md-9 col-md-offset-1">
+        <form id="itemEdit" class="" method="post" action="" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-3"><?= $this->form->imageGroup;?></div>
+                <div class="col-md-8 col-md-offset-1"><?= $this->form->basic;?></div>
+            </div>
+            <ul class="nav nav-tabs nav-justified mtb2" role="tablist">
+                <li role="presentation" class="active"><a href="#fieldset-desc" aria-controls="fieldset-desc" role="tab" data-toggle="tab">Основные</a></li>
+                <li role="presentation"><a href="#fieldset-seo" aria-controls="fieldset-seo" role="tab" data-toggle="tab">SEO</a></li>
+                <li role="presentation"><a href="#fieldset-additionally" aria-controls="fieldset-additionally" role="tab" data-toggle="tab">Дополнительно</a></li>
+            </ul>
+            <div class="tab-content">
+                <?= $this->form->desc?>
+                <?= $this->form->seo?>
+                <?= $this->form->additionally?>
+            </div>
+        </form>
     </div>
 </div>

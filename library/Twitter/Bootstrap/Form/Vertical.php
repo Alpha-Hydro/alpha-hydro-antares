@@ -31,6 +31,7 @@ class Twitter_Bootstrap_Form_Vertical extends Twitter_Bootstrap_Form
             array('FieldSize'),
             array('ViewHelper'),
             array('Addon'),
+            array('AddonGroupBtn'),
             array('ElementErrors'),
             array('Description', array('tag' => 'span', 'class' => 'help-block')),
             array('Label'),

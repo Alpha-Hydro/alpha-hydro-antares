@@ -126,6 +126,8 @@ class Admin_PipelineCategoriesController extends Zend_Controller_Action
             if($form->isValid($request->getPost())){
                 $item = new Pipeline_Model_PipelineCategories($form->getValues());
 
+                $item->setFullPath($request->getParam('path'));
+
                 if($request->getParam('parentId') !== 0 && $request->getParam('parentId') != $page->getParentId()){
                     $parentCategory = $pipelineCategoryMapper
                         ->find($request->getParam('parentId'), new Pipeline_Model_PipelineCategories());

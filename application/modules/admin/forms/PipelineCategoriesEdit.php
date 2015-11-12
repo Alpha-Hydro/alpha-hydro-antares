@@ -1,6 +1,6 @@
 <?php
 
-class Admin_Form_PipelineCategoriesEdit extends Twitter_Bootstrap_Form_Horizontal
+class Admin_Form_PipelineCategoriesEdit extends Twitter_Bootstrap_Form_Vertical
 {
 
     public function init()
@@ -36,17 +36,20 @@ class Admin_Form_PipelineCategoriesEdit extends Twitter_Bootstrap_Form_Horizonta
 
         $this->addElement('hidden', 'fullPath');
 
-        $this->addElement('text', 'image', array(
-            'label'         => 'Изображение',
-            'prepend'       => '<i class="glyphicon glyphicon-eye-open"></i>',
-            //'disabled'      => true,
+        $this->addElement('image', 'image', array(
+            'label'         => null,
+            'class'         => 'img-thumbnail mt2',
+            'data-toggle'   => 'tooltip',
+            'data-placement'=> 'bottom',
+            'title'         => 'Загрузить изображение',
         ));
-        $this->addElement('button', 'imageLoad', array(
+
+        /*$this->addElement('button', 'imageLoad', array(
             'label'         => 'Загрузить изображение',
             'type'          => 'button',
             'class'         => 'image-btn',
             'ignore' => true,
-        ));
+        ));*/
 
         $this->addElement('textarea', 'description', array(
             'label'         => 'Краткое описание категории',
@@ -60,23 +63,6 @@ class Admin_Form_PipelineCategoriesEdit extends Twitter_Bootstrap_Form_Horizonta
             'rows'          => '15',
         ));
 
-        $this->addDisplayGroup(
-            array(
-                'parentId',
-                'title',
-                'path',
-                'image',
-                'imageLoad',
-                'description',
-                'contentMarkdown',
-            ),
-            'basic',
-            array(
-                //'legend' => 'Основные',
-                'class' => 'tab-pane active',
-                'role'  => 'tabpanel'
-            )
-        );
 
         $this->addElement('text', 'metaTitle', array(
             'label'         => 'SEO title',
@@ -95,6 +81,51 @@ class Admin_Form_PipelineCategoriesEdit extends Twitter_Bootstrap_Form_Horizonta
             'rows'          => '8',
         ));
 
+        $this->addElement('text', 'sorting', array(
+            'label'         => 'Сортировка',
+        ));
+
+        $this->addElement('checkbox', 'active', array(
+            'label'         => 'Активность',
+        ));
+
+        $this->addElement('checkbox', 'deleted', array(
+            'label'         => 'Cтраница удалена',
+        ));
+
+        $this->addDisplayGroup(
+            array(
+                'id',
+                'title',
+                'parentId',
+                'path',
+            ),
+            'basic',
+            array()
+        );
+
+
+        $this->addDisplayGroup(
+            array(
+                'image',
+                'imageLoadFile',
+            ),
+            'imageGroup',
+            array()
+        );
+
+        $this->addDisplayGroup(
+            array(
+                'description',
+                'contentMarkdown',
+            ),
+            'desc',
+            array(
+                'class' => 'tab-pane active',
+                'role'  => 'tabpanel'
+            )
+        );
+
         $this->addDisplayGroup(
             array(
                 'metaTitle',
@@ -109,18 +140,6 @@ class Admin_Form_PipelineCategoriesEdit extends Twitter_Bootstrap_Form_Horizonta
 
             )
         );
-
-        $this->addElement('text', 'sorting', array(
-            'label'         => 'Сортировка',
-        ));
-
-        $this->addElement('checkbox', 'active', array(
-            'label'         => 'Активность',
-        ));
-
-        $this->addElement('checkbox', 'deleted', array(
-            'label'         => 'Cтраница удалена',
-        ));
 
         $this->addDisplayGroup(
             array(
@@ -137,21 +156,25 @@ class Admin_Form_PipelineCategoriesEdit extends Twitter_Bootstrap_Form_Horizonta
         );
 
         $this->addElement('button', 'submit', array(
-            'label'         => 'Сохранить',
+            'label'         => 'Сохранить изменения',
             'type'          => 'submit',
             'buttonType'    => 'success',
             'ignore' => true,
-            //'escape'        => false
+            'form'          => 'itemEdit',
+            'id'            => 'saveItemEdit',
+            'class'         => 'hidden'
         ));
+
+        $this->getElement('submit')->removeDecorator('label');
 
         /*$this->addElement('hash', 'csrf', array(
             'ignore' => true,
         ));*/
 
-        $classForm = $this->getAttrib('class');
+        /*$classForm = $this->getAttrib('class');
         $this->addAttribs(array(
             'class' => 'tab-content '.$classForm,
-        ));
+        ));*/
     }
 
     /**

@@ -2,12 +2,12 @@
 (function() {
   var loadFile;
 
-  loadFile = function(event) {
+  loadFile = function(event, id) {
     var reader;
     reader = new FileReader();
     reader.onload = function() {
       var output;
-      output = document.getElementById('image');
+      output = document.getElementById(id);
       return output.src = reader.result;
     };
     return reader.readAsDataURL(event.target.files[0]);
@@ -16,12 +16,27 @@
   (function($) {
     var getInput;
     $('[data-toggle="tooltip"]').tooltip();
+    $(document).one('change', 'form#itemEdit', function() {
+      $('#saveItemEdit').removeClass('hidden').addClass('show');
+      return console.log('OK');
+    });
     $('#image').click(function() {
       $('#imageLoadFile').trigger('click');
       return false;
     });
     $('#imageLoadFile').change(function(event) {
-      return loadFile(event);
+      return loadFile(event, 'image');
+    });
+    $('#imageDraft').click(function() {
+      $('#imageDraftLoadFile').trigger('click');
+      return false;
+    });
+    $('#imageDraftLoadFile').change(function(event) {
+      return loadFile(event, 'imageDraft');
+    });
+    $('#imageTableLoadBtn').click(function() {
+      $('#imageTableLoadFile').trigger('click');
+      return false;
     });
     $(document).on('change', '#propertyId', function() {
       var ajaxContent, src, val;

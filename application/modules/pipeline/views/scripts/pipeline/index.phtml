@@ -29,6 +29,19 @@ $this->sidebar_headers = true;
                         <a href="<?=$this->url()?>"><?=$this->escape($item->getTitle());?></a>
                         <small><?=$this->escape($item->getTitle());?></small>
                     </h2>
+                    <div class="product-property">
+                        <?php $properties = $this->getPipelineProperties($item->getId())?>
+                        <?php if(!empty($properties)):?>
+                            <table class="table table-striped table-condensed product-property">
+                            <?php foreach ($properties as $property => $value):?>
+                                <tr>
+                                    <th class="col-md-4"><?= $property ?></th>
+                                    <td><?= $value->getValue() ?></td>
+                                </tr>
+                            <?php endforeach;?>
+                            </table>
+                        <?php endif;?>
+                    </div>
                 </div>
             </div>
         <?php endforeach;?>

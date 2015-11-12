@@ -34,13 +34,21 @@ $this->title = "Новый товар";
     <div class="col-md-9 col-md-offset-1">
         <div class="row">
             <div class="col-md-12">
-                <form id="pipelineEdit" class="" method="post" action="" enctype="multipart/form-data">
+                <form id="itemEdit" class="" method="post" action="" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-md-3">
                             <?= $this->form->imageGroup;?>
                         </div>
                         <div class="col-md-8 col-md-offset-1">
                             <?= $this->form->basic;?>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <?= $this->form->imageDraftGroup;?>
+                        </div>
+                        <div class="col-md-8 col-md-offset-1">
+                            <?= $this->form->imageTableGroup;?>
                         </div>
                     </div>
                     <ul class="nav nav-tabs nav-justified mtb2"  role="tablist">
