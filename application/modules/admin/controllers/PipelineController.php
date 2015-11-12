@@ -140,6 +140,8 @@ class Admin_PipelineController extends Zend_Controller_Action
         if(is_null($pipeline))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
+        $this->view->item = $pipeline;
+
         $form = new Admin_Form_PipelineEdit();
         $dataPage = $pipeline->getOptions();
         $image = $dataPage['image'];

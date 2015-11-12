@@ -116,6 +116,8 @@ class Admin_PipelineCategoriesController extends Zend_Controller_Action
         $pipelineCategoryMapper = new Pipeline_Model_Mapper_PipelineCategories();
         $page = $pipelineCategoryMapper->find($itemId, new Pipeline_Model_PipelineCategories());
 
+        $this->view->item = $page;
+
         if(is_null($page))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 

@@ -7,22 +7,27 @@ $this->title = "Новый товар";
             <nav class="affix">
                 <ul class="nav">
                     <li><a href="<?=$this->url(
+                            array(
+                                'fullPath'=>$this->item->getFullPath()
+                            ), 'pipeline',true,false
+                        )?>" target="_blank"><span class="glyphicon glyphicon-eye-open mr1"></span>Посмотреть на сайте</a></li>
+                    <li><a href="<?=$this->url(
                             array('module'=>'admin', 'controller' => 'pipeline', 'action' => 'add'),
                             false,true
-                        )?>">Добавить товар</a></li>
+                        )?>"><span class="glyphicon glyphicon-plus mr1"></span>Добавить товар</a></li>
                     <li><a href="<?=$this->url(
                             array('module'=>'admin', 'controller' => 'pipeline', 'action' => 'delete'),
                             'adminEdit'
-                        )?>">Удалить товар</a></li>
+                        )?>"><span class="glyphicon glyphicon-trash mr1"></span>Удалить товар</a></li>
                     <li class="nav-divider"></li>
                     <li><a href="<?=$this->url(
                             array('module'=>'admin', 'controller' => 'pipeline'),
                             false,true
-                        )?>">Список товаров</a></li>
+                        )?>"><span class="glyphicon glyphicon-list mr1"></span>Список товаров</a></li>
                     <li><a href="<?=$this->url(
                             array('module'=>'admin', 'controller' => 'pipeline-categories'),
                             false,true
-                        )?>">Категории товаров</a></li>
+                        )?>"><span class="glyphicon glyphicon-list-alt mr1"></span>Категории товаров</a></li>
                     <li class="nav-divider"></li>
                     <li>
                         <?= $this->form->submit?>
