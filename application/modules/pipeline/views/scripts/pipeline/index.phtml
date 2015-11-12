@@ -18,7 +18,7 @@ $this->sidebar_headers = true;
                                 'fullPath' => $item->getFullPath()
                             ),'pipeline',true,false);?>">
                             <img src="<?=($item->getImage())
-                                ?$item->getImage
+                                ?$item->getImage()
                                 :'/files/images/product/2012-05-22_foto_nv.jpg';?>"
                                  alt="<?=$this->escape($item->getTitle());?>">
                         </a>

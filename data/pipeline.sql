@@ -18,4 +18,7 @@ CREATE TABLE `pipeline` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_id` (`id`),
   UNIQUE KEY `unique_full_path` (`full_path`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE pipeline ADD image_draft VARCHAR(255) NULL;
+ALTER TABLE pipeline ADD image_table VARCHAR(255) NULL;

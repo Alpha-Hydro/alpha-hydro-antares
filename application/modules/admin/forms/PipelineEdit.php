@@ -10,13 +10,35 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
         $image = new Zend_Form_Element_File('imageLoadFile');
         $image->setDestination(APPLICATION_ROOT.'/upload/pipeline/items/')
             ->addValidator('Size', false, 1024000)
-            ->addValidator('Extension', false, 'jpg,png,gif')
+            ->addValidator('Extension', false, 'jpg,png')
             ->setAttribs(
                 array(
                     'class' => 'hidden',
                 )
             );
         $this->addElement($image);
+
+        $imageDraft = new Zend_Form_Element_File('imageDraftLoadFile');
+        $imageDraft->setDestination(APPLICATION_ROOT.'/upload/pipeline/items/')
+            ->addValidator('Size', false, 1024000)
+            ->addValidator('Extension', false, 'jpg,png')
+            ->setAttribs(
+                array(
+                    'class' => 'hidden',
+                )
+            );
+        $this->addElement($imageDraft);
+
+        $imageTable = new Zend_Form_Element_File('imageTableLoadFile');
+        $imageTable->setDestination(APPLICATION_ROOT.'/upload/pipeline/items/')
+            ->addValidator('Size', false, 1024000)
+            ->addValidator('Extension', false, 'jpg,png,pdf')
+            ->setAttribs(
+                array(
+                    'class' => 'hidden',
+                )
+            );
+        $this->addElement($imageTable);
 
         $this->addElement('text', 'title', array(
             'label'         => 'Наименование товара',
@@ -51,6 +73,22 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
             'data-toggle'   => 'tooltip',
             'data-placement'=> 'bottom',
             'title'         => 'Загрузить изображение',
+        ));
+
+        $this->addElement('image', 'imageDraft', array(
+            'label'         => null,
+            'class'         => 'img-thumbnail mt2',
+            'data-toggle'   => 'tooltip',
+            'data-placement'=> 'bottom',
+            'title'         => 'Загрузить чертеж',
+        ));
+
+        $this->addElement('image', 'imageTable', array(
+            'label'         => null,
+            'class'         => 'img-thumbnail mt2',
+            'data-toggle'   => 'tooltip',
+            'data-placement'=> 'bottom',
+            'title'         => 'Загрузить таблицу',
         ));
 
         $this->addElement('textarea', 'description', array(

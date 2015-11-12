@@ -35,6 +35,10 @@ class Pipeline_Model_Pipeline
 
     protected $_deleted = null;
 
+    protected $_image_draft = null;
+
+    protected $_image_table = null;
+
     /**
      * @param $options
      */
@@ -468,6 +472,50 @@ class Pipeline_Model_Pipeline
     public function getDeleted()
     {
         return $this->_deleted;
+    }
+
+    /**
+     * Set value ImageDraft
+     *
+     * @return $this 
+     * @param $image_draft
+     */
+    public function setImageDraft($image_draft)
+    {
+        $this->_image_draft = $image_draft;
+        return $this;
+    }
+
+    /**
+     * Get value ImageDraft
+     *
+     * @return mixed
+     */
+    public function getImageDraft()
+    {
+        return $this->_image_draft;
+    }
+
+    /**
+     * Set value ImageTable
+     *
+     * @return $this 
+     * @param $image_table
+     */
+    public function setImageTable($image_table)
+    {
+        $this->_image_table = $image_table;
+        return $this;
+    }
+
+    /**
+     * Get value ImageTable
+     *
+     * @return mixed
+     */
+    public function getImageTable()
+    {
+        return $this->_image_table;
     }
 
 
