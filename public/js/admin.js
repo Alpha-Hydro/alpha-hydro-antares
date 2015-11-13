@@ -8,6 +8,7 @@
     reader.onload = function() {
       var output;
       output = document.getElementById(id);
+      output.value = event.target.value;
       return output.src = reader.result;
     };
     return reader.readAsDataURL(event.target.files[0]);
@@ -17,8 +18,7 @@
     var getInput;
     $('[data-toggle="tooltip"]').tooltip();
     $(document).one('change', 'form#itemEdit', function() {
-      $('#saveItemEdit').removeClass('hidden').addClass('show');
-      return console.log('OK');
+      return $('#saveItemEdit').removeClass('hidden').addClass('show');
     });
     $('#image').click(function() {
       $('#imageLoadFile').trigger('click');
@@ -38,12 +38,14 @@
       $('#imageTableLoadFile').trigger('click');
       return false;
     });
+    $('#imageTableLoadFile').change(function(event) {
+      return loadFile(event, 'imageTable');
+    });
     $(document).on('change', '#propertyId', function() {
       var ajaxContent, src, val;
       val = $(this).val();
       src = '/admin/pipeline/select-add-property';
       ajaxContent = $('#ajaxContent');
-      console.log(val);
       if (val !== 0) {
         return getInput(src, val, ajaxContent);
       }
@@ -60,13 +62,17 @@
           return console.log("AJAX Error: " + textStatus);
         },
         success: function(data, textStatus, jqXHR) {
-          console.log(data);
           return ajaxContent.html(data);
         }
       });
       return false;
     };
-    return $('#pipelineProperties').editTable();
+    return $('#pipelineProperties').editTable({
+      url: 'example.php',
+      columns: {
+        editable: [[1, 'propertyValue'], [2, 'propertySorting']]
+      }
+    });
   })(jQuery);
 
 }).call(this);

@@ -6,7 +6,8 @@ $this->headScript()->appendFile('/js/editTable.min.js');
         <?php foreach ($this->properties as $property => $value):?>
             <tr id="<?=$value->getId()?>">
                 <td><?= $property ?></td>
-                <td data-table="edit"><?= $value->getValue() ?></td>
+                <td data-mode="view"><?= $value->getValue() ?></td>
+                <td data-mode="view">0</td>
             </tr>
         <?php endforeach;?>
     </table>

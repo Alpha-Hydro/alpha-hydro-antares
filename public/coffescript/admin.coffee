@@ -2,6 +2,7 @@ loadFile = (event, id)->
   reader = new FileReader()
   reader.onload = ()->
     output = document.getElementById id
+    output.value = event.target.value
     output.src = reader.result
   reader.readAsDataURL event.target.files[0]
 
@@ -12,7 +13,7 @@ loadFile = (event, id)->
   $(document).one 'change', 'form#itemEdit', ()->
     $('#saveItemEdit').removeClass 'hidden'
       .addClass 'show'
-    console.log 'OK'
+#    console.log 'OK'
 
   $('#image').click ()->
     $('#imageLoadFile').trigger 'click'
@@ -32,14 +33,14 @@ loadFile = (event, id)->
     $('#imageTableLoadFile').trigger 'click'
     false
 
-#  $('#imageTableLoadFile').change (event)->
-#    loadFile event,'imageTable'
+  $('#imageTableLoadFile').change (event)->
+    loadFile event,'imageTable'
 
   $(document).on 'change', '#propertyId', ()->
     val = $(@).val()
     src = '/admin/pipeline/select-add-property'
     ajaxContent = $('#ajaxContent')
-    console.log val
+#    console.log val
     getInput(src, val, ajaxContent) if val isnt 0
 
   getInput = (src, val, ajaxContent)->
@@ -52,15 +53,17 @@ loadFile = (event, id)->
       error: (jqXHR, textStatus, errorThrown) ->
         console.log "AJAX Error: #{textStatus}"
       success: (data, textStatus, jqXHR)->
-        console.log data
+#        console.log data
         ajaxContent.html data
     false
 
-  $('#pipelineProperties').editTable()
-#    url: 'example.php'
-#    columns:
-#      identifier: [0, 'id'],
-#      editable: [[1, 'propertyValue']]
+  $('#pipelineProperties').editTable
+    url: 'example.php'
+    columns:
+      editable: [
+        [1, 'propertyValue'],
+        [2, 'propertySorting']
+      ]
 
 ) jQuery
 
