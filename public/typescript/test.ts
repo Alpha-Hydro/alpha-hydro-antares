@@ -11,7 +11,7 @@ function greeter (person:Person){
     return "hallo "+person.name;
 }
 
-var person = new Person("Vlad Meh");
+var person = new Person("Vlad");
 
 //document.body.innerHTML = greeter(person);
 console.log(greeter(person));
