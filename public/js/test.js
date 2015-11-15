@@ -11,23 +11,30 @@ function greeter(person) {
 var person = new Person("Vlad");
 var Table = (function () {
     function Table(className) {
-        table = document.querySelector(className);
+        this.className = className;
     }
+    //public tbl = this.table();
+    Table.prototype.table = function () {
+        return document.querySelector(this.className);
+    };
+    Table.prototype.tableTr = function () {
+        return [].slice.call(this.table().querySelectorAll('tr'));
+    };
+    Table.prototype.successTr = function (classAlert) {
+        if (classAlert === void 0) { classAlert = 'success'; }
+        return document.querySelector(classAlert);
+    };
     return Table;
 })();
 //document.body.innerHTML = greeter(person);
-var t = new Table('.table');
-console.log(t);
-var table = document.querySelector('.table');
-console.log(table);
-var tableTr = [].slice.call(table.querySelectorAll('tr'));
-var successTr = table.querySelector('.success');
-tableTr.forEach(function (tr) {
+var table = new Table('.table');
+table.tableTr().forEach(function (tr) {
     tr.addEventListener('click', function (ev) {
         ev.preventDefault();
-        if (successTr)
-            successTr.classList.remove('success');
+        if (table.successTr())
+            table.successTr().classList.remove('success');
         this.classList.add('success');
+        console.log(table.successTr());
     });
 });
 //console.log(tableTr);

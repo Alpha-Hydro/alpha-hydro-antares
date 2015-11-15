@@ -16,27 +16,29 @@ function greeter (person:Person){
 var person = new Person("Vlad");
 
 class Table {
-    constructor(className:string)
-    {
-        table= document.querySelector(className);
+    constructor(public className: string){
     }
-    table: HTMLElement;
+    //public tbl = this.table();
+    table(){
+        return document.querySelector(this.className);
+    }
+    tableTr(){
+        return [].slice.call(this.table().querySelectorAll('tr'));
+    }
+    successTr(classAlert: string = 'success'){
+        return document.querySelector(classAlert);
+    }
 }
 
 //document.body.innerHTML = greeter(person);
-var t = new Table('.table');
-console.log(t);
+var table = new Table('.table');
 
-var table = document.querySelector('.table');
-console.log(table);
-var tableTr = [].slice.call(table.querySelectorAll('tr'));
-var successTr = table.querySelector('.success');
-
-tableTr.forEach(function(tr){
+table.tableTr().forEach(function(tr){
     tr.addEventListener('click', function(ev){
         ev.preventDefault();
-        if (successTr) successTr.classList.remove('success');
+        if (table.successTr()) table.successTr().classList.remove('success');
         this.classList.add('success');
+        console.log(table.successTr());
     })
 });
 
