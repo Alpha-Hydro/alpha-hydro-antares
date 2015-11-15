@@ -1,32 +1,16 @@
-//var classie = importScripts('/../js/classie/classie.js');
-
-class Person {
-
-    constructor(name:string)
-    {
-        this.name=name;
-    }
-    name: string;
-}
-
-function greeter (person:Person){
-    return "hallo "+person.name;
-}
-
-var person = new Person("Vlad");
+/// <reference path="jquery.d.ts" />
+/// <reference path="classie.d.ts" />
 
 class Table {
-    constructor(public className: string){
-    }
-    //public tbl = this.table();
+    constructor(public className: string){}
     table(){
         return document.querySelector(this.className);
     }
     tableTr(){
         return [].slice.call(this.table().querySelectorAll('tr'));
     }
-    successTr(classAlert: string = 'success'){
-        return document.querySelector(classAlert);
+    selectTr(classAlert: string = '.success'){
+        return this.table().querySelector(classAlert);
     }
 }
 
@@ -36,9 +20,10 @@ var table = new Table('.table');
 table.tableTr().forEach(function(tr){
     tr.addEventListener('click', function(ev){
         ev.preventDefault();
-        if (table.successTr()) table.successTr().classList.remove('success');
-        this.classList.add('success');
-        console.log(table.successTr());
+        //if (table.selectTr()) table.selectTr().classList.remove('success');
+        if (table.selectTr()) classie.remove(table.selectTr(),'success');
+        //this.classList.add('success');
+        classie.toggle(this, 'success');
     })
 });
 
