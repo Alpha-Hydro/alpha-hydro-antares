@@ -102,4 +102,4 @@ var table = new Table('table[data-edit]');
 table.tableTr().forEach(function (tr) {
     tr.addEventListener('click', eventRow, false);
 });
-//# sourceMappingURL=test.js.map
+//# sourceMappingURL=.js.map

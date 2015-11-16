@@ -39,3 +39,6 @@ public/D
 /data/media-index
 /data/my-index
 /old
+
+#UglifyJS
+*.min.min.js
