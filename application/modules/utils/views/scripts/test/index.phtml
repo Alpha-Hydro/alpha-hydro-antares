@@ -1,44 +1,38 @@
 <?php
 $this->headScript()
 		->appendFile('/js/classie/classie.min.js')
-		->appendFile('/js/test.js');
+		->appendFile('/js/adminTableEdit.js');
 ?>
 <div class="btn-group btn-group-sm mtb2" data-toggle="buttons">
-    <button class="btn btn-default no-disabled" data-toggle="modal" data-target="#myModal">Добавить</button>
-    <button class="btn btn-default" disabled="disabled" data-toggle="modal" data-target="#myModal">Редактировать</button>
-    <button class="btn btn-default" disabled="disabled" data-toggle="modal" data-target="#myModal">Удалить</button>
+    <button class="btn btn-default no-disabled" data-toggle="modal" data-target="#propertyEditModal" data-action="add">Добавить</button>
+    <button class="btn btn-default" disabled="disabled" data-toggle="modal" data-target="#propertyEditModal" data-action="edit">Редактировать</button>
+    <button class="btn btn-default" disabled="disabled" data-toggle="modal" data-target="#propertyEditModal" data-action="delete">Удалить</button>
 </div>
 <table class="table table-bordered table-hover" data-edit="modal">
 	<thead>
 	<tr>
 		<th>#</th>
-		<th>First Name</th>
-		<th data-name="lastName">Last Name</th>
-		<th data-name="userName">Username</th>
+		<th>Свойство</th>
+		<th data-name="value">Значение</th>
+		<th data-name="sorting">Порядок</th>
 	</tr>
 	</thead>
 	<tbody>
-	<tr>
-		<th scope="row">1</th>
-		<td>Mark</td>
-		<td>Otto</td>
-		<td>@mdo</td>
-	</tr>
-	<tr>
-		<th scope="row">2</th>
-		<td>Jacob</td>
-		<td>Thornton</td>
-		<td>@fat</td>
-	</tr>
-	<tr>
-		<th scope="row">3</th>
-		<td>Larry</td>
-		<td>the Bird</td>
-		<td>@twitter</td>
-	</tr>
+    <?php if($this->properties):?>
+        <?php $n = 1;?>
+        <?php foreach ($this->properties as $property => $value):?>
+            <tr id="<?=$value->getId()?>">
+                <th scope="row"><?= $n?></th>
+                <td><?= $property ?></td>
+                <td><?= $value->getValue()?></td>
+                <td><?= $this->getPropertyPipeline($value->getId())->getSorting()?></td>
+            </tr>
+            <?php $n++;?>
+        <?php endforeach;?>
+    <?php endif;?>
 	</tbody>
 </table>
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="propertyEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -46,11 +40,16 @@ $this->headScript()
                 <h4 class="modal-title">Modal title</h4>
             </div>
             <div class="modal-body">
-                <p>One fine body&hellip;</p>
+                <form id="pipelinePropertyValue" enctype="multipart/form-data" action="" method="post">
+                    <?=$this->formValue->pipelineId?>
+                    <?=$this->formValue->propertyId?>
+                    <?=$this->formValue->value?>
+                    <?=$this->formValue->sorting?>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                <button type="button" form="pipelinePropertyValue" class="btn btn-primary">Сохранить</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

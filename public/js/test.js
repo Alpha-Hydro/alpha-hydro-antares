@@ -49,7 +49,7 @@ function btnGroupDisabled(isDisable) {
             el.disabled = isDisable;
     });
 }
-function selectedTr() {
+function showBtnGroup() {
     return btnGroupDisabled((table.selectTr()) ? false : true);
 }
 function editColumns() {
@@ -60,7 +60,7 @@ function editColumns() {
     });
     return columns;
 }
-function selectedTrEdit(tr) {
+function insertInputTrEdit(tr) {
     if (tr === void 0) { tr = table.selectTd(); }
     tr.forEach(function (td) {
         var val = td.innerHTML;
@@ -86,20 +86,70 @@ function setInputTdEdit(td, index, val) {
         }
     });
 }
+function sendAjax(action, id, ajaxContent) {
+    $.ajax({
+        url: '/utils/test/' + action,
+        type: 'POST',
+        dataType: 'html',
+        data: {
+            propertyId: id
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            return console.log("AJAX Error: " + textStatus);
+        },
+        success: function (data, textStatus, jqXHR) {
+            console.log(data);
+            return ajaxContent.html(data);
+        }
+    });
+}
 var eventRow = function (event) {
     event.preventDefault();
-    console.log(classie.has(this, 'success'));
-    //if (table.selectTr()) table.selectTr().classList.remove('success');
     if (table.selectTr() && !classie.has(this, 'success'))
         classie.remove(table.selectTr(), 'success');
-    //this.classList.add('success');
     classie.toggle(this, 'success');
-    selectedTr();
-    selectedTrEdit();
+    showBtnGroup();
+    this.addEventListener('click', eventRow, false);
 };
+var modalForm = function (action) {
+    var form = document.querySelector('form#pipelinePropertyValue');
+    if (action == 'add') {
+        return false;
+    }
+    if (action == 'edit') { }
+    if (action == 'delete') { }
+};
+function getInput(src, val, ajaxContent) {
+    $.ajax({
+        url: src,
+        type: 'POST',
+        dataType: 'html',
+        data: {
+            'propertyId': val
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            return console.log("AJAX Error: " + textStatus);
+        },
+        success: function (data, textStatus, jqXHR) {
+            return ajaxContent.html(data);
+        }
+    });
+}
 btnGroupDisabled(true);
 var table = new Table('table[data-edit]');
 table.tableTr().forEach(function (tr) {
     tr.addEventListener('click', eventRow, false);
+});
+$('#propertyEditModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var action = button.data('action');
+    var form = $('#pipelinePropertyValue');
+    if (action == 'edit') {
+        form.find('#propertyId').prop('disabled', true);
+    }
+    if (action == 'delete') {
+    }
+    var modal = $(this);
+    modal.find('.modal-title').text(action);
 });
 //# sourceMappingURL=test.js.map
