@@ -1,47 +1,29 @@
 /// <reference path="jquery.d.ts" />
 /// <reference path="classie.d.ts" />
 
-class TableEdit {
-    //tableId:string;
-    constructor(elementId: string){
-       //this.tableId = elementId;
-    }
-    defaults:any = {
-        btn: () => {
-            var button: Element = document.createElement('button');
-            button.setAttribute('type','button');
-            button.classList.add('btn');
-            button.classList.add('btn-sm');
-            return button;
-        },
-        buttons: {
-            edit: {
-                classBtn: 'btn-sm btn-default',
-                html: '<span class="glyphicon glyphicon-pencil"></span>',
-                action: 'edit'
-            },
-            deleted: {
-                classBtn: 'btn-default',
-                html: '<span class="glyphicon glyphicon-trash"></span>',
-                action: 'delete'
-            },
-            save: {
-                classBtn: 'btn-success',
-                html: 'Сохранить',
-                action: 'save'
-            },
-            remove: {
-                classBtn: 'btn-danger',
-                html: '<span class="glyphicon glyphicon-remove"></span>',
-                action: 'remove'
+;(function (window) {
+    'use strict';
+
+    function extend( a:any, b:any ) {
+        for( var key in b ) {
+            if( b.hasOwnProperty( key ) ) {
+                a[key] = b[key];
             }
-        },
-        onDraw: () =>{}
-    };
+        }
+        return a;
+    }
 
-    Draw = {}
-}
+    class TabEdit{
+        table:any;
+        options: any;
+        row: any;
+        constructor (table, options){
+            this.table = table;
+            this.options = extend( {}, this.options );
+            extend( this.options, options );
 
-var tableEdit = new TableEdit('table');
+            this.row = [].slice.call(this.table.querySelector('tbody').querySelectorAll('tr'));
+        }
+    }
 
-console.log(tableEdit.defaults.btn());
+})(Window);

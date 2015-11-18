@@ -1,45 +1,24 @@
 /// <reference path="jquery.d.ts" />
 /// <reference path="classie.d.ts" />
-var TableEdit = (function () {
-    //tableId:string;
-    function TableEdit(elementId) {
-        this.defaults = {
-            btn: function () {
-                var button = document.createElement('button');
-                button.setAttribute('type', 'button');
-                button.classList.add('btn');
-                button.classList.add('btn-sm');
-                return button;
-            },
-            buttons: {
-                edit: {
-                    classBtn: 'btn-sm btn-default',
-                    html: '<span class="glyphicon glyphicon-pencil"></span>',
-                    action: 'edit'
-                },
-                deleted: {
-                    classBtn: 'btn-default',
-                    html: '<span class="glyphicon glyphicon-trash"></span>',
-                    action: 'delete'
-                },
-                save: {
-                    classBtn: 'btn-success',
-                    html: 'Сохранить',
-                    action: 'save'
-                },
-                remove: {
-                    classBtn: 'btn-danger',
-                    html: '<span class="glyphicon glyphicon-remove"></span>',
-                    action: 'remove'
-                }
-            },
-            onDraw: function () { }
-        };
-        this.Draw = {};
-        //this.tableId = elementId;
+;
+(function (window) {
+    'use strict';
+    function extend(a, b) {
+        for (var key in b) {
+            if (b.hasOwnProperty(key)) {
+                a[key] = b[key];
+            }
+        }
+        return a;
     }
-    return TableEdit;
-})();
-var tableEdit = new TableEdit('table');
-console.log(tableEdit.defaults.btn());
+    var TabEdit = (function () {
+        function TabEdit(table, options) {
+            this.table = table;
+            this.options = extend({}, this.options);
+            extend(this.options, options);
+            this.row = [].slice.call(this.table.querySelector('tbody').querySelectorAll('tr'));
+        }
+        return TabEdit;
+    })();
+})(Window);
 //# sourceMappingURL=adminTableEdit.js.map
