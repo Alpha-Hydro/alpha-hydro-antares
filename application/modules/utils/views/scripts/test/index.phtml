@@ -28,11 +28,15 @@ $this->headScript()
                 <td><input type="text" value="<?= $value->getValue()?>" class="input-hidden" readonly="readonly"></td>
                 <td><input type="text" value="<?= $this->getPropertyPipeline($value->getId())->getSorting()?>" class="input-hidden" readonly="readonly"></td>
                 <td>
-                    <div class="btn-group btn-group-sm">
+                    <div class="btn-group btn-group-sm mr1">
                         <button class="btn btn-default" data-event="edit">
                             <span class="glyphicon glyphicon-pencil"></span>
                         </button>
+                        <button class="btn btn-default" data-event="delete">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
                     </div>
+                    <button type="button" class="btn btn-sm btn-success hidden" data-event="save">Сохранить</button>
                 </td>
             </tr>
             <?php $n++;?>
@@ -45,11 +49,11 @@ $this->headScript()
             <td><?=$this->formValue->propertyId?></td>
             <td><?=$this->formValue->value?></td>
             <td><?=$this->formValue->sorting?></td>
-            <td></td>
+            <td><button type="button" class="btn btn-sm btn-primary hidden" data-event="add">Добавить</button></td>
         </tr>
     </tfoot>
 </table>
-<div class="modal fade" id="propertyEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<!--<div class="modal fade" id="propertyEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -58,16 +62,16 @@ $this->headScript()
             </div>
             <div class="modal-body">
                 <form id="pipelinePropertyValue" enctype="multipart/form-data" action="" method="post">
-                    <?=$this->formValue->pipelineId?>
-                    <?=$this->formValue->propertyId?>
-                    <?=$this->formValue->value?>
-                    <?=$this->formValue->sorting?>
+                    <?/*=$this->formValue->pipelineId*/?>
+                    <?/*=$this->formValue->propertyId*/?>
+                    <?/*=$this->formValue->value*/?>
+                    <?/*=$this->formValue->sorting*/?>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
                 <button type="button" form="pipelinePropertyValue" class="btn btn-primary">Сохранить</button>
             </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+        </div>
+    </div>
+</div>-->
