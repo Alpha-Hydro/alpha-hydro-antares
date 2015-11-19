@@ -16,11 +16,13 @@
     class TabEdit{
         table:any;
         options: any;
+        settings:any = {};
         row: any;
+
         constructor (table, options){
             this.table = table;
-            this.options = extend( {}, this.options );
-            extend( this.options, options );
+            this.settings = extend( {}, this.settings );
+            extend( this.settings, options );
 
             this.row = [].slice.call(this.table.querySelector('tbody').querySelectorAll('tr'));
         }

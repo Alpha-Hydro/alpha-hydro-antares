@@ -32,8 +32,6 @@ class Utils_TestController extends Zend_Controller_Action
             $this->view->properties = $viewProperties;
         }
 
-
-
         $formValue = new Admin_Form_PipelinePropertyValue();
         $formValue->setDefaults(array(
             'pipelineId' => $itemId,

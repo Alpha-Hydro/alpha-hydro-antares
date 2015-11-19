@@ -13,9 +13,10 @@
     }
     var TabEdit = (function () {
         function TabEdit(table, options) {
+            this.settings = {};
             this.table = table;
-            this.options = extend({}, this.options);
-            extend(this.options, options);
+            this.settings = extend({}, this.settings);
+            extend(this.settings, options);
             this.row = [].slice.call(this.table.querySelector('tbody').querySelectorAll('tr'));
         }
         return TabEdit;
