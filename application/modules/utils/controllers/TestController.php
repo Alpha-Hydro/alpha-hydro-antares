@@ -16,6 +16,7 @@ class Utils_TestController extends Zend_Controller_Action
     public function indexAction()
     {
         $itemId = 1;
+        $this->view->pipelineId = $itemId;
 
         $pipelineMapper = new Pipeline_Model_Mapper_Pipeline();
 

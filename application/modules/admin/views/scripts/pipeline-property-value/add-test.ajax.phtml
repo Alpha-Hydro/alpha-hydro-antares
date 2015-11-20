@@ -1,0 +1,16 @@
+<tr id="<?=$this->propertyValues->getId();?>">
+    <td><?=$this->name?></td>
+    <td><input value="<?=$this->propertyValues->getValue();?>" class="input-hidden" readonly="readonly" type="text"></td>
+    <td><input value="<?=$this->sorting?>" class="input-hidden" readonly="readonly" type="text"></td>
+    <td>
+        <div class="btn-group btn-group-sm mr1">
+            <button class="btn btn-default" data-event="edit">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </button>
+            <button class="btn btn-default" data-event="delete">
+                <span class="glyphicon glyphicon-trash"></span>
+            </button>
+        </div>
+        <button type="button" class="btn btn-sm btn-success hidden" data-event="save">Сохранить</button>
+    </td>
+</tr>

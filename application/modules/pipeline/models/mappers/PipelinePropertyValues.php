@@ -79,7 +79,9 @@ class Pipeline_Model_Mapper_PipelinePropertyValues
      * @return null|Pipeline_Model_PipelinePropertyValues
      * @throws Zend_Db_Table_Exception
      */
-    public function findByKey($pipeline_id, $property_id, Pipeline_Model_PipelinePropertyValues $pipelinepropertyvalues)
+    public function findByKey($pipeline_id,
+                              $property_id,
+                              Pipeline_Model_PipelinePropertyValues $pipelinepropertyvalues)
     {
         $result = $this->getDbTable()->find($pipeline_id, $property_id);
         if (0 == count($result)) {
@@ -90,6 +92,32 @@ class Pipeline_Model_Mapper_PipelinePropertyValues
         $entry = $this->_setDbData($row, $pipelinepropertyvalues);
 
         return $entry;
+    }
+
+    /**
+     * @param $pipeline_id
+     * @param $property_id
+     * @param Pipeline_Model_PipelinePropertyValues $pipelinepropertyvalues
+     * @return array|null
+     * @throws Zend_Db_Table_Exception
+     */
+    public function fetchByKey($pipeline_id,
+                               $property_id,
+                               Pipeline_Model_PipelinePropertyValues $pipelinepropertyvalues)
+    {
+        $resultSet = $this->getDbTable()->find($pipeline_id, $property_id);
+        if (0 == count($resultSet)) {
+            return null;
+        }
+
+        $entries   = array();
+        foreach ($resultSet as $row) {
+            $entry = new Pipeline_Model_PipelinePropertyValues();
+            $entry = $this->_setDbData($row, $entry);
+            $entries[] = $entry;
+        }
+
+        return $entries;
     }
 
     /**

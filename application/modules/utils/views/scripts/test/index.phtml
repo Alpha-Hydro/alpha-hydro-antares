@@ -3,56 +3,55 @@ $this->headScript()
 		->appendFile('/js/classie/classie.min.js')
 		->appendFile('/js/pipelinePropertyEdit.js');
 ?>
-<div class="btn-group btn-group-sm mtb2" data-toggle="buttons">
-    <button class="btn btn-default no-disabled" data-toggle="modal" data-target="#propertyEditModal" data-action="add">Добавить</button>
-    <button class="btn btn-default" disabled="disabled" data-toggle="modal" data-target="#propertyEditModal" data-action="edit">Редактировать</button>
-    <button class="btn btn-default" disabled="disabled" data-toggle="modal" data-target="#propertyEditModal" data-action="delete">Удалить</button>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-9">
+            <table class="table table-hover" data-edit="modal" data-itemId="<?=$this->pipelineId;?>" id="pipelineProperty">
+                <thead>
+                <tr>
+                    <th class="col-xs-2">Свойство</th>
+                    <th data-name="value">Значение</th>
+                    <th class="col-xs-1" data-name="sorting">Порядок</th>
+                    <th class="col-xs-3"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php if($this->properties):?>
+                    <?php foreach ($this->properties as $property => $value):?>
+                        <tr id="<?=$value->getId()?>">
+                            <td><?= $property ?></td>
+                            <td><input type="text" value="<?= $value->getValue()?>" class="input-hidden" readonly="readonly"></td>
+                            <td><input type="text" value="<?= $this->getPropertyPipeline($value->getId())->getSorting()?>" class="input-hidden" readonly="readonly"></td>
+                            <td>
+                                <div class="btn-group btn-group-sm mr1">
+                                    <button class="btn btn-default" data-event="edit">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>
+                                    <button class="btn btn-default" data-event="delete">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-success hidden" data-event="save">Сохранить</button>
+                            </td>
+                        </tr>
+                    <?php endforeach;?>
+                <?php endif;?>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <form>
+                        <td><?=$this->formValue->propertyId?></td>
+                        <td><?=$this->formValue->value?></td>
+                        <td><?=$this->formValue->sorting?></td>
+                        <td><button type="button" class="btn btn-sm btn-primary hidden" data-event="add">Добавить</button></td>
+                    </form>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
 </div>
-<table class="table table-bordered table-hover" data-edit="modal" id="pipelineProperty">
-	<thead>
-	<tr>
-		<th>#</th>
-		<th>Свойство</th>
-		<th data-name="value">Значение</th>
-		<th class="col-xs-1" data-name="sorting">Порядок</th>
-        <th class="col-xs-2"></th>
-	</tr>
-	</thead>
-	<tbody>
-    <?php if($this->properties):?>
-        <?php $n = 1;?>
-        <?php foreach ($this->properties as $property => $value):?>
-            <tr id="<?=$value->getId()?>">
-                <th scope="row"><?= $n?></th>
-                <td><?= $property ?></td>
-                <td><input type="text" value="<?= $value->getValue()?>" class="input-hidden" readonly="readonly"></td>
-                <td><input type="text" value="<?= $this->getPropertyPipeline($value->getId())->getSorting()?>" class="input-hidden" readonly="readonly"></td>
-                <td>
-                    <div class="btn-group btn-group-sm mr1">
-                        <button class="btn btn-default" data-event="edit">
-                            <span class="glyphicon glyphicon-pencil"></span>
-                        </button>
-                        <button class="btn btn-default" data-event="delete">
-                            <span class="glyphicon glyphicon-trash"></span>
-                        </button>
-                    </div>
-                    <button type="button" class="btn btn-sm btn-success hidden" data-event="save">Сохранить</button>
-                </td>
-            </tr>
-            <?php $n++;?>
-        <?php endforeach;?>
-    <?php endif;?>
-    </tbody>
-    <tfoot>
-        <tr>
-            <th></th>
-            <td><?=$this->formValue->propertyId?></td>
-            <td><?=$this->formValue->value?></td>
-            <td><?=$this->formValue->sorting?></td>
-            <td><button type="button" class="btn btn-sm btn-primary hidden" data-event="add">Добавить</button></td>
-        </tr>
-    </tfoot>
-</table>
 <!--<div class="modal fade" id="propertyEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog">
         <div class="modal-content">
