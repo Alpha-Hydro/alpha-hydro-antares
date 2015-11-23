@@ -1,5 +1,6 @@
 /// <reference path="jquery.d.ts" />
 /// <reference path="classie.d.ts" />
+/// <reference path="bootstrap.d.ts" />
 
 class PipelineEdit {
     table:any;
@@ -7,12 +8,14 @@ class PipelineEdit {
     row:any;
     rowAdd: any;
     current: number;
+    response: any;
     constructor(public tableId: string){
         this.table = document.getElementById(this.tableId);
         this.itemId = this.table.dataset.itemid;
         this.row = [].slice.call(this.table.querySelector('tbody').querySelectorAll('tr'));
         this.rowAdd = this.table.querySelector('tfoot').querySelector('tr');
         this.current = 0;
+        this.response = null;
 
         this._init();
     }
@@ -47,7 +50,22 @@ class PipelineEdit {
 
         selectProp.addEventListener('change', function(ev){
             ev.preventDefault();
-            var val:number = this.value;
+            var val:any = ev.target.value;
+
+            if(val == 'new'){
+                var select = this;
+                $('#propertyNewModal')
+                    .modal('show')
+                    .on('shown.bs.modal', function (){
+                        self._newFormEvent();
+                    })
+                    .on('hide.bs.modal', function () {
+                        select.value = 0;
+                        this.querySelector('form').reset();
+                    });
+            }
+
+
             self._addInputRead(val, aInput, btn);
         });
 
@@ -55,7 +73,7 @@ class PipelineEdit {
             ev.preventDefault();
             classie.remove(btn, 'hidden');
 
-            if(this.value === '') classie.add(btn, 'hidden');
+            if(ev.target.value === '') classie.add(btn, 'hidden');
         });
 
         btn.addEventListener('click', function(ev){
@@ -64,20 +82,54 @@ class PipelineEdit {
         });
     }
 
-    _addInputRead(selectVal: number, aInput:any, btn:any){
-        aInput.forEach(function(el){
-            if(selectVal == 0){
-                el.blur();
-                el.readOnly = true;
-                classie.add(btn, 'hidden');
-            }
-            else{
-                el.readOnly = false;
-                aInput[0].focus();
-                if(aInput[0].value != '')
-                    classie.remove(btn, 'hidden');
+    _newFormEvent(){
+        var self = this,
+            form:any = document.getElementById('newPipelineProperty'),
+            propertyName: any = form.elements.newPropertyName,
+            propertyValue: any = form.elements.newPropertyValue,
+            formBtnSubmit: any = form.elements.formBtnSubmit;
+
+        propertyValue.readOnly = true;
+        formBtnSubmit.disabled = true;
+
+        propertyName.addEventListener('input', function(ev){
+            ev.preventDefault();
+            propertyValue.readOnly = false;
+            if(ev.target.value == ''){
+                propertyValue.readOnly = true;
+                formBtnSubmit.disabled = true;
             }
         });
+        propertyValue.addEventListener('input', function(ev){
+            ev.preventDefault();
+            formBtnSubmit.disabled = false;
+            if(ev.target.value == ''){
+                formBtnSubmit.disabled = true;
+            }
+        });
+        formBtnSubmit.addEventListener('click', function(ev){
+            ev.preventDefault();
+            //var data = addAjax('/utils/test/add', $(form).serialize(), 'html');
+            addAjax('/utils/test/add', $(form).serialize());
+        });
+    }
+
+    _addInputRead(selectVal: any, aInput:any, btn:any){
+            if(selectVal == 0 || selectVal == 'new'){
+                aInput.forEach(function(el){
+                    el.blur();
+                    el.readOnly = true;
+                    classie.add(btn, 'hidden');
+                });
+            }
+            else{
+                aInput.forEach(function(el){
+                    el.readOnly = false;
+                    aInput[0].focus();
+                    if(aInput[0].value != '')
+                        classie.remove(btn, 'hidden');
+                });
+            }
     }
 
     _initEvent(tr, btn){
@@ -118,7 +170,10 @@ class PipelineEdit {
     _add(tr){
         var serialise = $(tr).find('form').serializeArray();
         serialise.push({name: 'pipelineId', value: this.itemId});
-        var data:any = sendAjax('/admin/pipeline-property-value/add-test', serialise);
+        var data:any = addAjax(
+            '/admin/pipeline-property-value/add-test',
+            serialise
+        );
         console.log(data);
     }
 
@@ -147,7 +202,8 @@ class PipelineEdit {
 
 var tableProperty = new PipelineEdit('pipelineProperty');
 
-var sendAjax = (url, data) => {
+var addAjax = (url:string, data:any) => {
+    console.log(url);
     $.ajax({
         url: url,
         type: 'POST',
@@ -157,8 +213,10 @@ var sendAjax = (url, data) => {
             return console.log("AJAX Error: " + textStatus);
         },
         success: function(data, textStatus, jqXHR) {
-            return data;
+            console.log(data);
         }
     });
 };
+
+
 

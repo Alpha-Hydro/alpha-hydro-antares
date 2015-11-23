@@ -15,7 +15,7 @@ class Admin_Form_PipelinePropertyValue extends Twitter_Bootstrap_Form_Vertical
         $this->addElement('select', 'propertyId', array(
             'placeholder'   => 'Свойство',
             'required'      => true,
-            'multiOptions'  => $this->_getPropertyArray(),
+            //'multiOptions'  => $this->_getPropertyArray(),
         ));
 
         $this->addElement('text', 'value', array(
@@ -54,6 +54,8 @@ class Admin_Form_PipelinePropertyValue extends Twitter_Bootstrap_Form_Vertical
                 $pipelinePropertyArray[$property->getId()] = $property->getName();
             }
         }
+
+        $pipelinePropertyArray['new'] = 'Новое';
 
         return $pipelinePropertyArray;
     }
