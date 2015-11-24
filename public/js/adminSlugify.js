@@ -15,6 +15,7 @@
         url: url,
         type: 'POST',
         dataType: 'json',
+        cache: false,
         data: {
           'slugify': value
         },

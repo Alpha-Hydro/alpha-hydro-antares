@@ -1,7 +1,8 @@
 <?php
 $this->headScript()
 		->appendFile('/js/classie/classie.min.js')
-		->appendFile('/js/pipelinePropertyEdit.js');
+		->appendFile('/js/pipelinePropertyEdit.js')
+		->appendFile('/js/adminSlugify.min.js');
 ?>
 <div class="container">
     <div class="row">
@@ -69,8 +70,10 @@ $this->headScript()
                         <div class="col-sm-8">
                             <?=$this->formText('newPropertyName', '', array(
                                 'placeholder' => 'Наименование свойства',
-                                'class' => 'form-control'
-                            ))?>
+                                'class' => 'form-control slugify',
+                                'data-slugify' => 'newPropertySystemName',
+                            ));?>
+                            <?=$this->formHidden('newPropertySystemName','');?>
                         </div>
                     </div>
                     <div class="form-group">

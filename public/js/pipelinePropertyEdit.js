@@ -76,10 +76,10 @@ var PipelineEdit = (function () {
                 formBtnSubmit.disabled = true;
             }
         });
-        formBtnSubmit.addEventListener('click', function (ev) {
-            ev.preventDefault();
-            //var data = addAjax('/utils/test/add', $(form).serialize(), 'html');
-            addAjax('/utils/test/add', $(form).serialize());
+        formBtnSubmit.addEventListener('click', function () {
+            var serialize = $(form).serializeArray();
+            serialize.push({ name: 'pipelineId', value: self.itemId });
+            addAjax('/utils/test/new', serialize);
         });
     };
     PipelineEdit.prototype._addInputRead = function (selectVal, aInput, btn) {
@@ -158,13 +158,16 @@ var addAjax = function (url, data) {
     $.ajax({
         url: url,
         type: 'POST',
-        dataType: 'html',
+        dataType: 'json',
+        cache: false,
         data: data,
         error: function (jqXHR, textStatus, errorThrown) {
             return console.log("AJAX Error: " + textStatus);
         },
         success: function (data, textStatus, jqXHR) {
-            console.log(data);
+            //console.log(data);
+            tableProperty.table.querySelector('tbody').insertAdjacentHTML('beforeend', data);
+            $('#propertyNewModal').modal('hide');
         }
     });
 };

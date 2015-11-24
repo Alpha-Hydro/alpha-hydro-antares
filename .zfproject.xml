@@ -715,6 +715,8 @@
               <actionMethod actionName="add"/>
               <actionMethod actionName="edit"/>
               <actionMethod actionName="delete"/>
+              <actionMethod actionName="test"/>
+              <actionMethod actionName="new"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory enabled="false"/>
@@ -765,6 +767,12 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Test">
                 <viewScriptFile forActionName="delete"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Test">
+                <viewScriptFile forActionName="test"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Test">
+                <viewScriptFile forActionName="new"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>

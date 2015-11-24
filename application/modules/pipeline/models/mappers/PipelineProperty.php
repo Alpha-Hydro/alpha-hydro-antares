@@ -54,10 +54,12 @@ class Pipeline_Model_Mapper_PipelineProperty
 
     /**
      * @param $id
-     * @param Pipeline_Model_PipelineProperty $pipelineproperty
-     * @return Pipeline_Model_PipelineProperty|null
+     * @param Pipeline_Model_PipelineProperty $pipelineProperty
+     * @return null|Pipeline_Model_PipelineProperty
+     * @throws Zend_Db_Table_Exception
+     * @internal param Pipeline_Model_PipelineProperty $pipelineproperty
      */
-    public function find($id, Pipeline_Model_PipelineProperty $pipelineproperty)
+    public function find($id, Pipeline_Model_PipelineProperty $pipelineProperty)
     {
         $result = $this->getDbTable()->find($id);
         
@@ -66,8 +68,28 @@ class Pipeline_Model_Mapper_PipelineProperty
         }
         
         $row = $result->current();
-        $entry = $this->_setDbData($row, $pipelineproperty);
+        $entry = $this->_setDbData($row, $pipelineProperty);
         
+        return $entry;
+    }
+
+
+    /**
+     * @param $sistemName
+     * @param Pipeline_Model_PipelineProperty $pipelineProperty
+     * @return null|Pipeline_Model_PipelineProperty
+     */
+    public function findBySistemName($sistemName, Pipeline_Model_PipelineProperty $pipelineProperty)
+    {
+        $select = $this->getDbTable()->select();
+        $select->where('sistem_name = ?', $sistemName);
+        $row = $this->getDbTable()->fetchRow($select);
+
+        if(is_null($row))
+            return null;
+
+        $entry = $this->_setDbData($row, $pipelineProperty);
+
         return $entry;
     }
 
