@@ -15,7 +15,6 @@
   };
 
   (function($) {
-    var getInput;
     $('[data-toggle="tooltip"]').tooltip();
     $(document).one('change', 'form#itemEdit', function() {
       return $('#saveItemEdit').removeClass('hidden').addClass('show');
@@ -38,40 +37,8 @@
       $('#imageTableLoadFile').trigger('click');
       return false;
     });
-    $('#imageTableLoadFile').change(function(event) {
+    return $('#imageTableLoadFile').change(function(event) {
       return loadFile(event, 'imageTable');
-    });
-    $(document).on('change', '#propertyId', function() {
-      var ajaxContent, src, val;
-      val = $(this).val();
-      src = '/admin/pipeline/select-add-property';
-      ajaxContent = $('#ajaxContent');
-      if (val !== 0) {
-        return getInput(src, val, ajaxContent);
-      }
-    });
-    getInput = function(src, val, ajaxContent) {
-      $.ajax({
-        url: src,
-        type: 'POST',
-        dataType: 'html',
-        data: {
-          'propertyId': val
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          return console.log("AJAX Error: " + textStatus);
-        },
-        success: function(data, textStatus, jqXHR) {
-          return ajaxContent.html(data);
-        }
-      });
-      return false;
-    };
-    return $('#pipelineProperties').editTable({
-      url: 'example.php',
-      columns: {
-        editable: [[1, 'propertyValue'], [2, 'propertySorting']]
-      }
     });
   })(jQuery);
 

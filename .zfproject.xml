@@ -245,6 +245,7 @@
               <actionMethod actionName="index"/>
               <actionMethod actionName="add"/>
               <actionMethod actionName="addTest"/>
+              <actionMethod actionName="addNewProperty"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -396,6 +397,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="PipelinePropertyValue">
                 <viewScriptFile forActionName="addTest"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="PipelinePropertyValue">
+                <viewScriptFile forActionName="addNewProperty"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>

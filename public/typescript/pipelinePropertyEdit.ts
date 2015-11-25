@@ -35,6 +35,7 @@ class PipelineEdit {
         });
 
         this._initAdd();
+        this._newFormEvent();
     }
 
     _initAdd(){
@@ -42,9 +43,9 @@ class PipelineEdit {
             tr:any = this.rowAdd,
             selectProp:any = tr.querySelector('select'),
             selectVal:number = selectProp.value,
-            aInput:any = [].slice.call(tr.querySelectorAll('input')),
+            aInput:any[] = [].slice.call(tr.querySelectorAll('input')),
+            modal:any = document.getElementById('propertyNewModal'),
             btn:Element = tr.querySelector('button[data-event="add"]');
-
 
         this._addInputRead(selectVal, aInput, btn);
 
@@ -54,17 +55,16 @@ class PipelineEdit {
 
             if(val == 'new'){
                 var select = this;
-                $('#propertyNewModal')
+                $(modal)
                     .modal('show')
-                    .on('shown.bs.modal', function (){
-                        self._newFormEvent();
-                    })
-                    .on('hide.bs.modal', function () {
+                    .on('hidden.bs.modal', function () {
+                        var modalForm = modal.querySelector('form');
                         select.value = 0;
-                        this.querySelector('form').reset();
+                        modalForm.reset();
+                        modalForm.elements.newPropertyValue.readOnly = true;
+                        modalForm.elements.formBtnSubmit.disabled = true;
                     });
             }
-
 
             self._addInputRead(val, aInput, btn);
         });
@@ -107,10 +107,11 @@ class PipelineEdit {
                 formBtnSubmit.disabled = true;
             }
         });
-        formBtnSubmit.addEventListener('click', function(){
-            var serialize:any = $(form).serializeArray();
+        formBtnSubmit.addEventListener('click', function(ev){
+            ev.preventDefault();
+            var serialize:any[] = $(ev.target.form).serializeArray();
             serialize.push({name: 'pipelineId', value: self.itemId});
-            addAjax('/utils/test/new', serialize);
+            self._addAjax('/admin/pipeline-property-value/add-new-property', serialize, callbackAdd);
         });
     }
 
@@ -134,7 +135,7 @@ class PipelineEdit {
 
     _initEvent(tr, btn){
         var btnEvent = btn.dataset.event;
-        console.log(tr);
+        //console.log(tr);
 
         if(btnEvent == 'edit'){
             var tr_current = this.row[this.current];
@@ -170,11 +171,11 @@ class PipelineEdit {
     _add(tr){
         var serialise = $(tr).find('form').serializeArray();
         serialise.push({name: 'pipelineId', value: this.itemId});
-        var data:any = addAjax(
+        /*var data:any = addAjax(
             '/admin/pipeline-property-value/add-test',
             serialise
-        );
-        console.log(data);
+        );*/
+        //console.log(data);
     }
 
     _delete(tr){
@@ -198,27 +199,32 @@ class PipelineEdit {
             btn.blur();
         }
     }
+
+    _addAjax = (url:string, data:any, callback:any = this._callbackData) => {
+        //console.log(data);
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'json',
+            cache: false,
+            data: data,
+            error: function(jqXHR, textStatus, errorThrown) {
+                return console.log("AJAX Error: " + textStatus);
+            },
+            success: callback,
+        });
+    };
+
+    _callbackData = (data) => {
+        console.log(data);
+    };
 }
 
 var tableProperty = new PipelineEdit('pipelineProperty');
 
-var addAjax = (url:string, data:any) => {
-    console.log(url);
-    $.ajax({
-        url: url,
-        type: 'POST',
-        dataType: 'json',
-        cache: false,
-        data: data,
-        error: function(jqXHR, textStatus, errorThrown) {
-            return console.log("AJAX Error: " + textStatus);
-        },
-        success: function(data, textStatus, jqXHR) {
-            //console.log(data);
-            tableProperty.table.querySelector('tbody').insertAdjacentHTML('beforeend', data);
-            $('#propertyNewModal').modal('hide');
-        }
-    });
+var callbackAdd = (data) => {
+    tableProperty.table.querySelector('tbody').insertAdjacentHTML('beforeend', data);
+    $('#propertyNewModal').modal('hide');
 };
 
 

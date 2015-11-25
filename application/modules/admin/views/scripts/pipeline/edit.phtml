@@ -25,6 +25,11 @@ $this->title = "Новый товар";
                             false,true
                         )?>"><span class="glyphicon glyphicon-list mr1"></span>Список товаров</a></li>
                     <li><a href="<?=$this->url(
+                            array('module'=>'admin', 'controller' => 'pipeline-property'),
+                            false,true
+                        )?>"><span class="glyphicon glyphicon-wrench mr1"></span>Список свойств</a></li>
+                    <li class="nav-divider"></li>
+                    <li><a href="<?=$this->url(
                             array('module'=>'admin', 'controller' => 'pipeline-categories'),
                             false,true
                         )?>"><span class="glyphicon glyphicon-list-alt mr1"></span>Категории товаров</a></li>

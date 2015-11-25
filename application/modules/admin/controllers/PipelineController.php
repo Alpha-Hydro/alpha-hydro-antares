@@ -255,12 +255,19 @@ class Admin_PipelineController extends Zend_Controller_Action
             $this->view->properties = $viewProperties;
         }
 
-        $formValueAdd = new Admin_Form_PipelinePropertyValueAdd();
-        $formValueAdd->setDefaults(array(
-            'pipelineId' => $itemId,
-            'propertyId' => 0,
-        ));
-        $this->view->formValueAdd = $formValueAdd;
+        $propertyArray = $this->_getPropertyArray($itemId);
+
+        if(0 != count($propertyArray)){
+            $formValue = new Admin_Form_PipelinePropertyValue();
+            $formValue->setDefaults(array(
+                'pipelineId' => $itemId,
+                'propertyId' => 0,
+                'sorting' => 0,
+            ));
+
+            $formValue->getElement('propertyId')->setMultiOptions($propertyArray);
+            $this->view->formValue = $formValue;
+        }
     }
 
     public function deleteAction()
@@ -286,7 +293,7 @@ class Admin_PipelineController extends Zend_Controller_Action
         return $this->_count_item_on_page;
     }
 
-    protected function _getPropertyArray()
+    protected function _getPropertyArray($itemId)
     {
         $pipelinePropertyMapper = new Pipeline_Model_Mapper_PipelineProperty();
         $select = $pipelinePropertyMapper->getDbTable()->select();
@@ -298,11 +305,28 @@ class Admin_PipelineController extends Zend_Controller_Action
         $pipelinePropertyArray[] = '...';
         $pipelineProperty = $pipelinePropertyMapper->fetchAll($select);
 
-        if(!empty($pipelineProperty)){
-            foreach ($pipelineProperty as $property) {
-                $pipelinePropertyArray[$property->getId()] = $property->getName();
+
+        $pipelinePropertyValuesMapper = new Pipeline_Model_Mapper_PipelinePropertyValues();
+        $select = $pipelinePropertyValuesMapper->getDbTable()->select();
+        $select->where('pipeline_id = ?', $itemId);
+        $pipelinePropertyValuesArray = $pipelinePropertyValuesMapper->fetchAll($select);
+
+        $itemIdArray = array();
+        if(!empty($pipelinePropertyValuesArray)){
+            foreach($pipelinePropertyValuesArray as $pipelinePropertyValue){
+                $itemIdArray[] = $pipelinePropertyValue->getPropertyId();
             }
         }
+
+        if(!empty($pipelineProperty)){
+            foreach ($pipelineProperty as $property) {
+                if(!in_array($property->getId(), $itemIdArray)){
+                    $pipelinePropertyArray[$property->getId()] = $property->getName();
+                }
+            }
+        }
+
+        $pipelinePropertyArray['new'] = 'Новое свойство...';
 
         return $pipelinePropertyArray;
     }

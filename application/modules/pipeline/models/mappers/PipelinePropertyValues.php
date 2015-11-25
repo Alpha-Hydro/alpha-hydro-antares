@@ -52,6 +52,23 @@ class Pipeline_Model_Mapper_PipelinePropertyValues
         return $this;
     }
 
+
+    /**
+     * @param Pipeline_Model_PipelinePropertyValues $pipelinePropertyValues
+     * @return $this
+     */
+    public function deleted(Pipeline_Model_PipelinePropertyValues $pipelinePropertyValues)
+    {
+        $id = $pipelinePropertyValues->getId();
+
+        $table = $this->getDbTable();
+        $where = $table->getAdapter()->quoteInto('id = ?', $id);
+
+        $table->delete($where);
+
+        return $this;
+    }
+
     /**
      * @param $id
      * @param Pipeline_Model_PipelinePropertyValues $pipelinepropertyvalues

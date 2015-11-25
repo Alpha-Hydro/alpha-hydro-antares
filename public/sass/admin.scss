@@ -13,3 +13,11 @@ input[type = 'image']{
   max-width: 200px;
 
 }
+.input-hidden{
+  display: block;
+  width: 100%;
+  border: none;
+  tr:hover &{
+    background-color: #f5f5f5;
+  }
+}

@@ -57,7 +57,6 @@ class Pipeline_Model_Mapper_PipelineProperty
      * @param Pipeline_Model_PipelineProperty $pipelineProperty
      * @return null|Pipeline_Model_PipelineProperty
      * @throws Zend_Db_Table_Exception
-     * @internal param Pipeline_Model_PipelineProperty $pipelineproperty
      */
     public function find($id, Pipeline_Model_PipelineProperty $pipelineProperty)
     {
