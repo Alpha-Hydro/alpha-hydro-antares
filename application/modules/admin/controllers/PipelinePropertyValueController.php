@@ -1,4 +1,5 @@
 <?php
+include_once 'vlmeh/Filter/Slugify.php';
 
 class Admin_PipelinePropertyValueController extends Zend_Controller_Action
 {
@@ -78,11 +79,6 @@ class Admin_PipelinePropertyValueController extends Zend_Controller_Action
                 }
             }
             else {
-                // username is invalid; print the reason
-                $messages = $validator->getMessages();
-                foreach ($messages as $message) {
-                    $message = '<tr><td colspan="3"><div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'.$message.'</div></td></tr>';
-                }
                 $alert = '<tr><td colspan="3"><div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4>Cвойство '.$request->getParam('newPropertyName').' уже существует.</h4>Выберите из списка и добавьте значение или измените зачение существующего свойства.</div></td></tr>';
                 echo $this->_helper->json($alert);
             }
@@ -98,9 +94,11 @@ class Admin_PipelinePropertyValueController extends Zend_Controller_Action
         $pipelinePropertyMapper = new Pipeline_Model_Mapper_PipelineProperty();
         $pipelineProperty = new Pipeline_Model_PipelineProperty();
 
+        $systemName = $this->_getSistemNameProperty($request->getParam('newPropertyName'));
+
         $pipelineProperty->setOptions(array(
             'name' => $request->getParam('newPropertyName'),
-            'sistemName' => strtolower($this->_getSistemNameProperty($request->getParam('newPropertySystemName'))),
+            'sistemName' => strtolower($systemName),
             'active' => 1,
             'showList' => 1,
             'type' => 1,
@@ -230,10 +228,3 @@ EOT;
     }
 
 }
-
-
-
-
-
-
-

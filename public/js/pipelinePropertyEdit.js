@@ -179,6 +179,7 @@ var PipelineEdit = (function () {
 var tableProperty = new PipelineEdit('pipelineProperty');
 var callbackAdd = function (data) {
     tableProperty.table.querySelector('tbody').insertAdjacentHTML('beforeend', data);
+    //tableProperty._init();
     $('#propertyNewModal').modal('hide');
 };
 //# sourceMappingURL=pipelinePropertyEdit.js.map

@@ -15,13 +15,13 @@ class Pipeline_Model_DbTable_PipelinePropertyValues extends Zend_Db_Table_Abstra
             'columns'           =>  array('pipeline_id'),
             'refTableClass'     =>  'Pipeline_Model_DbTable_Pipeline',
             'refColumns'        =>  array('id'),
-            'onDelete'			=>	self::CASCADE
+            //'onDelete'			=>	self::CASCADE
         ),
         'PropertyRel' => array(
             'columns'           =>  array('property_id'),
             'refTableClass'     =>  'Pipeline_Model_DbTable_PipelineProperty',
             'refColumns'        =>  array('id'),
-            'onDelete'			=>	self::CASCADE
+            //'onDelete'			=>	self::CASCADE
         )
     );
 }

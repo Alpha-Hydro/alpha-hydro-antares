@@ -55,6 +55,7 @@
         <modelColFile modelName="SubproductParams"/>
         <modelColFile modelName="SubproductParamsValues"/>
         <modelColFile modelName="PipelinePropertyValues"/>
+        <modelColFile modelName="PipelineProperty"/>
       </modelsDirectory>
       <modulesDirectory>
         <moduleDirectory moduleName="default">
@@ -246,6 +247,7 @@
               <actionMethod actionName="add"/>
               <actionMethod actionName="addTest"/>
               <actionMethod actionName="addNewProperty"/>
+              <actionMethod actionName="delete"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -400,6 +402,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="PipelinePropertyValue">
                 <viewScriptFile forActionName="addNewProperty"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="PipelinePropertyValue">
+                <viewScriptFile forActionName="delete"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>

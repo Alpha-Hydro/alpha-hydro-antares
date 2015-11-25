@@ -224,6 +224,7 @@ var tableProperty = new PipelineEdit('pipelineProperty');
 
 var callbackAdd = (data) => {
     tableProperty.table.querySelector('tbody').insertAdjacentHTML('beforeend', data);
+    //tableProperty._init();
     $('#propertyNewModal').modal('hide');
 };
 
