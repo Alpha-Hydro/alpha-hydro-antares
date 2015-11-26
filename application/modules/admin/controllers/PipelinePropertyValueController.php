@@ -59,6 +59,8 @@ class Admin_PipelinePropertyValueController extends Zend_Controller_Action
     {
         $request = $this->getRequest();
 
+        $dataResponse = array();
+
         if($request->isPost()){
             $validator = new Zend_Validate_Db_NoRecordExists(
                 array(
@@ -75,14 +77,22 @@ class Admin_PipelinePropertyValueController extends Zend_Controller_Action
 
                 if(!is_null($newProperty) && $request->getParam('pipelineId') != 0){
                     $newPropertyValue = $this->_createNewPropertyValue($newProperty->getId());
-                    echo $this->_helper->json($this->_createDataHtml($newProperty, $newPropertyValue));
+                    $dataResponse['newProperty'] = array(
+                        'propertyValueId' => $newPropertyValue->getId(),
+                        'propertyName' => $newProperty->getName(),
+                        'propertyValue' => $newPropertyValue->getValue()
+                    );
+                    //echo $this->_helper->json($this->_createDataHtml($newProperty, $newPropertyValue));
                 }
             }
             else {
-                $alert = '<tr><td colspan="3"><div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4>Cвойство '.$request->getParam('newPropertyName').' уже существует.</h4>Выберите из списка и добавьте значение или измените зачение существующего свойства.</div></td></tr>';
-                echo $this->_helper->json($alert);
+                $alert = '<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4>Cвойство '.$request->getParam('newPropertyName').' уже существует.</h4>Выберите из списка и добавьте значение или измените зачение существующего свойства.</div>';
+                $dataResponse['errorMessage'] = $alert;
+                //echo $this->_helper->json($alert);
             }
         }
+
+        echo $this->_helper->json($dataResponse);
     }
 
     /**

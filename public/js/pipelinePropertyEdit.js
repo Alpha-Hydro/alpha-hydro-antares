@@ -80,7 +80,7 @@ var PipelineEdit = (function () {
         });
     };
     PipelineEdit.prototype._newRow = function (propertyId, propertyName, propertyValue) {
-        if (propertyId === void 0) { propertyId = 0; }
+        if (propertyId === void 0) { propertyId = 'new'; }
         if (propertyName === void 0) { propertyName = 'test'; }
         if (propertyValue === void 0) { propertyValue = 'test'; }
         var tbody = this.table.tBodies.item('tbody'), newRow = document.createElement('tr'), input = document.createElement('input'), cellsTable = this.table.tHead.rows[0].cells, cellValue = this.table.tHead.querySelector('th[data-name="value"]'), buttons = {
@@ -89,6 +89,7 @@ var PipelineEdit = (function () {
             deleted: '<button class="btn btn-default" data-event="delete"><span class="glyphicon glyphicon-trash"></span></button>',
             saved: '<button type="button" class="btn btn-sm btn-success hidden" data-event="save">Сохранить</button>'
         }, btnGroup = document.createElement('div');
+        newRow.id = propertyId;
         for (var i = 0; i < cellsTable.length; i++) {
             var td = document.createElement('td');
             newRow.appendChild(td);
@@ -102,10 +103,9 @@ var PipelineEdit = (function () {
         btnGroup.className = buttons.classBtnGroup;
         btnGroup.insertAdjacentHTML('beforeend', buttons.edit);
         btnGroup.insertAdjacentHTML('beforeend', buttons.deleted);
-        newRow.cells[cellValue.cellIndex + 1].appendChild(btnGroup);
+        newRow.cells[newRow.cells.length - 1].appendChild(btnGroup);
         btnGroup.insertAdjacentHTML('afterEnd', buttons.saved);
         tbody.appendChild(newRow);
-        console.log(newRow);
         this.row.push(newRow);
         this._initRow(newRow);
     };
@@ -211,8 +211,12 @@ var PipelineEdit = (function () {
 })();
 var tableProperty = new PipelineEdit('pipelineProperty');
 var callbackAdd = function (data) {
-    tableProperty.table.querySelector('tbody').insertAdjacentHTML('beforeend', data);
-    //tableProperty._init();
-    $('#propertyNewModal').modal('hide');
+    if (data && typeof data.errorMessage != "undefined") {
+        $('#propertyNewModal').find('#errorMessage').html(data.errorMessage);
+    }
+    if (data && typeof data.newProperty != 'undefined') {
+        tableProperty._newRow(data.newProperty.propertyValueId, data.newProperty.propertyName, data.newProperty.propertyValue);
+        $('#propertyNewModal').modal('hide');
+    }
 };
 //# sourceMappingURL=pipelinePropertyEdit.js.map
