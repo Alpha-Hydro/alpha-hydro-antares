@@ -32,19 +32,22 @@ var PipelineEdit = (function () {
         this._init();
     }
     PipelineEdit.prototype._init = function () {
-        var self = this, btn = [];
+        var self = this;
         this.row.forEach(function (tr) {
-            btn = [].slice.call(tr.querySelectorAll('button'));
-            btn.forEach(function (btn) {
-                btn.addEventListener('click', function (ev) {
-                    ev.preventDefault();
-                    self._initEvent(tr, this);
-                    self.current = self.row.indexOf(tr);
-                });
-            });
+            self._initRow(tr);
         });
         this._initAdd();
         this._newFormEvent();
+    };
+    PipelineEdit.prototype._initRow = function (tr) {
+        var self = this, btn = [].slice.call(tr.querySelectorAll('button'));
+        btn.forEach(function (btn) {
+            btn.addEventListener('click', function (ev) {
+                ev.preventDefault();
+                self._initEvent(tr, this);
+                self.current = self.row.indexOf(tr);
+            });
+        });
     };
     PipelineEdit.prototype._initAdd = function () {
         var self = this, tr = this.rowAdd, selectProp = tr.querySelector('select'), selectVal = selectProp.value, aInput = [].slice.call(tr.querySelectorAll('input')), modal = document.getElementById('propertyNewModal'), btn = tr.querySelector('button[data-event="add"]');
@@ -53,11 +56,10 @@ var PipelineEdit = (function () {
             ev.preventDefault();
             var val = ev.target.value;
             if (val == 'new') {
-                var select = this;
+                var select = this, modalForm = modal.querySelector('form');
                 $(modal)
                     .modal('show')
                     .on('hidden.bs.modal', function () {
-                    var modalForm = modal.querySelector('form');
                     select.value = 0;
                     modalForm.reset();
                     modalForm.elements.newPropertyValue.readOnly = true;
@@ -77,6 +79,36 @@ var PipelineEdit = (function () {
             self._initEvent(tr, this);
         });
     };
+    PipelineEdit.prototype._newRow = function (propertyId, propertyName, propertyValue) {
+        if (propertyId === void 0) { propertyId = 0; }
+        if (propertyName === void 0) { propertyName = 'test'; }
+        if (propertyValue === void 0) { propertyValue = 'test'; }
+        var tbody = this.table.tBodies.item('tbody'), newRow = document.createElement('tr'), input = document.createElement('input'), cellsTable = this.table.tHead.rows[0].cells, cellValue = this.table.tHead.querySelector('th[data-name="value"]'), buttons = {
+            classBtnGroup: 'btn-group btn-group-sm mr1',
+            edit: '<button class="btn btn-default" data-event="edit"><span class="glyphicon glyphicon-pencil"></span></button>',
+            deleted: '<button class="btn btn-default" data-event="delete"><span class="glyphicon glyphicon-trash"></span></button>',
+            saved: '<button type="button" class="btn btn-sm btn-success hidden" data-event="save">Сохранить</button>'
+        }, btnGroup = document.createElement('div');
+        for (var i = 0; i < cellsTable.length; i++) {
+            var td = document.createElement('td');
+            newRow.appendChild(td);
+        }
+        newRow.cells[0].textContent = propertyName;
+        input.classList.add('input-hidden');
+        input.type = 'text';
+        input.readOnly = true;
+        input.value = propertyValue;
+        newRow.cells[cellValue.cellIndex].appendChild(input);
+        btnGroup.className = buttons.classBtnGroup;
+        btnGroup.insertAdjacentHTML('beforeend', buttons.edit);
+        btnGroup.insertAdjacentHTML('beforeend', buttons.deleted);
+        newRow.cells[cellValue.cellIndex + 1].appendChild(btnGroup);
+        btnGroup.insertAdjacentHTML('afterEnd', buttons.saved);
+        tbody.appendChild(newRow);
+        console.log(newRow);
+        this.row.push(newRow);
+        this._initRow(newRow);
+    };
     PipelineEdit.prototype._newFormEvent = function () {
         var self = this, form = document.getElementById('newPipelineProperty'), propertyName = form.elements.newPropertyName, propertyValue = form.elements.newPropertyValue, formBtnSubmit = form.elements.formBtnSubmit;
         propertyValue.readOnly = true;
@@ -91,10 +123,7 @@ var PipelineEdit = (function () {
         });
         propertyValue.addEventListener('input', function (ev) {
             ev.preventDefault();
-            formBtnSubmit.disabled = false;
-            if (ev.target.value == '') {
-                formBtnSubmit.disabled = true;
-            }
+            formBtnSubmit.disabled = !ev.target.value;
         });
         formBtnSubmit.addEventListener('click', function (ev) {
             ev.preventDefault();
@@ -136,6 +165,9 @@ var PipelineEdit = (function () {
         if (btnEvent == 'add') {
             this._add(tr);
         }
+        if (btnEvent == 'delete') {
+            this._delete(tr);
+        }
     };
     PipelineEdit.prototype._edit = function (tr, btn) {
         var aInput = [].slice.call(tr.querySelectorAll('input')), btnSave = tr.querySelector('button[data-event="save"]');
@@ -159,6 +191,7 @@ var PipelineEdit = (function () {
         //console.log(data);
     };
     PipelineEdit.prototype._delete = function (tr) {
+        this._newRow();
     };
     PipelineEdit.prototype._reset = function (tr) {
         var aInput = [].slice.call(tr.querySelectorAll('input')), btn = tr.querySelector('button.active'), btnSave = tr.querySelector('button[data-event="save"]');

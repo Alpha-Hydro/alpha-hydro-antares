@@ -21,21 +21,26 @@ class PipelineEdit {
     }
 
     _init(){
-        var self = this,
-            btn:any = [];
+        var self = this;
         this.row.forEach(function(tr){
-            btn = [].slice.call(tr.querySelectorAll('button'));
-            btn.forEach(function(btn){
-                btn.addEventListener('click',function(ev){
-                    ev.preventDefault();
-                    self._initEvent(tr, this);
-                    self.current = self.row.indexOf(tr);
-                });
-            });
+            self._initRow(tr);
         });
 
         this._initAdd();
         this._newFormEvent();
+    }
+
+    _initRow(tr:HTMLTableRowElement){
+        var self = this,
+            btn:HTMLButtonElement[] = [].slice.call(tr.querySelectorAll('button'));
+
+        btn.forEach(function(btn){
+            btn.addEventListener('click',function(ev){
+                ev.preventDefault();
+                self._initEvent(tr, this);
+                self.current = self.row.indexOf(tr);
+            });
+        });
     }
 
     _initAdd(){
@@ -54,11 +59,11 @@ class PipelineEdit {
             var val:any = ev.target.value;
 
             if(val == 'new'){
-                var select = this;
+                var select = this,
+                    modalForm = modal.querySelector('form');
                 $(modal)
                     .modal('show')
                     .on('hidden.bs.modal', function () {
-                        var modalForm = modal.querySelector('form');
                         select.value = 0;
                         modalForm.reset();
                         modalForm.elements.newPropertyValue.readOnly = true;
@@ -82,6 +87,48 @@ class PipelineEdit {
         });
     }
 
+    _newRow(propertyId:number = 0, propertyName:string = 'test', propertyValue:string = 'test'){
+        var tbody = this.table.tBodies.item('tbody'),
+            newRow = document.createElement('tr'),
+            input = document.createElement('input'),
+            cellsTable = this.table.tHead.rows[0].cells,
+            cellValue = this.table.tHead.querySelector('th[data-name="value"]'),
+            buttons = {
+                classBtnGroup: 'btn-group btn-group-sm mr1',
+                edit: '<button class="btn btn-default" data-event="edit"><span class="glyphicon glyphicon-pencil"></span></button>',
+                deleted: '<button class="btn btn-default" data-event="delete"><span class="glyphicon glyphicon-trash"></span></button>',
+                saved: '<button type="button" class="btn btn-sm btn-success hidden" data-event="save">Сохранить</button>',
+            },
+            btnGroup = document.createElement('div');
+
+        for (var i = 0; i < cellsTable.length; i++) {
+            var td = document.createElement('td');
+            newRow.appendChild(td);
+        }
+
+        newRow.cells[0].textContent = propertyName;
+
+        input.classList.add('input-hidden');
+        input.type = 'text';
+        input.readOnly = true;
+        input.value = propertyValue;
+        newRow.cells[cellValue.cellIndex].appendChild(input);
+
+        btnGroup.className = buttons.classBtnGroup;
+        btnGroup.insertAdjacentHTML('beforeend',buttons.edit);
+        btnGroup.insertAdjacentHTML('beforeend',buttons.deleted);
+
+        newRow.cells[cellValue.cellIndex+1].appendChild(btnGroup);
+        btnGroup.insertAdjacentHTML('afterEnd',buttons.saved);
+
+        tbody.appendChild(newRow);
+
+        console.log(newRow);
+
+        this.row.push(newRow);
+        this._initRow(newRow);
+    }
+
     _newFormEvent(){
         var self = this,
             form:any = document.getElementById('newPipelineProperty'),
@@ -102,10 +149,7 @@ class PipelineEdit {
         });
         propertyValue.addEventListener('input', function(ev){
             ev.preventDefault();
-            formBtnSubmit.disabled = false;
-            if(ev.target.value == ''){
-                formBtnSubmit.disabled = true;
-            }
+            formBtnSubmit.disabled = !ev.target.value;
         });
         formBtnSubmit.addEventListener('click', function(ev){
             ev.preventDefault();
@@ -152,6 +196,10 @@ class PipelineEdit {
         if(btnEvent == 'add'){
             this._add(tr);
         }
+
+        if(btnEvent == 'delete'){
+            this._delete(tr);
+        }
     }
 
     _edit(tr, btn){
@@ -179,7 +227,7 @@ class PipelineEdit {
     }
 
     _delete(tr){
-
+        this._newRow();
     }
 
     _reset(tr){
