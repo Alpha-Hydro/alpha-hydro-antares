@@ -8,17 +8,17 @@ var PipelineEdit = (function () {
         this._sendAjax = function (url, data, callback) {
             if (callback === void 0) { callback = _this._callbackData; }
             console.log(data);
-            /*$.ajax({
-                     url: url,
-                     type: 'POST',
-                     dataType: 'json',
-                     cache: false,
-                     data: data,
-                     error: function(jqXHR, textStatus, errorThrown) {
-                         return console.log("AJAX Error: " + textStatus);
-                     },
-                     success: callback,
-                 });*/
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                cache: false,
+                data: data,
+                error: function (jqXHR, textStatus, errorThrown) {
+                    return console.log("AJAX Error: " + textStatus);
+                },
+                success: callback
+            });
         };
         this._callbackData = function (data) {
             console.log(data);
@@ -26,7 +26,7 @@ var PipelineEdit = (function () {
         this.table = document.getElementById(this.tableId);
         this.itemId = this.table.dataset.itemid;
         this.row = [].slice.call(this.table.querySelector('tbody').querySelectorAll('tr'));
-        this.rowAdd = this.table.querySelector('tfoot').querySelector('tr');
+        this.rowFooter = this.table.querySelector('tfoot').querySelector('tr');
         this.current = 0;
         this.response = null;
         this._init();
@@ -36,7 +36,7 @@ var PipelineEdit = (function () {
         this.row.forEach(function (tr) {
             self._initRow(tr);
         });
-        this._initAdd();
+        this._initSelect();
         this._newFormEvent();
     };
     PipelineEdit.prototype._initRow = function (tr) {
@@ -49,8 +49,8 @@ var PipelineEdit = (function () {
             });
         });
     };
-    PipelineEdit.prototype._initAdd = function () {
-        var self = this, tr = this.rowAdd, selectProp = tr.querySelector('select'), selectVal = selectProp.value, aInput = [].slice.call(tr.querySelectorAll('input')), modal = document.getElementById('propertyNewModal'), btn = tr.querySelector('button[data-event="add"]');
+    PipelineEdit.prototype._initSelect = function () {
+        var self = this, tr = this.rowFooter, selectProp = tr.querySelector('select'), selectVal = selectProp.value, aInput = [].slice.call(tr.querySelectorAll('input')), modal = document.getElementById('propertyNewModal'), btn = tr.querySelector('button[data-event="add"]');
         this._addInputRead(selectVal, aInput, btn);
         selectProp.addEventListener('change', function (ev) {
             ev.preventDefault();
@@ -151,7 +151,6 @@ var PipelineEdit = (function () {
     };
     PipelineEdit.prototype._initEvent = function (tr, btn) {
         var btnEvent = btn.dataset.event;
-        //console.log(tr);
         if (btnEvent == 'edit') {
             var tr_current = this.row[this.current];
             if (!classie.has(btn, 'active')) {
@@ -166,8 +165,7 @@ var PipelineEdit = (function () {
             this._add(tr);
         }
         if (btnEvent == 'delete') {
-            var data = { valueId: tr.id };
-            this._sendAjax('/admin/pipeline-property-value/delete', data, callbackDel);
+            this._delete(tr);
         }
     };
     PipelineEdit.prototype._edit = function (tr, btn) {
@@ -188,10 +186,11 @@ var PipelineEdit = (function () {
             pipelineId: this.itemId,
             propertyValue: inputValue.value
         };
-        //console.log(data);
         this._sendAjax('/admin/pipeline-property-value/add', data, callbackAdd);
     };
     PipelineEdit.prototype._delete = function (tr) {
+        var data = { valueId: tr.id };
+        this._sendAjax('/admin/pipeline-property-value/delete', data, callbackDel);
     };
     PipelineEdit.prototype._reset = function (tr) {
         var aInput = [].slice.call(tr.querySelectorAll('input')), btn = tr.querySelector('button.active'), btnSave = tr.querySelector('button[data-event="save"]');
@@ -214,13 +213,21 @@ var callbackNew = function (data) {
     if (data && typeof data.errorMessage != "undefined") {
         $('#propertyNewModal').find('#errorMessage').html(data.errorMessage);
     }
-    if (data && typeof data.newProperty != 'undefined') {
-        tableProperty._newRow(data.newProperty.propertyValueId, data.newProperty.propertyName, data.newProperty.propertyValue);
+    if (data && typeof data.property != 'undefined') {
+        tableProperty._newRow(data.property.propertyValueId, data.property.propertyName, data.property.propertyValue);
         $('#propertyNewModal').modal('hide');
     }
 };
 var callbackAdd = function (data) {
     console.log(data);
+    if (data && typeof data.errorMessage != "undefined") {
+        console.log(data.errorMessage);
+    }
+    if (data && typeof data.property != 'undefined') {
+        tableProperty._newRow(data.property.propertyValueId, data.property.propertyName, data.property.propertyValue);
+        var select = tableProperty.rowFooter.querySelector('select'), selIdx = select.selectedIndex;
+        select.options.remove(selIdx);
+    }
 };
 var callbackDel = function (data) {
     if (data && typeof data.rowDeleted != 'undefined') {

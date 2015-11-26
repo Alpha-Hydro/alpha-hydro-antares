@@ -6,14 +6,14 @@ class PipelineEdit {
     table:any;
     itemId:number;
     row:any;
-    rowAdd: any;
+    rowFooter: any;
     current: number;
     response: any;
     constructor(public tableId: string){
         this.table = document.getElementById(this.tableId);
         this.itemId = this.table.dataset.itemid;
         this.row = [].slice.call(this.table.querySelector('tbody').querySelectorAll('tr'));
-        this.rowAdd = this.table.querySelector('tfoot').querySelector('tr');
+        this.rowFooter = this.table.querySelector('tfoot').querySelector('tr');
         this.current = 0;
         this.response = null;
 
@@ -26,7 +26,7 @@ class PipelineEdit {
             self._initRow(tr);
         });
 
-        this._initAdd();
+        this._initSelect();
         this._newFormEvent();
     }
 
@@ -43,9 +43,9 @@ class PipelineEdit {
         });
     }
 
-    _initAdd(){
+    _initSelect(){
         var self = this,
-            tr:any = this.rowAdd,
+            tr:any = this.rowFooter,
             selectProp:any = tr.querySelector('select'),
             selectVal:number = selectProp.value,
             aInput:any[] = [].slice.call(tr.querySelectorAll('input')),
@@ -198,8 +198,7 @@ class PipelineEdit {
         }
 
         if(btnEvent == 'delete'){
-            var data = {valueId: tr.id};
-            this._sendAjax('/admin/pipeline-property-value/delete', data, callbackDel);
+            this._delete(tr);
         }
     }
 
@@ -230,6 +229,8 @@ class PipelineEdit {
     }
 
     _delete(tr){
+        var data = {valueId: tr.id};
+        this._sendAjax('/admin/pipeline-property-value/delete', data, callbackDel);
     }
 
     _reset(tr){
@@ -252,7 +253,7 @@ class PipelineEdit {
 
     _sendAjax = (url:string, data:any, callback:any = this._callbackData) => {
         console.log(data);
-        /*$.ajax({
+        $.ajax({
                  url: url,
                  type: 'POST',
                  dataType: 'json',
@@ -262,7 +263,7 @@ class PipelineEdit {
                      return console.log("AJAX Error: " + textStatus);
                  },
                  success: callback,
-             });*/
+             });
     };
 
     _callbackData = (data) => {
@@ -277,11 +278,11 @@ var callbackNew = (data) => {
         $('#propertyNewModal').find('#errorMessage').html(data.errorMessage);
     }
 
-    if(data && typeof data.newProperty != 'undefined'){
+    if(data && typeof data.property != 'undefined'){
         tableProperty._newRow(
-            data.newProperty.propertyValueId,
-            data.newProperty.propertyName,
-            data.newProperty.propertyValue
+            data.property.propertyValueId,
+            data.property.propertyName,
+            data.property.propertyValue
         );
         $('#propertyNewModal').modal('hide');
     }
@@ -289,6 +290,20 @@ var callbackNew = (data) => {
 
 var callbackAdd = (data) => {
     console.log(data);
+    if(data && typeof data.errorMessage != "undefined"){
+        console.log(data.errorMessage);
+    }
+
+    if(data && typeof data.property != 'undefined'){
+        tableProperty._newRow(
+            data.property.propertyValueId,
+            data.property.propertyName,
+            data.property.propertyValue
+        );
+        var select = tableProperty.rowFooter.querySelector('select'),
+            selIdx = select.selectedIndex;
+        select.options.remove(selIdx);
+    }
 };
 
 var callbackDel = (data) => {

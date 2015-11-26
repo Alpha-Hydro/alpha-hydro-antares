@@ -25,35 +25,32 @@ class Admin_PipelinePropertyValueController extends Zend_Controller_Action
     public function addAction()
     {
         $request = $this->getRequest();
+        $dataResponse = array();
 
-        $form = new Admin_Form_PipelinePropertyValueAdd();
+        if($request->isPost()){
+            $pipelineId = $request->getParam('pipelineId');
+            $propertyId = $request->getParam('propertyId');
+            $propertyValue = $request->getParam('propertyValue');
 
-        if ($request->isPost()){
-            $pipelinePropertyValues = new Pipeline_Model_PipelinePropertyValues();
+            $propertyMapper = new Pipeline_Model_Mapper_PipelineProperty();
+            $property = $propertyMapper->find($propertyId, new Pipeline_Model_PipelineProperty());
 
-            $pipelinePropertyValues->setPipelineId($request->getParam('pipelineId'));
-            $pipelinePropertyValues->setPropertyId($request->getParam('propertyId'));
 
-            if($request->getParam('valueText'))
-                $pipelinePropertyValues->setValue($request->getParam('valueText'));
-
-            if($request->getParam('valueTextArea'))
-                $pipelinePropertyValues->setValue($request->getParam('valueTextArea'));
-
-            if(!empty($_FILES)){
-                $file = $form->valueLoadFile->getFileInfo();
-                if($file['valueLoadFile']['name'] !== ''){
-                    $form->valueLoadFile->receive();
-                    $pipelinePropertyValues->setValue('/upload/pipeline/items/'.$file['imageLoadFile']['name']);
-                }
+            $newPropertyValue = $this->_createPropertyValue($pipelineId, $propertyId, $propertyValue);
+            if(!is_null($newPropertyValue) && !is_null($property)){
+                $dataResponse['property'] = array(
+                    'propertyValueId' => $newPropertyValue->getId(),
+                    'propertyName' => $property->getName(),
+                    'propertyValue' => $newPropertyValue->getValue()
+                );
             }
-
-            $pipelinePropertyValuesMapper = new Pipeline_Model_Mapper_PipelinePropertyValues();
-            $pipelinePropertyValuesMapper->save($pipelinePropertyValues);
+            else{
+                $alert = 'Ошибка! Обратитесь к администратору сайта.';
+                $dataResponse['errorMessage'] = $alert;
+            }
         }
 
-        $this->_helper->redirector('edit','pipeline','admin',array('id' => $request->getParam('pipelineId')));
-        return;
+        echo $this->_helper->json($dataResponse);
     }
 
     public function addNewPropertyAction()
@@ -62,6 +59,10 @@ class Admin_PipelinePropertyValueController extends Zend_Controller_Action
         $dataResponse = array();
 
         if($request->isPost()){
+            $pipelineId = $request->getParam('pipelineId');
+            $propertyName = $request->getParam('newPropertyName');
+            $propertyValue = $request->getParam('newPropertyValue');
+
             $validator = new Zend_Validate_Db_NoRecordExists(
                 array(
                     'table' => 'pipeline_property',
@@ -69,19 +70,22 @@ class Admin_PipelinePropertyValueController extends Zend_Controller_Action
                 )
             );
 
-            $systemName = $this->_getSistemNameProperty($request->getParam('newPropertyName'));
+            $systemName = $this->_getSistemNameProperty($propertyName);
 
-            if ($validator->isValid(strtolower($systemName))) {
+            if ($systemName != '' && $validator->isValid(strtolower($systemName))) {
 
-                $newProperty = $this->_createNewProperty();
+                $newProperty = $this->_createNewProperty($propertyName);
 
                 if(!is_null($newProperty) && $request->getParam('pipelineId') != 0){
-                    $newPropertyValue = $this->_createNewPropertyValue($newProperty->getId());
-                    $dataResponse['newProperty'] = array(
-                        'propertyValueId' => $newPropertyValue->getId(),
-                        'propertyName' => $newProperty->getName(),
-                        'propertyValue' => $newPropertyValue->getValue()
-                    );
+                    $newPropertyValue = $this->_createPropertyValue($pipelineId, $newProperty->getId(), $propertyValue);
+                    if(!is_null($newPropertyValue)){
+                        $dataResponse['property'] = array(
+                            'propertyValueId' => $newPropertyValue->getId(),
+                            'propertyName' => $newProperty->getName(),
+                            'propertyValue' => $newPropertyValue->getValue()
+                        );
+                    }
+
                 }
             }
             else {
@@ -117,16 +121,16 @@ class Admin_PipelinePropertyValueController extends Zend_Controller_Action
     /**
      * @return null|Pipeline_Model_PipelineProperty
      */
-    protected function _createNewProperty()
+    protected function _createNewProperty($propertyName)
     {
-        $request = $this->getRequest();
+
         $pipelinePropertyMapper = new Pipeline_Model_Mapper_PipelineProperty();
         $pipelineProperty = new Pipeline_Model_PipelineProperty();
 
-        $systemName = $this->_getSistemNameProperty($request->getParam('newPropertyName'));
+        $systemName = $this->_getSistemNameProperty($propertyName);
 
         $pipelineProperty->setOptions(array(
-            'name' => $request->getParam('newPropertyName'),
+            'name' => $propertyName,
             'sistemName' => strtolower($systemName),
             'active' => 1,
             'showList' => 1,
@@ -144,19 +148,20 @@ class Admin_PipelinePropertyValueController extends Zend_Controller_Action
     }
 
     /**
+     * @param $pipelineId
      * @param $propertyId
+     * @param $value
      * @return null|Pipeline_Model_PipelinePropertyValues
      */
-    protected function _createNewPropertyValue($propertyId)
+    protected function _createPropertyValue($pipelineId, $propertyId, $value)
     {
-        $request = $this->getRequest();
         $pipelinePropertyValueMapper = new Pipeline_Model_Mapper_PipelinePropertyValues();
         $pipelinePropertyValue = new Pipeline_Model_PipelinePropertyValues();
 
         $pipelinePropertyValue->setOptions(array(
-            'pipelineId' => $request->getParam('pipelineId'),
+            'pipelineId' => $pipelineId,
             'propertyId' => $propertyId,
-            'value' => $request->getParam('newPropertyValue')
+            'value' => $value
         ));
 
         $pipelinePropertyValueMapper->save($pipelinePropertyValue);
