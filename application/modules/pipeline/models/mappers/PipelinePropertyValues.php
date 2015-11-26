@@ -54,13 +54,11 @@ class Pipeline_Model_Mapper_PipelinePropertyValues
 
 
     /**
-     * @param Pipeline_Model_PipelinePropertyValues $pipelinePropertyValues
+     * @param $id
      * @return $this
      */
-    public function deleted(Pipeline_Model_PipelinePropertyValues $pipelinePropertyValues)
+    public function deleted($id)
     {
-        $id = $pipelinePropertyValues->getId();
-
         $table = $this->getDbTable();
         $where = $table->getAdapter()->quoteInto('id = ?', $id);
 

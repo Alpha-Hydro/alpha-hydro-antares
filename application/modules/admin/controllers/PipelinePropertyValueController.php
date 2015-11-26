@@ -11,6 +11,7 @@ class Admin_PipelinePropertyValueController extends Zend_Controller_Action
         $ajaxContext = $this->_helper->getHelper('AjaxContext');
         $ajaxContext
             ->addActionContext('add-new-property', 'json')
+            ->addActionContext('delete', 'json')
             ->initContext();
 
         $this->_redirector = $this->_helper->getHelper('Redirector');
@@ -58,7 +59,6 @@ class Admin_PipelinePropertyValueController extends Zend_Controller_Action
     public function addNewPropertyAction()
     {
         $request = $this->getRequest();
-
         $dataResponse = array();
 
         if($request->isPost()){
@@ -82,14 +82,33 @@ class Admin_PipelinePropertyValueController extends Zend_Controller_Action
                         'propertyName' => $newProperty->getName(),
                         'propertyValue' => $newPropertyValue->getValue()
                     );
-                    //echo $this->_helper->json($this->_createDataHtml($newProperty, $newPropertyValue));
                 }
             }
             else {
                 $alert = '<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4>Cвойство '.$request->getParam('newPropertyName').' уже существует.</h4>Выберите из списка и добавьте значение или измените зачение существующего свойства.</div>';
                 $dataResponse['errorMessage'] = $alert;
-                //echo $this->_helper->json($alert);
             }
+        }
+
+        echo $this->_helper->json($dataResponse);
+    }
+
+    public function deleteAction()
+    {
+        $request = $this->getRequest();
+        $dataResponse = array();
+
+        if($request->isPost()){
+            $pipelinePropertyValueId = $request->getParam('valueId');
+
+            $pipelinePropertyValueMapper = new Pipeline_Model_Mapper_PipelinePropertyValues();
+
+            $pipelinePropertyValueMapper->deleted($pipelinePropertyValueId);
+
+            $dataResponse['rowDeleted'] = array(
+                'rowId' => $pipelinePropertyValueId,
+                'message' => 'Значение успешно удалено',
+            );
         }
 
         echo $this->_helper->json($dataResponse);
@@ -149,35 +168,6 @@ class Admin_PipelinePropertyValueController extends Zend_Controller_Action
                 new Pipeline_Model_PipelinePropertyValues());
 
         return $newPropertyValue;
-    }
-
-    /**
-     * @param Pipeline_Model_PipelineProperty $newProperty
-     * @param Pipeline_Model_PipelinePropertyValues $newPropertyValue
-     * @return string
-     */
-    protected function _createDataHtml(Pipeline_Model_PipelineProperty $newProperty, Pipeline_Model_PipelinePropertyValues $newPropertyValue)
-    {
-        $dataHtml = '';
-        $dataHtml .= '<tr id="'.$newPropertyValue->getId().'">';
-        $dataHtml .= '<td>'.$newProperty->getName().'</td>';
-        $dataHtml .= '<td><input value="'.$newPropertyValue->getValue().'" class="input-hidden" readonly="readonly" type="text"></td>';
-        $dataHtml .= <<<EOT
-<td>
-    <div class="btn-group btn-group-sm mr1">
-        <button class="btn btn-default" data-event="edit">
-            <span class="glyphicon glyphicon-pencil"></span>
-        </button>
-        <button class="btn btn-default" data-event="delete">
-            <span class="glyphicon glyphicon-trash"></span>
-        </button>
-    </div>
-    <button type="button" class="btn btn-sm btn-success hidden" data-event="save">Сохранить</button>
-</td>
-EOT;
-        $dataHtml .= '</tr>';
-
-        return $dataHtml;
     }
 
     /**

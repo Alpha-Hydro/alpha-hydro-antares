@@ -5,20 +5,20 @@ var PipelineEdit = (function () {
     function PipelineEdit(tableId) {
         var _this = this;
         this.tableId = tableId;
-        this._addAjax = function (url, data, callback) {
+        this._sendAjax = function (url, data, callback) {
             if (callback === void 0) { callback = _this._callbackData; }
-            //console.log(data);
-            $.ajax({
-                url: url,
-                type: 'POST',
-                dataType: 'json',
-                cache: false,
-                data: data,
-                error: function (jqXHR, textStatus, errorThrown) {
-                    return console.log("AJAX Error: " + textStatus);
-                },
-                success: callback
-            });
+            console.log(data);
+            /*$.ajax({
+                     url: url,
+                     type: 'POST',
+                     dataType: 'json',
+                     cache: false,
+                     data: data,
+                     error: function(jqXHR, textStatus, errorThrown) {
+                         return console.log("AJAX Error: " + textStatus);
+                     },
+                     success: callback,
+                 });*/
         };
         this._callbackData = function (data) {
             console.log(data);
@@ -129,7 +129,7 @@ var PipelineEdit = (function () {
             ev.preventDefault();
             var serialize = $(ev.target.form).serializeArray();
             serialize.push({ name: 'pipelineId', value: self.itemId });
-            self._addAjax('/admin/pipeline-property-value/add-new-property', serialize, callbackAdd);
+            self._sendAjax('/admin/pipeline-property-value/add-new-property', serialize, callbackNew);
         });
     };
     PipelineEdit.prototype._addInputRead = function (selectVal, aInput, btn) {
@@ -166,7 +166,8 @@ var PipelineEdit = (function () {
             this._add(tr);
         }
         if (btnEvent == 'delete') {
-            this._delete(tr);
+            var data = { valueId: tr.id };
+            this._sendAjax('/admin/pipeline-property-value/delete', data, callbackDel);
         }
     };
     PipelineEdit.prototype._edit = function (tr, btn) {
@@ -182,16 +183,15 @@ var PipelineEdit = (function () {
         aInput[0].focus();
     };
     PipelineEdit.prototype._add = function (tr) {
-        var serialise = $(tr).find('form').serializeArray();
-        serialise.push({ name: 'pipelineId', value: this.itemId });
-        /*var data:any = addAjax(
-            '/admin/pipeline-property-value/add-test',
-            serialise
-        );*/
+        var selectProperty = tr.querySelector('select#propertyId'), inputValue = tr.querySelector('input#value'), data = {
+            propertyId: selectProperty.value,
+            pipelineId: this.itemId,
+            propertyValue: inputValue.value
+        };
         //console.log(data);
+        this._sendAjax('/admin/pipeline-property-value/add', data, callbackAdd);
     };
     PipelineEdit.prototype._delete = function (tr) {
-        this._newRow();
     };
     PipelineEdit.prototype._reset = function (tr) {
         var aInput = [].slice.call(tr.querySelectorAll('input')), btn = tr.querySelector('button.active'), btnSave = tr.querySelector('button[data-event="save"]');
@@ -210,13 +210,24 @@ var PipelineEdit = (function () {
     return PipelineEdit;
 })();
 var tableProperty = new PipelineEdit('pipelineProperty');
-var callbackAdd = function (data) {
+var callbackNew = function (data) {
     if (data && typeof data.errorMessage != "undefined") {
         $('#propertyNewModal').find('#errorMessage').html(data.errorMessage);
     }
     if (data && typeof data.newProperty != 'undefined') {
         tableProperty._newRow(data.newProperty.propertyValueId, data.newProperty.propertyName, data.newProperty.propertyValue);
         $('#propertyNewModal').modal('hide');
+    }
+};
+var callbackAdd = function (data) {
+    console.log(data);
+};
+var callbackDel = function (data) {
+    if (data && typeof data.rowDeleted != 'undefined') {
+        console.log(data.rowDeleted.rowId);
+        console.log(data.rowDeleted.message);
+        var tr = document.getElementById(data.rowDeleted.rowId);
+        tr.remove();
     }
 };
 //# sourceMappingURL=pipelinePropertyEdit.js.map
