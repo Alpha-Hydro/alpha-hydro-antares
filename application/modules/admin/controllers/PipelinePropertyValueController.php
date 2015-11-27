@@ -168,7 +168,7 @@ class Admin_PipelinePropertyValueController extends Zend_Controller_Action
             'sistemName' => strtolower($systemName),
             'active' => 1,
             'showList' => 1,
-            'type' => 1,
+            'type' => 0,
             'sorting' => 0,
             'deleted' => 0
         ));

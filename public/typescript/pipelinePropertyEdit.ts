@@ -381,6 +381,3 @@ var callbackSave = (data) => {
         tableProperty._reset(tableProperty.row[tableProperty.current]);
     }
 };
-
-
-
