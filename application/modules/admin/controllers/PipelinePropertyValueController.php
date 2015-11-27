@@ -10,8 +10,10 @@ class Admin_PipelinePropertyValueController extends Zend_Controller_Action
     {
         $ajaxContext = $this->_helper->getHelper('AjaxContext');
         $ajaxContext
+            ->addActionContext('add', 'json')
             ->addActionContext('add-new-property', 'json')
             ->addActionContext('delete', 'json')
+            ->addActionContext('save', 'json')
             ->initContext();
 
         $this->_redirector = $this->_helper->getHelper('Redirector');
@@ -34,7 +36,6 @@ class Admin_PipelinePropertyValueController extends Zend_Controller_Action
 
             $propertyMapper = new Pipeline_Model_Mapper_PipelineProperty();
             $property = $propertyMapper->find($propertyId, new Pipeline_Model_PipelineProperty());
-
 
             $newPropertyValue = $this->_createPropertyValue($pipelineId, $propertyId, $propertyValue);
             if(!is_null($newPropertyValue) && !is_null($property)){
@@ -118,8 +119,41 @@ class Admin_PipelinePropertyValueController extends Zend_Controller_Action
         echo $this->_helper->json($dataResponse);
     }
 
+    public function saveAction()
+    {
+        $request = $this->getRequest();
+        $dataResponse = array();
+
+        if($request->isPost()){
+            $valueId = $request->getParam('valueId');
+            $value = $request->getParam('value');
+
+            $pipelinePropertyValueMapper = new Pipeline_Model_Mapper_PipelinePropertyValues();
+            $pipelinePropertyValue = $pipelinePropertyValueMapper
+                ->find($valueId, new Pipeline_Model_PipelinePropertyValues());
+
+            if($pipelinePropertyValue && $value != ''){
+                $pipelinePropertyValue->setValue($value);
+                $pipelinePropertyValueMapper->save($pipelinePropertyValue);
+
+                $dataResponse['rowSaved'] = array(
+                    'valueId' => $pipelinePropertyValue->getId(),
+                    'value' => $pipelinePropertyValue->getValue(),
+                    'message' => 'Значение успешно сохранено',
+                );
+            }
+            else{
+                $alert = 'Ошибка! Обратитесь к администратору сайта.';
+                $dataResponse['errorMessage'] = $alert;
+            }
+        }
+
+        echo $this->_helper->json($dataResponse);
+    }
+
     /**
      * @return null|Pipeline_Model_PipelineProperty
+     *
      */
     protected function _createNewProperty($propertyName)
     {
@@ -152,6 +186,7 @@ class Admin_PipelinePropertyValueController extends Zend_Controller_Action
      * @param $propertyId
      * @param $value
      * @return null|Pipeline_Model_PipelinePropertyValues
+     *
      */
     protected function _createPropertyValue($pipelineId, $propertyId, $value)
     {
@@ -178,6 +213,7 @@ class Admin_PipelinePropertyValueController extends Zend_Controller_Action
     /**
      * @param $itemId
      * @return array
+     *
      */
     protected function _getPropertyArray($itemId)
     {
@@ -217,10 +253,10 @@ class Admin_PipelinePropertyValueController extends Zend_Controller_Action
         return $pipelinePropertyArray;
     }
 
-
     /**
      * @param $propertyName
      * @return string
+     *
      */
     protected function _getSistemNameProperty($propertyName)
     {
@@ -231,5 +267,6 @@ class Admin_PipelinePropertyValueController extends Zend_Controller_Action
 
         return $result;
     }
-
 }
+
+

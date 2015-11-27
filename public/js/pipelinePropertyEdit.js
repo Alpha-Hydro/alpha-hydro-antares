@@ -7,7 +7,7 @@ var PipelineEdit = (function () {
         this.tableId = tableId;
         this._sendAjax = function (url, data, callback) {
             if (callback === void 0) { callback = _this._callbackData; }
-            console.log(data);
+            //console.log(data);
             $.ajax({
                 url: url,
                 type: 'POST',
@@ -23,6 +23,24 @@ var PipelineEdit = (function () {
         this._callbackData = function (data) {
             console.log(data);
         };
+        this._selectOptions = function () {
+            $.ajax({
+                url: '/admin/pipeline/select-property-item-array',
+                type: 'POST',
+                dataType: 'html',
+                cache: false,
+                data: {
+                    pipelineId: _this.itemId
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("AJAX Error: " + textStatus);
+                },
+                success: function (data, textStatus, jqXHR) {
+                    //console.log(data);
+                    $('select#propertyId').html(data);
+                }
+            });
+        };
         this.table = document.getElementById(this.tableId);
         this.itemId = this.table.dataset.itemid;
         this.row = [].slice.call(this.table.querySelector('tbody').querySelectorAll('tr'));
@@ -37,7 +55,7 @@ var PipelineEdit = (function () {
             self._initRow(tr);
         });
         this._initSelect();
-        this._newFormEvent();
+        this._modalFormEvent();
     };
     PipelineEdit.prototype._initRow = function (tr) {
         var self = this, btn = [].slice.call(tr.querySelectorAll('button'));
@@ -59,6 +77,9 @@ var PipelineEdit = (function () {
                 var select = this, modalForm = modal.querySelector('form');
                 $(modal)
                     .modal('show')
+                    .on('shown.bs.modal', function () {
+                    modalForm.elements.newPropertyName.focus();
+                })
                     .on('hidden.bs.modal', function () {
                     select.value = 0;
                     modalForm.reset();
@@ -78,6 +99,15 @@ var PipelineEdit = (function () {
             ev.preventDefault();
             self._initEvent(tr, this);
         });
+    };
+    PipelineEdit.prototype._resetSelect = function () {
+        var row = this.rowFooter, select = row.querySelector('select'), inputs = [].slice.call(row.querySelectorAll('input')), btn = row.querySelector('button[data-event="add"]');
+        select.value = '0';
+        inputs.forEach(function (input) {
+            input.value = '';
+            input.readOnly = true;
+        });
+        btn.classList.add('hidden');
     };
     PipelineEdit.prototype._newRow = function (propertyId, propertyName, propertyValue) {
         if (propertyId === void 0) { propertyId = 'new'; }
@@ -109,7 +139,12 @@ var PipelineEdit = (function () {
         this.row.push(newRow);
         this._initRow(newRow);
     };
-    PipelineEdit.prototype._newFormEvent = function () {
+    PipelineEdit.prototype._rowDelete = function (rowId) {
+        var row = document.getElementById(rowId);
+        row.remove();
+        return this;
+    };
+    PipelineEdit.prototype._modalFormEvent = function () {
         var self = this, form = document.getElementById('newPipelineProperty'), propertyName = form.elements.newPropertyName, propertyValue = form.elements.newPropertyValue, formBtnSubmit = form.elements.formBtnSubmit;
         propertyValue.readOnly = true;
         formBtnSubmit.disabled = true;
@@ -151,6 +186,7 @@ var PipelineEdit = (function () {
     };
     PipelineEdit.prototype._initEvent = function (tr, btn) {
         var btnEvent = btn.dataset.event;
+        console.log(btnEvent);
         if (btnEvent == 'edit') {
             var tr_current = this.row[this.current];
             if (!classie.has(btn, 'active')) {
@@ -167,6 +203,10 @@ var PipelineEdit = (function () {
         if (btnEvent == 'delete') {
             this._delete(tr);
         }
+        if (btnEvent == 'save') {
+            console.log(this.row[this.current]);
+            this._save(tr);
+        }
     };
     PipelineEdit.prototype._edit = function (tr, btn) {
         var aInput = [].slice.call(tr.querySelectorAll('input')), btnSave = tr.querySelector('button[data-event="save"]');
@@ -177,6 +217,10 @@ var PipelineEdit = (function () {
             classie.add(input, 'form-control');
             classie.add(input, 'input-sm');
             input.readOnly = false;
+            input.addEventListener('input', function (ev) {
+                ev.preventDefault();
+                btnSave.disabled = !ev.target.value;
+            });
         });
         aInput[0].focus();
     };
@@ -186,11 +230,20 @@ var PipelineEdit = (function () {
             pipelineId: this.itemId,
             propertyValue: inputValue.value
         };
+        //console.log(data);
         this._sendAjax('/admin/pipeline-property-value/add', data, callbackAdd);
     };
     PipelineEdit.prototype._delete = function (tr) {
         var data = { valueId: tr.id };
         this._sendAjax('/admin/pipeline-property-value/delete', data, callbackDel);
+    };
+    PipelineEdit.prototype._save = function (tr) {
+        var valueId = tr.id, inputValue = tr.querySelector('input'), data = {
+            valueId: valueId,
+            value: inputValue.value
+        };
+        //console.log(data);
+        this._sendAjax('/admin/pipeline-property-value/save', data, callbackSave);
     };
     PipelineEdit.prototype._reset = function (tr) {
         var aInput = [].slice.call(tr.querySelectorAll('input')), btn = tr.querySelector('button.active'), btnSave = tr.querySelector('button[data-event="save"]');
@@ -219,22 +272,28 @@ var callbackNew = function (data) {
     }
 };
 var callbackAdd = function (data) {
-    console.log(data);
+    //console.log(data);
     if (data && typeof data.errorMessage != "undefined") {
         console.log(data.errorMessage);
     }
     if (data && typeof data.property != 'undefined') {
         tableProperty._newRow(data.property.propertyValueId, data.property.propertyName, data.property.propertyValue);
-        var select = tableProperty.rowFooter.querySelector('select'), selIdx = select.selectedIndex;
-        select.options.remove(selIdx);
+        tableProperty._selectOptions();
+        tableProperty._resetSelect();
     }
 };
 var callbackDel = function (data) {
     if (data && typeof data.rowDeleted != 'undefined') {
-        console.log(data.rowDeleted.rowId);
-        console.log(data.rowDeleted.message);
-        var tr = document.getElementById(data.rowDeleted.rowId);
-        tr.remove();
+        tableProperty._rowDelete(data.rowDeleted.rowId);
+        tableProperty._selectOptions();
+        tableProperty._resetSelect();
+    }
+};
+var callbackSave = function (data) {
+    console.log(data);
+    if (data && typeof data.rowSaved != 'undefined') {
+        console.log(data.rowSaved.message);
+        tableProperty._reset(tableProperty.row[tableProperty.current]);
     }
 };
 //# sourceMappingURL=pipelinePropertyEdit.js.map

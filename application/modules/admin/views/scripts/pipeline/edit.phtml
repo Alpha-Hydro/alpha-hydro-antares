@@ -62,18 +62,18 @@ $this->title = "Новый товар";
                         </div>
                     </div>
                     <ul class="nav nav-tabs nav-justified mtb2"  role="tablist">
-                        <li role="presentation" class="active"><a href="#fieldset-desc" aria-controls="fieldset-desc" role="tab" data-toggle="tab">Описание</a></li>
-                        <li role="presentation"><a href="#property" aria-controls="property" role="tab" data-toggle="tab">Свойства товара</a></li>
+                        <li role="presentation" class="active"><a href="#property" aria-controls="property" role="tab" data-toggle="tab">Свойства товара</a></li>
+                        <li role="presentation"><a href="#fieldset-desc" aria-controls="fieldset-desc" role="tab" data-toggle="tab">Описание</a></li>
                         <li role="presentation"><a href="#fieldset-seo" aria-controls="fieldset-seo" role="tab" data-toggle="tab">SEO</a></li>
                         <li role="presentation"><a href="#fieldset-additionally" aria-controls="fieldset-additionally" role="tab" data-toggle="tab">Дополнительно</a></li>
                     </ul>
                     <div class="tab-content">
+                        <div class="tab-pane active" id="property" role="tabpanel">
+                            <?=$this->render('pipeline/_property_table_edit.phtml')?>
+                        </div>
                         <?= $this->form->desc?>
                         <?= $this->form->seo?>
                         <?= $this->form->additionally?>
-                        <div class="tab-pane" id="property" role="tabpanel">
-                            <?=$this->render('pipeline/_property_table_edit.phtml')?>
-                        </div>
                     </div>
                 </form>
                 <div class="modal fade" id="addPropertyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

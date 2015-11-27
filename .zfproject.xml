@@ -226,6 +226,7 @@
               <actionMethod actionName="edit"/>
               <actionMethod actionName="delete"/>
               <actionMethod actionName="selectAddProperty"/>
+              <actionMethod actionName="selectPropertyItemArray"/>
             </controllerFile>
             <controllerFile controllerName="PipelineCategories">
               <actionMethod actionName="index"/>
@@ -248,6 +249,7 @@
               <actionMethod actionName="addTest"/>
               <actionMethod actionName="addNewProperty"/>
               <actionMethod actionName="delete"/>
+              <actionMethod actionName="save"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -405,6 +407,12 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="PipelinePropertyValue">
                 <viewScriptFile forActionName="delete"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Pipeline">
+                <viewScriptFile forActionName="selectPropertyItemArray"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="PipelinePropertyValue">
+                <viewScriptFile forActionName="save"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
