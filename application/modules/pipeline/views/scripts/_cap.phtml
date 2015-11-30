@@ -23,13 +23,12 @@
     <?php echo $this->render("components/_header.phtml")?>
     <div class="main" role="main">
         <div class="container">
-            <?php /*echo $this->layout()->content */?>
-            <?php echo $this->render('_module.phtml') ?>
+            <?= $this->layout()->content ?>
         </div>
     </div>
     <div class="layout-footer"></div>
 </div>
-<?php echo $this->render("components/_footer.phtml")?>
-<?php echo $this->headScript();?>
+<?= $this->render("components/_footer.phtml")?>
+<?= $this->headScript();?>
 </body>
 </html>
