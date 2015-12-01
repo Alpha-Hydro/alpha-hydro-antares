@@ -35,7 +35,7 @@
       target = target_offset.top;
       $('html, body').animate({
         scrollTop: target
-      }, 500);
+      }, 1000);
       return console.log(target);
     });
     return false;
