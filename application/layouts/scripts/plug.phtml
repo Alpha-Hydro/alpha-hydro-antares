@@ -1,0 +1,23 @@
+<?php echo $this->doctype() ?>
+<html lang="ru-RU">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="refresh" content="10; url=http://alpha-hydro.com">
+
+	<?=$this->headTitle("Сайт переехал / Moved permanently");?>
+	<?=$this->headLink()->appendStylesheet("/css/plug.css");?>
+</head>
+<body>
+
+<div class="hwin">
+	<h1>Уважаемые пользователи!</h1>
+	<p>В связи с реорганизацией компании, сообщаем, что весь ресурс <strong><?=$this->host?></strong> переехал по адресу www.alpha-hydro.com.</p>
+	<p>Автоматическая переадресация будет выполнена через 10 секунд.</p>
+	<p><a href="http://alpha-hydro.com">Перейти без ожидания на сайт АЛЬФА-ГИДРО.</a></p>
+</div>
+<?php
+	if(!Zend_Auth::getInstance()->hasIdentity())
+		echo $this->partial("components/_counters.phtml");
+?>
+</body>
+</html>

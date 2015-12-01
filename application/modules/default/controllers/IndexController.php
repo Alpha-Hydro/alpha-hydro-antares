@@ -63,6 +63,17 @@ class IndexController extends Zend_Controller_Action
         $this->view->page = $page;
     }
 
+    public function plugAction()
+    {
+        Zend_Layout::getMvcInstance()->setLayout("plug");
+        $host = $this->getRequest()->getServer('HTTP_HOST');
+
+        if($host === 'xn----7sbavhvfm6b0af.xn--p1ai')
+            $host = 'ханза-флекс.рф';
+
+        $this->view->host = $host;
+    }
+
     /**
      * @param null $page_id
      * @return IndexController
