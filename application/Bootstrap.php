@@ -32,5 +32,23 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $view->addScriptPath(APPLICATION_PATH."/layouts/scripts/");
     }
 
+    protected function _initPlugins() {
+        $this->bootstrap('frontController');
+
+        $pluginsLoader = new Zend_Loader_PluginLoader();
+        $pluginsLoader->addPrefixPath("Plugin", APPLICATION_PATH.'/plugins');
+
+        $pluginsLoader->load("Redirect");
+        $front = Zend_Controller_Front::getInstance();
+        if ( $pluginsLoader->isLoaded("Redirect"))
+            $front->registerPlugin(new Plugin_Redirect());
+
+    }
+
+    public function _initRoute()
+    {
+
+    }
+
 }
 
