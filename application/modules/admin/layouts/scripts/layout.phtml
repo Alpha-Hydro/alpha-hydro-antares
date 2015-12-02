@@ -4,6 +4,13 @@
     <head>
         <?php echo $this->headTitle();?>
         <?php
+            echo $this->headMeta()
+                ->prependName('viewport', 'width=device-width, initial-scale=1.0')
+                ->prependHttpEquiv('X-UA-Compatible', 'IE=edge')
+                ->prependName('keywords', $this->meta_keywords)
+                ->prependName('description', $this->meta_description)
+                ->prependHttpEquiv('Content-Type', 'text/html; charset=UTF-8');
+
             echo $this->headLink()
                 ->appendStylesheet('//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css')
                 ->appendStylesheet('/css/admin.css');

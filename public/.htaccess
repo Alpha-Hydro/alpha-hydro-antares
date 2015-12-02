@@ -1,5 +1,22 @@
+Options +FollowSymlinks
+
+DirectoryIndex index.php
+
+AddDefaultCharset UTF-8
 
 RewriteEngine On
+
+# Редирект с www на /
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^ http://%1%{REQUEST_URI} [R=301,L]
+
+# Обязательный слеш в конце пути
+RewriteCond %{REQUEST_METHOD} GET [NC]
+RewriteCond %{REQUEST_URI} !/$
+RewriteCond %{REQUEST_URI} !\.
+RewriteRule ^.*$ %{REQUEST_URI}/ [R=301,L]
+
+# Редирект на index.php по правилам zend
 RewriteCond %{REQUEST_FILENAME} -s [OR]
 RewriteCond %{REQUEST_FILENAME} -l [OR]
 RewriteCond %{REQUEST_FILENAME} -d

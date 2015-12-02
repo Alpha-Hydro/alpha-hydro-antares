@@ -1,0 +1,16 @@
+<config>
+    <production>
+        <resources>
+            <db>
+                <adapter>pdo_mysql</adapter>
+                <params>
+                    <host>192.168.137.103</host>
+                    <username>u1057313_fddffd</username>
+                    <password>fkmafublhj2013_</password>
+                    <dbname>db1057313_alphahyd</dbname>
+                    <charset value="utf8" />
+                </params>
+            </db>
+        </resources>
+    </production>
+</config>
