@@ -42,3 +42,10 @@ public/D
 
 #UglifyJS
 *.min.min.js
+
+#checkout
+/scripts/*.js
+/scripts/nicEdit
+/scripts/fancybox
+/scripts/datepicker
+/js
