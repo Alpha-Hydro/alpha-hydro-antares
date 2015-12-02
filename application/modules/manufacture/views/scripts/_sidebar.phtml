@@ -1,0 +1,18 @@
+<nav>
+    <ul class="list-group sidebar crop-bottom-shadow">
+        <?php foreach($this->categories as $category):?>
+            <li class="list-group-item sidebar-item <?=(is_null($this->category) || $this->category->getId() != $category->getId())?'':'sidebar-item-current';?>">
+                <?php /*if(is_null($this->category) || $this->category->getId() != $category->getId()):*/?>
+                    <a href="<?=$this->url(array(
+                        'module'                    => 'manufacture',
+                        'controller'                => 'index',
+                        'action'                    => 'categories',
+                        'manufacture_path_category' => $category->getPath(),
+                    ), 'manufactureCategory', true, false)?>/"><?=$this->escape($category->getTitle())?></a>
+                   <!-- <?php /*else: */?>
+                    <?/*=$this->escape($category->getTitle())*/?>
+                --><?php /*endif; */?>
+            </li>
+        <?php endforeach;?>
+    </ul>
+</nav>

@@ -1,99 +1,97 @@
 <?php
-/**
- * Default controller
- *
- * @author Bakin Vlad
- * @package Default
- * @category Site
- * @subpackage Controllers
- */
 
-/**
- * Default controller
- *
- * @package Default
- * @author Bakin Vlad
- * @subpackage Controllers
- */
-class IndexController extends Zend_Controller_Action {
-	
-	/**
-	 * Default action, will forward, or show start page
-	 */
-	public function indexAction() {
-		Zend_Layout::getMvcInstance ()->setLayout ( "index" );
-		
-		$categoriesModel = new Model_DbTable_PagesCategories ();
-		$pagesModel = new Model_DbTable_Pages ();
-		
-		$category = $categoriesModel->fetchRow ( $categoriesModel->select ()->where ( "name = ?", "Пресса" )->where ( "parent_id IS NULL" ) );
-		
-		$categories = $category->findDependentRowset ( "Model_DbTable_PagesCategories" );
-		
-		foreach ( $categories as $category ) {
-			switch ($category->name) {
-				case 'Новости' :
-					$news = $category;
-					break;
-				case 'Акции' :
-					$stocks = $category;
-					break;
-				case 'Статьи' :
-					$posts = $category;
-					break;
-			}
-		}
-		
-		if ( isset($posts) ){
-			$this -> view -> post = $pagesModel->fetchRow($pagesModel->random()->where("category_id = ?", $posts->id));
-		}
-		
-		if ( isset($news) ){
-			$this -> view -> news = $pagesModel->fetchRow($pagesModel->select()->where("category_id = ?", $news->id)->order("timestamp DESC"));
-		}
-		
-		if ( isset($stocks) ){
-			$this -> view -> stocks = $pagesModel->fetchRow($pagesModel->select()->where("category_id = ?", $stocks->id)->order("timestamp DESC"));
-		}		
-		
-		$forumModel = new Model_DbTable_Forum();
-		
-		$this->view->forum = new StdClass;
-		$this->view->forum->answer = $forumModel->fetchRow( $forumModel->select()->order("timestamp DESC") ->where ( "parent_id IS NOT NULL " ) );
-		$this->view->forum->question = $this->view->forum->answer->findParentRow("Model_DbTable_Forum");
-	}
-	
-	/**
-	 * Login action
-	 */
-	public function loginAction() {
-		$zend_auth = Zend_Auth::getInstance ();
-		$form = Model_Static_Loader::loadForm ( "login" );
-		
-		if ($this->getRequest ()->isPost () && $form->isValid ( $_POST ) && ! $zend_auth->hasIdentity ()) {
-			$adapter = new Model_Static_Auth ( $form->getValue ( "username" ), $form->getValue ( "password" ) );
-			
-			$result = $zend_auth->authenticate ( $adapter );
-			
-			if ($result->isValid ()) {
-				$zend_auth->getStorage ()->write ( $result->getIdentity () );
-				$this->_forward ( "index" );
-			}
-		} elseif ($zend_auth->hasIdentity ()) {
-			$this->_forward ( "index" );
-		}
-		
-		$this->view->form = $form;
-	}
-	
-	/**
-	 * Logout action
-	 */
-	public function logoutAction() {
-		Zend_Auth::getInstance ()->clearIdentity ();
-	}
-	
-	public function aboutAction(){
-	}
+class IndexController extends Zend_Controller_Action
+{
+    protected $_page_id = null;
+
+    public function init()
+    {
+        $this->_page_id = 1;
+    }
+
+    public function indexAction()
+    {
+        $pagesMapper = new Default_Model_Mapper_Pages();
+        $page = new Default_Model_Pages();
+
+        $page = $pagesMapper->find($this->getPageId(), $page);
+
+        $forumMapper = new Forum_Model_Mapper_Forum();
+        $select = $forumMapper->getDbTable()->select();
+        $select->where('parent_id != ?', 'null')
+            ->order('timestamp DESC')
+            ->limit(1,0);
+        $forumReply = $forumMapper->fetchAll($select);
+        if(!empty($forumReply)){
+
+            $forumReply = array_shift($forumReply);
+            $forumQuestion = $forumMapper->find($forumReply->getParentId(), new Forum_Model_Forum());
+
+            if(!is_null($forumQuestion)){
+                $this->view->forum_question = $forumQuestion;
+                $this->view->forum_reply = $forumReply;
+            }
+        }
+
+        $mediaMapper = new Media_Model_Mapper_Media();
+        $select = $mediaMapper->getDbTable()->select();
+
+        //News
+        $select
+            ->where('deleted != ?', 1)
+            ->where('active != ?', 0)
+            ->where('category_id = ?', 2)
+            ->order('timestamp DESC')
+            ->limit(1,0);
+        $newsItem = $mediaMapper->fetchAll($select);
+
+        if(!empty($newsItem))
+            $this->view->newsItem = array_shift($newsItem);
+
+        //article
+        $select->reset()
+            ->where('deleted != ?', 1)
+            ->where('active != ?', 0)
+            ->where('category_id = ?', 4)
+            ->order('timestamp DESC')
+            ->limit(1,0);
+        $articleItem = $mediaMapper->fetchAll($select);
+
+        if(!empty($articleItem))
+            $this->view->articleItem = array_shift($articleItem);
+
+        $this->view->page = $page;
+    }
+
+    public function plugAction()
+    {
+        Zend_Layout::getMvcInstance()->setLayout("plug");
+        $host = $this->getRequest()->getServer('HTTP_HOST');
+
+        if($host === 'xn----7sbavhvfm6b0af.xn--p1ai')
+            $host = 'ханза-флекс.рф';
+
+        $this->view->host = $host;
+    }
+
+    /**
+     * @param null $page_id
+     * @return IndexController
+     */
+    public function setPageId($page_id)
+    {
+        $this->_page_id = $page_id;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getPageId()
+    {
+        return $this->_page_id;
+    }
+
+
 }
-?>
+

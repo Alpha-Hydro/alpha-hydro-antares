@@ -1,0 +1,18 @@
+<?php
+$this->title = $this->pageItem->getTitle();
+$this->headTitle($this->title);
+$this->meta_title = $this->title;
+$this->sidebar_headers = false;
+$this->breadcrumbs = true;
+?>
+<div class="col-md-12">
+    <?php /*if(null !== $this->pageItem->getImage()):*/?><!--
+        <div class="col-md-4 pull-right">
+            <div class="thumbnail"><img src="<?/*=$this->pageItem->getImage()*/?>" alt="<?/*=$this->pageItem->getTitle()*/?>"></div>
+        </div>
+    --><?php /*endif;*/?>
+    <div class="media-content">
+        <?=$this->pageItem->getContentHtml();?>
+        <p class="text-muted"><small><em><?=date("d.m.Y", strtotime($this->pageItem->getDateCreate()));?> г.</em></small></p>
+    </div>
+</div>

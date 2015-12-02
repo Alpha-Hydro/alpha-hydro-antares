@@ -1,0 +1,24 @@
+<?php
+$this->title = $this->escape($this->category->getTitle());
+$this->headTitle($this->title);
+$this->meta_title = $this->title;
+$this->sidebar_headers = false;
+$this->breadcrumbs = true;
+?>
+<div class="row">
+    <?php if($this->manufactureItems):?>
+        <?php foreach($this->manufactureItems as $manufacture):?>
+            <div class="col-md-4">
+                <div class="thumbnail manufacture-item">
+                    <img src="<?=$manufacture->getImage()?>" alt="<?=$manufacture->getTitle()?>">
+                    <div class="caption">
+                        <h4 class="manufacture-title"><?=$manufacture->getTitle()?></h4>
+                        <p class="manufacture-description"><?=$this->strCrop($manufacture->getDescription(), 150)?></p>
+                        <p class="text-right manufacture-link"><a href="/manufacture/<?=$manufacture->getFullPath()?>/" class="btn btn-alpha default" title="<?=$manufacture->getTitle()?>">Подробнее</a></p>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach;?>
+    <?php endif;?>
+</div>
+<?= $this->render('components/_paginator.phtml')?>

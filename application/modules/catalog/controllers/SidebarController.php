@@ -1,117 +1,105 @@
 <?php
-/**
- * Sidebar catalog controller
- *
- * @author Bakin Vlad
- * @package Catalog
- * @category Site
- * @subpackage Controllers
- */
 
-/**
- * Sidebar catalog controller
- *
- * @package Catalog
- * @author Bakin Vlad
- * @subpackage Controllers
- */
-class Catalog_SidebarController extends Zend_Controller_Action {
-	
-	/**
-	 * Show sidebar
-	 *
-	 * @var int $pcategory Selected category
-	 *     
-	 * @throws Exception 404, Category not found
-	 *        
-	 */
-	public function sidebarAction() {
-		$categoriesModel = new Model_DbTable_Categories ();
-		
-		$select = $categoriesModel -> select();
-		$select -> order(new Zend_Db_Expr('`order`<=-100')) -> order("order");
-		
-		if ( !Zend_Auth::getInstance()->hasIdentity() )
-			$select -> where("`order` != -100 OR `order` IS NULL");
-		
-		
-		if (NULL != ($category_id = $this->getRequest ()->getParam ( "category" ))) {
-			if (! ($category = $categoriesModel->find ( $category_id )->current ()))
-				throw new Exception ( "Category not found", 404 );
-			
-			$select -> where("parent_id = ?", $category->id);
-			$categories = $categoriesModel -> fetchAll ( $select );
+class Catalog_SidebarController extends Zend_Controller_Action
+{
+    protected $_current_category_id = 0;
+    protected $_current_category = null;
+    protected $_parent_category = null;
+    protected $_show_headers = false;
 
-			if ( count($categories) == 0) {
-				$category = $categoriesModel->find ( $category->parent_id )->current ();
-				$categories = $category->findDependentRowset( "Model_DbTable_Categories" );
 
-			}
-		} else {
-			
-			$category = NULL;
-			$categories = $categoriesModel->fetchAll ( $select->where ( "parent_id IS NULL" ) );
-		}
-		
-		$this->view->categories = $categories;
-		$this->view->category = $category;
-		
-		$this->view->current = $category_id;
-		
-		$this -> view -> catalogs = new Zend_Config_Xml(APPLICATION_PATH."/config/catalogs.xml");
-	}
-	
-	
-	public function navigationAction() {
-		$bcn = new Zend_Navigation ();
-		$categoriesModel = new Model_DbTable_Categories ();
-		
-		$category = $categoriesModel->find ( $this->getRequest ()->getParam ( "category" ) )->current ();
-		
-		if (! $category)
-			return;
-		
-		$i = 0;
-		$bcn->addPage ( array (
-				"action" => "index",
-				"controller" => "categories",
-				"module" => "catalog",
-				'order'	 => $i,
-				"params" => array('category'=>$category->id),
-				'label' => $category->name
-		) );
-		while ( $category->parent_id ) {
-			$category = $category->findParentRow ( 'Model_DbTable_Categories' );
-			
-			$bcn->addPage ( array (
-					"action" => "index",
-					"controller" => "categories",
-					"module" => "catalog",
-					'order'	 => $i,
-					"params" => array('category'=>$category->id),
-					'label' => $category->name 
-			) );
-			
-			$i--;
-		}
-		
-		$bcn->addPage ( array (
-				"action" => "index",
-				"controller" => "index",
-				"module" => "catalog",
-				'label' => 'Каталог продукции',
-				'order' => $i
-		) );
-		
-		$bcn->addPage ( array (
-				"action" => "index",
-				"controller" => "index",
-				"module" => "default",
-				'label' => 'Главная',
-				'order' => $i-1
-		) );
-		
-		$this->view->navigation = $bcn;
-	}
+    public function init()
+    {
+        //var_dump($this->getFrontController()->getRequest()->getParam('fullPath'));
+
+        $categories = new Catalog_Model_Mapper_Categories();
+
+        $this->_current_category_id = $this->_getParam('category');
+
+        if(!is_null($this->_getParam('headers')))
+            $this->setShowHeaders($this->_getParam('headers'));
+
+        $this->view->headers = $this->getShowHeaders();
+
+        if($this->getCurrentCategoryId() != 0){
+            $this->_current_category = $categories->find($this->getCurrentCategoryId(), new Catalog_Model_Categories());
+            $this->_parent_category = $categories->find($this->_current_category->getParentId(), new Catalog_Model_Categories());
+        }
+    }
+
+    public function indexAction()
+    {
+        $this->view->current_category = $this->getCurrentCategory();
+
+        if(null != $this->getParentCategory())
+            $this->view->parent_category = $this->getParentCategory();
+
+        if(null != $this->getCurrentCategory())
+            $this->view->sidebar_item = $this->getSidebarItem($this->getCurrentCategory()->getParentId());
+
+    }
+
+
+    /**
+     * @param $category_id
+     * @return array
+     */
+    public function getSidebarItem($category_id)
+    {
+        $categories = new Catalog_Model_Mapper_Categories();
+
+        $select = $categories->getDbTable()->select();
+        $select->where('parent_id = ?', $category_id)
+            ->where('active != ?', 0)
+            ->order('sorting ASC');
+
+        $entries = $categories->fetchAll($select);
+
+        return $entries;
+    }
+
+    /**
+     * @return null
+     */
+    public function getCurrentCategory()
+    {
+        return $this->_current_category;
+    }
+
+    /**
+     * @return null
+     */
+    public function getParentCategory()
+    {
+        return $this->_parent_category;
+    }
+
+    /**
+     * @return null
+     */
+    public function getCurrentCategoryId()
+    {
+        return $this->_current_category_id;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getShowHeaders()
+    {
+        return $this->_show_headers;
+    }
+
+    /**
+     * @param boolean $show_headers
+     * @return $this
+     */
+    public function setShowHeaders($show_headers)
+    {
+        $this->_show_headers = $show_headers;
+        return $this;
+    }
+
+
 }
-?>
+

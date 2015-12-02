@@ -1,0 +1,9 @@
+.field-form{
+  outline: medium none;
+  @include box-shadow(0 0 8px #b9b9b9 inset);
+  padding:{
+    top: 2px;
+    bottom: 2px;
+  };
+  height: auto;
+}

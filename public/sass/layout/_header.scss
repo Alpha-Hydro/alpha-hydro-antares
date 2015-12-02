@@ -1,0 +1,39 @@
+@import "main_menu";
+.header{
+  padding-top: 18px;
+  .contacts{
+
+    .adress{
+      margin-top: 10px;
+    }
+    .worktime{
+      margin-top: 15px;
+      padding-top: 15px;
+      background: image_url('workdays-bar.jpg') no-repeat;
+    }
+    .phone{
+      .tel{
+        font-size: 170%;
+      }
+    }
+    .mail{
+      .fa-envelope{
+        &::before{
+          color: $alpha-blue;
+        }
+      }
+    }
+  }
+}
+.logo{
+  display: block;
+  min-width: 244px;
+  height: 48px;
+  &.svg{
+    background: image_url('logo/alpha-hydro-logo-ru.svg') no-repeat;
+    background-size: 244px 48px;
+  }
+  &.png{
+    background: image_url('logo/alfa-hydro.png') no-repeat;
+  }
+}

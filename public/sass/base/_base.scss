@@ -1,0 +1,43 @@
+html{
+  overflow-y: scroll;
+}
+a,
+button,
+[type='button'],
+[type='submit']{
+  outline: medium none !important;
+}
+
+.table > tbody > tr > td,
+.table > tbody > tr > th,
+.table > tfoot > tr > td,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > thead > tr > th{
+  vertical-align: middle;
+}
+
+.main{
+  margin-bottom: 40px;
+}
+.header .container .row{
+  //@include red-box();
+}
+
+.ok{
+  background-color: transparent;
+}
+.no{
+  background-color: $alpha-orange;
+  color: white;
+}
+
+.text-size-small{
+  font-size: $alpha-font-size-small;
+}
+.text-size-large{
+  font-size: $alpha-font-size-large;
+}
+.head-large{
+  font-size: larger;
+}

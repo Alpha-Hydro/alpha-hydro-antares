@@ -1,0 +1,86 @@
+<?php
+$this->headScript()
+    ->appendFile('/js/classie/classie.min.js')
+    ->appendFile('/js/pipelinePropertyEdit.js')
+    ->appendFile('/js/adminSlugify.min.js');
+?>
+<table class="table table-hover" data-edit="modal" data-itemId="<?=$this->item->getId();?>" id="pipelineProperty">
+    <thead>
+    <tr>
+        <th class="col-xs-2">Свойства товара</th>
+        <th data-name="value"></th>
+        <th class="col-xs-3"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php if($this->properties):?>
+        <?php foreach ($this->properties as $property => $value):?>
+            <tr id="<?=$value->getId()?>">
+                <td><?= $property ?></td>
+                <td><input type="text" name="propertyValue" value="<?= $value->getValue()?>" class="input-hidden" readonly="readonly"></td>
+                <td>
+                    <div class="btn-group btn-group-sm mr1">
+                        <button class="btn btn-default" data-event="edit">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </button>
+                        <button class="btn btn-default" data-event="delete">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-success hidden" data-event="save">Сохранить</button>
+                </td>
+            </tr>
+        <?php endforeach;?>
+    <?php endif;?>
+    </tbody>
+    <tfoot>
+    <tr>
+        <form>
+            <td>
+                <?=$this->formValue->propertyId?>
+            </td>
+            <td><?=$this->formValue->value?></td>
+            <td><button type="button" class="btn btn-sm btn-primary hidden" data-event="add">Добавить</button></td>
+        </form>
+    </tr>
+    </tfoot>
+</table>
+<div class="modal fade" id="propertyNewModal" tabindex="-1" role="dialog" aria-labelledby="newModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Новое свойство</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="newPipelineProperty" name="newProperty">
+                    <div class="form-group">
+                        <label for="newPropertyName" class="col-sm-4 control-label">Наименование свойства</label>
+                        <div class="col-sm-8">
+                            <?=$this->formText('newPropertyName', '', array(
+                                'placeholder' => 'Наименование свойства',
+                                'class' => 'form-control',
+                            ));?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="newPropertyValue" class="col-sm-4 control-label">Значение свойства</label>
+                        <div class="col-sm-8">
+                            <?=$this->formText('newPropertyValue', '', array(
+                                'placeholder' => 'Значение свойства',
+                                'class' => 'form-control',
+                                'readonly' => 'readonly',
+                            ))?>
+                        </div>
+                    </div>
+                </form>
+                <div id="errorMessage"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                <button type="button" form="newPipelineProperty" name="formBtnSubmit" class="btn btn-primary" disabled="disabled">Сохранить</button>
+            </div>
+        </div>
+    </div>
+</div>
+

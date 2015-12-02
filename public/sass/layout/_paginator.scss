@@ -1,0 +1,17 @@
+.pagination{
+  .free{
+    >a{
+      border:{
+        bottom: none;
+        top: none;
+      }
+      padding:{
+        top: 10px;
+        bottom: 0;
+      }
+      &:before{
+        content: '....';
+      }
+    }
+  }
+}

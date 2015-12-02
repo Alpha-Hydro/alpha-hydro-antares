@@ -149,12 +149,12 @@ define ('PDF_MARGIN_LEFT', 15);
 /**
  * Right margin.
  */
-define ('PDF_MARGIN_RIGHT', 15);
+define ('PDF_MARGIN_RIGHT', 10);
 
 /**
  * Default main font name.
  */
-define ('PDF_FONT_NAME_MAIN', 'times');
+define ('PDF_FONT_NAME_MAIN', 'arialnarrow');
 
 /**
  * Default main font size.
@@ -164,7 +164,7 @@ define ('PDF_FONT_SIZE_MAIN', 10);
 /**
  * Default data font name.
  */
-define ('PDF_FONT_NAME_DATA', 'times');
+define ('PDF_FONT_NAME_DATA', 'arialnarrow');
 
 /**
  * Default data font size.
@@ -174,7 +174,7 @@ define ('PDF_FONT_SIZE_DATA', 10);
 /**
  * Default monospaced font name.
  */
-define ('PDF_FONT_MONOSPACED', 'times');
+define ('PDF_FONT_MONOSPACED', 'arialnarrow');
 
 /**
  * Ratio used to adjust the conversion of pixels to user units.

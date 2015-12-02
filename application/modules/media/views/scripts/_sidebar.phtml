@@ -1,0 +1,21 @@
+<nav>
+    <ul class="list-group sidebar crop-bottom-shadow">
+        <?php foreach($this->categories as $category):?>
+            <li class="list-group-item sidebar-item <?=($this->currentCategory->getId() != $category->getId())?'':'sidebar-item-current';?>">
+                <?php if($this->currentCategory->getId() != $category->getId()):?>
+                    <a href="<?=$this->url(array(
+                        'module' => 'forum',
+                        'controller' => 'index',
+                        'action' => 'index',
+                        'media_path_category' => $category->getPath(),
+                    ), 'mediaCategory', true, false)?>/"><?=$this->escape($category->getName())?></a>
+                    <?php else: ?>
+                    <?=$this->escape($category->getName())?>
+                <?php endif; ?>
+            </li>
+        <?php endforeach;?>
+        <li class="list-group-item sidebar-item">
+            <a href="/media/">Архив</a>
+        </li>
+    </ul>
+</nav>

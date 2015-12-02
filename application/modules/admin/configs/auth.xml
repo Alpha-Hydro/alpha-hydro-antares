@@ -1,0 +1,17 @@
+﻿<users>
+    <user1>
+        <name>admin</name>
+        <fullname>admin</fullname>
+        <role>admin</role>
+        <email>admin@alpha-hydro.com</email>
+        <password>d033e22ae348aeb5660fc2140aec35850c4da997</password>
+    </user1>
+    <user2>
+        <name>gucev</name>
+        <fullname>gucev_artem</fullname>
+        <role>manager</role>
+        <email>gaa@alpha-hydro.com</email>
+        <password>98805b298dc7c7c4f9c2734b37fdf37c65fce0f7</password>
+    </user2>
+</users>
+

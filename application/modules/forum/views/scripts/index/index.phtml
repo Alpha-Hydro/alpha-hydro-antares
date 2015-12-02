@@ -1,0 +1,30 @@
+<?php
+$this->headTitle($this->title);
+$this->meta_title = $this->title;
+$this->sidebar_headers = false;
+?>
+<?php if($this->forumItems):?>
+    <?php foreach ($this->forumItems as $forumItems):?>
+    <div class="topic">
+        <div class="topic-question">
+            <div class="topic-title">
+                <strong><?=$forumItems['question']->getAuthor();?></strong>
+                <small><em> - <?=date("d.m.Y", strtotime($forumItems['question']->getTimestamp()));?> г.</em></small>
+                <small class="pull-right"><?=$forumItems['question']->getCategory();?></small>
+            </div>
+            <div class="topic-content"><?=$forumItems['question']->getContent()?></div>
+        </div>
+        <?php foreach ($forumItems['reply'] as $itemsReply):?>
+            <div class="topic-reply">
+                <div class="topic-title">
+                    <strong><?=$itemsReply->getAuthor();?></strong>
+                    <small><em> - <?=date("d.m.Y", strtotime($itemsReply->getTimestamp()));?> г.</em></small>
+                </div>
+                <div class="topic-content"><?=$itemsReply->getContent()?></div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+    <?php endforeach; ?>
+    <?= $this->render('components/_paginator.phtml')?>
+<?php endif;?>
+<?= $this->render('_form_ask.phtml')?>

@@ -1,0 +1,18 @@
+<?php
+$this->title = $this->mediaItem->getName();
+$this->headTitle($this->title);
+$this->meta_title = $this->title;
+$this->sidebar_headers = false;
+$this->breadcrumbs = true;
+?>
+<div class="col-md-12">
+    <?php if(null !== $this->mediaItem->getThumb()):?>
+    <div class="col-md-4 pull-right">
+        <div class="thumbnail"><img src="<?=$this->mediaItem->getThumb()?>" alt="<?=$this->mediaItem->getName()?>"></div>
+    </div>
+    <?php endif;?>
+    <div class="media-content">
+        <?=$this->mediaItem->getContent();?>
+        <p class="text-muted"><small><em><?=date("d.m.Y", strtotime($this->mediaItem->getTimestamp()));?> г.</em></small></p>
+    </div>
+</div>

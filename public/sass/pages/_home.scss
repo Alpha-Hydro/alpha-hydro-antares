@@ -1,0 +1,138 @@
+.sections{
+  margin: {
+    top: 50px;
+    bottom: 40px;
+  };
+}
+.section{
+  position: relative;
+  .caption{
+    bottom: 30px;
+    position: absolute;
+    width: 100%;
+    font-size: $font-size-base;
+    color: $alpha-gray-dark;
+    &::before{
+      content: '\25a0';
+      margin-right: 10px;
+      vertical-align: 0.1em;
+    }
+  }
+}
+.home-i-block{
+  height: 260px;
+  margin: {
+    left: 5%;
+    right: 5%;
+  };
+  padding: {
+    left: 16px;
+    right: 16px;
+  };
+  &.gradient, .gradient{
+    @include gradient-vertical(lighten($alpha-gray-lighter, 10%), $alpha-gray-lighter);
+  }
+  &.gradient-darken, .gradient-darken{
+    @include gradient-vertical(lighten($alpha-gray, 30%), $alpha-gray);
+  }
+  @include flexbox((display: flex,flex-direction: column));
+  .block-head{
+    @include clearfix;
+    padding: {
+      top: 16px;
+      bottom: 15px;
+    };
+
+    h2{
+      display: inline-block;
+      font: {
+        family: Impact;
+        size: 22pt;
+        weight: normal;
+      };
+      color: $alpha-gray-darker;
+      padding: {
+        right: 5px;
+        left: 5px;
+      };
+      margin: 0;
+
+      &.inverse{
+        color: #FFF;
+        @include text-shadow(0 0 5px $alpha-gray);
+      }
+    }
+    .btn-alpha{
+      margin-top: 9px;
+    }
+  }
+  .block-body{
+    @include flex(1);
+    margin: {
+      left: 5px;
+    };
+    .media{
+      .title{
+        font:{
+          size: $alpha-font-size-default;
+          weight: bold;
+        }
+        display: block;
+        min-height: 38px;
+        line-height: 14px;
+        text-decoration: underline;
+      }
+      .media-object{
+        max-width: 80px;
+        max-height: 120px;
+      }
+      .description{
+        line-height: 1;
+      }
+    }
+  }
+  .block-footer{
+    margin-bottom: 10px;
+  }
+}
+
+.forum{
+  .forum-issue{
+    max-height: 140px;
+
+  }
+  .forum-reply{
+    padding-top: 10px;
+    max-height: 120px;
+    .description{
+      margin-bottom: 10px;
+    }
+  }
+  [class*=-autor]{
+    min-height: 30px;
+    background: $info-block no-repeat;
+    margin-left: -33px;
+    padding-left: 110px;
+    font-weight: bold;
+    .date{
+      font:{
+        weight: normal;
+        size: $alpha-font-size-small;
+      }
+    }
+  }
+  .issue-autor{
+    background-position: sprite-position($info-block, issue);
+  }
+  .reply-autor{
+    background-position: sprite-position($info-block, reply);
+  }
+  .description, .more{
+    font:{
+      size: $alpha-font-size-small;
+    }
+    >a{
+      text-decoration: underline;
+    }
+  }
+}

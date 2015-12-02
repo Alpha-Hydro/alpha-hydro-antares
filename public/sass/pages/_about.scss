@@ -1,0 +1,11 @@
+.popup-gallery{
+  margin-top: 25px;
+  a{
+    @include transition(all .2s ease-in-out);
+    &:hover{
+      border-color: #dddddd;
+      text-decoration: none;
+      @extend .z-depth-1-half;
+    }
+  }
+}

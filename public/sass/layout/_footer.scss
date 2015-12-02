@@ -1,0 +1,21 @@
+.footer{
+  background: image_url('footer-new.png') repeat-x;
+  @include box-shadow(#E8E7E7 0px 10px 50px);
+  font-size: $alpha-font-size-small;
+  position: relative;
+  .wrapper{
+    background: image_url('footer-center.png') no-repeat center top;
+    padding: {
+      top: $padding-top-footer;
+    }
+  }
+  .admin{
+    position: absolute;
+    top: $padding-top-footer;
+    width: 100%;
+    height: $height-footer - $padding-top-footer;
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+  }
+}

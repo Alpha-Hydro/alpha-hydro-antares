@@ -1,0 +1,57 @@
+<?php
+$this->headTitle($this->title);
+$this->meta_title = $this->title;
+$this->breadcrumbs = false;
+$this->sidebar_headers = false;
+$this->headScript()->appendFile('/js/catalog.min.js');
+?>
+<div class="categories-list">
+    <?php if($this->products): ?>
+        <?php foreach ($this->products as $product): ?>
+            <div class="col-md-3 text-center ">
+                <a class="categories-list-item z-depth-1" href="<?=$this->url(
+                    array(
+                        'module' => 'catalog',
+                        'controller' => 'products',
+                        'action' => 'view',
+                        'fullPath'=>$product->getFullPath(),
+                    ),'catalog',true,false) ?>" title="<?=$product->getName()?>">
+                    <img src="/files/images/category/<?=$product->getImage();?>" alt="<?=$product->getName();?>"/>
+                    <p class="categories-list-item-name"><?=$product->getSku()?></p>
+                </a>
+            </div>
+        <?php endforeach; ?>
+        <div class="col-md-12">
+            <?= $this->render('_paginator.phtml')?>
+        </div>
+    <?php else: ?>
+        <div class="row">
+            <div class="col-md-12">
+                <p>По Вашему запросу ничего не найдено. Попробуйте повторить поиск с новыми параметрами запроса.</p>
+            </div>
+            <div class="col-md-6">
+                <form action="<?=$this->url()?>/" method="get">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Поиск..." name="query">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">Go!</button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    <?php endif; ?>
+</div>
+<div class="google-searsh" id="google-search"></div>
+<?php $this->headScript()->captureStart() ?>
+    (function() {
+        var cx = '002321161471768174809:g2hp7ihrj1u';
+        var gcse = document.createElement('script');
+        gcse.type = 'text/javascript';
+        gcse.async = true;
+        gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+            '//cse.google.com/cse.js?cx=' + cx;
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(gcse, s);
+    })();
+<?php $this->headScript()->captureEnd() ?>

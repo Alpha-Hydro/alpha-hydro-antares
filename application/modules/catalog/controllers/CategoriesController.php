@@ -1,137 +1,70 @@
 <?php
-/**
- * Categories controller
- *
- * @author Bakin Vlad
- * @package Catalog
- * @category Site
- * @subpackage Controllers
- */
 
-/**
- * Categories controller
- *
- * @package Catalog
- * @author Bakin Vlad
- * @subpackage Controllers
- */
-class Catalog_CategoriesController extends Zend_Controller_Action {
+class Catalog_CategoriesController extends Zend_Controller_Action
+{
+    protected $_fullPath = null;
 
-    /**
-     * Show categories list ( based on parent_id ). if no sub category found - will forward to products list
-     *
-     * @var integer $pcategory Parent category
-     */
-    public function indexAction() {
-        $categoriesModel = new Model_DbTable_Categories();
+    public function init()
+    {
+        $request = $this->getRequest();
+        $this->_fullPath =  $request->getParam('fullPath');
+        //var_dump($this->getAllParams());
+    }
 
-        $select = $categoriesModel -> select();
+    public function indexAction()
+    {
+        $fullPath =  $this->getFullPath();
+        $categories = new Catalog_Model_Mapper_Categories();
+        $category = new Catalog_Model_Categories();
 
-        if (NULL != ($parent_id = $this -> getRequest() -> getParam("category"))) {
-            $category = $categoriesModel -> find($parent_id) -> current();
-            $this -> view -> category = $category;
-            $select -> where("`parent_id` = ?", $parent_id);
-            $this->view->headTitle()->prepend ("Альфа-Гидро: Каталог продукции - ".$category['name']);
-        } else{
-            $select -> where("`parent_id` IS NULL");
-            $this->view->headTitle()->prepend ("Альфа-Гидро: Продукция");
-        }
-      
-        $select -> order(new Zend_Db_Expr('`order`<=-100'))-> order("order");
-        if ( !Zend_Auth::getInstance()->hasIdentity() ){
-        	$select -> where("`order` != -100 OR `order` IS NULL");
-        }
+        $category = $categories->findByFulPath($fullPath, $category);
+        //var_dump($category);
 
-        $this -> view -> rowset = $categoriesModel -> fetchAll($select);
-        
-        if ( $this -> getRequest() -> isXmlHttpRequest() ){
-        	$this -> view -> curRowId = $this -> getRequest() -> getParam("currentCategory");
-        	$this->_helper->viewRenderer->setRender('index-ajax');
-        	Zend_Layout :: getMvcInstance() -> disableLayout();
-        	return;
-        }
-        
-        if (count($this -> view -> rowset) == 0) {
-            $this -> forward("index", "products");
+        if(is_null($category)) {
+            //throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+            $this->forward('view', 'products');
             return;
         }
-		
-    }
 
-    /**
-     * Edit selected category
-     *
-     * @var int $pcategory Selected category
-     */
-    public function editAction() {
-    	if ( !Zend_Auth::getInstance() -> hasIdentity())
-    		 throw new Zend_Exception("Page not found", 404);
-    		 
+        $current_category_id = $category->getId();
 
-        $id = $this -> getRequest() -> getParam("id");
-        
-        $categoriesModel = new Model_DbTable_Categories();
-        $category = $categoriesModel -> find($id) -> current();
+        if($current_category_id !== 0){
 
-        if (!$category && $id)
-            throw new Zend_Exception("Selected category not found", 404);
-        elseif ( !$id ){
-        	$category = $categoriesModel->createRow();
-        }
-        
-		$form = Model_Static_Loader::loadForm("category");		
-				
-        if ($this -> getRequest() -> isPost() && $form -> isValid($_POST)) {
-			$file = $form -> image -> getFileInfo();		
-			$ext = pathinfo($file['image']['name'], PATHINFO_EXTENSION);
-			$name = pathinfo($file['image']['name'], PATHINFO_FILENAME);				
-			$newName = time().'_'.$name.'.'.$ext; 				
-	
-	    	$form -> image -> addFilter('Rename', APPLICATION_ROOT."/public/files/images/category/".$newName);		
-			$form -> image -> receive();        	
-			
-            $data = $form -> getValues();
-            
-            $category -> parent_id = $data["parent_id"] ? $data["parent_id"] : NULL;
-            $category -> image = $data["image"] ? $data["image"] : $category -> image;			
-            unset($data['image']);
-            unset($data['parent_id']);
-            
-            foreach ( $data as $key => $val )
-            	$category -> $key = $val;
-            
-        	$category -> save();
-        }
+            $select = $categories->getDbTable()->select();
+            $select->where('parent_id = ?', $current_category_id)
+                ->where('active != ?', 0)
+                ->order('sorting ASC');
 
-        $form -> setDefaults($category -> toArray());
-        $this -> view -> form = $form;
-        $this -> view -> row = $category;
-    }
-    
-    /**
-     * Delete category with confirmation
-     */
-    public function deleteAction() {
-        if (Zend_Auth::getInstance() -> hasIdentity()) {
+            $entries = $categories->fetchAll($select);
 
-            $id = $this -> getRequest() -> getParam("id");
+            if(empty($entries)){
 
-            $categoriesModel = new Model_DbTable_Categories();
-            $category = $categoriesModel -> find($id) -> current();
+                /*$productsMapper = new Catalog_Model_Mapper_Products();
+                $select = $productsMapper->getDbTable()->select()->order('sorting ASC');
+                $entries = $categories->fetchProductsRel($current_category_id, $select);*/
 
-            if (!$category)
-                throw new Zend_Exception("No category found", 404);
-
-            if ($this -> getRequest() -> getParam("confirmed") == 'true') {
-                $category -> delete();
-                $this -> _forward("index");
-            } else {
-                $this -> view -> category = $category;
+                $this->forward('index', 'products');
+                return;
             }
+            $this->view->entries = $entries;
 
-        } else
-            throw new Zend_Exception("Page not found", 404);
+        }
+        else{
+            $this->redirect('/catalog/', array('code'=>301));
+            return;
+        }
+
+        $this->view->title = $category->getName();
+        $this->view->current_category = $current_category_id;
+    }
+
+    /**
+     * @return null
+     */
+    public function getFullPath()
+    {
+        return $this->_fullPath;
     }
 
 }
-?>
+

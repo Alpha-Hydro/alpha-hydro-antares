@@ -1,0 +1,60 @@
+<?php $controller = Zend_Controller_Front::getInstance()->getRequest()->getControllerName();?>
+<?php echo $this->doctype() ?>
+<html lang="ru">
+    <head>
+        <?php echo $this->headTitle();?>
+        <?php echo $this->headMeta()->prependHttpEquiv('Content-Type', 'text/html; charset=UTF-8');;?>
+        <?php
+            echo $this->headLink()
+                ->appendStylesheet('//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css')
+                ->appendStylesheet('/css/utils.css');
+
+            $this->headScript()
+                ->prependFile('//code.jquery.com/jquery-1.11.3.min.js')
+                ->appendFile('//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js')
+                ->appendFile('/js/utils.min.js');
+        ?>
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header col-md-2">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="<?= $this->url(array('controller'=>'index', 'action'=>'index'));?>">Utils</a>
+                </div>
+                <div id="navbar" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="<?=($controller == 'index')?'active':'';?>"><a href="<?= $this->url(array('controller'=>'index', 'action'=>'index'));?>">Home</a></li>
+                        <li class="<?=($controller == 'models-generator')?'active':'';?>"><a href="<?= $this->url(array('controller'=>'models-generator', 'action'=>'index'));?>">Model mappers</a></li>
+                        <li class="<?=($controller == 'sefurl')?'active':'';?>"><a href="<?= $this->url(array('controller'=>'sefurl', 'action'=>'index'));?>">SEF URLs</a></li>
+                        <li class="<?=($controller == 'search-index')?'active':'';?>"><a href="<?= $this->url(array('controller'=>'search-index', 'action'=>'index'));?>">Search index</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <?php if (Zend_Auth::getInstance()->hasIdentity()): ?>
+                            <li><a href="<?= $this->url(array('controller'=>'auth', 'action'=>'logout'));?>">Выход</a></li>
+                        <?php endif; ?>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </nav>
+        <div class="main" role="main">
+            <div class="container">
+                <?php /*var_dump($controller);*/?>
+                <?= $this->layout()->content ?>
+            </div>
+        </div>
+        <div class="loading">
+            <div class="spinner">
+                <div class="bounce1"></div>
+                <div class="bounce2"></div>
+                <div class="bounce3"></div>
+            </div>
+        </div>
+        <?php echo $this->headScript();?>
+    </body>
+</html>

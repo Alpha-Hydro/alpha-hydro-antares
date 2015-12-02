@@ -5,7 +5,7 @@ error_reporting(1);
 error_reporting(E_ALL);
 
 defined('APPLICATION_PATH') 
-	|| define('APPLICATION_PATH',dirname(__FILE__) . '/application');
+	|| define('APPLICATION_PATH',dirname(__FILE__) . '/appadmin');
 defined('APPLICATION_ENV') 
 	|| define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
 
@@ -28,7 +28,11 @@ set_include_path(implode(PATH_SEPARATOR, array(
 
 require_once 'Zend/Application.php';
 
-$application = new Zend_Application(APPLICATION_ENV, APPLICATION_PATH . '/config/application.xml');
+$application = new Zend_Application(APPLICATION_ENV, array(
+	'config' => array(
+		APPLICATION_PATH . '/config/application.xml',
+		APPLICATION_PATH . '/config/db.xml'
+	),
+));
 
 $application -> bootstrap() -> run();
-?>

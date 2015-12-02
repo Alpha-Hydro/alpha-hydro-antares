@@ -1,0 +1,30 @@
+<?php
+    $this->title = $this->escape($this->page->getTitle());
+    $this->headTitle($this->title);
+    $this->meta_title = $this->title;
+    $this->sidebar_headers = false;
+    $this->breadcrumbs = false;
+?>
+<div class="page-content">
+    <?php if(!is_null($this->page->getImage())):?>
+        <img src="<?= $this->page->getImage() ?>" alt="<?=$this->page->getTitle()?>" class="pull-right"/>
+    <?php endif;?>
+    <?=$this->page->getContentHtml();?>
+
+    <?php /*if($this->categories):*/?><!--
+        <div class="manufacture-categories">
+        <?php /*foreach ($this->categories as $manufactureCategories):*/?>
+            <div class="col-md-4 col-md-offset-1">
+                <a href="<?/*=$this->url(array(
+                    'module'                    => 'manufacture',
+                    'controller'                => 'index',
+                    'action'                    => 'categories',
+                    'manufacture_path_category' => $manufactureCategories->getPath(),
+                ),'manufactureCategory', true, false)*/?>/" class="thumbnail hover-shadow">
+                    <img src="<?/*=$manufactureCategories->getImage()*/?>" alt="<?/*=$manufactureCategories->getTitle()*/?>"/>
+                </a>
+            </div>
+        <?php /*endforeach;*/?>
+        </div>
+    --><?php /*endif; */?>
+</div>

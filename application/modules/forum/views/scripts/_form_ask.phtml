@@ -1,0 +1,27 @@
+<?php
+$this->headScript()
+    ->appendFile('//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js')
+    ->appendFile('/js/forumAsk.min.js');
+?>
+<div class="form-ask" id="formAsk">
+    <h3>Написать нам:</h3>
+    <form action="/forum/index/ask" method="post" id="forum_ask">
+        <div class="form-inline clearfix">
+            <div class="pull-left">
+                <?=$this->form_ask->author?>
+            </div>
+            <?=$this->form_ask->email?>
+            <div class="pull-right">
+                <?=$this->form_ask->category?>
+            </div>
+        </div>
+        <?=$this->form_ask->content?>
+        <p class="help-block text-danger">* Все поля обязательны для заполнения</p>
+        <input type="submit" value="Отправить" class="forum-send" id="forum_send_ask"/>
+    </form>
+</div>
+<div class="modal fade" id="modalResponseForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="ajaxResponseForm"></div>
+    </div>
+</div>

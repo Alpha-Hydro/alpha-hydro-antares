@@ -1,0 +1,17 @@
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-9">
+        <div class="page-header">
+            <?php if($this->secondaryHeader):?>
+                <h1 class = "h3 secondary-header"><?=$this->title;?>
+                    <small><?=$this->secondaryHeader;?></small>
+                </h1>
+                <div class="pull-right print">
+                    <a class="icon-print" href="<?= $this->url(array('fullPath' => $this->product->fullPath), 'printPdf', true, false) ?>" target="_blank">Печать</a>
+                </div>
+            <?php else: ?>
+                <h1><?=$this->escape($this->title);?></h1>
+            <?php endif;?>
+        </div>
+    </div>
+</div>

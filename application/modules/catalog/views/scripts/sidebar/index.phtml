@@ -1,0 +1,48 @@
+<?php
+    if(!$this->sidebar_item)
+        $this->sidebar_item = $this->entries;
+
+    $currentCategoryId = ($this->current_category)? $this->current_category->id : 0;
+?>
+<ul class="list-group sidebar crop-bottom-shadow">
+    <?php if($this->headers) echo $this->sidebarHeading($this->current_category);?>
+    <?php foreach ($this->sidebar_item as $entry): ?>
+        <li class="list-group-item sidebar-item <?=($entry->id != $currentCategoryId)?'':'sidebar-item-current';?>">
+            <?php if($entry->id != $currentCategoryId):?>
+                <a href="<?=$this->url(array('fullPath'=>$entry->fullPath),'catalog', true, false)?>"><?=$entry->name?></a>
+                <?php $subCategories = $this->getSubCategories($entry->id); ?>
+                <?php if(!empty($subCategories)):?>
+                    <ul class="list-group sidebar-submenu">
+                        <?php foreach ($subCategories as $subCategory):?>
+                            <li class="list-group-item sidebar-submenu-item">
+                                <a href="<?=$this->url(array(
+                                    'module' => 'catalog',
+                                    'controller' => 'categories',
+                                    'action' => 'index',
+                                    'fullPath'=>$subCategory->fullPath
+                                ),'catalog', true, false)?>"><?=$subCategory->name?></a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
+            <?php else: ?>
+                <?=$entry->name?>
+                <?php $productsCategory = $this->getProductsCategory($entry->id); ?>
+                <?php if(!empty($productsCategory)):?>
+                    <ul class="list-group sidebar-submenu products">
+                        <?php foreach ($productsCategory as $product):?>
+                            <li class="list-group-item sidebar-submenu-item">
+                                <a href="<?=$this->url(array(
+                                    'module' => 'catalog',
+                                    'controller' => 'categories',
+                                    'action' => 'index',
+                                    'fullPath'=>$product->fullPath
+                                ),'catalog', true, false)?>"><?=$product->sku?></a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
+            <?php endif; ?>
+        </li>
+    <?php endforeach; ?>
+</ul>

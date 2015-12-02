@@ -1,0 +1,30 @@
+<?php
+$this->title = "Изменение свойства товара";
+?>
+<div class="row">
+    <div class="col-md-2">
+        <nav class="affix">
+            <ul class="nav">
+                <li><a href="<?=$this->url(
+                        array('module'=>'admin', 'controller' => 'pipeline-property'),
+                        false,true
+                    )?>">Список</a></li>
+                <li><a href="<?=$this->url(
+                        array('module'=>'admin', 'controller' => 'pipeline-property', 'action' => 'add'),
+                        false,true
+                    )?>">Добавить</a></li>
+                <li><a href="<?=$this->url(
+                        array('module'=>'admin', 'controller' => 'pipeline-property', 'action' => 'delete'),
+                        'adminEdit'
+                    )?>">Удалить</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="col-md-10">
+        <div class="row">
+            <div class="col-md-12">
+                <?= $this->form;?>
+            </div>
+        </div>
+    </div>
+</div>
