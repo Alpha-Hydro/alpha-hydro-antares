@@ -18,9 +18,9 @@ $this->headScript()
         <?=$this->form_ask->content?>
         <div class="row">
             <div class="col-md-6">
-                <div class="form-inline m0">
+                <div class="form-inline m0" id="captcha-form">
                     <?=$this->form_ask->captcha?>
-                    <button type="button" class="btn btn-default" onclick="window.location.reload()"><i class="fa fa-lg fa-refresh"></i></button>
+                    <button id="refreshCaptcha" type="button" class="btn btn-default"><i class="fa fa-lg fa-refresh"></i></button>
                 </div>
             </div>
             <div class="col-md-4">

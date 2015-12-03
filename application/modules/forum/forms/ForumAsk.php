@@ -40,17 +40,6 @@ class Forum_Form_ForumAsk extends Twitter_Bootstrap_Form_Vertical
             )
         );
 
-        /*// Add a captcha
-        $this->addElement('captcha', 'captcha', array(
-            'label'      => 'Please enter the 5 letters displayed below:',
-            'required'   => true,
-            'captcha'    => array(
-                'captcha' => 'Figlet',
-                'wordLen' => 5,
-                'timeout' => 300
-            )
-        ));*/
-
         $this->addElement('captcha', 'captcha', array(
             'required'   => true,
             'captcha'    => array(

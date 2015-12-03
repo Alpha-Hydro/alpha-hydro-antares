@@ -34,6 +34,21 @@
 
     console.log(target)
 
+  $(document).on 'click', '#refreshCaptcha', (event)->
+    event.preventDefault()
+    captchaImg = $('#captcha-form img')
+    captchaKey = $('#captcha-id')
+    console.log captchaKey
+    $.ajax
+      url: '/forum/index/refresh-captcha'
+      dataType: 'html'
+      error: (jqXHR, textStatus, errorThrown) ->
+        console.log "AJAX Error: #{textStatus}"
+      success: (data, textStatus, jqXHR) ->
+        console.log data.src
+        captchaImg.attr 'scr', data.src
+        captchaKey.attr 'value', data.id
+
   false
 
 ) jQuery
