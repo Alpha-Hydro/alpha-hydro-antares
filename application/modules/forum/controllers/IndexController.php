@@ -8,7 +8,8 @@ class Forum_IndexController extends Zend_Controller_Action
         $ajaxContext = $this->_helper->getHelper('AjaxContext');
         $ajaxContext
             ->addActionContext('ask', 'html')
-            ->initContext('html');
+            ->addActionContext('refresh-captcha', 'json')
+            ->initContext();
     }
 
     public function indexAction()
@@ -116,7 +117,8 @@ class Forum_IndexController extends Zend_Controller_Action
                 $textHtml .= '<p>Спасибо за проявленный интерес к нашей компании.</p>';
 
                 $mailToUser->setBodyHtml($textHtml);
-                $mailToUser->addTo($newPost->getEmail(), $newPost->getAuthor());
+                //$mailToUser->addTo($newPost->getEmail(), $newPost->getAuthor());
+                $mailToUser->addTo($form_ask->getValue('email'), $newPost->getAuthor());
                 $mailToUser->send();
 
 
@@ -137,7 +139,22 @@ class Forum_IndexController extends Zend_Controller_Action
         }
     }
 
+    public function refreshCaptchaAction()
+    {
+        $form = new Forum_Form_ForumAsk();
+        $captcha = $form->getElement('captcha')->getCaptcha();
+
+        $data = array();
+
+        $data['id']  = $captcha->generate();
+        $data['src'] = $captcha->getImgUrl().$captcha->getId().$captcha->getSuffix();
+
+        $this->_helper->json($data);
+    }
+
 }
+
+
 
 
 

@@ -2,20 +2,20 @@
 <html lang="ru">
 <head>
     <?php
-        echo $this->headTitle();
+    echo $this->headTitle();
 
-        echo $this->render("components/_meta_head.phtml");
+    echo $this->render("components/_meta_head.phtml");
 
-        $this->headLink()
-            ->appendStylesheet($this->baseUrl().'/css/global.css')
-            ->headLink(array('rel' => 'shortcut icon',
-                'type' => "image/x-icon",
-                'href' => $this->baseUrl().'/img/favicons/favicon.ico'),
-                'PREPEND');
-        echo $this->headLink();
+    $this->headLink()
+        ->appendStylesheet($this->baseUrl().'/css/global.css')
+        ->headLink(array('rel' => 'shortcut icon',
+            'type' => "image/x-icon",
+            'href' => $this->baseUrl().'/img/favicons/favicon.ico'),
+            'PREPEND');
+    echo $this->headLink();
 
-        $this->headScript()
-            ->prependFile('//code.jquery.com/jquery-1.11.3.min.js');
+    $this->headScript()
+        ->prependFile('//code.jquery.com/jquery-1.11.3.min.js');
     ?>
 </head>
 <body>

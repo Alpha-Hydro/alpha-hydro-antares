@@ -14,8 +14,8 @@ _utils
 
 _db
 tests
-appadmin/config/db.xml
-application/configs/db.ini
+db.xml
+db.ini
 
 ### SVN template
 .svn/
@@ -42,3 +42,10 @@ public/D
 
 #UglifyJS
 *.min.min.js
+
+#checkout
+/scripts/*.js
+/scripts/nicEdit
+/scripts/fancybox
+/scripts/datepicker
+/js

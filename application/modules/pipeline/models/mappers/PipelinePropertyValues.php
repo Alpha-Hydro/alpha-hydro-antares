@@ -74,13 +74,19 @@ class Pipeline_Model_Mapper_PipelinePropertyValues
      */
     public function find($id, Pipeline_Model_PipelinePropertyValues $pipelinepropertyvalues)
     {
-        $result = $this->getDbTable()->find($id);
-        
-        if (0 == count($result)) {
+        $table = $this->getDbTable();
+        $select = $table->select();
+        $select->where('id = ?', $id);
+
+        //Получаем значение через fetchRow и select, т.к.
+        //в DbTable_PipelinePropertyValues указаны первичные
+        //ключи pipeline_id и property_id
+        $row = $table->fetchRow($select);
+
+        if (is_null($row)) {
         	return null;
         }
-        
-        $row = $result->current();
+
         $entry = $this->_setDbData($row, $pipelinepropertyvalues);
         
         return $entry;

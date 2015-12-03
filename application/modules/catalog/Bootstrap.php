@@ -18,6 +18,18 @@ class Catalog_Bootstrap extends Zend_Application_Module_Bootstrap
         $front = Zend_Controller_Front::getInstance();
         $router = $front->getRouter();
 
+
+        /*$default = new Zend_Controller_Router_Route(
+            ':module/:controller/:action/*',
+            array(
+                'module' => 'catalog',
+                //'controller' => 'categories',
+                'action' => 'index'
+            )
+        );
+        $router->addRoute('default_catalog', $default);*/
+
+
         $route_catalog = new Zend_Controller_Router_Route_Regex(
             'catalog/([\w\-\/]+)',
             array(
@@ -47,6 +59,8 @@ class Catalog_Bootstrap extends Zend_Application_Module_Bootstrap
             'catalog/%s.pdf'
         );
         $router->addRoute('printPdf', $route_product_print_pdf);
+
+
 
     }
 }

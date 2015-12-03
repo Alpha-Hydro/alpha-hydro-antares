@@ -1,6 +1,8 @@
 @import "bootstrap-compass";
 @import "vendors/bootstrap-variables";
 @import "bootstrap";
+@import "vendors/corpus/whitespace";
+@import "vendors/corpus/positioning";
 
 @import "compass/utilities";
 @import "compass/layout";
@@ -18,6 +20,7 @@
 @import "components/icons";
 @import "components/form";
 @import "components/line";
+@import "components/vertical-center";
 
 @import "layout/layout";
 @import "layout/header";

@@ -9,7 +9,7 @@
             <span class="date">- <?=date("d.m.Y", strtotime($this->forum_question->getTimestamp()));?> г.</span>
         </div>
         <div class="description">
-            <?=$this->strCrop($this->forum_question->getContent());?>
+            <?=$this->strCrop($this->forum_question->getContent(), 170);?>
         </div>
     </div>
     <div class="home-i-block gradient z-depth-1 forum-reply">

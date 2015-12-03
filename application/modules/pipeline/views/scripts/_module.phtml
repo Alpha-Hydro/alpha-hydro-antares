@@ -31,6 +31,8 @@ $this->headScript()->appendFile('/js/catalog.min.js');
         </div>
     </div>
     <div class="col-md-3 col-md-pull-9">
-        <?=$this->render('_sidebar.phtml')?>
+        <?if($this->categories):?>
+            <?=$this->render('_sidebar.phtml')?>
+        <?endif;?>
     </div>
 </div>

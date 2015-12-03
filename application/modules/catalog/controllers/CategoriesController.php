@@ -4,13 +4,6 @@ class Catalog_CategoriesController extends Zend_Controller_Action
 {
     protected $_fullPath = null;
 
-    /*public function preDispatch()
-    {
-        $frontController = $this->getFrontController();
-        $router = $frontController->getRouter();
-        var_dump($router->getCurrentRouteName());
-    }*/
-
     public function init()
     {
         $request = $this->getRequest();
@@ -25,6 +18,7 @@ class Catalog_CategoriesController extends Zend_Controller_Action
         $category = new Catalog_Model_Categories();
 
         $category = $categories->findByFulPath($fullPath, $category);
+        //var_dump($category);
 
         if(is_null($category)) {
             //throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
@@ -71,5 +65,6 @@ class Catalog_CategoriesController extends Zend_Controller_Action
     {
         return $this->_fullPath;
     }
+
 }
 

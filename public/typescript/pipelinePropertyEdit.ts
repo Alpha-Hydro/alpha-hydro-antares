@@ -27,7 +27,7 @@ class PipelineEdit {
         });
 
         this._initSelect();
-        this._newFormEvent();
+        this._modalFormEvent();
     }
 
     _initRow(tr:HTMLTableRowElement){
@@ -63,6 +63,9 @@ class PipelineEdit {
                     modalForm = modal.querySelector('form');
                 $(modal)
                     .modal('show')
+                    .on('shown.bs.modal',function(){
+                        modalForm.elements.newPropertyName.focus();
+                    })
                     .on('hidden.bs.modal', function () {
                         select.value = 0;
                         modalForm.reset();
@@ -85,6 +88,20 @@ class PipelineEdit {
             ev.preventDefault();
             self._initEvent(tr, this);
         });
+    }
+
+    _resetSelect(){
+        var row:any = this.rowFooter,
+            select:HTMLSelectElement = row.querySelector('select'),
+            inputs:HTMLInputElement[] = [].slice.call(row.querySelectorAll('input')),
+            btn:HTMLButtonElement = row.querySelector('button[data-event="add"]');
+
+        select.value = '0';
+        inputs.forEach(function(input){
+            input.value = '';
+            input.readOnly = true;
+        });
+        btn.classList.add('hidden');
     }
 
     _newRow(propertyId:any = 'new', propertyName:string = 'test', propertyValue:string = 'test'){
@@ -129,7 +146,13 @@ class PipelineEdit {
         this._initRow(newRow);
     }
 
-    _newFormEvent(){
+    _rowDelete(rowId){
+        var row:HTMLElement = document.getElementById(rowId);
+        row.remove();
+        return this;
+    }
+
+    _modalFormEvent(){
         var self = this,
             form:any = document.getElementById('newPipelineProperty'),
             propertyName: any = form.elements.newPropertyName,
@@ -179,7 +202,7 @@ class PipelineEdit {
 
     _initEvent(tr, btn){
         var btnEvent = btn.dataset.event;
-        //console.log(tr);
+        console.log(btnEvent);
 
         if(btnEvent == 'edit'){
             var tr_current = this.row[this.current];
@@ -200,6 +223,10 @@ class PipelineEdit {
         if(btnEvent == 'delete'){
             this._delete(tr);
         }
+        if(btnEvent == 'save'){
+            console.log(this.row[this.current]);
+            this._save(tr);
+        }
     }
 
     _edit(tr, btn){
@@ -212,6 +239,10 @@ class PipelineEdit {
             classie.add(input, 'form-control');
             classie.add(input, 'input-sm');
             input.readOnly = false;
+            input.addEventListener('input', function(ev){
+                ev.preventDefault();
+                btnSave.disabled = !ev.target.value;
+            });
         });
         aInput[0].focus();
     }
@@ -233,6 +264,17 @@ class PipelineEdit {
         this._sendAjax('/admin/pipeline-property-value/delete', data, callbackDel);
     }
 
+    _save(tr){
+        var valueId = tr.id,
+            inputValue = tr.querySelector('input'),
+            data = {
+                valueId: valueId,
+                value: inputValue.value,
+            };
+        //console.log(data);
+        this._sendAjax('/admin/pipeline-property-value/save', data, callbackSave);
+    }
+
     _reset(tr){
         var aInput:any = [].slice.call(tr.querySelectorAll('input')),
             btn = tr.querySelector('button.active'),
@@ -252,22 +294,41 @@ class PipelineEdit {
     }
 
     _sendAjax = (url:string, data:any, callback:any = this._callbackData) => {
-        console.log(data);
+        //console.log(data);
         $.ajax({
-                 url: url,
-                 type: 'POST',
-                 dataType: 'json',
-                 cache: false,
-                 data: data,
-                 error: function(jqXHR, textStatus, errorThrown) {
-                     return console.log("AJAX Error: " + textStatus);
-                 },
-                 success: callback,
-             });
+            url: url,
+            type: 'POST',
+            dataType: 'json',
+            cache: false,
+            data: data,
+            error: function(jqXHR, textStatus, errorThrown) {
+                return console.log("AJAX Error: " + textStatus);
+            },
+            success: callback,
+        });
     };
 
     _callbackData = (data) => {
         console.log(data);
+    };
+
+    _selectOptions = () => {
+        $.ajax({
+            url: '/admin/pipeline/select-property-item-array',
+            type: 'POST',
+            dataType: 'html',
+            cache: false,
+            data: {
+                pipelineId: this.itemId
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log("AJAX Error: " + textStatus);
+            },
+            success: function(data, textStatus, jqXHR){
+                //console.log(data);
+                $('select#propertyId').html(data);
+            }
+        });
     };
 }
 
@@ -289,7 +350,7 @@ var callbackNew = (data) => {
 };
 
 var callbackAdd = (data) => {
-    console.log(data);
+    //console.log(data);
     if(data && typeof data.errorMessage != "undefined"){
         console.log(data.errorMessage);
     }
@@ -300,20 +361,23 @@ var callbackAdd = (data) => {
             data.property.propertyName,
             data.property.propertyValue
         );
-        var select = tableProperty.rowFooter.querySelector('select'),
-            selIdx = select.selectedIndex;
-        select.options.remove(selIdx);
+        tableProperty._selectOptions();
+        tableProperty._resetSelect();
     }
 };
 
 var callbackDel = (data) => {
     if(data && typeof data.rowDeleted != 'undefined'){
-        console.log(data.rowDeleted.rowId);
-        console.log(data.rowDeleted.message);
-        var tr = document.getElementById(data.rowDeleted.rowId);
-        tr.remove();
+        tableProperty._rowDelete(data.rowDeleted.rowId);
+        tableProperty._selectOptions();
+        tableProperty._resetSelect();
     }
 };
 
-
-
+var callbackSave = (data) => {
+    console.log(data);
+    if(data && typeof data.rowSaved != 'undefined'){
+        console.log(data.rowSaved.message);
+        tableProperty._reset(tableProperty.row[tableProperty.current]);
+    }
+};

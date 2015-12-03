@@ -12,6 +12,7 @@ class Admin_PipelineController extends Zend_Controller_Action
         $ajaxContext = $this->_helper->getHelper('AjaxContext');
         $ajaxContext
             ->addActionContext('select-add-property', 'html')
+            ->addActionContext('select-property-item-array', 'html')
             ->initContext('html');
 
         $this->_count_item_on_page = 10;
@@ -278,6 +279,7 @@ class Admin_PipelineController extends Zend_Controller_Action
     /**
      * @param null $count_item_on_page
      * @return Admin_PipelineController
+     *
      */
     public function setCountItemOnPage($count_item_on_page)
     {
@@ -287,12 +289,18 @@ class Admin_PipelineController extends Zend_Controller_Action
 
     /**
      * @return null
+     *
      */
     public function getCountItemOnPage()
     {
         return $this->_count_item_on_page;
     }
 
+    /**
+     * @param $itemId
+     * @return array
+     *
+     */
     protected function _getPropertyArray($itemId)
     {
         $pipelinePropertyMapper = new Pipeline_Model_Mapper_PipelineProperty();
@@ -345,7 +353,18 @@ class Admin_PipelineController extends Zend_Controller_Action
             $this->view->property = $pipelineProperty;
         }
     }
+
+    public function selectPropertyItemArrayAction()
+    {
+        $request = $this->getRequest();
+        $itemId = $request->getParam('pipelineId');
+        $propertyArray = $this->_getPropertyArray($itemId);
+
+        $this->view->selectOptions = $propertyArray;
+    }
 }
+
+
 
 
 

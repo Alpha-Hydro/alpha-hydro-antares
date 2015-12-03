@@ -5,12 +5,16 @@ class Pipeline_IndexController extends Zend_Controller_Action
 
     public function init()
     {
+        $this->view->title = 'Трубопроводная арматура';
 
+        if(!Zend_Auth::getInstance()->hasIdentity()){
+            $this->_helper->layout->setLayout('_cap');
+            $this->render('cap');
+        }
     }
 
     public function indexAction()
     {
-        $this->view->title = 'Трубопроводная арматура';
 
         $categoriesMapper = new Pipeline_Model_Mapper_PipelineCategories();
         $select =  $categoriesMapper->getDbTable()->select();
@@ -24,5 +28,13 @@ class Pipeline_IndexController extends Zend_Controller_Action
         $this->view->categories = $categories;
     }
 
+    public function capAction()
+    {
+
+    }
+
+
 }
+
+
 

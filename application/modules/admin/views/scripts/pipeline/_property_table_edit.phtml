@@ -7,8 +7,8 @@ $this->headScript()
 <table class="table table-hover" data-edit="modal" data-itemId="<?=$this->item->getId();?>" id="pipelineProperty">
     <thead>
     <tr>
-        <th class="col-xs-2">Свойство</th>
-        <th data-name="value">Значение</th>
+        <th class="col-xs-2">Свойства товара</th>
+        <th data-name="value"></th>
         <th class="col-xs-3"></th>
     </tr>
     </thead>
@@ -17,7 +17,7 @@ $this->headScript()
         <?php foreach ($this->properties as $property => $value):?>
             <tr id="<?=$value->getId()?>">
                 <td><?= $property ?></td>
-                <td><input type="text" value="<?= $value->getValue()?>" class="input-hidden" readonly="readonly"></td>
+                <td><input type="text" name="propertyValue" value="<?= $value->getValue()?>" class="input-hidden" readonly="readonly"></td>
                 <td>
                     <div class="btn-group btn-group-sm mr1">
                         <button class="btn btn-default" data-event="edit">
