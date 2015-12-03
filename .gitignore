@@ -14,8 +14,8 @@ _utils
 
 _db
 tests
-appadmin/config/db.xml
-application/configs/db.ini
+db.xml
+db.ini
 
 ### SVN template
 .svn/
