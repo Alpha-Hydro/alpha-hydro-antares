@@ -117,7 +117,7 @@ class Forum_IndexController extends Zend_Controller_Action
 
                 $mailToUser->setBodyHtml($textHtml);
                 //$mailToUser->addTo($newPost->getEmail(), $newPost->getAuthor());
-                $mailToUser->addTo('vlmeh@rambler.ru', $newPost->getAuthor());
+                $mailToUser->addTo($form_ask->getValue('email'), $newPost->getAuthor());
                 $mailToUser->send();
 
 
