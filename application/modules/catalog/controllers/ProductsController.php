@@ -95,7 +95,6 @@ class Catalog_ProductsController extends Zend_Controller_Action
             $this->view->subproductProperty = $subproductProperty;
 
         }
-
     }
 
     public function printAction()

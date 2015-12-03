@@ -65,9 +65,11 @@ $this->product_id = $this->product->id;
             <thead>
             <tr>
                 <td>Название</td>
-                <?php foreach ($this->subproductProperty as $propertyName):?>
-                    <td><?=$propertyName->name?></td>
-                <?php endforeach;?>
+                <?php if($this->subproductProperty):?>
+                    <?php foreach ($this->subproductProperty as $propertyName):?>
+                        <td><?=$propertyName->name?></td>
+                    <?php endforeach;?>
+                <?php endif;?>
             </tr>
             </thead>
             <tbody>
