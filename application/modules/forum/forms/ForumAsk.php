@@ -40,6 +40,35 @@ class Forum_Form_ForumAsk extends Twitter_Bootstrap_Form_Vertical
             )
         );
 
+        /*// Add a captcha
+        $this->addElement('captcha', 'captcha', array(
+            'label'      => 'Please enter the 5 letters displayed below:',
+            'required'   => true,
+            'captcha'    => array(
+                'captcha' => 'Figlet',
+                'wordLen' => 5,
+                'timeout' => 300
+            )
+        ));*/
+
+        $this->addElement('captcha', 'captcha', array(
+            //'label'      => 'Please enter the 5 letters displayed below:',
+            'required'   => true,
+            'captcha'    => array(
+                'captcha' => 'Image',
+                'wordLen' => 5,
+                'timeout' => 300,
+                'font' => FONT_DIR.'/Arial.ttf',
+                'imgDir' => APPLICATION_PATH.'/../public/captcha',
+                'imgUrl' => Zend_Controller_Front::getInstance()->getBaseUrl().'/captcha',
+                'height' => '50',
+                'width' => '150',
+                'dotNoiseLevel' => 50,
+                'lineNoiseLevel' => 5,
+            ),
+            'class' => 'captcha',
+        ));
+
         $elements = $this->getElements();
         foreach ($elements as $element){
             if ($element->isRequired()) {

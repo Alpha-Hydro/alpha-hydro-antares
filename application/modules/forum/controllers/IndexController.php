@@ -116,7 +116,8 @@ class Forum_IndexController extends Zend_Controller_Action
                 $textHtml .= '<p>Спасибо за проявленный интерес к нашей компании.</p>';
 
                 $mailToUser->setBodyHtml($textHtml);
-                $mailToUser->addTo($newPost->getEmail(), $newPost->getAuthor());
+                //$mailToUser->addTo($newPost->getEmail(), $newPost->getAuthor());
+                $mailToUser->addTo('vlmeh@rambler.ru', $newPost->getAuthor());
                 $mailToUser->send();
 
 
