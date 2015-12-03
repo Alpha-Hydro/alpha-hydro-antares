@@ -52,7 +52,6 @@ class Forum_Form_ForumAsk extends Twitter_Bootstrap_Form_Vertical
         ));*/
 
         $this->addElement('captcha', 'captcha', array(
-            //'label'      => 'Please enter the 5 letters displayed below:',
             'required'   => true,
             'captcha'    => array(
                 'captcha' => 'Image',
@@ -67,6 +66,7 @@ class Forum_Form_ForumAsk extends Twitter_Bootstrap_Form_Vertical
                 'lineNoiseLevel' => 5,
             ),
             'class' => 'captcha',
+            'placeholder' => 'код с картинки',
         ));
 
         $elements = $this->getElements();

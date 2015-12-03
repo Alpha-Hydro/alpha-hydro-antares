@@ -17,15 +17,16 @@ $this->headScript()
         </div>
         <?=$this->form_ask->content?>
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-6">
                 <div class="form-inline m0">
                     <?=$this->form_ask->captcha?>
+                    <button type="button" class="btn btn-default" onclick="window.location.reload()"><i class="fa fa-lg fa-refresh"></i></button>
                 </div>
             </div>
             <div class="col-md-4">
                 <p class="help-block text-danger">* Все поля обязательны для заполнения</p>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <input type="submit" value="Отправить" class="forum-send" id="forum_send_ask"/>
             </div>
         </div>
