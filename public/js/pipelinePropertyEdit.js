@@ -7,7 +7,6 @@ var PipelineEdit = (function () {
         this.tableId = tableId;
         this._sendAjax = function (url, data, callback) {
             if (callback === void 0) { callback = _this._callbackData; }
-            //console.log(data);
             $.ajax({
                 url: url,
                 type: 'POST',
@@ -36,7 +35,6 @@ var PipelineEdit = (function () {
                     console.log("AJAX Error: " + textStatus);
                 },
                 success: function (data, textStatus, jqXHR) {
-                    //console.log(data);
                     $('select#propertyId').html(data);
                 }
             });
@@ -230,7 +228,6 @@ var PipelineEdit = (function () {
             pipelineId: this.itemId,
             propertyValue: inputValue.value
         };
-        //console.log(data);
         this._sendAjax('/admin/pipeline-property-value/add', data, callbackAdd);
     };
     PipelineEdit.prototype._delete = function (tr) {
@@ -242,7 +239,6 @@ var PipelineEdit = (function () {
             valueId: valueId,
             value: inputValue.value
         };
-        //console.log(data);
         this._sendAjax('/admin/pipeline-property-value/save', data, callbackSave);
     };
     PipelineEdit.prototype._reset = function (tr) {
@@ -272,7 +268,6 @@ var callbackNew = function (data) {
     }
 };
 var callbackAdd = function (data) {
-    //console.log(data);
     if (data && typeof data.errorMessage != "undefined") {
         console.log(data.errorMessage);
     }

@@ -33,26 +33,23 @@
       url = $(this).attr('href');
       target_offset = $(url).offset();
       target = target_offset.top;
-      $('html, body').animate({
+      return $('html, body').animate({
         scrollTop: target
       }, 1000);
-      return console.log(target);
     });
     $(document).on('click', '#refreshCaptcha', function(event) {
       var captchaImg, captchaKey;
       event.preventDefault();
       captchaImg = $('#captcha-form img');
       captchaKey = $('#captcha-id');
-      console.log(captchaKey);
       return $.ajax({
         url: '/forum/index/refresh-captcha',
-        dataType: 'html',
+        dataType: 'json',
         error: function(jqXHR, textStatus, errorThrown) {
           return console.log("AJAX Error: " + textStatus);
         },
         success: function(data, textStatus, jqXHR) {
-          console.log(data.src);
-          captchaImg.attr('scr', data.src);
+          captchaImg.attr('src', data.src);
           return captchaKey.attr('value', data.id);
         }
       });
