@@ -14,6 +14,7 @@
 			var b=document.getElementById('unit2'+$(select).attr('data-pref')).value;
 			var c=document.getElementById('value'+$(select).attr('data-pref')).value;  
 			var res=Math.round(((c*a)/b)*100)/100;
+            console.log(a);
 			document.getElementById('res'+$(select).attr('data-pref')).value = res;
 			return res;
 		}
