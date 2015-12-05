@@ -21,6 +21,8 @@ var Converter = (function () {
     Converter.prototype._init = function () {
         var self = this, units = this.units, select = document.createElement('select'), div_content = document.createElement('div');
         select.classList.add('form-control');
+        select.classList.add('mb1');
+        select.classList.add('input-sm');
         div_content.classList.add('conv_content');
         div_content.setAttribute('id', 'conv_content');
         for (var i in units) {
@@ -31,8 +33,8 @@ var Converter = (function () {
         }
         this.form.appendChild(select);
         this.form.appendChild(div_content);
-        var selectedUnit = select.options.item(select.selectedIndex).value;
-        console.log(selectedUnit);
+        var currentType = select.options.item(select.selectedIndex).value;
+        this._changeUnitType(currentType);
         select.addEventListener('change', function (ev) {
             ev.preventDefault();
             var val = this.value;
@@ -41,10 +43,14 @@ var Converter = (function () {
     };
     Converter.prototype._changeUnitType = function (type) {
         var self = this, div_content = self.form.querySelector('div#conv_content'), typeUnits = this.units[type].u;
-        console.log(typeUnits);
+        div_content.innerHTML = '';
         typeUnits.forEach(function (u) {
-            var inputUnit = document.createElement('input');
+            var formGroup = document.createElement('div'), inputUnit = document.createElement('input');
+            formGroup.classList.add('form-group');
             inputUnit.type = 'text';
+            inputUnit.classList.add('form-control');
+            inputUnit.classList.add('mb1');
+            inputUnit.classList.add('input-sm');
             div_content.appendChild(inputUnit);
         });
     };
@@ -55,14 +61,9 @@ var units = {
         'title': 'Давление',
         'u': [
             ['бар', 1],
-            //['мбар',0.001],
-            //['мкбар',0.000001],
             ['Па', 0.00001],
-            //['кПа',0.01],
-            //['МПа',10],
             ['мм рт.ст.', 0.00133322],
             ['мм вод.ст', 0.0000980665],
-            //['м вод.ст',0.0980665],
             ['кг/мм&sup2', 98.0665],
             ['кг/см&sup2', 0.980665],
             ['атм', 1.01325],

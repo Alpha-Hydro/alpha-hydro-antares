@@ -15,6 +15,8 @@ class Converter {
             select = document.createElement('select'),
             div_content = document.createElement('div');
         select.classList.add('form-control');
+        select.classList.add('mb1');
+        select.classList.add('input-sm');
         div_content.classList.add('conv_content');
         div_content.setAttribute('id', 'conv_content');
 
@@ -27,8 +29,8 @@ class Converter {
         this.form.appendChild(select);
         this.form.appendChild(div_content);
 
-        var selectedUnit = select.options.item(select.selectedIndex).value;
-        console.log(selectedUnit);
+        var currentType = select.options.item(select.selectedIndex).value;
+        this._changeUnitType(currentType);
 
         select.addEventListener('change', function(ev){
             ev.preventDefault();
@@ -50,12 +52,18 @@ class Converter {
 
     _changeUnitType(type:string){
         var self = this,
-            div_content = self.form.querySelector('div#conv_content'),
+            div_content:any = self.form.querySelector('div#conv_content'),
             typeUnits:any[] = this.units[type].u;
-        console.log(typeUnits);
+        div_content.innerHTML = '';
         typeUnits.forEach(function(u){
-            var inputUnit = document.createElement('input');
+            var formGroup = document.createElement('div'),
+                inputUnit = document.createElement('input');
+            formGroup.classList.add('form-group');
             inputUnit.type = 'text';
+            inputUnit.classList.add('form-control');
+            inputUnit.classList.add('mb1');
+            inputUnit.classList.add('input-sm');
+            //formGroup.appendChild(inputUnit);
             div_content.appendChild(inputUnit);
         });
     }
