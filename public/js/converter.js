@@ -42,16 +42,23 @@ var Converter = (function () {
         });
     };
     Converter.prototype._changeUnitType = function (type) {
-        var self = this, div_content = self.form.querySelector('div#conv_content'), typeUnits = this.units[type].u;
+        var self = this, div_content = self.form.querySelector('div#conv_content'), typeUnits = this.units[type].u, defaultUnitsValue = this.units[type].default;
         div_content.innerHTML = '';
         typeUnits.forEach(function (u) {
-            var formGroup = document.createElement('div'), inputUnit = document.createElement('input');
+            var formGroup = document.createElement('div'), inputGroup = document.createElement('div'), inputUnit = document.createElement('input'), unitAddon = document.createElement('span'), unitValue = u[1] * defaultUnitsValue;
             formGroup.classList.add('form-group');
+            formGroup.classList.add('mb1');
+            inputGroup.classList.add('input-group');
+            inputGroup.classList.add('input-group-sm');
             inputUnit.type = 'text';
+            inputUnit.value = unitValue;
             inputUnit.classList.add('form-control');
-            inputUnit.classList.add('mb1');
-            inputUnit.classList.add('input-sm');
-            div_content.appendChild(inputUnit);
+            unitAddon.classList.add('input-group-addon');
+            unitAddon.appendChild(document.createTextNode(u[0]));
+            inputGroup.appendChild(inputUnit);
+            inputGroup.appendChild(unitAddon);
+            formGroup.appendChild(inputGroup);
+            div_content.appendChild(formGroup);
         });
     };
     return Converter;
@@ -59,19 +66,21 @@ var Converter = (function () {
 var units = {
     'pressure': {
         'title': 'Давление',
+        'default': 100,
         'u': [
             ['бар', 1],
             ['Па', 0.00001],
             ['мм рт.ст.', 0.00133322],
             ['мм вод.ст', 0.0000980665],
-            ['кг/мм&sup2', 98.0665],
-            ['кг/см&sup2', 0.980665],
+            ['кг/мм2', 98.0665],
+            ['кг/см2', 0.980665],
             ['атм', 1.01325],
             ['psi', 0.06894887]
         ]
     },
     'length': {
         'title': 'Длина',
+        'default': 100,
         'u': [
             ['м', 1],
             ['см', 0.01],
@@ -82,15 +91,17 @@ var units = {
     },
     'capacity': {
         'title': 'Объем',
+        'default': 100,
         'u': [
             ['л', 1],
-            ['м&sup3', 1000],
+            ['м3', 1000],
             ['gal(UK)', 4.546],
             ['gal(US)', 3.785]
         ]
     },
     'weight': {
         'title': 'Вес',
+        'default': 100,
         'u': [
             ['кг', 1],
             ['lb(фунт)', 0.454]
@@ -98,6 +109,7 @@ var units = {
     },
     'mass': {
         'title': 'Масса',
+        'default': 100,
         'u': [
             ['кг', 1],
             ['г', 0.001],
@@ -110,6 +122,7 @@ var units = {
     },
     'moment': {
         'title': 'Крутящий момент',
+        'default': 100,
         'u': [
             ['Н*м', 1],
             ['lb*ft', 1.356]
@@ -117,6 +130,7 @@ var units = {
     },
     'speed': {
         'title': 'Скорость',
+        'default': 100,
         'u': [
             ['м/с', 1],
             ['ft/s', 0.3048]
@@ -124,6 +138,7 @@ var units = {
     },
     'exp': {
         'title': 'Расход',
+        'default': 100,
         'u': [
             ['л/мин', 1],
             ['gal/min(UK)', 4.54596],
@@ -132,11 +147,12 @@ var units = {
     },
     'temp': {
         'title': 'Температура',
+        'default': 100,
         'u': [
-            ['&deg;C', 1],
-            ['&deg;F', 33.8],
+            ['C', 1],
+            ['F', 33.8],
             ['K', 274.1],
-            ['&deg;Re', 0.8]
+            ['Re', 0.8]
         ]
     }
 };
