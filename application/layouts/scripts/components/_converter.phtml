@@ -1,28 +1,27 @@
 <?php
-    //$this->headScript()->appendFile('/js/recalc/jquery.recalc.min.js');
     $this->headScript()->appendFile('/js/converter.js');
 ?>
 <div class="crop-bottom-shadow panel panel-default converter">
     <h3 class="panel-heading mtb0">Конвертер величин</h3>
     <div class="panel-body">
         <form id="converter">
-            <!--<select class="form-control">
-                <option value="pressure">Давление</option>
-                <option value="length">Длина</option>
-                <option value="capacity">Объем</option>
-                <option value="weight">Вес</option>
-                <option value="mass">Масса</option>
-                <option value="moment">Крутящий момент</option>
-                <option value="speed">Скорость</option>
-                <option value="exp">Расход</option>
-                <option value="temper">Температура</option>
-            </select>-->
+            <select id="select-type" class="form-control mb1 input-sm"></select>
+            <div class="row mb1" id="value">
+                <div class="col-xs-6">
+                    <input type="text" class="form-control input-sm" id="">
+                </div>
+                <div class="col-xs-6">
+                    <select class="form-control input-sm" name="" id=""></select>
+                </div>
+            </div>
+            <div class="row mb1" id="result">
+                <div class="col-xs-6">
+                    <input type="text" class="form-control input-sm" id="">
+                </div>
+                <div class="col-xs-6">
+                    <select class="form-control input-sm" name="" id=""></select>
+                </div>
+            </div>
         </form>
     </div>
 </div>
-<?php /*$this -> headScript() -> captureStart(); */?><!--
-var calc = {'mode': 'conv'};
-$(document).ready(function(){
-    $('#measure').recalc(calc);
-});
---><?php /*$this -> headScript() -> captureEnd(); */?>
