@@ -40,15 +40,15 @@ var Converter = (function () {
                 this.addOption(this.selectType, text, i);
             }
         }
-        var currentType = this.selectType.options.item(this.selectType.selectedIndex).value;
-        this._changeUnitType(currentType);
+        this.currentType = this.selectType.options.item(this.selectType.selectedIndex).value;
+        this._changeUnitType(this.currentType);
         this.selectType.addEventListener('change', function (ev) {
             ev.preventDefault();
             var val = this.value;
             self._changeUnitType(val);
-            //currentType = val;
+            self.currentType = val;
         });
-        //this._initEvent(currentType);
+        this._initEvent();
     };
     Converter.prototype._changeUnitType = function (type) {
         var self = this, typeUnits = this.units[type].u;
@@ -68,23 +68,41 @@ var Converter = (function () {
             }
         }
         this.select_result.options.item(1).selected = true;
-        this._convert();
-        this._initEvent(type);
+        if (type != 'temp') {
+            self._convert();
+        }
+        else {
+            self._convertTemp();
+        }
     };
-    Converter.prototype._initEvent = function (type) {
+    Converter.prototype._initEvent = function () {
         var self = this;
         this.input_value.addEventListener('input', function (ev) {
             ev.preventDefault();
-            self._convert();
+            if (self.currentType != 'temp') {
+                self._convert();
+            }
+            else {
+                self._convertTemp();
+            }
         });
         this.select_value.addEventListener('change', function (ev) {
             ev.preventDefault();
-            self._convert();
-            console.log(type);
+            if (self.currentType != 'temp') {
+                self._convert();
+            }
+            else {
+                self._convertTemp();
+            }
         });
         this.select_result.addEventListener('change', function (ev) {
             ev.preventDefault();
-            self._convert();
+            if (self.currentType != 'temp') {
+                self._convert();
+            }
+            else {
+                self._convertTemp();
+            }
         });
     };
     Converter.prototype._convert = function () {
@@ -94,9 +112,21 @@ var Converter = (function () {
         this.input_result.value = this.numberFormat(res);
     };
     Converter.prototype._convertTemp = function () {
-        var a = this.select_value.value, b = this.select_result.value, c = this.input_value.value, 
-        //res = Math.round(((c*a)/b)*100)/100;
-        res = (c * a) / b;
+        var a = this.select_value.value, b = this.select_result.value, c = this.input_value.value, res = 0;
+        if (a == b)
+            res = c;
+        if (a == 'c' && b == 'f')
+            res = c * 1.8000 + 32.00;
+        if (a == 'k' && b == 'f')
+            res = (c - 273.15) * 1.8000 + 32.00;
+        if (a == 'k' && b == 'c')
+            res = c - 273.15;
+        if (a == 'c' && b == 'k')
+            res = c + 273.15;
+        if (a == 'f' && b == 'k')
+            res = (c - 32.00) / 1.8000 + 273.15;
+        if (a == 'f' && b == 'c')
+            res = (c - 32.00) / 1.8000;
         this.input_result.value = this.numberFormat(res);
     };
     return Converter;
@@ -190,12 +220,11 @@ var units = {
     },
     'temp': {
         'title': 'Температура',
-        'default': 100,
+        'default': 0,
         'u': [
-            ['C', 1],
-            ['F', 33.8],
-            ['K', 274.1],
-            ['Re', 0.8]
+            ['C', 'c'],
+            ['F', 'f'],
+            ['K', 'k'],
         ]
     }
 };
