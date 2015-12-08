@@ -8,7 +8,6 @@ class Catalog_CategoriesController extends Zend_Controller_Action
     {
         $request = $this->getRequest();
         $this->_fullPath =  $request->getParam('fullPath');
-        //var_dump($this->getAllParams());
     }
 
     public function indexAction()
@@ -18,7 +17,6 @@ class Catalog_CategoriesController extends Zend_Controller_Action
         $category = new Catalog_Model_Categories();
 
         $category = $categories->findByFulPath($fullPath, $category);
-        //var_dump($category);
 
         if(is_null($category)) {
             //throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
@@ -56,6 +54,23 @@ class Catalog_CategoriesController extends Zend_Controller_Action
 
         $this->view->title = $category->getName();
         $this->view->current_category = $current_category_id;
+
+        $this->view->meta_description = $this->setMetaDescription($category);
+
+        if($category->getMetaKeywords() != ''){
+            $meta_keywords = $category->getMetaKeywords();
+        }
+        else{
+            $aKeywords = array();
+            if(!empty($entries)){
+                foreach ($entries as $entry) {
+                    $aKeywords[] = $entry->getName();
+                }
+            }
+            $aKeywords[] = $category->getName();
+            $meta_keywords = implode(", ", array_reverse($aKeywords));
+        }
+        $this->view->meta_keywords = strtolower($meta_keywords);
     }
 
     /**
@@ -64,6 +79,32 @@ class Catalog_CategoriesController extends Zend_Controller_Action
     public function getFullPath()
     {
         return $this->_fullPath;
+    }
+
+    /**
+     * @param Catalog_Model_Categories $category
+     * @return mixed|string
+     */
+    public function setMetaDescription(Catalog_Model_Categories $category)
+    {
+        if($category->getMetaDescription() != ''){
+            $meta_description = $category->getMetaDescription();
+        }
+        else{
+            $categoryMapper = new Catalog_Model_Mapper_Categories();
+            $parentCategories = $categoryMapper->fetchTreeParentCategories($category->getId());
+            $aDescription = array();
+            if(!empty($parentCategories)){
+                foreach ($parentCategories as $parentCategory) {
+                    $aDescription[] = $parentCategory->name;
+                }
+            }
+            $aDescription[] = 'Альфа-Гидро - Каталог продукции';
+
+            $meta_description = implode(", ", array_reverse($aDescription));
+        }
+
+        return $meta_description;
     }
 
 }

@@ -1,6 +1,7 @@
 /// <reference path="jquery.d.ts" />
 /// <reference path="classie.d.ts" />
 
+import NumberFormat = Intl.NumberFormat;
 class Converter {
     form: Element;
     selectType: any;
@@ -128,7 +129,7 @@ class Converter {
     _convertTemp(){
         var a = this.select_value.value,
             b = this.select_result.value,
-            c = this.input_value.value,
+            c:number = this.input_value.value,
             res:number = 0;
 
         if(a == b) res = c;
@@ -143,7 +144,7 @@ class Converter {
             res = c-273.15;
 
         if(a == 'c' && b == 'k')
-            res = c+273.15;
+            res = Number(c)+273.15;
 
         if(a == 'f' && b == 'k')
             res = (c-32.00)/1.8000+273.15;

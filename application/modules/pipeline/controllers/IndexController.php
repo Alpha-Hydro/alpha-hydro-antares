@@ -26,11 +26,12 @@ class Pipeline_IndexController extends Zend_Controller_Action
         $categories = $categoriesMapper->fetchAll($select);
 
         $this->view->categories = $categories;
+        $this->view->meta_description = 'Альфа-Гидро - Трубопроводная арматура. Оптовые поставки трубных элементов, в продаже заглушки, отводы, переходы, тройники, трубы, фланцы.';
+        $this->view->meta_keywords = 'трубопроводная арматура, заглушки, отводы, переходы, тройники, трубы, фланцы';
     }
 
     public function capAction()
     {
-
     }
 
 

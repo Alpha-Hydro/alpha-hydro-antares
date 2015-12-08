@@ -1,5 +1,6 @@
 /// <reference path="jquery.d.ts" />
 /// <reference path="classie.d.ts" />
+var NumberFormat = Intl.NumberFormat;
 var Converter = (function () {
     function Converter(formId, units) {
         this.units = units;
@@ -122,7 +123,7 @@ var Converter = (function () {
         if (a == 'k' && b == 'c')
             res = c - 273.15;
         if (a == 'c' && b == 'k')
-            res = c + 273.15;
+            res = Number(c) + 273.15;
         if (a == 'f' && b == 'k')
             res = (c - 32.00) / 1.8000 + 273.15;
         if (a == 'f' && b == 'c')

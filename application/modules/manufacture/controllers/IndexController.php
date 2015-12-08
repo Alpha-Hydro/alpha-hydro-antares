@@ -29,6 +29,14 @@ class Manufacture_IndexController extends Zend_Controller_Action
 
         $this->view->page = $page;
 
+        $meta_description = 'Альфа-Гидро - Производство. ';
+        if($page->getMetaDescription() != '')
+            $meta_description .= $page->getMetaDescription();
+
+        $this->view->meta_description = $meta_description;
+        $this->view->meta_keywords = $page->getMetaKeywords();
+
+
     }
 
     public function categoriesAction()
@@ -66,6 +74,16 @@ class Manufacture_IndexController extends Zend_Controller_Action
         }
 
         $this->view->manufactureItems = $manufactureItems;
+
+        $meta_description = 'Альфа-Гидро - Производство. '.$manufactureCategory->getTitle();
+        if($manufactureCategory->getMetaDescription() != '')
+            $meta_description = $manufactureCategory->getMetaDescription();
+        $this->view->meta_description = $meta_description;
+
+        $meta_keywords = 'гидростанции, гидроустановка, насосные станции, напорные станции, гидроприводы, гидравлика, гидроцилиндры';
+        if($manufactureCategory->getMetaKeywords() != '')
+            $meta_keywords = $manufactureCategory->getMetaKeywords();
+        $this->view->meta_keywords = $meta_keywords;
     }
 
     public function viewAction()
@@ -93,6 +111,8 @@ class Manufacture_IndexController extends Zend_Controller_Action
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
         $this->view->manufacture = $manufacture;
+        $this->view->meta_description = $manufacture->getMetaDescription();
+        $this->view->meta_keywords = $manufacture->getMetaKeywords();
 
         //var_dump($this->getAllParams());
     }

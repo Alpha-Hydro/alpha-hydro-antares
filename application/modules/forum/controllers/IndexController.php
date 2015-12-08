@@ -17,6 +17,7 @@ class Forum_IndexController extends Zend_Controller_Action
         $this->view->title = 'Форум';
 
         $request = $this->getRequest();
+        //var_dump($request->getParam('section'));
 
         $form_ask = new Forum_Form_ForumAsk();
         $this->view->form_ask = $form_ask;
@@ -76,6 +77,9 @@ class Forum_IndexController extends Zend_Controller_Action
             $this->view->forumItems = $forumPages[$currentPage];
 
         }
+
+        $this->view->meta_description = 'Альфа-Гидро - Форум. '.$category[$request->getParam('section')];
+        $this->view->meta_keywords = 'форум, '.strtolower($category[$request->getParam('section')]);
     }
 
     public function askAction()
