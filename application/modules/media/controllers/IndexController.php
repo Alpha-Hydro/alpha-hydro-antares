@@ -84,6 +84,11 @@ class Media_IndexController extends Zend_Controller_Action
             $this->view->mediaItems = $mediaItems;
         }
 
+        $categoryName = '';
+        if(isset($mediaCategory))
+            $categoryName = $mediaCategory->getName();
+        $this->view->meta_description = 'Альфа-Гидро - Пресса. '.$categoryName;
+        $this->view->meta_keywords = 'пресса, новости, акции, статьи';
     }
 
     public function viewAction()
@@ -110,7 +115,15 @@ class Media_IndexController extends Zend_Controller_Action
 
         $this->view->mediaItem = $mediaItem;
 
-        //var_dump($mediaItem);
+        $meta_description =($mediaItem->getMetaDescription() != '')
+            ? $mediaItem->getMetaDescription()
+            : $mediaItem->getName().'. '.$currentCategory->getName().'. Альфа-Гидро.';
+        $this->view->meta_description = $meta_description;
+
+        $meta_keywords = ($mediaItem->getMetaKeywords() != '')
+            ? $mediaItem->getMetaKeywords()
+            : $mediaItem->getName().', '.$currentCategory->getName().', пресса';
+        $this->view->meta_keywords = $meta_keywords;
     }
 
     /**
