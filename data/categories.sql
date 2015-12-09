@@ -12,3 +12,5 @@ ALTER TABLE `categories` CHANGE `parent_id` `parent_id` BIGINT( 20 ) NOT NULL DE
 
 UPDATE categories SET active = 0 WHERE `order` = -100;
 UPDATE categories SET sorting = `order` WHERE `order` > -100 ;
+
+ALTER TABLE categories ADD deleted INT DEFAULT 0 NOT NULL;

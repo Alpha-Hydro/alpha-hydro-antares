@@ -69,6 +69,17 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             );
             $router->addRoute('hostAlfa', $hostnameRoute);
         }
+
+        $sitemap = new Zend_Controller_Router_Route_Regex(
+            'sitemap.xml',
+            array(
+                'module' => 'default',
+                'controller' => 'sitemap',
+                'action' => 'index',
+            ),
+            'sitemap.xml'
+        );
+        $router->addRoute('sitemap', $sitemap);
     }
 
 }

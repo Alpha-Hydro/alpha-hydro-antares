@@ -27,11 +27,7 @@ class Forum_IndexController extends Zend_Controller_Action
         $select->where('parent_id is null')
             ->order('timestamp DESC');
 
-        $category = array(
-            'question' => 'Вопросы и запросы',
-            'review' => 'Отзывы и предложения',
-            'gravamen' => 'Книга жалоб',
-        );
+        $category = $forumMapper->getCategoryArray();
 
         if($request->getParam('section')){
             $select->where('category = ?', $category[$request->getParam('section')]);

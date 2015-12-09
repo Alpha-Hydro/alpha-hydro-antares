@@ -27,8 +27,6 @@ class Catalog_Model_Products
 
     protected $_order = null;
 
-    protected $_active = null;
-
     protected $_full_path = null;
 
     protected $_meta_description = null;
@@ -40,6 +38,10 @@ class Catalog_Model_Products
     protected $_path = null;
 
     protected $_sorting = null;
+
+    protected $_active = null;
+
+    protected $_deleted = null;
 
     /**
      * @param $options
@@ -96,6 +98,32 @@ class Catalog_Model_Products
         }
         
         return $this;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getOptions()
+    {
+        $class = new ReflectionClass($this);
+        $properties = $class->getProperties(ReflectionProperty::IS_PROTECTED);
+        
+        if(0 === count($properties))
+        	return null;
+        
+        $data = array();
+        foreach ($properties as $property) {
+        	$name = preg_split("~_~", $property->getName());
+        	$normaliseName = implode(array_map("ucwords", $name));
+        	$option = lcfirst($normaliseName);
+        
+        	if ($property->isProtected()) {
+        		$property->setAccessible(TRUE);
+        		$data[$option] = $property->getValue($this);
+        	}
+        }
+        
+        return $data;
     }
 
     /**
@@ -363,28 +391,6 @@ class Catalog_Model_Products
     }
 
     /**
-     * Set value Active
-     *
-     * @return $this 
-     * @param $active
-     */
-    public function setActive($active)
-    {
-        $this->_active = $active;
-        return $this;
-    }
-
-    /**
-     * Get value Active
-     *
-     * @return mixed
-     */
-    public function getActive()
-    {
-        return $this->_active;
-    }
-
-    /**
      * Set value FullPath
      *
      * @return $this 
@@ -514,6 +520,50 @@ class Catalog_Model_Products
     public function getSorting()
     {
         return $this->_sorting;
+    }
+
+    /**
+     * Set value Active
+     *
+     * @return $this 
+     * @param $active
+     */
+    public function setActive($active)
+    {
+        $this->_active = $active;
+        return $this;
+    }
+
+    /**
+     * Get value Active
+     *
+     * @return mixed
+     */
+    public function getActive()
+    {
+        return $this->_active;
+    }
+
+    /**
+     * Set value Deleted
+     *
+     * @return $this 
+     * @param $deleted
+     */
+    public function setDeleted($deleted)
+    {
+        $this->_deleted = $deleted;
+        return $this;
+    }
+
+    /**
+     * Get value Deleted
+     *
+     * @return mixed
+     */
+    public function getDeleted()
+    {
+        return $this->_deleted;
     }
 
 

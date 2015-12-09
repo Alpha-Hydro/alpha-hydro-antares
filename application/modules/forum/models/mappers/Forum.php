@@ -148,6 +148,17 @@ class Forum_Model_Mapper_Forum
         return $normaliseName;
     }
 
-
+    /**
+     * @return array
+     */
+    public function getCategoryArray()
+    {
+        $category = array(
+            'question' => 'Вопросы и запросы',
+            'review' => 'Отзывы и предложения',
+            'gravamen' => 'Книга жалоб',
+        );
+        return $category;
+    }
 }
 

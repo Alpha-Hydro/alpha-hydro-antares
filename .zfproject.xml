@@ -70,6 +70,9 @@
             <controllerFile controllerName="Contacts">
               <actionMethod actionName="index"/>
             </controllerFile>
+            <controllerFile controllerName="Sitemap">
+              <actionMethod actionName="index"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory enabled="false"/>
           <layoutsDirectory enabled="false"/>
@@ -92,6 +95,9 @@
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Contacts">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Sitemap">
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
@@ -128,6 +134,8 @@
             <dbTableDirectory enabled="false"/>
             <modelMapperDirectory enabled="false"/>
             <modelFile modelName="PrintPdf"/>
+            <modelColFile modelName="Categories"/>
+            <modelColFile modelName="Products"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
