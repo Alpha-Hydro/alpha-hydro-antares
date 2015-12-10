@@ -102,12 +102,15 @@ class Forum_IndexController extends Zend_Controller_Action
                 $textHtml .= '<p>Автор: '.$newPost->getAuthor().' ('.$newPost->getEmail().')</p>';
 
                 $mailToAdmin->setBodyHtml($textHtml);
-                $mailToAdmin->addTo("admin@alpha-hydro.com", "ALPHA-HYDRO admin");
+                $mailToAdmin->addTo("info@alpha-hydro.com", "ALPHA-HYDRO info");
+                $mailToAdmin->addCc("fra@alpha-hydro.com", "Fedonov Roman");
+                $mailToAdmin->addCc("kma@alpha-hydro.com", "Kryukov Maxim");
+                $mailToAdmin->addCc("admin@alpha-hydro.com", "ALPHA-HYDRO admin");
                 $mailToAdmin->send();
 
                 //Письмо пользователю
                 $mailToUser = new Zend_Mail("UTF-8");
-                $mailToUser->setFrom("admin@alpha-hydro.com", "ALPHA-HYDRO admin");
+                $mailToUser->setFrom("info@alpha-hydro.com", "ALPHA-HYDRO info");
                 $mailToUser->setSubject('Cообщение на форуме ALPHA-HYDRO');
 
                 $textHtml = '<h3>Вы разместили сообщение на форуме сайта <a href="http://alpha-hydro.com/forum">ALPHA-HYDRO</a></h3>';
