@@ -9,7 +9,7 @@ class Forum_IndexController extends Zend_Controller_Action
         $ajaxContext
             ->addActionContext('ask', 'html')
             ->addActionContext('refresh-captcha', 'json')
-            ->initContext();
+            ->initContext('html');
     }
 
     public function indexAction()
@@ -17,7 +17,6 @@ class Forum_IndexController extends Zend_Controller_Action
         $this->view->title = 'Форум';
 
         $request = $this->getRequest();
-        //var_dump($request->getParam('section'));
 
         $form_ask = new Forum_Form_ForumAsk();
         $this->view->form_ask = $form_ask;
@@ -103,9 +102,9 @@ class Forum_IndexController extends Zend_Controller_Action
 
                 $mailToAdmin->setBodyHtml($textHtml);
                 $mailToAdmin->addTo("info@alpha-hydro.com", "ALPHA-HYDRO info");
-                $mailToAdmin->addCc("fra@alpha-hydro.com", "Fedonov Roman");
-                $mailToAdmin->addCc("kma@alpha-hydro.com", "Kryukov Maxim");
-                $mailToAdmin->addCc("admin@alpha-hydro.com", "ALPHA-HYDRO admin");
+                $mailToAdmin->addTo("fra@alpha-hydro.com", "Fedonov Roman");
+                $mailToAdmin->addTo("kma@alpha-hydro.com", "Kryukov Maxim");
+                $mailToAdmin->addTo("admin@alpha-hydro.com", "ALPHA-HYDRO admin");
                 $mailToAdmin->send();
 
                 //Письмо пользователю
