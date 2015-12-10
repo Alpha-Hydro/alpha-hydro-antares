@@ -73,8 +73,12 @@ class Forum_IndexController extends Zend_Controller_Action
 
         }
 
-        $this->view->meta_description = 'Альфа-Гидро - Форум. '.$category[$request->getParam('section')];
-        $this->view->meta_keywords = 'форум, '.strtolower($category[$request->getParam('section')]);
+        $categoryName = ($request->getParam('section'))
+            ? $category[$request->getParam('section')]
+            : '';
+
+        $this->view->meta_description = 'Альфа-Гидро - Форум. '.$categoryName;
+        $this->view->meta_keywords = 'форум, '.strtolower($categoryName);
     }
 
     public function askAction()
