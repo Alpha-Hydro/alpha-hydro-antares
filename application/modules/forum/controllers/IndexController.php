@@ -98,7 +98,7 @@ class Forum_IndexController extends Zend_Controller_Action
                 //Письмо администратору
                 $mailToAdmin = new Zend_Mail("UTF-8");
                 $mailToAdmin->setFrom($newPost->getEmail(), $newPost->getAuthor());
-                $mailToAdmin->setSubject('Новое сообщение с форума');
+                $mailToAdmin->setSubject('Новое сообщение с форума ALPHA-HYDRO');
 
                 $textHtml = '<h1>'.$newPost->getCategory().'</h1>';
                 $textHtml .= '<p>Сообщение: '.$newPost->getContent().'</p>';
@@ -106,9 +106,9 @@ class Forum_IndexController extends Zend_Controller_Action
 
                 $mailToAdmin->setBodyHtml($textHtml);
                 $mailToAdmin->addTo("info@alpha-hydro.com", "ALPHA-HYDRO info");
-                $mailToAdmin->addTo("fra@alpha-hydro.com", "Fedonov Roman");
-                $mailToAdmin->addTo("kma@alpha-hydro.com", "Kryukov Maxim");
-                $mailToAdmin->addTo("admin@alpha-hydro.com", "ALPHA-HYDRO admin");
+                $mailToAdmin->addBcc("fra@alpha-hydro.com");
+                $mailToAdmin->addBcc("kma@alpha-hydro.com");
+                $mailToAdmin->addBcc("admin@alpha-hydro.com");
                 $mailToAdmin->send();
 
                 //Письмо пользователю
@@ -123,8 +123,8 @@ class Forum_IndexController extends Zend_Controller_Action
                 $textHtml .= '<p>Спасибо за проявленный интерес к нашей компании.</p>';
 
                 $mailToUser->setBodyHtml($textHtml);
-                //$mailToUser->addTo($newPost->getEmail(), $newPost->getAuthor());
-                $mailToUser->addTo($form_ask->getValue('email'), $newPost->getAuthor());
+                $mailToUser->addTo($newPost->getEmail(), $newPost->getAuthor());
+                //$mailToUser->addTo($form_ask->getValue('email'), $newPost->getAuthor());
                 $mailToUser->send();
 
 
