@@ -26,11 +26,11 @@ class Plugin_Redirect extends Zend_Controller_Plugin_Abstract
                     $item['product_id'] = $arrayPath[$key+1];
             }
             if(!empty($item))
-                $this->redirectItem($item);
+                $this->redirectCatalogItem($item);
         }
     }
 
-    public function redirectItem($item)
+    public function redirectCatalogItem($item)
     {
         $category_id = $item['category_id'];
         $product_id = $item['product_id'];

@@ -7,10 +7,10 @@
     echo $this->render("components/_meta_head.phtml");
 
     $this->headLink()
-        ->appendStylesheet($this->baseUrl().'/css/global.css')
+        ->appendStylesheet($this->baseUrl().'/css/global.min.css')
         ->headLink(array('rel' => 'shortcut icon',
             'type' => "image/x-icon",
-            'href' => $this->baseUrl().'/img/favicons/favicon.ico'),
+            'href' => $this->baseUrl().'/favicon.ico'),
             'PREPEND');
     echo $this->headLink();
 
