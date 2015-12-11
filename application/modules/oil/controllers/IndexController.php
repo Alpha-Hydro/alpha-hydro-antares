@@ -12,7 +12,7 @@ class Oil_IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $this->view->title = 'Масла';
+        $this->view->title = 'Масла гидравлические';
         $request = $this->getRequest();
 
         $oilMapper = new Oil_Model_Mapper_Oil();
@@ -43,6 +43,8 @@ class Oil_IndexController extends Zend_Controller_Action
             }
 
             $this->view->pageItems = $oilItems;
+            $this->view->meta_description = 'Альфа-Гидро - Масла гидравлические. Высокоэффективные гидравлические масла стандартов HLP / HVLP глубокой селективной очистки с многофункциональным пакетом присадок для систем гидроприводов и гидроуправления строительной, дорожной, лесозаготовительной, подъемно-транспортной техники и других машин и агрегатов.';
+            $this->view->meta_keywords = 'масло гидравлическое, HLP, HVLP, Зима 22, ZF 48 68, МГЕ-46В, присадки, глубокой очистки';
         }
 
     }
@@ -60,6 +62,8 @@ class Oil_IndexController extends Zend_Controller_Action
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
         $this->view->pageItem = $oilItem;
+        $this->view->meta_description = $oilItem->getMetaDescription();
+        $this->view->meta_keywords = $oilItem->getMetaKeywords();
     }
 
     /**

@@ -33,10 +33,26 @@
       url = $(this).attr('href');
       target_offset = $(url).offset();
       target = target_offset.top;
-      $('html, body').animate({
+      return $('html, body').animate({
         scrollTop: target
       }, 1000);
-      return console.log(target);
+    });
+    $(document).on('click', '#refreshCaptcha', function(event) {
+      var captchaImg, captchaKey;
+      event.preventDefault();
+      captchaImg = $('#captcha-form img');
+      captchaKey = $('#captcha-id');
+      return $.ajax({
+        url: '/forum/index/refresh-captcha',
+        dataType: 'json',
+        error: function(jqXHR, textStatus, errorThrown) {
+          return console.log("AJAX Error: " + textStatus);
+        },
+        success: function(data, textStatus, jqXHR) {
+          captchaImg.attr('src', data.src);
+          return captchaKey.attr('value', data.id);
+        }
+      });
     });
     return false;
   })(jQuery);

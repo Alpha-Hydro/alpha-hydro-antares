@@ -20,6 +20,9 @@
         <controllerFile controllerName="PipelineProperty">
           <actionMethod actionName="index"/>
         </controllerFile>
+        <controllerFile controllerName="Sections">
+          <actionMethod actionName="index"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory>
         <formFile formName="PipelineCategoriesEdit"/>
@@ -70,6 +73,19 @@
             <controllerFile controllerName="Contacts">
               <actionMethod actionName="index"/>
             </controllerFile>
+            <controllerFile controllerName="Sitemap">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Sections">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="media"/>
+              <actionMethod actionName="news"/>
+              <actionMethod actionName="production"/>
+              <actionMethod actionName="productionPost"/>
+              <actionMethod actionName="pipeline"/>
+              <actionMethod actionName="oil"/>
+              <actionMethod actionName="contacts"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory enabled="false"/>
           <layoutsDirectory enabled="false"/>
@@ -93,6 +109,33 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Contacts">
                 <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Sitemap">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Sections">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Sections">
+                <viewScriptFile forActionName="media"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Sections">
+                <viewScriptFile forActionName="news"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Sections">
+                <viewScriptFile forActionName="production"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Sections">
+                <viewScriptFile forActionName="productionPost"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Sections">
+                <viewScriptFile forActionName="pipeline"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Sections">
+                <viewScriptFile forActionName="oil"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Sections">
+                <viewScriptFile forActionName="contacts"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -128,6 +171,8 @@
             <dbTableDirectory enabled="false"/>
             <modelMapperDirectory enabled="false"/>
             <modelFile modelName="PrintPdf"/>
+            <modelColFile modelName="Categories"/>
+            <modelColFile modelName="Products"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
@@ -558,6 +603,7 @@
             <controllerFile controllerName="Index">
               <actionMethod actionName="index"/>
               <actionMethod actionName="ask"/>
+              <actionMethod actionName="refreshCaptcha"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -583,6 +629,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Index">
                 <viewScriptFile forActionName="ask"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="refreshCaptcha"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -820,6 +869,9 @@
             <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="PipelineProperty">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Sections">
             <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>

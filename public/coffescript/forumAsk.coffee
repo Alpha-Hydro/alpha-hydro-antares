@@ -32,7 +32,18 @@
       scrollTop: target
       1000
 
-    console.log(target)
+  $(document).on 'click', '#refreshCaptcha', (event)->
+    event.preventDefault()
+    captchaImg = $('#captcha-form img')
+    captchaKey = $('#captcha-id')
+    $.ajax
+      url: '/forum/index/refresh-captcha'
+      dataType: 'json'
+      error: (jqXHR, textStatus, errorThrown) ->
+        console.log "AJAX Error: #{textStatus}"
+      success: (data, textStatus, jqXHR) ->
+        captchaImg.attr 'src', data.src
+        captchaKey.attr 'value', data.id
 
   false
 

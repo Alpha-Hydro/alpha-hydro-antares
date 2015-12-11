@@ -40,6 +40,24 @@ class Forum_Form_ForumAsk extends Twitter_Bootstrap_Form_Vertical
             )
         );
 
+        $this->addElement('captcha', 'captcha', array(
+            'required'   => true,
+            'captcha'    => array(
+                'captcha' => 'Image',
+                'wordLen' => 5,
+                'timeout' => 300,
+                'font' => FONT_DIR.'/Arial.ttf',
+                'imgDir' => APPLICATION_PATH.'/../public/captcha',
+                'imgUrl' => Zend_Controller_Front::getInstance()->getBaseUrl().'/captcha',
+                'height' => '50',
+                'width' => '150',
+                'dotNoiseLevel' => 50,
+                'lineNoiseLevel' => 5,
+            ),
+            'class' => 'captcha',
+            'placeholder' => 'код с картинки',
+        ));
+
         $elements = $this->getElements();
         foreach ($elements as $element){
             if ($element->isRequired()) {

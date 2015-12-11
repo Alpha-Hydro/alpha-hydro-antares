@@ -8,6 +8,7 @@ class Forum_IndexController extends Zend_Controller_Action
         $ajaxContext = $this->_helper->getHelper('AjaxContext');
         $ajaxContext
             ->addActionContext('ask', 'html')
+            ->addActionContext('refresh-captcha', 'json')
             ->initContext('html');
     }
 
@@ -25,11 +26,7 @@ class Forum_IndexController extends Zend_Controller_Action
         $select->where('parent_id is null')
             ->order('timestamp DESC');
 
-        $category = array(
-            'question' => 'Вопросы и запросы',
-            'review' => 'Отзывы и предложения',
-            'gravamen' => 'Книга жалоб',
-        );
+        $category = $forumMapper->getCategoryArray();
 
         if($request->getParam('section')){
             $select->where('category = ?', $category[$request->getParam('section')]);
@@ -75,6 +72,13 @@ class Forum_IndexController extends Zend_Controller_Action
             $this->view->forumItems = $forumPages[$currentPage];
 
         }
+
+        $categoryName = ($request->getParam('section'))
+            ? $category[$request->getParam('section')]
+            : '';
+
+        $this->view->meta_description = 'Альфа-Гидро - Форум. '.$categoryName;
+        $this->view->meta_keywords = 'форум, '.strtolower($categoryName);
     }
 
     public function askAction()
@@ -94,19 +98,22 @@ class Forum_IndexController extends Zend_Controller_Action
                 //Письмо администратору
                 $mailToAdmin = new Zend_Mail("UTF-8");
                 $mailToAdmin->setFrom($newPost->getEmail(), $newPost->getAuthor());
-                $mailToAdmin->setSubject('Новое сообщение с форума');
+                $mailToAdmin->setSubject('Новое сообщение с форума ALPHA-HYDRO');
 
                 $textHtml = '<h1>'.$newPost->getCategory().'</h1>';
                 $textHtml .= '<p>Сообщение: '.$newPost->getContent().'</p>';
                 $textHtml .= '<p>Автор: '.$newPost->getAuthor().' ('.$newPost->getEmail().')</p>';
 
                 $mailToAdmin->setBodyHtml($textHtml);
-                $mailToAdmin->addTo("admin@alpha-hydro.com", "ALPHA-HYDRO admin");
+                $mailToAdmin->addTo("info@alpha-hydro.com", "ALPHA-HYDRO info");
+                $mailToAdmin->addBcc("fra@alpha-hydro.com");
+                $mailToAdmin->addBcc("kma@alpha-hydro.com");
+                $mailToAdmin->addBcc("admin@alpha-hydro.com");
                 $mailToAdmin->send();
 
                 //Письмо пользователю
                 $mailToUser = new Zend_Mail("UTF-8");
-                $mailToUser->setFrom("admin@alpha-hydro.com", "ALPHA-HYDRO admin");
+                $mailToUser->setFrom("info@alpha-hydro.com", "ALPHA-HYDRO info");
                 $mailToUser->setSubject('Cообщение на форуме ALPHA-HYDRO');
 
                 $textHtml = '<h3>Вы разместили сообщение на форуме сайта <a href="http://alpha-hydro.com/forum">ALPHA-HYDRO</a></h3>';
@@ -117,6 +124,7 @@ class Forum_IndexController extends Zend_Controller_Action
 
                 $mailToUser->setBodyHtml($textHtml);
                 $mailToUser->addTo($newPost->getEmail(), $newPost->getAuthor());
+                //$mailToUser->addTo($form_ask->getValue('email'), $newPost->getAuthor());
                 $mailToUser->send();
 
 
@@ -137,7 +145,22 @@ class Forum_IndexController extends Zend_Controller_Action
         }
     }
 
+    public function refreshCaptchaAction()
+    {
+        $form = new Forum_Form_ForumAsk();
+        $captcha = $form->getElement('captcha')->getCaptcha();
+
+        $data = array();
+
+        $data['id']  = $captcha->generate();
+        $data['src'] = $captcha->getImgUrl().$captcha->getId().$captcha->getSuffix();
+
+        $this->_helper->json($data);
+    }
+
 }
+
+
 
 
 

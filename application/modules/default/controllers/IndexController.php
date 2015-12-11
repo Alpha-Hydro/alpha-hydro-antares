@@ -74,6 +74,12 @@ class IndexController extends Zend_Controller_Action
         $this->view->host = $host;
     }
 
+    public function aboutAction()
+    {
+        Zend_Controller_Front::getInstance()->getResponse()->setRedirect('/about/', 301);
+        return;
+    }
+
     /**
      * @param null $page_id
      * @return IndexController

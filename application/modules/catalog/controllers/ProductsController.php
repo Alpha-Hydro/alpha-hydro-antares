@@ -4,6 +4,7 @@ class Catalog_ProductsController extends Zend_Controller_Action
 {
 
     protected $_fullPath = null;
+    protected $_currentCategory = null;
 
     public function init()
     {
@@ -26,6 +27,8 @@ class Catalog_ProductsController extends Zend_Controller_Action
         if(is_null($category))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
+        $this->setCurrentCategory($category);
+
         $current_category_id = $category->getId();
 
         $productsMapper = new Catalog_Model_Mapper_Products();
@@ -42,6 +45,42 @@ class Catalog_ProductsController extends Zend_Controller_Action
         $this->view->full_path_category = $this->getFullPath();
         $this->view->title = $category->getName();
         $this->view->current_category = $current_category_id;
+
+        if($category->getMetaDescription() != ''){
+            $meta_description = $category->getMetaDescription();
+        }
+        else{
+            $categoryMapper = new Catalog_Model_Mapper_Categories();
+            $parentCategories = $categoryMapper->fetchTreeParentCategories($category->getId());
+            $aDescription = array();
+            if(!empty($parentCategories)){
+                foreach ($parentCategories as $parentCategory) {
+                    $aDescription[] = $parentCategory->name;
+                }
+            }
+            $aDescription[] = 'Альфа-Гидро - Каталог продукции';
+
+            $meta_description = implode(", ", array_reverse($aDescription));
+        }
+        $this->view->meta_description = $meta_description;
+
+        if($category->getMetaKeywords() != ''){
+            $meta_keywords = $category->getMetaKeywords();
+        }
+        else{
+            $aKeywords = array();
+            if(!empty($entries)){
+                foreach ($entries as $propduct) {
+                    $sku = $propduct->getSku();
+                    $aKeywords[] = str_replace('A', '', $sku);
+                    $aKeywords[] = str_replace(' ', '', $sku);
+                    $aKeywords[] = str_replace(array(' ','A'), '', $sku);
+                }
+            }
+            $aKeywords[] = $category->getName();
+            $meta_keywords = implode(", ", array_reverse($aKeywords));
+        }
+        $this->view->meta_keywords = $meta_keywords;
     }
 
     /**
@@ -64,6 +103,7 @@ class Catalog_ProductsController extends Zend_Controller_Action
         $this->view->secondaryHeader = $product->getName();
 
         $categoryRel = $products->findCategoryRel($product->getId(), new Catalog_Model_Categories());
+        $this->setCurrentCategory($categoryRel);
         $this->view->current_category = $categoryRel->getId();
 
         if(!is_null($product->getAImages())){
@@ -96,6 +136,43 @@ class Catalog_ProductsController extends Zend_Controller_Action
 
         }
 
+        if($product->getMetaDescription() != ''){
+            $meta_description = $product->getMetaDescription();
+        }
+        else{
+            $categoryMapper = new Catalog_Model_Mapper_Categories();
+            $parentCategories = $categoryMapper->fetchTreeParentCategories($categoryRel->getId());
+            $aDescription = array();
+            $aDescription[] = $product->getName();
+            if(!empty($parentCategories)){
+                foreach ($parentCategories as $parentCategory) {
+                    $aDescription[] = $parentCategory->name;
+                }
+            }
+            $aDescription[] = 'Альфа-Гидро - Каталог продукции';
+
+            $meta_description = implode(", ", array_reverse($aDescription));
+        }
+        $this->view->meta_description = $meta_description;
+
+        if($product->getMetaKeywords() != ''){
+            $meta_keywords = $product->getMetaKeywords();
+        }
+        else{
+            $aKeywords = array();
+            if(!empty($modifications)){
+                foreach ($modifications as $modification) {
+                    $sku = $modification->getSku();
+                    $aKeywords[] = str_replace('A', '', $sku);
+                    $aKeywords[] = str_replace(' ', '', $sku);
+                    $aKeywords[] = str_replace(array(' ','A'), '', $sku);
+                }
+            }
+            $aKeywords[] = $product->getSku();
+            $aKeywords[] = $product->getName();
+            $meta_keywords = implode(", ", array_reverse($aKeywords));
+        }
+        $this->view->meta_keywords = $meta_keywords;
     }
 
     public function printAction()
@@ -187,6 +264,24 @@ class Catalog_ProductsController extends Zend_Controller_Action
     public function getFullPath()
     {
         return $this->_fullPath;
+    }
+
+    /**
+     * @param null $currentCategory
+     * @return Catalog_ProductsController
+     */
+    public function setCurrentCategory($currentCategory)
+    {
+        $this->_currentCategory = $currentCategory;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getCurrentCategory()
+    {
+        return $this->_currentCategory;
     }
 
 }

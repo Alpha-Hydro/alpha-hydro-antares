@@ -1,0 +1,29 @@
+<?php
+    $this->headScript()->appendFile('/js/converter.min.js');
+?>
+<!--noindex-->
+<div class="crop-bottom-shadow panel panel-default converter">
+    <h3 class="panel-heading mtb0">Конвертер величин</h3>
+    <div class="panel-body">
+        <form id="converter">
+            <select id="select-type" class="form-control mb1 input-sm"></select>
+            <div class="row mb1" id="value">
+                <div class="col-xs-6">
+                    <input type="text" class="form-control input-sm">
+                </div>
+                <div class="col-xs-6">
+                    <select class="form-control input-sm"></select>
+                </div>
+            </div>
+            <div class="row mb1" id="result">
+                <div class="col-xs-6">
+                    <input type="text" class="form-control input-sm">
+                </div>
+                <div class="col-xs-6">
+                    <select class="form-control input-sm"></select>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--/noindex-->

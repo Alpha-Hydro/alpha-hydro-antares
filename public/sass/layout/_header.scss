@@ -9,7 +9,7 @@
     .worktime{
       margin-top: 15px;
       padding-top: 15px;
-      background: image_url('workdays-bar.jpg') no-repeat;
+      background: image-url('workdays-bar.jpg', false, false) no-repeat;
     }
     .phone{
       .tel{
@@ -30,10 +30,10 @@
   min-width: 244px;
   height: 48px;
   &.svg{
-    background: image_url('logo/alpha-hydro-logo-ru.svg') no-repeat;
+    background: image-url('logo/alpha-hydro-logo-ru.svg', false, false) no-repeat;
     background-size: 244px 48px;
   }
   &.png{
-    background: image_url('logo/alfa-hydro.png') no-repeat;
+    background: image-url('logo/alfa-hydro.png', false, false) no-repeat;
   }
 }

@@ -36,9 +36,15 @@
   }
   .forum-send{
     position: absolute;
-    right: -26px;
-    top: 237px;
+    right: -32px;
+    top: 20px;
     @extend .send-form-right;
+  }
+  .captcha{
+    line-height: 3em;
+    text-align: center;
+    width: 150px;
+    font-size: 1.1em;
   }
 }
 .topic{

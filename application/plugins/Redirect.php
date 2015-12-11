@@ -26,11 +26,11 @@ class Plugin_Redirect extends Zend_Controller_Plugin_Abstract
                     $item['product_id'] = $arrayPath[$key+1];
             }
             if(!empty($item))
-                $this->redirectItem($item);
+                $this->redirectCatalogItem($item);
         }
     }
 
-    public function redirectItem($item)
+    public function redirectCatalogItem($item)
     {
         $category_id = $item['category_id'];
         $product_id = $item['product_id'];
@@ -39,16 +39,20 @@ class Plugin_Redirect extends Zend_Controller_Plugin_Abstract
         if(!is_null($category_id)){
             $categoryMapper = new Catalog_Model_Mapper_Categories();
             $category = $categoryMapper->find($category_id, new Catalog_Model_Categories());
-            $fullPath = $category->getFullPath();
+
+            if(!is_null($category))
+                $fullPath = $category->getFullPath().'/';
         }
 
         if(!is_null($product_id)){
             $productMapper = new Catalog_Model_Mapper_Products();
             $product = $productMapper->find($product_id, new Catalog_Model_Products());
-            $fullPath = $product->getFullPath();
+
+            if(!is_null($product))
+                $fullPath = $product->getFullPath().'/';
         }
 
-        $url = '/catalog/'.$fullPath.'/';
+        $url = '/catalog/'.$fullPath;
 
         Zend_Controller_Front::getInstance()->getResponse()->setRedirect($url, 301);
         return;

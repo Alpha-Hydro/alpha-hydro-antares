@@ -20,6 +20,8 @@ class ContactsController extends Zend_Controller_Action
         $page = $pagesMapper->find($this->getPageId(), $page);
 
         $this->view->page = $page;
+        $this->view->meta_description = $page->getMetaDescription();
+        $this->view->meta_keywords = $page->getMetaKeywords();
     }
 
 

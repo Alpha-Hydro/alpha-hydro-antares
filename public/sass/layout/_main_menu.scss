@@ -44,10 +44,10 @@
         color: #FFF;
         text-decoration: none;
         font-size: 85%;
-        background: image_url('menu-item-inactive.png') transparent no-repeat center bottom;
+        background: image-url('menu-item-inactive.png', false, false) transparent no-repeat center bottom;
         outline: none;
         &:hover{
-          background: image_url('menu-item-active.png') transparent no-repeat center bottom / contain;
+          background: image-url('menu-item-active.png', false, false) transparent no-repeat center bottom / contain;
         }
       }
     }
