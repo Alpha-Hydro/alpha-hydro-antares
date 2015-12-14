@@ -18,6 +18,16 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
             );
         $this->addElement($image);
 
+        $this->addElement('image', 'imageLoad', array(
+            'label'         => 'Изображение',
+            'class'         => 'img-thumbnail',
+            'data-toggle'   => 'tooltip',
+            'data-placement'=> 'bottom',
+            'title'         => 'Загрузить изображение',
+        ));
+
+        $this->addElement('hidden', 'image');
+
         $imageDraft = new Zend_Form_Element_File('imageDraftLoadFile');
         $imageDraft->setDestination(APPLICATION_ROOT.'/upload/pipeline/items/')
             ->addValidator('Size', false, 1024000)
@@ -28,6 +38,16 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
                 )
             );
         $this->addElement($imageDraft);
+
+        $this->addElement('image', 'imageDraftLoad', array(
+            'label'         => 'Чертеж',
+            'class'         => 'img-thumbnail',
+            'data-toggle'   => 'tooltip',
+            'data-placement'=> 'bottom',
+            'title'         => 'Загрузить чертеж',
+        ));
+
+        $this->addElement('hidden', 'imageDraft');
 
         $imageTable = new Zend_Form_Element_File('imageTableLoadFile');
         $imageTable->setDestination(APPLICATION_ROOT.'/upload/pipeline/items/')
@@ -40,6 +60,13 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
             )
             ->setLabel('Таблица');
         $this->addElement($imageTable);
+
+        $this->addElement('text', 'imageTable', array(
+            'label'         => 'Таблица',
+            'placeholder'   => 'Таблица размеров',
+            //'prepend_btn'       => '<a class="btn btn-default"><span class="glyphicon glyphicon-eye-open"></span></a>',
+            'class'         => '',
+        ));
 
         $this->addElement('text', 'title', array(
             'label'         => 'Наименование товара',
@@ -67,29 +94,6 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
             'placeholder'   => 'Url страницы',
             'required'      => true,
         ));*/
-
-        $this->addElement('image', 'image', array(
-            'label'         => 'Изображение',
-            'class'         => 'img-thumbnail',
-            'data-toggle'   => 'tooltip',
-            'data-placement'=> 'bottom',
-            'title'         => 'Загрузить изображение',
-        ));
-
-        $this->addElement('image', 'imageDraft', array(
-            'label'         => 'Чертеж',
-            'class'         => 'img-thumbnail',
-            'data-toggle'   => 'tooltip',
-            'data-placement'=> 'bottom',
-            'title'         => 'Загрузить чертеж',
-        ));
-
-        $this->addElement('text', 'imageTable', array(
-            'label'         => 'Таблица',
-            'placeholder'   => 'Таблица размеров',
-            //'prepend_btn'       => '<a class="btn btn-default"><span class="glyphicon glyphicon-eye-open"></span></a>',
-            'class'         => '',
-        ));
 
         $this->addElement('textarea', 'description', array(
             'label'         => 'Краткое описание страницы',
@@ -145,8 +149,9 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
 
         $this->addDisplayGroup(
             array(
-                'image',
+                'imageLoad',
                 'imageLoadFile',
+                'image',
             ),
             'imageGroup',
             array()
@@ -163,8 +168,9 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
 
         $this->addDisplayGroup(
             array(
-                'imageDraft',
+                'imageDraftLoad',
                 'imageDraftLoadFile',
+                'imageDraft',
             ),
             'imageDraftGroup',
             array()

@@ -1,18 +1,11 @@
 <?php
 
-class Admin_Form_ManufactureEdit extends Twitter_Bootstrap_Form_Horizontal
+class Admin_Form_ManufactureEdit extends Twitter_Bootstrap_Form_Vertical
 {
 
     public function init()
     {
         $this->addElement('hidden', 'id');
-
-        $image = new Zend_Form_Element_File('imageLoadFile');
-        $image->setDestination(APPLICATION_ROOT.'/upload/manufacture/items/')
-            ->addValidator('Size', false, 1024000)
-            ->addValidator('Extension', false, 'jpg,png,gif')
-            ->setAttrib('class', 'hidden');
-        $this->addElement($image);
 
         $this->addElement('select', 'categoryId', array(
             'label'     => 'Категория',
@@ -40,47 +33,34 @@ class Admin_Form_ManufactureEdit extends Twitter_Bootstrap_Form_Horizontal
             'required'      => true,
         ));*/
 
-        $this->addElement('text', 'image', array(
+        $this->addElement('hidden', 'image');
+
+        $this->addElement('image', 'imageLoad', array(
             'label'         => 'Изображение',
-            'prepend'       => '<i class="glyphicon glyphicon-eye-open"></i>',
-            //'disabled'      => true,
+            'class'         => 'img-thumbnail',
+            'data-toggle'   => 'tooltip',
+            'data-placement'=> 'bottom',
+            'title'         => 'Загрузить изображение',
         ));
-        $this->addElement('button', 'imageLoad', array(
-            'label'         => 'Загрузить изображение',
-            'type'          => 'button',
-            'class'         => 'image-btn',
-            'ignore' => true,
-        ));
+
+        $image = new Zend_Form_Element_File('imageLoadFile');
+        $image->setDestination(APPLICATION_ROOT.'/upload/manufacture/items/')
+            ->addValidator('Size', false, 1024000)
+            ->addValidator('Extension', false, 'jpg,png,gif')
+            ->setAttrib('class', 'hidden');
+        $this->addElement($image);
 
         $this->addElement('textarea', 'description', array(
             'label'         => 'Краткое описание страницы',
             'placeholder'   => 'Краткое описание страницы',
-            'rows'          => '8',
+            'rows'          => '4',
         ));
 
         $this->addElement('textarea', 'contentMarkdown', array(
             'label'         => 'Текст на странице (markdown)',
             'placeholder'   => 'Текст',
-            'rows'          => '15',
+            'rows'          => '8',
         ));
-
-        $this->addDisplayGroup(
-            array(
-                'categoryId',
-                'title',
-                'path',
-                'image',
-                'imageLoad',
-                'description',
-                'contentMarkdown',
-            ),
-            'basic',
-            array(
-                //'legend' => 'Основные',
-                'class' => 'tab-pane active',
-                'role'  => 'tabpanel'
-            )
-        );
 
         $this->addElement('text', 'metaTitle', array(
             'label'         => 'SEO title',
@@ -96,23 +76,8 @@ class Admin_Form_ManufactureEdit extends Twitter_Bootstrap_Form_Horizontal
         $this->addElement('textarea', 'metaKeywords', array(
             'label'         => 'SEO keywords',
             'placeholder'   => 'meta keywords',
-            'rows'          => '8',
+            'rows'          => '4',
         ));
-
-        $this->addDisplayGroup(
-            array(
-                'metaTitle',
-                'metaDescription',
-                'metaKeywords',
-            ),
-            'seo',
-            array(
-                //'legend' => 'SEO',
-                'class' => 'tab-pane',
-                'role'  => 'tabpanel',
-
-            )
-        );
 
         $this->addElement('text', 'sorting', array(
             'label'         => 'Сортировка',
@@ -128,34 +93,85 @@ class Admin_Form_ManufactureEdit extends Twitter_Bootstrap_Form_Horizontal
 
         $this->addDisplayGroup(
             array(
+                'imageLoad',
+                'imageLoadFile',
+                'image',
+            ),
+            'imageGroup',
+            array()
+        );
+
+        $this->addDisplayGroup(
+            array(
+                'categoryId',
+                'title',
+                'path',
+                'id',
+            ),
+            'basic',
+            array()
+        );
+
+        $this->addDisplayGroup(
+            array(
+                'description',
+                'contentMarkdown',
+            ),
+            'desc',
+            array(
+                'class' => 'tab-pane active',
+                'role'  => 'tabpanel'
+            )
+        );
+
+        $this->addDisplayGroup(
+            array(
+                'metaTitle',
+                'metaDescription',
+                'metaKeywords',
+            ),
+            'seo',
+            array(
+                'class' => 'tab-pane',
+                'role'  => 'tabpanel',
+
+            )
+        );
+
+        $this->addDisplayGroup(
+            array(
                 'sorting',
                 'active',
                 'deleted'
             ),
             'additionally',
             array(
-                //'legend' => 'Дополнительно',
                 'class' => 'tab-pane',
                 'role'  => 'tabpanel'
             )
         );
 
         $this->addElement('button', 'submit', array(
-            'label'         => 'Сохранить',
+            'label'         => 'Сохранить изменения',
             'type'          => 'submit',
             'buttonType'    => 'success',
-            'ignore' => true,
-            //'escape'        => false
+            'ignore'        => true,
+            'form'          => 'itemEdit',
+            'id'            => 'saveItemEdit',
+            'class'         => 'hidden'
+            //'escape'        => true
         ));
+
+        $this->getElement('submit')->removeDecorator('label');
 
         /*$this->addElement('hash', 'csrf', array(
             'ignore' => true,
         ));*/
 
-        $classForm = $this->getAttrib('class');
+        /*$classForm = $this->getAttrib('class');
         $this->addAttribs(array(
             'class' => 'tab-content '.$classForm,
-        ));
+        ));*/
     }
 
     /**
@@ -166,7 +182,7 @@ class Admin_Form_ManufactureEdit extends Twitter_Bootstrap_Form_Horizontal
         $manufactureCategoryMapper = new Manufacture_Model_Mapper_ManufactureCategories();
 
         $categoryArray = array();
-        $categoryArray[] = '...';
+        $categoryArray[] = 'нет';
         foreach ($manufactureCategoryMapper->fetchAll() as $category) {
             $categoryArray[$category->getId()] = $category->getTitle();
         }

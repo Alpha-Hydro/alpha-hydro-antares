@@ -145,20 +145,20 @@ class Admin_PipelineController extends Zend_Controller_Action
 
         $form = new Admin_Form_PipelineEdit();
         $dataPage = $pipeline->getOptions();
-        $image = $dataPage['image'];
-        $imageDraft = $dataPage['imageDraft'];
-        $imageTable = $dataPage['imageTable'];
 
         foreach ($dataPage as $key => $value) {
             $form->setDefault($key, $value);
         }
 
-        if(empty($image))
-            $form->setDefault('image', '/files/images/product/2012-05-22_foto_nv.jpg');
-        if(empty($imageDraft))
-            $form->setDefault('imageDraft', '/files/images/product/2012-05-22_foto_nv.jpg');
-//        if(empty($imageTable))
-//            $form->setDefault('imageTable', '/files/images/product/2012-05-22_foto_nv.jpg');
+        $imageValue = ($form->getValue('image') != '')
+            ?$form->getValue('image')
+            :'/files/images/product/2012-05-22_foto_nv.jpg';
+        $form->setDefault('imageLoad', $imageValue);
+
+        $imageDraftValue = ($form->getValue('imageDraft') != '')
+            ?$form->getValue('imageDraft')
+            :'/files/images/product/2012-05-22_foto_nv.jpg';
+        $form->setDefault('imageDraftLoad', $imageDraftValue);
 
         $imageTableElement = $form->getElement('imageTable');
         $imageTablePrepend = '<button type="button" class="btn btn-default" id="imageTableLoadBtn"><span class="glyphicon glyphicon-save"></span></button>';
@@ -187,32 +187,23 @@ class Admin_PipelineController extends Zend_Controller_Action
 
                 //set Image
                 $fileImage = $form->imageLoadFile->getFileInfo();
-                if(!empty($fileImage) && $fileImage['imageLoadFile']['name'] !== ''){
+                if(!empty($fileImage) && $fileImage['imageLoadFile']['name'] != ''){
                     $form->imageLoadFile->receive();
                     $pipeline->setImage('/upload/pipeline/items/'.$fileImage['imageLoadFile']['name']);
-                }
-                else{
-                    $pipeline->setImage($image);
                 }
 
                 //set imageDraft
                 $fileDraftImage = $form->imageDraftLoadFile->getFileInfo();
-                if(!empty($fileDraftImage) && $fileDraftImage['imageDraftLoadFile']['name'] !== ''){
+                if(!empty($fileDraftImage) && $fileDraftImage['imageDraftLoadFile']['name'] != ''){
                     $form->imageDraftLoadFile->receive();
                     $pipeline->setImageDraft('/upload/pipeline/items/'.$fileDraftImage['imageDraftLoadFile']['name']);
-                }
-                else{
-                    $pipeline->setImageDraft($imageDraft);
                 }
 
                 //set imageTable
                 $fileTableImage = $form->imageTableLoadFile->getFileInfo();
-                if(!empty($fileTableImage) && $fileTableImage['imageTableLoadFile']['name'] !== ''){
+                if(!empty($fileTableImage) && $fileTableImage['imageTableLoadFile']['name'] != ''){
                     $form->imageTableLoadFile->receive();
                     $pipeline->setImageTable('/upload/pipeline/items/'.$fileTableImage['imageTableLoadFile']['name']);
-                }
-                else{
-                    $pipeline->setImageTable($imageTable);
                 }
 
                 //set Content (html)

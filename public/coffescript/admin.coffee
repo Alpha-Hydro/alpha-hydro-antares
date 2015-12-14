@@ -15,19 +15,19 @@ loadFile = (event, id)->
       .addClass 'show'
 #    console.log 'OK'
 
-  $('#image').click ()->
+  $('#imageLoad').click ()->
     $('#imageLoadFile').trigger 'click'
     false
 
   $('#imageLoadFile').change (event)->
-    loadFile event,'image'
+    loadFile event,'imageLoad'
 
-  $('#imageDraft').click ()->
+  $('#imageDraftLoad').click ()->
     $('#imageDraftLoadFile').trigger 'click'
     false
 
   $('#imageDraftLoadFile').change (event)->
-    loadFile event,'imageDraft'
+    loadFile event,'imageDraftLoad'
 
   $('#imageTableLoadBtn').click ()->
     $('#imageTableLoadFile').trigger 'click'

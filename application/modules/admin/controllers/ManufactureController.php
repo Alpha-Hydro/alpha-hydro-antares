@@ -110,19 +110,28 @@ class Admin_ManufactureController extends Zend_Controller_Action
         if(is_null($manufacture))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
+        $manufactureMapperCategory = new Manufacture_Model_Mapper_ManufactureCategories();
+        $manufactureCategory = $manufactureMapperCategory->find($manufacture->getCategoryId(), new Manufacture_Model_ManufactureCategories());
+
+        $this->view->category = $manufactureCategory;
+        $this->view->item = $manufacture;
+
         $form = new Admin_Form_ManufactureEdit();
         $dataPage = $manufacture->getOptions();
         foreach ($dataPage as $key => $value) {
             $form->setDefault($key, $value);
         }
+        $imageValue = ($form->getValue('image') != '')
+            ?$form->getValue('image')
+            :'/files/images/product/2012-05-22_foto_nv.jpg';
+        $form->setDefault('imageLoad', $imageValue);
 
         if ($this->getRequest()->isPost()){
             if ($form->isValid($request->getPost())){
                 $manufacture = new Manufacture_Model_Manufacture($form->getValues());
                 $manufactureMapper = new Manufacture_Model_Mapper_Manufacture();
 
-                $manufactureCategoryMapper = new Manufacture_Model_Mapper_ManufactureCategories();
-                $manufactureCategory = $manufactureCategoryMapper->find($request->getParam('categoryId'),
+                $manufactureCategory = $manufactureMapperCategory->find($request->getParam('categoryId'),
                     new Manufacture_Model_ManufactureCategories());
 
                 $fullPath = (!is_null($manufactureCategory))
@@ -131,12 +140,11 @@ class Admin_ManufactureController extends Zend_Controller_Action
                 $manufacture->setFullPath($fullPath);
 
                 $file = $form->imageLoadFile->getFileInfo();
-                //var_dump($file);
-                if(!empty($file) && $file['imageLoadFile']['name'] !== ''){
+                var_dump($file);
+                if(!empty($file) && $file['imageLoadFile']['name'] != ''){
                     $form->imageLoadFile->receive();
                     $manufacture->setImage('/upload/manufacture/items/'.$file['imageLoadFile']['name']);
                 }
-
 
                 $markdown = $request->getParam('contentMarkdown');
                 $context_html = Markdown::defaultTransform($markdown);

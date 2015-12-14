@@ -19,19 +19,19 @@
     $(document).one('change', 'form#itemEdit', function() {
       return $('#saveItemEdit').removeClass('hidden').addClass('show');
     });
-    $('#image').click(function() {
+    $('#imageLoad').click(function() {
       $('#imageLoadFile').trigger('click');
       return false;
     });
     $('#imageLoadFile').change(function(event) {
-      return loadFile(event, 'image');
+      return loadFile(event, 'imageLoad');
     });
-    $('#imageDraft').click(function() {
+    $('#imageDraftLoad').click(function() {
       $('#imageDraftLoadFile').trigger('click');
       return false;
     });
     $('#imageDraftLoadFile').change(function(event) {
-      return loadFile(event, 'imageDraft');
+      return loadFile(event, 'imageDraftLoad');
     });
     $('#imageTableLoadBtn').click(function() {
       $('#imageTableLoadFile').trigger('click');
