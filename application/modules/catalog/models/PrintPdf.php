@@ -127,9 +127,8 @@ class Catalog_Model_PrintPdf extends TCPDF
         $select = $productsParams->getDbTable()->select()->order('order ASC');
         $properties = $products->findProductParams($product->getId(), $select);
 
+        $x = $this->getImageRBX()+5;
         if(!empty($properties)){
-
-            $x = $this->getImageRBX()+5;
             $w = array(40, $this->getPageWidth()-$this->original_rMargin-$x-40);
             foreach($properties as $property){
                 $this->SetFont('','B',10);
@@ -141,14 +140,21 @@ class Catalog_Model_PrintPdf extends TCPDF
             }
         }
 
-        $this->Ln(10);
+        $this->Ln(5);
 
         if($product->description != ''){
-            $this->Write(0, '*'.$product->description);
-            $this->Ln(10);
+            $this->SetX($x);
+            $wd = $this->getPageWidth()-$this->original_rMargin-$x;
+            $this->MultiCell($wd,0,$product->description,0, 'L');
+            $this->Ln(5);
         }
 
         return $this;
+    }
+
+    public function showDescription()
+    {
+
     }
 
 
@@ -160,6 +166,11 @@ class Catalog_Model_PrintPdf extends TCPDF
      */
     public function showModificatonTable($table)
     {
+        //$this->Write(0, $this->GetY());
+        //$this->Write(0, );
+        if($this->GetY() < $this->getImageRBY()+5)
+            $this->SetY($this->getImageRBY()+5);
+
         $this->SetFont('','',8);
         $headTable = array_shift ($table);
         $widthName = 25;
@@ -183,6 +194,11 @@ class Catalog_Model_PrintPdf extends TCPDF
                 $this->Cell($wk, 0, $value, 0, 0, 'C', true);
             }
             $this->ln();
+        }
+
+        $product = $this->getProduct();
+        if($product->note != ''){
+            $this->Write(0, '*'.$product->note);
         }
 
 
