@@ -8,6 +8,7 @@ class Oil_IndexController extends Zend_Controller_Action
     public function init()
     {
         $this->_count_item_on_page = 10;
+        $this->view->adminPath = 'oil';
     }
 
     public function indexAction()
@@ -64,6 +65,7 @@ class Oil_IndexController extends Zend_Controller_Action
         $this->view->pageItem = $oilItem;
         $this->view->meta_description = $oilItem->getMetaDescription();
         $this->view->meta_keywords = $oilItem->getMetaKeywords();
+        $this->view->adminPath = 'oil/edit/'.$oilItem->getId();
     }
 
     /**

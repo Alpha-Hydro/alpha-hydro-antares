@@ -2,10 +2,6 @@
 
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
-    protected $_moduleName;
-    protected $_controllerName;
-    protected $_actionName;
-
     /**
      * Initialize auto loader and add resource loaders
      */
@@ -23,54 +19,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                     dirname(APPLICATION_PATH) . '/library/' . $LibraryDir, $LibraryDir);
 
         return $resourceLoader;
-    }
-
-    /**
-     * @param mixed $moduleName
-     */
-    public function setModuleName($moduleName)
-    {
-        $this->_moduleName = $moduleName;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getModuleName()
-    {
-        return $this->_moduleName;
-    }
-
-    /**
-     * @param mixed $controllerName
-     */
-    public function setControllerName($controllerName)
-    {
-        $this->_controllerName = $controllerName;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getControllerName()
-    {
-        return $this->_controllerName;
-    }
-
-    /**
-     * @param mixed $actionName
-     */
-    public function setActionName($actionName)
-    {
-        $this->_actionName = $actionName;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getActionName()
-    {
-        return $this->_actionName;
     }
 
     /**
@@ -133,13 +81,5 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         );
         $router->addRoute('sitemap', $sitemap);
     }
-
-    public function preDispatch(Zend_Controller_Request_Abstract $request)
-    {
-        $this->bootstrap('view');
-        $view = $this->getResource('view');
-        $view->controller = $request->getModuleName();
-    }
-
 }
 

@@ -55,7 +55,13 @@ class Admin_AuthController extends Zend_Controller_Action
 
                     // Используем библиотечный helper для редиректа
                     // на controller = index, action = index
-                    $this->_helper->redirector();
+                    if($this->getRequest()->getPost('adminPath') && $this->getRequest()->getPost('adminPath') != ''){
+                        $this->redirect('/admin/'.$this->getRequest()->getPost('adminPath'));
+                    }
+                    else{
+                        $this->_helper->redirector();
+                    }
+
                 } else {
                     $this->view->errMessage = 'Вы ввели неверное имя пользователя или неверный пароль';
                 }

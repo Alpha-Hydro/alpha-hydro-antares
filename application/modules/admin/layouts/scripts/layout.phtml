@@ -52,8 +52,15 @@
             </div>
         </nav>
         <div class="main" role="main">
-            <div class="container">
-                <?= $this->layout()->content ?>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3" role="complementary">
+
+                    </div>
+                    <div class="col-md-9" role="main">
+                        <?= $this->layout()->content ?>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="loading">

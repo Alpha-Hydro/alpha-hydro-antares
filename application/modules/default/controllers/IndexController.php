@@ -7,6 +7,7 @@ class IndexController extends Zend_Controller_Action
     public function init()
     {
         $this->_page_id = 1;
+        $this->view->adminPath = 'pages/edit/'.$this->getPageId();
     }
 
     public function indexAction()

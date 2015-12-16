@@ -1,29 +1,30 @@
 /// <reference path="jquery.d.ts" />
-/// <reference path="classie.d.ts" />
 /// <reference path="bootstrap.d.ts" />
 
 class AdminAuth {
     modalAuth:Element;
-    constructor(){
+    constructor(public params:any = null){
         this.modalAuth = document.getElementById('modalAuth');
         this.init();
     }
     init(){
-        document.onkeypress = this.handle;
+        document.onkeydown = this.handle;
     }
 
     handle = (e) => {
         var self = this;
+        console.log(e.type);
         if(e.altKey && e.keyCode == 120){
             if(self.modalAuth){
                 $(self.modalAuth).modal('show');
             }
             else{
-                window.location.href = '/admin/';
+                window.location.href = '/admin/'+this.params;
+                //console.log(this.params);
             }
         }
     }
 }
 
-var goAdmin = new AdminAuth();
+//var goAdmin = new AdminAuth();
 

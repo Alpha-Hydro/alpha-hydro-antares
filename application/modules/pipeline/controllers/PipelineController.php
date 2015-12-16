@@ -68,6 +68,7 @@ class Pipeline_PipelineController extends Zend_Controller_Action
         $this->view->title = $pipeline->getTitle();
         $this->view->pipeline = $pipeline;
         $this->view->category = $category;
+        $this->view->adminPath = 'pipeline/edit/'.$pipeline->getId();
     }
 
     /**

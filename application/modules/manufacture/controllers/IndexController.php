@@ -20,6 +20,8 @@ class Manufacture_IndexController extends Zend_Controller_Action
         $this->setCategories($manufactureCategories);
 
         $this->view->categories = $this->getCategories();
+        $this->view->adminPath = 'manufacture';
+
     }
 
     public function indexAction()
@@ -55,6 +57,7 @@ class Manufacture_IndexController extends Zend_Controller_Action
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
         $this->view->category = $manufactureCategory;
+        $this->view->adminPath = 'manufacture-categories/edit/'.$manufactureCategory->getId();
 
         $manufactureItems = $manufactureCategoriesMapper->fetchManufactureRel($manufactureCategory->getId());
 
@@ -116,7 +119,7 @@ class Manufacture_IndexController extends Zend_Controller_Action
         $this->view->manufacture = $manufacture;
         $this->view->meta_description = $manufacture->getMetaDescription();
         $this->view->meta_keywords = $manufacture->getMetaKeywords();
-
+        $this->view->adminPath = 'manufacture/edit/'.$manufacture->getId();
         //var_dump($this->getAllParams());
     }
 

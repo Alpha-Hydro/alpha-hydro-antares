@@ -11,6 +11,7 @@ class Pipeline_IndexController extends Zend_Controller_Action
             $this->_helper->layout->setLayout('_cap');
             $this->render('cap');
         }
+        $this->view->adminPath = 'pipeline';
     }
 
     public function indexAction()

@@ -8,6 +8,7 @@ class AboutController extends Zend_Controller_Action
     public function init()
     {
         $this->_page_id = 2;
+        $this->view->adminPath = 'pages/edit/'.$this->getPageId();
         //$this->_page_id = $this->setPageId(2);
         //var_dump($this->getPageId());
     }

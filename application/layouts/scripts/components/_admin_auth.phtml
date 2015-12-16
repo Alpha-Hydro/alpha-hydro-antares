@@ -1,7 +1,12 @@
 <?php
 $this->headScript()
-    ->appendFile('//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js');
+    ->appendFile('//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js')
+    ->appendFile("/js/adminAuth.min.js");
+
+$requestParams = Zend_Controller_Front::getInstance()->getRequest()->getParams();
+
 ?>
+<?php if(!Zend_Auth::getInstance()->hasIdentity()):?>
 <div class="modal fade" tabindex="-1" role="dialog" id="modalAuth">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -29,6 +34,7 @@ $this->headScript()
                             </div>
                         </div>
                     </div>
+                    <input type="hidden" name="adminPath" value="<?=$this->adminPath?>"/>
                 </form>
             </div>
             <div class="modal-footer">
@@ -38,3 +44,7 @@ $this->headScript()
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<?php endif;?>
+<?php $this->headScript()->captureStart() ?>
+var goAdmin = new AdminAuth('<?=$this->adminPath?>');
+<?php $this->headScript()->captureEnd() ?>

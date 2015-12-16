@@ -10,6 +10,7 @@ class Catalog_ProductsController extends Zend_Controller_Action
     {
         $request = $this->getRequest();
         $this->_fullPath =  $request->getParam('fullPath');
+        $this->view->adminPath = '';
     }
 
     /**
