@@ -85,4 +85,17 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         $router->addRoute('adminEdit', $route);
 
     }
+
+    protected function _initNavigation()
+    {
+        $layout = Zend_Layout::getMvcInstance();
+        $view = $layout->getView();
+        $config = new Zend_Config_Xml(APPLICATION_PATH.'/modules/admin/configs/navigation.xml', 'sidebar');
+        //$config = new Zend_Config(require APPLICATION_PATH.'/modules/admin/configs/navigation.php', 'sidebar');
+        $container = new Zend_Navigation($config);
+        $sidebar = $view->navigation($container);
+
+        $layout->nav_sidebar = $sidebar;
+        //$view->navigation($container);
+    }
 }
