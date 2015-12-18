@@ -296,6 +296,15 @@
               <actionMethod actionName="delete"/>
               <actionMethod actionName="save"/>
             </controllerFile>
+            <controllerFile controllerName="Catalog">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Forum">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Media">
+              <actionMethod actionName="index"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="PageEdit"/>
@@ -458,6 +467,15 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="PipelinePropertyValue">
                 <viewScriptFile forActionName="save"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Catalog">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Forum">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Media">
+                <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>

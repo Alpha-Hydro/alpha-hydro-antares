@@ -46,19 +46,45 @@ span{
     top: 50px;
     left: 0;
   }
-  >ul{
-    padding:{
+  ul{
+    list-style: none;
+    display: block;
+    padding: {
+      left: 0;
       top: .6em;
       bottom: .6em;
-      left: 0;
+    };
+    li{
+      display: block;
+      position: relative;
+      line-height: 1.0;
+      a{
+        text-decoration: none;
+        display: block;
+        color: #FFFFFF;
+        padding:{
+          top: .8em;
+          bottom: .8em;
+          right: 1.2em;
+          left: 1.2em;
+        }
+      }
+    }
+  }
+  >ul{
+    padding:{
+
     }
     margin:{
       bottom: 0;
     }
     >li{
-      display: block;
-      position: relative;
-      line-height: 1.0;
+      &.active{
+        >a{
+          @include box-shadow(inset 3px 0 0 #1784c7);
+          background-color: #33383e;
+        }
+      }
       >span{
         text-transform: uppercase;
         font-weight: bold;
@@ -73,18 +99,34 @@ span{
         }
       }
       >a{
-        text-decoration: none;
-        display: block;
-        color: #FFFFFF;
-        padding:{
-          top: .8em;
-          bottom: .8em;
-          right: 1.2em;
-          left: 1.2em;
-        }
         &.prepend-icon{
           &::before{
             color: #656a70;
+          }
+        }
+        &:hover{
+          background-color: #33383e;
+        }
+      }
+      >ul{
+        left: 0;
+        box-shadow: none;
+        background-color: #080808;//#1c1f22;
+        font: {
+          size: 1.2rem;
+        };
+        >li{
+          &.active{
+            >a{
+              @include box-shadow(inset 3px 0 0 #F48123);
+              background-color: #2c3136;
+            }
+          }
+        }
+        a{
+          padding-left: 1.5em;
+          &:hover{
+            color: #337ab7;
           }
         }
       }

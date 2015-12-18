@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <nav>
+        <site>
+            <label>На сайт</label>
+            <uri>/</uri>
+        </site>
+        <logout>
+            <label>Выход</label>
+            <module>admin</module>
+            <controller>auth</controller>
+            <action>logout</action>
+        </logout>
+    </nav>
+</config>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <sidebar>
+        <headgroup>
+            <label>Админ панель</label>
+            <uri/>
+        </headgroup>
+        <dashboard>
+            <label>Dashboard</label>
+            <module>admin</module>
+            <controller>index</controller>
+            <action>index</action>
+            <class>prepend-icon glyphicon glyphicon-dashboard</class>
+        </dashboard>
+        <modules>
+            <label>Разделы сайта</label>
+            <module>admin</module>
+            <controller>pages</controller>
+            <!--<action>index</action>-->
+            <class>prepend-icon glyphicon glyphicon-th-list</class>
+            <pages>
+                <home>
+                    <label>Главная страница</label>
+                    <module>admin</module>
+                    <controller>pages</controller>
+                    <action>edit</action>
+                    <params>
+                        <id>1</id>
+                    </params>
+                </home>
+                <catalog>
+                    <label>Каталог</label>
+                    <module>admin</module>
+                    <controller>catalog</controller>
+                </catalog>
+                <manufacture>
+                    <label>Производство</label>
+                    <module>admin</module>
+                    <controller>manufacture</controller>
+                </manufacture>
+                <pipeline>
+                    <label>Трубопроводная арматура</label>
+                    <module>admin</module>
+                    <controller>pipeline</controller>
+                </pipeline>
+                <oil>
+                    <label>Масла</label>
+                    <module>admin</module>
+                    <controller>oil</controller>
+                </oil>
+                <forum>
+                    <label>Форум</label>
+                    <module>admin</module>
+                    <controller>forum</controller>
+                </forum>
+                <media>
+                    <label>Пресса</label>
+                    <module>admin</module>
+                    <controller>media</controller>
+                </media>
+                <about>
+                    <label>О нас</label>
+                    <module>admin</module>
+                    <controller>pages</controller>
+                    <action>edit</action>
+                    <params>
+                        <id>2</id>
+                    </params>
+                </about>
+                <contact>
+                    <label>Контакты</label>
+                    <module>admin</module>
+                    <controller>pages</controller>
+                    <action>edit</action>
+                    <params>
+                        <id>3</id>
+                    </params>
+                </contact>
+            </pages>
+        </modules>
+        <utils>
+            <label>Утилиты</label>
+            <uri>/utils/</uri>
+            <class>prepend-icon glyphicon glyphicon-cog</class>
+        </utils>
+    </sidebar>
+    <navbar>
+        <site>
+            <label>На сайт</label>
+            <uri>/</uri>
+        </site>
+        <logout>
+            <label>Выход</label>
+            <module>admin</module>
+            <controller>auth</controller>
+            <action>logout</action>
+        </logout>
+    </navbar>
+</config>

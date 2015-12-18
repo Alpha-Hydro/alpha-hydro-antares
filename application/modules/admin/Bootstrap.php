@@ -32,7 +32,10 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         $acl->addResource(new Zend_Acl_Resource('auth'));
         $acl->addResource(new Zend_Acl_Resource('index'));
         $acl->addResource(new Zend_Acl_Resource('pages'));
+        $acl->addResource(new Zend_Acl_Resource('catalog'));
         $acl->addResource(new Zend_Acl_Resource('oil'));
+        $acl->addResource(new Zend_Acl_Resource('forum'));
+        $acl->addResource(new Zend_Acl_Resource('media'));
         $acl->addResource(new Zend_Acl_Resource('manufacture-categories'));
         $acl->addResource(new Zend_Acl_Resource('manufacture'));
         $acl->addResource(new Zend_Acl_Resource('pipeline'));
@@ -86,16 +89,18 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
 
     }
 
-    protected function _initNavigation()
+    /*protected function _initNavigation()
     {
         $layout = Zend_Layout::getMvcInstance();
         $view = $layout->getView();
-        $config = new Zend_Config_Xml(APPLICATION_PATH.'/modules/admin/configs/navigation.xml', 'sidebar');
-        //$config = new Zend_Config(require APPLICATION_PATH.'/modules/admin/configs/navigation.php', 'sidebar');
-        $container = new Zend_Navigation($config);
-        $sidebar = $view->navigation($container);
 
-        $layout->nav_sidebar = $sidebar;
-        //$view->navigation($container);
-    }
+        $config = new Zend_Config_Xml(APPLICATION_PATH.'/modules/admin/configs/sidebar.xml', 'navbar');
+        $container = new Zend_Navigation($config);
+        $view->navigation($container);
+
+        $config = new Zend_Config_Xml(APPLICATION_PATH.'/modules/admin/configs/sidebar.xml', 'sidebar');
+        $container = new Zend_Navigation($config);
+        $view->navigation($container);
+    }*/
+
 }
