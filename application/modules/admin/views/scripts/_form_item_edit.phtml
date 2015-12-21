@@ -1,0 +1,28 @@
+<form action="" id="itemEdit" enctype="multipart/form-data" method="post">
+    <div class="row">
+        <div class="col-md-3">
+            <?= $this->form->imageGroup;?>
+        </div>
+        <div class="col-md-8 col-md-offset-1">
+            <?= $this->form->basic;?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <?= $this->form->imageDraftGroup;?>
+        </div>
+        <div class="col-md-8 col-md-offset-1">
+            <?= $this->form->imageTableGroup;?>
+        </div>
+    </div>
+    <ul class="nav nav-tabs nav-justified mtb2"  role="tablist">
+        <li role="presentation" class="active"><a href="#fieldset-desc" aria-controls="fieldset-desc" role="tab" data-toggle="tab">Основные</a></li>
+        <li role="presentation"><a href="#fieldset-seo" aria-controls="fieldset-seo" role="tab" data-toggle="tab">SEO</a></li>
+        <li role="presentation"><a href="#fieldset-additionally" aria-controls="fieldset-additionally" role="tab" data-toggle="tab">Дополнительно</a></li>
+    </ul>
+    <div class="tab-content">
+        <?= $this->form->desc?>
+        <?= $this->form->seo?>
+        <?= $this->form->additionally?>
+    </div>
+</form>

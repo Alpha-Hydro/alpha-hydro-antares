@@ -14,6 +14,19 @@ class Admin_PagesController extends Zend_Controller_Action
     {
         $pagesMapper = new Default_Model_Mapper_Pages();
         $this->view->pages = $pagesMapper->fetchAll();
+
+        $config = array(
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Добавить раздел',
+                'module' => 'admin',
+                'controller' => 'pages',
+                'action' => 'add',
+            )),
+        );
+
+        $containerNav = new Zend_Navigation($config);
+
+        $this->view->container_nav = $containerNav;
     }
 
     public function editAction()
@@ -30,19 +43,24 @@ class Admin_PagesController extends Zend_Controller_Action
         if(is_null($page))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
+        $this->view->page = $page;
 
         $form = new Admin_Form_PageEdit();
         $dataPage = $page->getOptions();
         foreach ($dataPage as $key => $value) {
             $form->setDefault($key, $value);
         }
+        $imageValue = ($form->getValue('image') != '')
+            ?$form->getValue('image')
+            :'/files/images/product/2012-05-22_foto_nv.jpg';
+        $form->setDefault('imageLoad', $imageValue);
 
         if ($this->getRequest()->isPost()){
             if ($form->isValid($request->getPost())) {
                 $newPage = new Default_Model_Pages($form->getValues());
 
                 $file = $form->imageLoadFile->getFileInfo();
-                if(!empty($file)){
+                if(!empty($file) && $file['imageLoadFile']['name'] != ''){
                     $form->imageLoadFile->receive();
                     $newPage->setImage('/upload/pages/'.$file['imageLoadFile']['name']);
                 }
@@ -66,6 +84,34 @@ class Admin_PagesController extends Zend_Controller_Action
         }
 
         $this->view->form = $form;
+
+        $config = array(
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Новый раздел',
+                'module' => 'admin',
+                'controller' => 'pages',
+                'action' => 'add',
+            )),
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Удалить раздел',
+                'module' => 'admin',
+                'controller' => 'pages',
+                'action' => 'delete',
+                'params' => array(
+                    'id' => $pageId,
+                ),
+            )),
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Отменить',
+                'module' => 'admin',
+                'controller' => 'pages',
+                'action' => 'index',
+            )),
+        );
+
+        $containerNav = new Zend_Navigation($config);
+
+        $this->view->container_nav = $containerNav;
     }
 
     public function addAction()
@@ -77,6 +123,7 @@ class Admin_PagesController extends Zend_Controller_Action
             'sorting'   => 0,
             'active'    => 1,
             'deleted'   => 0,
+            'imageLoad' => '/files/images/product/2012-05-22_foto_nv.jpg',
         ));
 
         if ($this->getRequest()->isPost()){
@@ -85,7 +132,7 @@ class Admin_PagesController extends Zend_Controller_Action
                 $page = new Default_Model_Pages($form->getValues());
 
                 $file = $form->imageLoadFile->getFileInfo();
-                if(!empty($file)){
+                if(!empty($file) && $file['imageLoadFile']['name'] != ''){
                     $form->imageLoadFile->receive();
                     $page->setImage('/upload/pages/'.$file['imageLoadFile']['name']);
                 }
@@ -114,6 +161,25 @@ class Admin_PagesController extends Zend_Controller_Action
         }
 
         $this->view->form = $form;
+
+        $config = array(
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Новый раздел',
+                'module' => 'admin',
+                'controller' => 'pages',
+                'action' => 'add',
+            )),
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Отменить',
+                'module' => 'admin',
+                'controller' => 'pages',
+                'action' => 'index',
+            )),
+        );
+
+        $containerNav = new Zend_Navigation($config);
+
+        $this->view->container_nav = $containerNav;
     }
 
     public function deleteAction()

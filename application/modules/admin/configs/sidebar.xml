@@ -27,36 +27,43 @@
                     <params>
                         <id>1</id>
                     </params>
+                    <resource>pages</resource>
                 </home>
                 <catalog>
                     <label>Каталог</label>
                     <module>admin</module>
                     <controller>catalog</controller>
+                    <resource>catalog</resource>
                 </catalog>
                 <manufacture>
                     <label>Производство</label>
                     <module>admin</module>
                     <controller>manufacture</controller>
+                    <resource>manufacture</resource>
                 </manufacture>
                 <pipeline>
                     <label>Трубопроводная арматура</label>
                     <module>admin</module>
                     <controller>pipeline</controller>
+                    <resource>pipeline</resource>
                 </pipeline>
                 <oil>
                     <label>Масла</label>
                     <module>admin</module>
                     <controller>oil</controller>
+                    <resource>oil</resource>
                 </oil>
                 <forum>
                     <label>Форум</label>
                     <module>admin</module>
                     <controller>forum</controller>
+                    <resource>forum</resource>
                 </forum>
                 <media>
                     <label>Пресса</label>
                     <module>admin</module>
                     <controller>media</controller>
+                    <resource>media</resource>
                 </media>
                 <about>
                     <label>О нас</label>
@@ -66,6 +73,7 @@
                     <params>
                         <id>2</id>
                     </params>
+                    <resource>pages</resource>
                 </about>
                 <contact>
                     <label>Контакты</label>
@@ -75,13 +83,22 @@
                     <params>
                         <id>3</id>
                     </params>
+                    <resource>pages</resource>
                 </contact>
             </pages>
         </modules>
+        <trash>
+            <label>Корзина</label>
+            <module>admin</module>
+            <controller>trash</controller>
+            <class>prepend-icon glyphicon glyphicon-trash</class>
+            <resource>trash</resource>
+        </trash>
         <utils>
             <label>Утилиты</label>
             <uri>/utils/</uri>
             <class>prepend-icon glyphicon glyphicon-cog</class>
+            <resource>utils</resource>
         </utils>
     </sidebar>
     <navbar>

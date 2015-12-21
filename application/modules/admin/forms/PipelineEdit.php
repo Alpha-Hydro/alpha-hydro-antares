@@ -183,7 +183,7 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
             ),
             'desc',
             array(
-                'class' => 'tab-pane',
+                'class' => 'tab-pane active',
                 'role'  => 'tabpanel'
             )
         );

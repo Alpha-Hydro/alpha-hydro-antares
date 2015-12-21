@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
     <nav>
-        <site>
+        <!--<site>
             <label>На сайт</label>
             <uri>/</uri>
-        </site>
+        </site>-->
         <logout>
             <label>Выход</label>
             <module>admin</module>

@@ -133,3 +133,27 @@ span{
     }
   }
 }
+.navbar-btn{
+  &.show{
+    display: inline-block !important;
+  }
+}
+.page-header{
+  h1, h2, h3, h4, h5{
+    >small{
+      display: block;
+    }
+  }
+}
+.logo{
+  display: block;
+  padding: {
+    top: 7px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  };
+  img{
+    max-width: 150px;
+  };
+}

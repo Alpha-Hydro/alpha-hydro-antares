@@ -48,6 +48,32 @@ class Admin_PipelineController extends Zend_Controller_Action
         }
 
         $this->view->pages = $pipelineItems;
+
+        $config = array(
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Категории',
+                'module' => 'admin',
+                'controller' => 'pipeline-categories',
+                'resource' => 'pipeline-categories',
+            )),
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Свойства товаров',
+                'module' => 'admin',
+                'controller' => 'pipeline-property',
+                'resource' => 'pipeline-property',
+            )),
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Добавить товар',
+                'module' => 'admin',
+                'controller' => 'pipeline',
+                'action' => 'add',
+                'resource' => 'pipeline',
+            )),
+        );
+
+        $containerNav = new Zend_Navigation($config);
+
+        $this->view->container_nav = $containerNav;
     }
 
     public function addAction()
@@ -59,8 +85,8 @@ class Admin_PipelineController extends Zend_Controller_Action
             'sorting'       => 0,
             'active'        => 1,
             'deleted'       => 0,
-            'image'         => '/files/images/product/2012-05-22_foto_nv.jpg',
-            'imageDraft'    => '/files/images/product/2012-05-22_foto_nv.jpg',
+            'imageLoad'         => '/files/images/product/2012-05-22_foto_nv.jpg',
+            'imageDraftLoad'    => '/files/images/product/2012-05-22_foto_nv.jpg',
         ));
 
         $imageTableElement = $form->getElement('imageTable');
@@ -125,6 +151,31 @@ class Admin_PipelineController extends Zend_Controller_Action
         }
 
         $this->view->form = $form;
+
+        $config = array(
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Категории',
+                'module' => 'admin',
+                'controller' => 'pipeline-categories',
+                'resource' => 'pipeline-categories',
+            )),
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Свойства товаров',
+                'module' => 'admin',
+                'controller' => 'pipeline-property',
+                'resource' => 'pipeline-property',
+            )),
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Отмена',
+                'module' => 'admin',
+                'controller' => 'pipeline',
+                'resource' => 'pipeline',
+            )),
+        );
+
+        $containerNav = new Zend_Navigation($config);
+
+        $this->view->container_nav = $containerNav;
     }
 
     public function editAction()
@@ -260,6 +311,46 @@ class Admin_PipelineController extends Zend_Controller_Action
             $formValue->getElement('propertyId')->setMultiOptions($propertyArray);
             $this->view->formValue = $formValue;
         }
+
+        $config = array(
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Категории',
+                'module' => 'admin',
+                'controller' => 'pipeline-categories',
+                'resource' => 'pipeline-categories',
+            )),
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Список свойств',
+                'module' => 'admin',
+                'controller' => 'pipeline-property',
+                'resource' => 'pipeline-property',
+            )),
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Добавить',
+                'module' => 'admin',
+                'controller' => 'pipeline',
+                'action' => 'add',
+                'resource' => 'pipeline',
+            )),
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Удалить',
+                'module' => 'admin',
+                'controller' => 'pipeline',
+                'action' => 'delete',
+                'resource' => 'pipeline',
+                'params' => array(
+                    'id' => $itemId,
+                ),
+            )),
+            Zend_Navigation_Page_Uri::factory(array(
+                'label' => 'Посмотреть на сайте',
+                'uri' => '/'.$pipeline->getFullPath(),
+            )),
+        );
+
+        $containerNav = new Zend_Navigation($config);
+
+        $this->view->container_nav = $containerNav;
     }
 
     public function deleteAction()

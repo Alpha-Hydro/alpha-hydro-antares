@@ -1,6 +1,6 @@
 <?php
 
-class Admin_Form_PageEdit extends Twitter_Bootstrap_Form_Horizontal
+class Admin_Form_PageEdit extends Twitter_Bootstrap_Form_Vertical
 {
 
     public function init()
@@ -9,18 +9,12 @@ class Admin_Form_PageEdit extends Twitter_Bootstrap_Form_Horizontal
 
         $this->addElement('hidden', 'id');
 
-        $image = new Zend_Form_Element_File('imageLoadFile');
-        $image->setDestination(APPLICATION_ROOT.'/upload/pages')
-            ->addValidator('Size', false, 1024000)
-            ->addValidator('Extension', false, 'jpg,png,gif')
-            ->setAttrib('class', 'hidden');
-        $this->addElement($image);
-
-
         $this->addElement('text', 'title', array(
-            'label'         => 'Заголовок страницы',
-            'placeholder'   => 'Заголовок страницы',
+            'label'         => 'Заголовок раздела',
+            'placeholder'   => 'Заголовок раздела',
             'required'      => true,
+            'class'         => 'slugify',
+            'data-slugify'  => 'path',
         ));
 
         $this->addElement('text', 'path', array(
@@ -29,46 +23,34 @@ class Admin_Form_PageEdit extends Twitter_Bootstrap_Form_Horizontal
             'required'      => true,
         ));
 
-        $this->addElement('text', 'image', array(
+        $this->addElement('hidden', 'image');
+
+        $this->addElement('image', 'imageLoad', array(
             'label'         => 'Изображение',
-            'prepend'       => '<i class="glyphicon glyphicon-eye-open"></i>',
-            'disabled'      => true,
+            'class'         => 'img-thumbnail',
+            'data-toggle'   => 'tooltip',
+            'data-placement'=> 'bottom',
+            'title'         => 'Загрузить изображение',
         ));
-        $this->addElement('button', 'imageLoad', array(
-            'label'         => 'Загрузить изображение',
-            'type'          => 'button',
-            'class'         => 'image-btn',
-            'ignore' => true,
-        ));
+
+        $image = new Zend_Form_Element_File('imageLoadFile');
+        $image->setDestination(APPLICATION_ROOT.'/upload/pages')
+            ->addValidator('Size', false, 1024000)
+            ->addValidator('Extension', false, 'jpg,png,gif')
+            ->setAttrib('class', 'hidden');
+        $this->addElement($image);
 
         $this->addElement('textarea', 'description', array(
             'label'         => 'Краткое описание страницы',
             'placeholder'   => 'Краткое описание страницы',
-            'rows'          => '8',
+            'rows'          => '4',
         ));
 
         $this->addElement('textarea', 'contentMarkdown', array(
             'label'         => 'Текст на странице (markdown)',
             'placeholder'   => 'Текст',
-            'rows'          => '15',
+            'rows'          => '8',
         ));
-
-        $this->addDisplayGroup(
-            array(
-                'title',
-                'path',
-                'image',
-                'imageLoad',
-                'description',
-                'contentMarkdown',
-            ),
-            'basic',
-            array(
-                //'legend' => 'Основные',
-                'class' => 'tab-pane active',
-                'role'  => 'tabpanel'
-            )
-        );
 
         $this->addElement('text', 'metaTitle', array(
             'label'         => 'SEO title',
@@ -84,8 +66,52 @@ class Admin_Form_PageEdit extends Twitter_Bootstrap_Form_Horizontal
         $this->addElement('textarea', 'metaKeywords', array(
             'label'         => 'SEO keywords',
             'placeholder'   => 'meta keywords',
-            'rows'          => '8',
+            'rows'          => '4',
         ));
+
+        $this->addElement('text', 'sorting', array(
+            'label'         => 'Сортировка',
+        ));
+
+        $this->addElement('checkbox', 'active', array(
+            'label'         => 'Активность',
+        ));
+
+        $this->addElement('checkbox', 'deleted', array(
+            'label'         => 'Cтраница удалена',
+        ));
+
+        $this->addDisplayGroup(
+            array(
+                'imageLoad',
+                'imageLoadFile',
+                'image',
+            ),
+            'imageGroup',
+            array()
+        );
+
+        $this->addDisplayGroup(
+            array(
+                'title',
+                'path',
+                'id',
+            ),
+            'basic',
+            array()
+        );
+
+        $this->addDisplayGroup(
+            array(
+                'description',
+                'contentMarkdown',
+            ),
+            'desc',
+            array(
+                'class' => 'tab-pane active',
+                'role'  => 'tabpanel'
+            )
+        );
 
         $this->addDisplayGroup(
             array(
@@ -101,18 +127,6 @@ class Admin_Form_PageEdit extends Twitter_Bootstrap_Form_Horizontal
 
             )
         );
-
-        $this->addElement('text', 'sorting', array(
-            'label'         => 'Сортировка',
-        ));
-
-        $this->addElement('checkbox', 'active', array(
-            'label'         => 'Активность',
-        ));
-
-        $this->addElement('checkbox', 'deleted', array(
-            'label'         => 'Cтраница удалена',
-        ));
 
         $this->addDisplayGroup(
             array(

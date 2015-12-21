@@ -1,0 +1,10 @@
+<div class="page-header mt0">
+    <h2 class="mt1">
+        <?=$this->title?>
+        <?php
+            if($this->secondary_text)
+                echo '<small class="mt1">'.$this->secondary_text.'</small>';
+        ?>
+    </h2>
+</div>
+<?=$this->layout()->content?>

@@ -24,6 +24,13 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
 
     protected function _initAlc()
     {
+        $auth = Zend_Auth::getInstance();
+        // Определяем роль пользователя.
+        // Если не авторизирован - значит "гость"
+        $role = ($auth->hasIdentity() && !empty($auth->getIdentity()->role))
+            ? $auth->getIdentity()->role
+            : 'guest';
+
         // Создаём объект Zend_Acl
         $acl = new Zend_Acl();
 
@@ -43,6 +50,8 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         $acl->addResource(new Zend_Acl_Resource('pipeline-property'));
         $acl->addResource(new Zend_Acl_Resource('pipeline-property-value'));
         $acl->addResource(new Zend_Acl_Resource('search-index'));
+        $acl->addResource(new Zend_Acl_Resource('trash'));
+        $acl->addResource(new Zend_Acl_Resource('utils'));
 
         // далее переходим к созданию ролей, которых у нас 2:
         // гость (неавторизированный пользователь)
@@ -66,6 +75,10 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         // регистрируем плагин с названием Acl, в который передаём
         // на ACL и экземпляр Zend_Auth
         $fc->registerPlugin(new Plugin_Acl($acl, Zend_Auth::getInstance()));
+
+        // Цепляем ACL к Zend_Navigation
+        Zend_View_Helper_Navigation_HelperAbstract::setDefaultAcl($acl);
+        Zend_View_Helper_Navigation_HelperAbstract::setDefaultRole($role);
     }
 
     public function _initRoute(){
