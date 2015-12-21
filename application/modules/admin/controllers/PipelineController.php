@@ -166,7 +166,7 @@ class Admin_PipelineController extends Zend_Controller_Action
                 'resource' => 'pipeline-property',
             )),
             Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Отмена',
+                'label' => 'Отменить',
                 'module' => 'admin',
                 'controller' => 'pipeline',
                 'resource' => 'pipeline',
@@ -345,6 +345,12 @@ class Admin_PipelineController extends Zend_Controller_Action
             Zend_Navigation_Page_Uri::factory(array(
                 'label' => 'Посмотреть на сайте',
                 'uri' => '/'.$pipeline->getFullPath(),
+            )),
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Отменить',
+                'module' => 'admin',
+                'controller' => 'pipeline',
+                'resource' => 'pipeline',
             )),
         );
 
