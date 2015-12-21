@@ -320,6 +320,7 @@
             <formFile formName="PipelinePropertyEdit"/>
             <formFile formName="PipelinePropertyValue"/>
             <formFile formName="PipelinePropertyValueAdd"/>
+            <formFile formName="BaseItemEdit"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>

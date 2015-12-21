@@ -44,6 +44,20 @@ class Admin_PipelineCategoriesController extends Zend_Controller_Action
         }
 
         $this->view->pages = $pageItems;
+
+        $config = array(
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Добавить категорию',
+                'module' => 'admin',
+                'controller' => 'pipeline-categories',
+                'action' => 'add',
+                'resource' => 'pipeline-categories',
+            )),
+        );
+
+        $containerNav = new Zend_Navigation($config);
+
+        $this->view->container_nav = $containerNav;
     }
 
     public function addAction()
