@@ -95,55 +95,7 @@ class Admin_PipelineController extends Zend_Controller_Action
 
         if ($this->getRequest()->isPost()){
             if ($form->isValid($request->getPost())){
-                $pipeline = new Pipeline_Model_Pipeline($form->getValues());
-                $pipelineMapper = new Pipeline_Model_Mapper_Pipeline();
-
-                $pipelineCategoryMapper = new Pipeline_Model_Mapper_PipelineCategories();
-                $pipelineCategory = $pipelineCategoryMapper->find($request->getParam('categoryId'),
-                    new Pipeline_Model_PipelineCategories());
-
-                $fullPath = (!is_null($pipelineCategory))
-                    ?$pipelineCategory->getPath().'/'.$this->getParam('path')
-                    :$this->getParam('path');
-                $pipeline->setFullPath($fullPath);
-
-                //set Image
-                $file = $form->imageLoadFile->getFileInfo();
-                if(!empty($file) && $file['imageLoadFile']['name'] !== ''){
-                    $form->imageLoadFile->receive();
-                    $pipeline->setImage('/upload/pipeline/items/'.$file['imageLoadFile']['name']);
-                }
-
-                //set imageDraft
-                $fileDraftImage = $form->imageDraftLoadFile->getFileInfo();
-                if(!empty($fileDraftImage) && $fileDraftImage['imageDraftLoadFile']['name'] !== ''){
-                    $form->imageDraftLoadFile->receive();
-                    $pipeline->setImageDraft('/upload/pipeline/items/'.$fileDraftImage['imageDraftLoadFile']['name']);
-                }
-
-                //set imageTable
-                $fileTableImage = $form->imageTableLoadFile->getFileInfo();
-                if(!empty($fileTableImage) && $fileTableImage['imageTableLoadFile']['name'] !== ''){
-                    $form->imageTableLoadFile->receive();
-                    $pipeline->setImageTable('/upload/pipeline/items/'.$fileTableImage['imageTableLoadFile']['name']);
-                }
-
-                $markdown = $request->getParam('contentMarkdown');
-                $context_html = Markdown::defaultTransform($markdown);
-                $pipeline->setContentHtml($context_html);
-
-                $metaTitle = $request->getParam('metaTitle');
-                if(empty($metaTitle))
-                    $pipeline->setMetaTitle($request->getParam('title'));
-
-                $description = $request->getParam('description');
-                $metaDescription = $request->getParam('metaDescription');
-                if(empty($metaDescription) && !empty($description))
-                    $pipeline->setMetaDescription($description);
-
-                $pipelineMapper->save($pipeline);
-
-                return $this->_helper->redirector('index');
+                $this->_saveGetPost($form);
             }
 
             $form->setDefaults($request->getPost());
@@ -223,59 +175,7 @@ class Admin_PipelineController extends Zend_Controller_Action
 
         if ($this->getRequest()->isPost()){
             if ($form->isValid($request->getPost())){
-                $pipeline = new Pipeline_Model_Pipeline($form->getValues());
-                $pipelineMapper = new Pipeline_Model_Mapper_Pipeline();
-
-                $pipelineCategoryMapper = new Pipeline_Model_Mapper_PipelineCategories();
-                $pipelineCategory = $pipelineCategoryMapper->find($request->getParam('categoryId'),
-                    new Pipeline_Model_PipelineCategories());
-
-                //set FullPath
-                $fullPath = (!is_null($pipelineCategory))
-                    ?$pipelineCategory->getPath().'/'.$this->getParam('path')
-                    :$this->getParam('path');
-                $pipeline->setFullPath($fullPath);
-
-                //set Image
-                $fileImage = $form->imageLoadFile->getFileInfo();
-                if(!empty($fileImage) && $fileImage['imageLoadFile']['name'] != ''){
-                    $form->imageLoadFile->receive();
-                    $pipeline->setImage('/upload/pipeline/items/'.$fileImage['imageLoadFile']['name']);
-                }
-
-                //set imageDraft
-                $fileDraftImage = $form->imageDraftLoadFile->getFileInfo();
-                if(!empty($fileDraftImage) && $fileDraftImage['imageDraftLoadFile']['name'] != ''){
-                    $form->imageDraftLoadFile->receive();
-                    $pipeline->setImageDraft('/upload/pipeline/items/'.$fileDraftImage['imageDraftLoadFile']['name']);
-                }
-
-                //set imageTable
-                $fileTableImage = $form->imageTableLoadFile->getFileInfo();
-                if(!empty($fileTableImage) && $fileTableImage['imageTableLoadFile']['name'] != ''){
-                    $form->imageTableLoadFile->receive();
-                    $pipeline->setImageTable('/upload/pipeline/items/'.$fileTableImage['imageTableLoadFile']['name']);
-                }
-
-                //set Content (html)
-                $markdown = $request->getParam('contentMarkdown');
-                $context_html = Markdown::defaultTransform($markdown);
-                $pipeline->setContentHtml($context_html);
-
-                //set meta title
-                $metaTitle = $request->getParam('metaTitle');
-                if(empty($metaTitle))
-                    $pipeline->setMetaTitle($request->getParam('title'));
-
-                //set meta Description
-                $description = $request->getParam('description');
-                $metaDescription = $request->getParam('metaDescription');
-                if(empty($metaDescription) && !empty($description))
-                    $pipeline->setMetaDescription($description);
-
-                $pipelineMapper->save($pipeline);
-
-                return $this->_helper->redirector('index');
+                $this->_saveGetPost($form);
             }
 
             $form->setDefaults($request->getPost());
@@ -449,6 +349,64 @@ class Admin_PipelineController extends Zend_Controller_Action
         $propertyArray = $this->_getPropertyArray($itemId);
 
         $this->view->selectOptions = $propertyArray;
+    }
+
+    private function _saveGetPost(Admin_Form_PipelineEdit $form)
+    {
+        $request = $this->getRequest();
+        $pipeline = new Pipeline_Model_Pipeline($form->getValues());
+        $pipelineMapper = new Pipeline_Model_Mapper_Pipeline();
+
+        $pipelineCategoryMapper = new Pipeline_Model_Mapper_PipelineCategories();
+        $pipelineCategory = $pipelineCategoryMapper->find($request->getParam('categoryId'),
+            new Pipeline_Model_PipelineCategories());
+
+        //set FullPath
+        $fullPath = (!is_null($pipelineCategory))
+            ?$pipelineCategory->getPath().'/'.$this->getParam('path')
+            :$this->getParam('path');
+        $pipeline->setFullPath($fullPath);
+
+        //set Image
+        $fileImage = $form->imageLoadFile->getFileInfo();
+        if(!empty($fileImage) && $fileImage['imageLoadFile']['name'] != ''){
+            $form->imageLoadFile->receive();
+            $pipeline->setImage('/upload/pipeline/items/'.$fileImage['imageLoadFile']['name']);
+        }
+
+        //set imageDraft
+        $fileDraftImage = $form->imageDraftLoadFile->getFileInfo();
+        if(!empty($fileDraftImage) && $fileDraftImage['imageDraftLoadFile']['name'] != ''){
+            $form->imageDraftLoadFile->receive();
+            $pipeline->setImageDraft('/upload/pipeline/items/'.$fileDraftImage['imageDraftLoadFile']['name']);
+        }
+
+        //set imageTable
+        $fileTableImage = $form->imageTableLoadFile->getFileInfo();
+        if(!empty($fileTableImage) && $fileTableImage['imageTableLoadFile']['name'] != ''){
+            $form->imageTableLoadFile->receive();
+            $pipeline->setImageTable('/upload/pipeline/items/'.$fileTableImage['imageTableLoadFile']['name']);
+        }
+
+        //set Content (html)
+        $markdown = $request->getParam('contentMarkdown');
+        $context_html = Markdown::defaultTransform($markdown);
+        $pipeline->setContentHtml($context_html);
+
+        //set meta title
+        $metaTitle = $request->getParam('metaTitle');
+        if(empty($metaTitle))
+            $pipeline->setMetaTitle($request->getParam('title'));
+
+        //set meta Description
+        $description = $request->getParam('description');
+        $metaDescription = $request->getParam('metaDescription');
+        if(empty($metaDescription) && !empty($description))
+            $pipeline->setMetaDescription($description);
+
+        $pipelineMapper->save($pipeline);
+
+        return $this->_helper->redirector('index');
     }
 }
 

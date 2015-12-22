@@ -69,47 +69,12 @@ class Admin_PipelineCategoriesController extends Zend_Controller_Action
             'sorting'       => 0,
             'active'        => 1,
             'deleted'       => 0,
+            'imageLoad'     => '/files/images/product/2012-05-22_foto_nv.jpg',
         ));
 
         if ($this->getRequest()->isPost()){
             if ($form->isValid($request->getPost())){
-
-                $item = new Pipeline_Model_PipelineCategories($form->getValues());
-                $pipelineCategoryMapper = new Pipeline_Model_Mapper_PipelineCategories();
-
-                $item->setFullPath($request->getParam('path'));
-
-                if($request->getParam('parentId') !== 0){
-                    $parentCategory = $pipelineCategoryMapper
-                        ->find($request->getParam('parentId'), new Pipeline_Model_PipelineCategories());
-
-                    if(!is_null($parentCategory))
-                        $item->setFullPath($parentCategory->getFullPath().'/'.$request->getParam('path'));
-                }
-
-                $file = $form->imageLoadFile->getFileInfo();
-                if(!empty($file) && $file['imageLoadFile']['name'] !== ''){
-                    $form->imageLoadFile->receive();
-                    $item->setImage('/upload/pipeline/category/'.$file['imageLoadFile']['name']);
-                }
-
-                $markdown = $request->getParam('contentMarkdown');
-                $context_html = Markdown::defaultTransform($markdown);
-                $item->setContentHtml($context_html);
-
-                $metaTitle = $request->getParam('metaTitle');
-                if(empty($metaTitle))
-                    $item->setMetaTitle($request->getParam('title'));
-
-                $description = $request->getParam('description');
-                $metaDescription = $request->getParam('metaDescription');
-                if(empty($metaDescription) && !empty($description))
-                    $item->setMetaDescription($description);
-
-                $pipelineCategoryMapper->save($item);
-
-                return $this->_helper->redirector('index');
-
+                $this->_saveGetPost($form);
             }
 
             $form->setDefaults($request->getPost());
@@ -117,6 +82,26 @@ class Admin_PipelineCategoriesController extends Zend_Controller_Action
         }
 
         $this->view->form = $form;
+
+        $config = array(
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Добавить категорию',
+                'module' => 'admin',
+                'controller' => 'pipeline-categories',
+                'action' => 'add',
+                'resource' => 'pipeline-categories',
+            )),
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Отменить',
+                'module' => 'admin',
+                'controller' => 'pipeline-categories',
+                'resource' => 'pipeline-categories',
+            )),
+        );
+
+        $containerNav = new Zend_Navigation($config);
+
+        $this->view->container_nav = $containerNav;
     }
 
     public function editAction()
@@ -138,42 +123,52 @@ class Admin_PipelineCategoriesController extends Zend_Controller_Action
         $form = new Admin_Form_PipelineCategoriesEdit();
         $form->setDefaults($page->getOptions());
 
+        $imageValue = ($form->getValue('image') != '')
+            ?$form->getValue('image')
+            :'/files/images/product/2012-05-22_foto_nv.jpg';
+        $form->setDefault('imageLoad', $imageValue);
+
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
-                $item = new Pipeline_Model_PipelineCategories($form->getValues());
-
-                $item->setFullPath($request->getParam('path'));
-
-                if($request->getParam('parentId') !== 0 && $request->getParam('parentId') != $page->getParentId()){
-                    $parentCategory = $pipelineCategoryMapper
-                        ->find($request->getParam('parentId'), new Pipeline_Model_PipelineCategories());
-
-                    if(!is_null($parentCategory))
-                        $item->setFullPath($parentCategory->getFullPath().'/'.$request->getParam('path'));
-                }
-
-                $file = $form->imageLoadFile->getFileInfo();
-                if(!empty($file) && $file['imageLoadFile']['name'] !== ''){
-                    $form->imageLoadFile->receive();
-                    $item->setImage('/upload/pipeline/category/'.$file['imageLoadFile']['name']);
-                }
-
-                $markdown = $request->getParam('contentMarkdown');
-                $context_html = Markdown::defaultTransform($markdown);
-                $item->setContentHtml($context_html);
-
-                $description = $request->getParam('description');
-                $metaDescription = $request->getParam('metaDescription');
-                if(empty($metaDescription) && !empty($description))
-                    $item->setMetaDescription($description);
-
-                $pipelineCategoryMapper->save($item);
-
-                return $this->_helper->redirector('index');
+                $this->_saveGetPost($form);
             }
         }
 
         $this->view->form = $form;
+
+        $config = array(
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Добавить категорию',
+                'module' => 'admin',
+                'controller' => 'pipeline-categories',
+                'action' => 'add',
+                'resource' => 'pipeline-categories',
+            )),
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Удалить',
+                'module' => 'admin',
+                'controller' => 'pipeline-categories',
+                'action' => 'delete',
+                'resource' => 'pipeline-categories',
+                'params' => array(
+                    'id' => $itemId,
+                ),
+            )),
+            Zend_Navigation_Page_Uri::factory(array(
+                'label' => 'Посмотреть на сайте',
+                'uri' => '/pipeline/'.$page->getFullPath().'/',
+            )),
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Отменить',
+                'module' => 'admin',
+                'controller' => 'pipeline-categories',
+                'resource' => 'pipeline-categories',
+            )),
+        );
+
+        $containerNav = new Zend_Navigation($config);
+
+        $this->view->container_nav = $containerNav;
     }
 
     public function deleteAction()
@@ -214,6 +209,46 @@ class Admin_PipelineCategoriesController extends Zend_Controller_Action
         return $this->_count_item_on_page;
     }
 
+    private function _saveGetPost(Admin_Form_PipelineCategoriesEdit $form)
+    {
+        $request = $this->getRequest();
+
+        $item = new Pipeline_Model_PipelineCategories($form->getValues());
+        $pipelineCategoryMapper = new Pipeline_Model_Mapper_PipelineCategories();
+
+        $item->setFullPath($request->getParam('path'));
+
+        if($request->getParam('parentId') !== 0){
+            $parentCategory = $pipelineCategoryMapper
+                ->find($request->getParam('parentId'), new Pipeline_Model_PipelineCategories());
+
+            if(!is_null($parentCategory))
+                $item->setFullPath($parentCategory->getFullPath().'/'.$request->getParam('path'));
+        }
+
+        $file = $form->imageLoadFile->getFileInfo();
+        if(!empty($file) && $file['imageLoadFile']['name'] !== ''){
+            $form->imageLoadFile->receive();
+            $item->setImage('/upload/pipeline/category/'.$file['imageLoadFile']['name']);
+        }
+
+        $markdown = $request->getParam('contentMarkdown');
+        $context_html = Markdown::defaultTransform($markdown);
+        $item->setContentHtml($context_html);
+
+        $metaTitle = $request->getParam('metaTitle');
+        if(empty($metaTitle))
+            $item->setMetaTitle($request->getParam('title'));
+
+        $description = $request->getParam('description');
+        $metaDescription = $request->getParam('metaDescription');
+        if(empty($metaDescription) && !empty($description))
+            $item->setMetaDescription($description);
+
+        $pipelineCategoryMapper->save($item);
+
+        return $this->_helper->redirector('index');
+    }
 
 }
 

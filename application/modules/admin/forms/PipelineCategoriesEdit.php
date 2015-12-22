@@ -14,6 +14,16 @@ class Admin_Form_PipelineCategoriesEdit extends Twitter_Bootstrap_Form_Vertical
             ->setAttrib('class', 'hidden');
         $this->addElement($image);
 
+        $this->addElement('image', 'imageLoad', array(
+            'label'         => 'Изображение',
+            'class'         => 'img-thumbnail',
+            'data-toggle'   => 'tooltip',
+            'data-placement'=> 'bottom',
+            'title'         => 'Загрузить изображение',
+        ));
+
+        $this->addElement('hidden', 'image');
+
         $this->addElement('select', 'parentId', array(
             'label'     => 'Родительская категория',
             'required'  => true,
@@ -36,31 +46,16 @@ class Admin_Form_PipelineCategoriesEdit extends Twitter_Bootstrap_Form_Vertical
 
         $this->addElement('hidden', 'fullPath');
 
-        $this->addElement('image', 'image', array(
-            'label'         => null,
-            'class'         => 'img-thumbnail mt2',
-            'data-toggle'   => 'tooltip',
-            'data-placement'=> 'bottom',
-            'title'         => 'Загрузить изображение',
-        ));
-
-        /*$this->addElement('button', 'imageLoad', array(
-            'label'         => 'Загрузить изображение',
-            'type'          => 'button',
-            'class'         => 'image-btn',
-            'ignore' => true,
-        ));*/
-
         $this->addElement('textarea', 'description', array(
             'label'         => 'Краткое описание категории',
             'placeholder'   => 'Краткое описание категории',
-            'rows'          => '8',
+            'rows'          => '4',
         ));
 
         $this->addElement('textarea', 'contentMarkdown', array(
             'label'         => 'Текст на странице (markdown)',
             'placeholder'   => 'Текст',
-            'rows'          => '15',
+            'rows'          => '8',
         ));
 
 
@@ -72,13 +67,13 @@ class Admin_Form_PipelineCategoriesEdit extends Twitter_Bootstrap_Form_Vertical
         $this->addElement('textarea', 'metaDescription', array(
             'label'         => 'SEO description',
             'placeholder'   => 'meta description',
-            'rows'          => '8',
+            'rows'          => '4',
         ));
 
         $this->addElement('textarea', 'metaKeywords', array(
             'label'         => 'SEO keywords',
             'placeholder'   => 'meta keywords',
-            'rows'          => '8',
+            'rows'          => '4',
         ));
 
         $this->addElement('text', 'sorting', array(
@@ -95,10 +90,10 @@ class Admin_Form_PipelineCategoriesEdit extends Twitter_Bootstrap_Form_Vertical
 
         $this->addDisplayGroup(
             array(
-                'id',
                 'title',
                 'parentId',
                 'path',
+                'id',
             ),
             'basic',
             array()
@@ -107,8 +102,9 @@ class Admin_Form_PipelineCategoriesEdit extends Twitter_Bootstrap_Form_Vertical
 
         $this->addDisplayGroup(
             array(
-                'image',
+                'imageLoad',
                 'imageLoadFile',
+                'image',
             ),
             'imageGroup',
             array()
@@ -134,7 +130,6 @@ class Admin_Form_PipelineCategoriesEdit extends Twitter_Bootstrap_Form_Vertical
             ),
             'seo',
             array(
-                //'legend' => 'SEO',
                 'class' => 'tab-pane',
                 'role'  => 'tabpanel',
 
@@ -149,7 +144,6 @@ class Admin_Form_PipelineCategoriesEdit extends Twitter_Bootstrap_Form_Vertical
             ),
             'additionally',
             array(
-                //'legend' => 'Дополнительно',
                 'class' => 'tab-pane',
                 'role'  => 'tabpanel'
             )
