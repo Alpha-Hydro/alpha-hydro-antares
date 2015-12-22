@@ -36,7 +36,7 @@ class Admin_Form_ManufactureEdit extends Twitter_Bootstrap_Form_Vertical
         $this->addElement('hidden', 'image');
 
         $this->addElement('image', 'imageLoad', array(
-            'label'         => 'Изображение',
+            'label'         => null,//'Изображение',
             'class'         => 'img-thumbnail',
             'data-toggle'   => 'tooltip',
             'data-placement'=> 'bottom',

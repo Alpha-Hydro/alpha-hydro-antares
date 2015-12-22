@@ -19,7 +19,7 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
         $this->addElement($image);
 
         $this->addElement('image', 'imageLoad', array(
-            'label'         => 'Изображение',
+            'label'         => null,//'Изображение',
             'class'         => 'img-thumbnail',
             'data-toggle'   => 'tooltip',
             'data-placement'=> 'bottom',
@@ -40,7 +40,7 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
         $this->addElement($imageDraft);
 
         $this->addElement('image', 'imageDraftLoad', array(
-            'label'         => 'Чертеж',
+            'label'         => null,//'Чертеж',
             'class'         => 'img-thumbnail',
             'data-toggle'   => 'tooltip',
             'data-placement'=> 'bottom',
