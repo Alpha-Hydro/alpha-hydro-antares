@@ -116,4 +116,11 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         $view->navigation($container);
     }*/
 
+    /*protected function _initForceSSL() {
+        if($_SERVER['SERVER_PORT'] != '443') {
+            header('Location: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+            exit();
+        }
+    }*/
+
 }

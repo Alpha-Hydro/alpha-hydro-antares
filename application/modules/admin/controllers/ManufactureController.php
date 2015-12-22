@@ -37,6 +37,26 @@ class Admin_ManufactureController extends Zend_Controller_Action
         }
 
         $this->view->pages = $manufactureItems;
+
+        $config = array(
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Добавить товар',
+                'module' => 'admin',
+                'controller' => 'manufacture',
+                'action' => 'add',
+                'resource' => 'manufacture',
+            )),
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Категории',
+                'module' => 'admin',
+                'controller' => 'manufacture-categories',
+                'resource' => 'manufacture-categories',
+            )),
+        );
+
+        $containerNav = new Zend_Navigation($config);
+
+        $this->view->container_nav = $containerNav;
     }
 
     public function addAction()
@@ -48,45 +68,12 @@ class Admin_ManufactureController extends Zend_Controller_Action
             'sorting'       => 0,
             'active'        => 1,
             'deleted'       => 0,
+            'imageLoad'     => '/files/images/product/2012-05-22_foto_nv.jpg',
         ));
 
         if ($this->getRequest()->isPost()){
             if ($form->isValid($request->getPost())){
-                $manufacture = new Manufacture_Model_Manufacture($form->getValues());
-                $manufactureMapper = new Manufacture_Model_Mapper_Manufacture();
-
-                $manufactureCategoryMapper = new Manufacture_Model_Mapper_ManufactureCategories();
-                $manufactureCategory = $manufactureCategoryMapper->find($request->getParam('categoryId'),
-                    new Manufacture_Model_ManufactureCategories());
-
-                $fullPath = (!is_null($manufactureCategory))
-                    ?$manufactureCategory->getPath().'/'.$this->getParam('path')
-                    :$this->getParam('path');
-                $manufacture->setFullPath($fullPath);
-
-                $file = $form->imageLoadFile->getFileInfo();
-                if(!empty($file) && $file['imageLoadFile']['name'] !== ''){
-                    $form->imageLoadFile->receive();
-                    $manufacture->setImage('/upload/manufacture/items/'.$file['imageLoadFile']['name']);
-                }
-
-                $markdown = $request->getParam('contentMarkdown');
-                $context_html = Markdown::defaultTransform($markdown);
-                $manufacture->setContentHtml($context_html);
-
-                $metaTitle = $request->getParam('metaTitle');
-                if(empty($metaTitle))
-                    $manufacture->setMetaTitle($request->getParam('title'));
-
-                $description = $request->getParam('description');
-                $metaDescription = $request->getParam('metaDescription');
-                if(empty($metaDescription) && !empty($description))
-                    $manufacture->setMetaDescription($description);
-
-                $manufactureMapper->save($manufacture);
-
-                return $this->_helper->redirector('index');
-
+                $this->_saveGetPost($form);
             }
 
             $form->setDefaults($request->getPost());
@@ -94,6 +81,32 @@ class Admin_ManufactureController extends Zend_Controller_Action
         }
 
         $this->view->form = $form;
+
+        $config = array(
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Добавить товар',
+                'module' => 'admin',
+                'controller' => 'manufacture',
+                'action' => 'add',
+                'resource' => 'manufacture',
+            )),
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Категории',
+                'module' => 'admin',
+                'controller' => 'manufacture-categories',
+                'resource' => 'manufacture-categories',
+            )),
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Отмена',
+                'module' => 'admin',
+                'controller' => 'manufacture',
+                'resource' => 'manufacture',
+            )),
+        );
+
+        $containerNav = new Zend_Navigation($config);
+
+        $this->view->container_nav = $containerNav;
     }
 
     public function editAction()
@@ -128,41 +141,7 @@ class Admin_ManufactureController extends Zend_Controller_Action
 
         if ($this->getRequest()->isPost()){
             if ($form->isValid($request->getPost())){
-                $manufacture = new Manufacture_Model_Manufacture($form->getValues());
-                $manufactureMapper = new Manufacture_Model_Mapper_Manufacture();
-
-                $manufactureCategory = $manufactureMapperCategory->find($request->getParam('categoryId'),
-                    new Manufacture_Model_ManufactureCategories());
-
-                $fullPath = (!is_null($manufactureCategory))
-                    ?$manufactureCategory->getPath().'/'.$this->getParam('path')
-                    :$this->getParam('path');
-                $manufacture->setFullPath($fullPath);
-
-                $file = $form->imageLoadFile->getFileInfo();
-                var_dump($file);
-                if(!empty($file) && $file['imageLoadFile']['name'] != ''){
-                    $form->imageLoadFile->receive();
-                    $manufacture->setImage('/upload/manufacture/items/'.$file['imageLoadFile']['name']);
-                }
-
-                $markdown = $request->getParam('contentMarkdown');
-                $context_html = Markdown::defaultTransform($markdown);
-                $manufacture->setContentHtml($context_html);
-
-                $metaTitle = $request->getParam('metaTitle');
-                if(empty($metaTitle))
-                    $manufacture->setMetaTitle($request->getParam('title'));
-
-                $description = $request->getParam('description');
-                $metaDescription = $request->getParam('metaDescription');
-                if(empty($metaDescription) && !empty($description))
-                    $manufacture->setMetaDescription($description);
-
-                $manufactureMapper->save($manufacture);
-
-                return $this->_helper->redirector('index');
-
+                $this->_saveGetPost($form);
             }
 
             $form->setDefaults($request->getPost());
@@ -170,6 +149,40 @@ class Admin_ManufactureController extends Zend_Controller_Action
         }
 
         $this->view->form = $form;
+
+        $config = array(
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Добавить товар',
+                'module' => 'admin',
+                'controller' => 'manufacture',
+                'action' => 'add',
+                'resource' => 'manufacture',
+            )),
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Удалить',
+                'module' => 'admin',
+                'controller' => 'manufacture',
+                'action' => 'delete',
+                'resource' => 'manufacture',
+                'params' => array(
+                    'id' => $itemId,
+                ),
+            )),
+            Zend_Navigation_Page_Uri::factory(array(
+                'label' => 'Посмотреть на сайте',
+                'uri' => '/manufacture/'.$manufacture->getFullPath().'/',
+            )),
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Отмена',
+                'module' => 'admin',
+                'controller' => 'manufacture',
+                'resource' => 'manufacture',
+            )),
+        );
+
+        $containerNav = new Zend_Navigation($config);
+
+        $this->view->container_nav = $containerNav;
     }
 
     public function deleteAction()
@@ -210,6 +223,48 @@ class Admin_ManufactureController extends Zend_Controller_Action
         return $this->_count_item_on_page;
     }
 
+    /**
+     * @param Admin_Form_ManufactureEdit $form
+     * @return mixed
+     */
+    private function _saveGetPost(Admin_Form_ManufactureEdit $form)
+    {
+        $request = $this->getRequest();
+        $manufacture = new Manufacture_Model_Manufacture($form->getValues());
+        $manufactureMapper = new Manufacture_Model_Mapper_Manufacture();
+
+        $manufactureMapperCategory = new Manufacture_Model_Mapper_ManufactureCategories();
+        $manufactureCategory = $manufactureMapperCategory->find($request->getParam('categoryId'),
+            new Manufacture_Model_ManufactureCategories());
+
+        $fullPath = (!is_null($manufactureCategory))
+            ?$manufactureCategory->getPath().'/'.$this->getParam('path')
+            :$this->getParam('path');
+        $manufacture->setFullPath($fullPath);
+
+        $file = $form->imageLoadFile->getFileInfo();
+        if(!empty($file) && $file['imageLoadFile']['name'] != ''){
+            $form->imageLoadFile->receive();
+            $manufacture->setImage('/upload/manufacture/items/'.$file['imageLoadFile']['name']);
+        }
+
+        $markdown = $request->getParam('contentMarkdown');
+        $context_html = Markdown::defaultTransform($markdown);
+        $manufacture->setContentHtml($context_html);
+
+        $metaTitle = $request->getParam('metaTitle');
+        if(empty($metaTitle))
+            $manufacture->setMetaTitle($request->getParam('title'));
+
+        $description = $request->getParam('description');
+        $metaDescription = $request->getParam('metaDescription');
+        if(empty($metaDescription) && !empty($description))
+            $manufacture->setMetaDescription($description);
+
+        $manufactureMapper->save($manufacture);
+
+        return $this->_helper->redirector('index');
+    }
 
 }
 
