@@ -1,4 +1,34 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Media</b> and script/action name <b>index</b></p>
-</div>
+<?php
+$this->title = 'Пресса';
+$this->secondary_text = 'Статьи';
+?>
+
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Категория</th>
+            <th>Заголовок</th>
+            <th>Сортировка</th>
+            <th>Активность</th>
+            <th></th>
+        </tr>
+        </thead>
+        <?php foreach ($this->pages as $page):?>
+            <tr class="<?=$this->contextualClassTr($page);?>">
+                <td><?=$page->getId()?></td>
+                <td><?=$this->getCategory($page->getCategoryId(), 'media')->getName()?></td>
+                <td><?=$page->getName()?></td>
+                <td><?=$page->getSorting()?></td>
+                <td><input type="checkbox" value="<?=$page->getActive()?>" <?=($page->getActive() != 0)?'checked':'';?>></td>
+                <td width="150px">
+                    <?=$this->partial('_button_group_table.phtml', array(
+                        'item_controller' => 'media',
+                        'item_id' => $page->getId(),
+                        'item_path' => '/media/'.$page->getFullPath(),
+                    ))?>
+                </td>
+            </tr>
+        <?php endforeach;?>
+    </table>
+<?= $this->render('components/_paginator.phtml')?>

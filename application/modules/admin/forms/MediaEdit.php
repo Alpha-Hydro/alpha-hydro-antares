@@ -1,31 +1,38 @@
 <?php
 
-class Admin_Form_OilEdit extends Twitter_Bootstrap_Form_Vertical
+class Admin_Form_MediaEdit extends Twitter_Bootstrap_Form_Vertical
 {
 
     public function init()
     {
         $this->addElement('hidden', 'id');
-        $this->addElement('hidden', 'categoryId');
+        $this->addElement('hidden', 'path');
 
-        $this->addElement('text', 'title', array(
-            'label'         => 'Заголовок страницы',
-            'placeholder'   => 'Заголовок страницы',
+        $this->addElement('select', 'categoryId', array(
+            'label'     => 'Категория',
+            'required'  => true,
+            'multiOptions' => $this->getCategoryArray(),
+        ));
+
+        $this->addElement('text', 'name', array(
+            'label'         => 'Заголовок',
+            'placeholder'   => 'Заголовок статьи',
             'required'      => true,
             'class'         => 'slugify',
             'data-slugify'  => 'path',
         ));
 
-        $this->addElement('text', 'path', array(
-            'label'         => 'Url страницы',
-            'placeholder'   => 'Url страницы',
+        $this->addElement('text', 'author', array(
+            'label'         => 'Автор',
+            'placeholder'   => 'Автор статьи',
             'required'      => true,
         ));
 
         $this->addDisplayGroup(
             array(
-                'title',
                 'categoryId',
+                'name',
+                'author',
                 'path',
                 'id',
             ),
@@ -34,7 +41,7 @@ class Admin_Form_OilEdit extends Twitter_Bootstrap_Form_Vertical
         );
 
         $image = new Zend_Form_Element_File('imageLoadFile');
-        $image->setDestination(APPLICATION_ROOT.'/upload/pipeline/items/')
+        $image->setDestination(APPLICATION_ROOT.'/upload/media/items/')
             ->addValidator('Size', false, 1024000)
             ->addValidator('Extension', false, 'jpg,png')
             ->setAttribs(
@@ -52,19 +59,19 @@ class Admin_Form_OilEdit extends Twitter_Bootstrap_Form_Vertical
             'title'         => 'Загрузить изображение',
         ));
 
-        $this->addElement('hidden', 'image');
+        $this->addElement('hidden', 'thumb');
 
         $this->addDisplayGroup(
             array(
                 'imageLoad',
                 'imageLoadFile',
-                'image',
+                'thumb',
             ),
             'imageGroup',
             array()
         );
 
-        $this->addElement('textarea', 'description', array(
+        $this->addElement('textarea', 'sContent', array(
             'label'         => 'Краткое описание страницы',
             'placeholder'   => 'Краткое описание страницы',
             'rows'          => '4',
@@ -78,7 +85,7 @@ class Admin_Form_OilEdit extends Twitter_Bootstrap_Form_Vertical
 
         $this->addDisplayGroup(
             array(
-                'description',
+                'sContent',
                 'contentMarkdown',
             ),
             'desc',
@@ -143,19 +150,23 @@ class Admin_Form_OilEdit extends Twitter_Bootstrap_Form_Vertical
                 'role'  => 'tabpanel'
             )
         );
-
-        $this->addElement('button', 'submit', array(
-            'label'         => 'Сохранить',
-            'type'          => 'submit',
-            'buttonType'    => 'success',
-            'ignore' => true,
-        ));
-
-        /*$classForm = $this->getAttrib('class');
-        $this->addAttribs(array(
-            'class' => 'tab-content '.$classForm,
-        ));*/
     }
 
+    /**
+     * @return array
+     */
+    public function getCategoryArray()
+    {
+        $mediaCategoryMapper = new Media_Model_Mapper_MediaCategories();
+
+        $categoryArray = array();
+        $categoryArray[] = 'нет';
+        foreach ($mediaCategoryMapper->fetchAll() as $category) {
+            $categoryArray[$category->getId()] = $category->getName();
+        }
+
+        return $categoryArray;
+
+    }
 }
 

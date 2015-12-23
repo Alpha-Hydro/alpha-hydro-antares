@@ -43,6 +43,7 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         $acl->addResource(new Zend_Acl_Resource('oil'));
         $acl->addResource(new Zend_Acl_Resource('forum'));
         $acl->addResource(new Zend_Acl_Resource('media'));
+        $acl->addResource(new Zend_Acl_Resource('media-categories'));
         $acl->addResource(new Zend_Acl_Resource('manufacture-categories'));
         $acl->addResource(new Zend_Acl_Resource('manufacture'));
         $acl->addResource(new Zend_Acl_Resource('pipeline'));
