@@ -13,6 +13,6 @@ class Zend_View_Helper_sidebarMenu extends Zend_View_Helper_Abstract
         $container = new Zend_Navigation();
         $container->setPages($config->toArray());
         $view = new Zend_View();
-        echo $view->navigation($container)->menu()->render();
+        echo $view->navigation($container)->menu()->setMaxDepth(1)->render();
     }
 }
