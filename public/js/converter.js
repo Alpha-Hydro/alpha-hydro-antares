@@ -107,9 +107,7 @@ var Converter = (function () {
         });
     };
     Converter.prototype._convert = function () {
-        var a = this.select_value.value, b = this.select_result.value, c = this.input_value.value, 
-        //res = Math.round(((c*a)/b)*100)/100;
-        res = (c * a) / b;
+        var a = this.select_value.value, b = this.select_result.value, c = this.input_value.value, res = (c * a) / b;
         this.input_result.value = this.numberFormat(res);
     };
     Converter.prototype._convertTemp = function () {

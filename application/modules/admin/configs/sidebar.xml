@@ -68,7 +68,7 @@
                             <resourse>manufacture-categories</resourse>
                         </category_add>
                         <category_edit>
-                            <label>Категории</label>
+                            <label>Редактировать категорию</label>
                             <module>admin</module>
                             <controller>manufacture-categories</controller>
                             <action>edit</action>
@@ -110,7 +110,7 @@
                             <resourse>pipeline-categories</resourse>
                         </category_add>
                         <category_edit>
-                            <label>Категории</label>
+                            <label>Редактировать категорию</label>
                             <module>admin</module>
                             <controller>pipeline-categories</controller>
                             <action>edit</action>
@@ -151,6 +151,42 @@
                     <module>admin</module>
                     <controller>media</controller>
                     <resource>media</resource>
+                    <pages>
+                        <add>
+                            <label>Добавить статью</label>
+                            <module>admin</module>
+                            <controller>media</controller>
+                            <action>add</action>
+                            <resourse>media</resourse>
+                        </add>
+                        <edit>
+                            <label>Редактировать статью</label>
+                            <module>admin</module>
+                            <controller>media</controller>
+                            <action>edit</action>
+                            <resourse>media</resourse>
+                        </edit>
+                        <category>
+                            <label>Категории</label>
+                            <module>admin</module>
+                            <controller>media-categories</controller>
+                            <resourse>media-categories</resourse>
+                        </category>
+                        <category_add>
+                            <label>Добавить категорию</label>
+                            <module>admin</module>
+                            <controller>media-categories</controller>
+                            <action>add</action>
+                            <resourse>media-categories</resourse>
+                        </category_add>
+                        <category_edit>
+                            <label>Редактировать категорию</label>
+                            <module>admin</module>
+                            <controller>media-categories</controller>
+                            <action>edit</action>
+                            <resourse>media-categories</resourse>
+                        </category_edit>
+                    </pages>
                 </media>
                 <about>
                     <label>О нас</label>
