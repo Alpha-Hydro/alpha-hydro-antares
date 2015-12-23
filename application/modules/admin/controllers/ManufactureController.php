@@ -73,7 +73,7 @@ class Admin_ManufactureController extends Zend_Controller_Action
 
         if ($this->getRequest()->isPost()){
             if ($form->isValid($request->getPost())){
-                $this->_saveGetPost($form);
+                $this->_saveFormData($form);
             }
 
             $form->setDefaults($request->getPost());
@@ -141,7 +141,7 @@ class Admin_ManufactureController extends Zend_Controller_Action
 
         if ($this->getRequest()->isPost()){
             if ($form->isValid($request->getPost())){
-                $this->_saveGetPost($form);
+                $this->_saveFormData($form);
             }
 
             $form->setDefaults($request->getPost());
@@ -227,7 +227,7 @@ class Admin_ManufactureController extends Zend_Controller_Action
      * @param Admin_Form_ManufactureEdit $form
      * @return mixed
      */
-    private function _saveGetPost(Admin_Form_ManufactureEdit $form)
+    private function _saveFormData(Admin_Form_ManufactureEdit $form)
     {
         $request = $this->getRequest();
         $manufacture = new Manufacture_Model_Manufacture($form->getValues());

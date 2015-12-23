@@ -89,13 +89,15 @@ class Admin_PipelineController extends Zend_Controller_Action
             'imageDraftLoad'    => '/files/images/product/2012-05-22_foto_nv.jpg',
         ));
 
+        $form->getDisplayGroup('desc')->addAttribs(array('class'=>'active'));
+
         $imageTableElement = $form->getElement('imageTable');
         $imageTablePrepend = '<button type="button" class="btn btn-default" id="imageTableLoadBtn"><span class="glyphicon glyphicon-save"></span></button>';
         $imageTableElement->setAttrib('prepend_btn', $imageTablePrepend);
 
         if ($this->getRequest()->isPost()){
             if ($form->isValid($request->getPost())){
-                $this->_saveGetPost($form);
+                $this->_saveFormData($form);
             }
 
             $form->setDefaults($request->getPost());
@@ -175,7 +177,7 @@ class Admin_PipelineController extends Zend_Controller_Action
 
         if ($this->getRequest()->isPost()){
             if ($form->isValid($request->getPost())){
-                $this->_saveGetPost($form);
+                $this->_saveFormData($form);
             }
 
             $form->setDefaults($request->getPost());
@@ -244,7 +246,7 @@ class Admin_PipelineController extends Zend_Controller_Action
             )),
             Zend_Navigation_Page_Uri::factory(array(
                 'label' => 'Посмотреть на сайте',
-                'uri' => '/'.$pipeline->getFullPath(),
+                'uri' => '/pipeline/'.$pipeline->getFullPath(),
             )),
             Zend_Navigation_Page_Mvc::factory(array(
                 'label' => 'Отменить',
@@ -351,7 +353,7 @@ class Admin_PipelineController extends Zend_Controller_Action
         $this->view->selectOptions = $propertyArray;
     }
 
-    private function _saveGetPost(Admin_Form_PipelineEdit $form)
+    private function _saveFormData(Admin_Form_PipelineEdit $form)
     {
         $request = $this->getRequest();
         $pipeline = new Pipeline_Model_Pipeline($form->getValues());

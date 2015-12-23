@@ -68,7 +68,7 @@ class Admin_ManufactureCategoriesController extends Zend_Controller_Action
         if ($this->getRequest()->isPost()){
             if ($form->isValid($request->getPost())) {
 
-                $this->_saveGetPost($form);
+                $this->_saveFormData($form);
             }
 
             $form->setDefaults($request->getPost());
@@ -126,7 +126,7 @@ class Admin_ManufactureCategoriesController extends Zend_Controller_Action
 
         if ($this->getRequest()->isPost()){
             if ($form->isValid($request->getPost())) {
-                $this->_saveGetPost($form);
+                $this->_saveFormData($form);
             }
             $form->setDefaults($form->getValues());
         }
@@ -205,7 +205,7 @@ class Admin_ManufactureCategoriesController extends Zend_Controller_Action
         return $this->_count_item_on_page;
     }
 
-    private function _saveGetPost(Admin_Form_ManufactureCategoriesEdit $form)
+    private function _saveFormData(Admin_Form_ManufactureCategoriesEdit $form)
     {
         $request = $this->getRequest();
         $manufactureCategory = new Manufacture_Model_ManufactureCategories($form->getValues());

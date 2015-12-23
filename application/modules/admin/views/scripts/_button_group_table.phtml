@@ -16,7 +16,7 @@
     </a>
     <a href="<?=$this->url(array(
         'module' => 'admin',
-        'controller' => 'pipeline',
+        'controller' => $this->item_controller,
         'action' => 'delete',
         'id'=>$this->item_id),
         'adminEdit', true, false);?>"

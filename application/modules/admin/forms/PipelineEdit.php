@@ -221,7 +221,6 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
             'form'          => 'itemEdit',
             'id'            => 'saveItemEdit',
             'class'         => 'hidden'
-            //'escape'        => true
         ));
 
         $this->getElement('submit')->removeDecorator('label');

@@ -74,7 +74,7 @@ class Admin_PipelineCategoriesController extends Zend_Controller_Action
 
         if ($this->getRequest()->isPost()){
             if ($form->isValid($request->getPost())){
-                $this->_saveGetPost($form);
+                $this->_saveFormData($form);
             }
 
             $form->setDefaults($request->getPost());
@@ -130,7 +130,7 @@ class Admin_PipelineCategoriesController extends Zend_Controller_Action
 
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
-                $this->_saveGetPost($form);
+                $this->_saveFormData($form);
             }
         }
 
@@ -209,7 +209,7 @@ class Admin_PipelineCategoriesController extends Zend_Controller_Action
         return $this->_count_item_on_page;
     }
 
-    private function _saveGetPost(Admin_Form_PipelineCategoriesEdit $form)
+    private function _saveFormData(Admin_Form_PipelineCategoriesEdit $form)
     {
         $request = $this->getRequest();
 

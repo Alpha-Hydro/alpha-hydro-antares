@@ -14,6 +14,20 @@ class Admin_OilController extends Zend_Controller_Action
     {
         $oilMapper = new Oil_Model_Mapper_Oil();
         $this->view->pages = $oilMapper->fetchAll();
+
+        $config = array(
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Добавить товар',
+                'module' => 'admin',
+                'controller' => 'oil',
+                'action' => 'add',
+                'resource' => 'oil',
+            )),
+        );
+
+        $containerNav = new Zend_Navigation($config);
+
+        $this->view->container_nav = $containerNav;
     }
 
     public function editAction()
@@ -30,37 +44,61 @@ class Admin_OilController extends Zend_Controller_Action
         if(is_null($page))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
+        $this->view->item = $page;
 
         $form = new Admin_Form_OilEdit();
         $dataPage = $page->getOptions();
         foreach ($dataPage as $key => $value) {
             $form->setDefault($key, $value);
         }
+        $imageValue = ($form->getValue('image') != '')
+            ?$form->getValue('image')
+            :'/files/images/product/2012-05-22_foto_nv.jpg';
+        $form->setDefault('imageLoad', $imageValue);
 
         if ($this->getRequest()->isPost()){
             if ($form->isValid($request->getPost())) {
-
-                $newItem = new Oil_Model_Oil($form->getValues());
-
-                $markdown = $request->getParam('contentMarkdown');
-                $context_html = Markdown::defaultTransform($markdown);
-                $newItem->setContentHtml($context_html);
-
-                $description = $request->getParam('description');
-                $metaDescription = $request->getParam('metaDescription');
-                if(empty($metaDescription) && !empty($description))
-                    $newItem->setMetaDescription($description);
-
-                $oilMapper->save($newItem);
-
-                return $this->_helper->redirector('index');
-
+                $this->_saveFormData($form);
             }
 
             $form->setDefaults($form->getValues());
         }
 
         $this->view->form = $form;
+
+        $config = array(
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Добавить товар',
+                'module' => 'admin',
+                'controller' => 'oil',
+                'action' => 'add',
+                'resource' => 'oil',
+            )),
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Удалить',
+                'module' => 'admin',
+                'controller' => 'oil',
+                'action' => 'delete',
+                'resource' => 'oil',
+                'params' => array(
+                    'id' => $itemId,
+                ),
+            )),
+            Zend_Navigation_Page_Uri::factory(array(
+                'label' => 'Посмотреть на сайте',
+                'uri' => '/oil/'.$page->getPath(),
+            )),
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Отменить',
+                'module' => 'admin',
+                'controller' => 'oil',
+                'resource' => 'oil',
+            )),
+        );
+
+        $containerNav = new Zend_Navigation($config);
+
+        $this->view->container_nav = $containerNav;
     }
 
     public function addAction()
@@ -73,37 +111,39 @@ class Admin_OilController extends Zend_Controller_Action
             'sorting'       => 0,
             'active'        => 1,
             'deleted'       => 0,
+            'imageLoad'         => '/files/images/product/2012-05-22_foto_nv.jpg',
         ));
 
         if ($this->getRequest()->isPost()){
-        if ($form->isValid($request->getPost())) {
+            if ($form->isValid($request->getPost())) {
+                $this->_saveFormData($form);
+            }
 
-            $oilItem = new Oil_Model_Oil($form->getValues());
-
-            $markdown = $request->getParam('contentMarkdown');
-            $context_html = Markdown::defaultTransform($markdown);
-            $oilItem->setContentHtml($context_html);
-
-            $metaTitle = $request->getParam('metaTitle');
-            if(empty($metaTitle))
-                $oilItem->setMetaTitle($request->getParam('title'));
-
-            $description = $request->getParam('description');
-            $metaDescription = $request->getParam('metaDescription');
-            if(empty($metaDescription) && !empty($description))
-                $oilItem->setMetaDescription($description);
-
-            $oilMapper = new Oil_Model_Mapper_Oil();
-            $oilMapper->save($oilItem);
-
-            return $this->_helper->redirector('index');
+            $form->setDefaults($request->getPost());
+            $this->view->formData = $form->getValues();
         }
 
-        $form->setDefaults($request->getPost());
-        $this->view->formData = $form->getValues();
-    }
-
         $this->view->form = $form;
+
+        $config = array(
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Добавить товар',
+                'module' => 'admin',
+                'controller' => 'oil',
+                'action' => 'add',
+                'resource' => 'oil',
+            )),
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Отменить',
+                'module' => 'admin',
+                'controller' => 'oil',
+                'resource' => 'oil',
+            )),
+        );
+
+        $containerNav = new Zend_Navigation($config);
+
+        $this->view->container_nav = $containerNav;
     }
 
     public function deleteAction()
@@ -121,6 +161,34 @@ class Admin_OilController extends Zend_Controller_Action
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
         $oilItem->setDeleted(1);
+        $oilMapper->save($oilItem);
+
+        return $this->_helper->redirector('index');
+    }
+
+    /**
+     * @param Admin_Form_OilEdit $form
+     * @return mixed
+     */
+    private function _saveFormData(Admin_Form_OilEdit $form)
+    {
+        $request = $this->getRequest();
+        $oilItem = new Oil_Model_Oil($form->getValues());
+
+        $markdown = $request->getParam('contentMarkdown');
+        $context_html = Markdown::defaultTransform($markdown);
+        $oilItem->setContentHtml($context_html);
+
+        $metaTitle = $request->getParam('metaTitle');
+        if(empty($metaTitle))
+            $oilItem->setMetaTitle($request->getParam('title'));
+
+        $description = $request->getParam('description');
+        $metaDescription = $request->getParam('metaDescription');
+        if(empty($metaDescription) && !empty($description))
+            $oilItem->setMetaDescription($description);
+
+        $oilMapper = new Oil_Model_Mapper_Oil();
         $oilMapper->save($oilItem);
 
         return $this->_helper->redirector('index');

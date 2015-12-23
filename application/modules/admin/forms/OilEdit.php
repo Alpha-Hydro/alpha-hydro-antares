@@ -1,6 +1,6 @@
 <?php
 
-class Admin_Form_OilEdit extends Twitter_Bootstrap_Form_Horizontal
+class Admin_Form_OilEdit extends Twitter_Bootstrap_Form_Vertical
 {
 
     public function init()
@@ -22,26 +22,66 @@ class Admin_Form_OilEdit extends Twitter_Bootstrap_Form_Horizontal
             'required'      => true,
         ));
 
+        $this->addDisplayGroup(
+            array(
+                'title',
+                'categoryId',
+                'path',
+                'id',
+            ),
+            'basic',
+            array()
+        );
+
+        $image = new Zend_Form_Element_File('imageLoadFile');
+        $image->setDestination(APPLICATION_ROOT.'/upload/pipeline/items/')
+            ->addValidator('Size', false, 1024000)
+            ->addValidator('Extension', false, 'jpg,png')
+            ->setAttribs(
+                array(
+                    'class' => 'hidden',
+                )
+            );
+        $this->addElement($image);
+
+        $this->addElement('image', 'imageLoad', array(
+            'label'         => null,//'Изображение',
+            'class'         => 'img-thumbnail',
+            'data-toggle'   => 'tooltip',
+            'data-placement'=> 'bottom',
+            'title'         => 'Загрузить изображение',
+        ));
+
+        $this->addElement('hidden', 'image');
+
+        $this->addDisplayGroup(
+            array(
+                'imageLoad',
+                'imageLoadFile',
+                'image',
+            ),
+            'imageGroup',
+            array()
+        );
+
         $this->addElement('textarea', 'description', array(
             'label'         => 'Краткое описание страницы',
             'placeholder'   => 'Краткое описание страницы',
-            'rows'          => '8',
+            'rows'          => '4',
         ));
 
         $this->addElement('textarea', 'contentMarkdown', array(
             'label'         => 'Текст на странице (markdown)',
             'placeholder'   => 'Текст',
-            'rows'          => '15',
+            'rows'          => '8',
         ));
 
         $this->addDisplayGroup(
             array(
-                'title',
-                'path',
                 'description',
                 'contentMarkdown',
             ),
-            'basic',
+            'desc',
             array(
                 'class' => 'tab-pane active',
                 'role'  => 'tabpanel'
@@ -62,7 +102,7 @@ class Admin_Form_OilEdit extends Twitter_Bootstrap_Form_Horizontal
         $this->addElement('textarea', 'metaKeywords', array(
             'label'         => 'SEO keywords',
             'placeholder'   => 'meta keywords',
-            'rows'          => '8',
+            'rows'          => '4',
         ));
 
         $this->addDisplayGroup(
