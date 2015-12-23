@@ -16,7 +16,6 @@
             <label>Разделы сайта</label>
             <module>admin</module>
             <controller>pages</controller>
-            <!--<action>index</action>-->
             <class>prepend-icon glyphicon glyphicon-th-list</class>
             <pages>
                 <home>
@@ -40,18 +39,106 @@
                     <module>admin</module>
                     <controller>manufacture</controller>
                     <resource>manufacture</resource>
+                    <pages>
+                        <add>
+                            <label>Добавить товар</label>
+                            <module>admin</module>
+                            <controller>manufacture</controller>
+                            <action>add</action>
+                            <resourse>manufacture</resourse>
+                        </add>
+                        <edit>
+                            <label>Редактировать товар</label>
+                            <module>admin</module>
+                            <controller>manufacture</controller>
+                            <action>edit</action>
+                            <resourse>manufacture</resourse>
+                        </edit>
+                        <category>
+                            <label>Категории</label>
+                            <module>admin</module>
+                            <controller>manufacture-categories</controller>
+                            <resourse>manufacture-categories</resourse>
+                        </category>
+                        <category_add>
+                            <label>Добавить категорию</label>
+                            <module>admin</module>
+                            <controller>manufacture-categories</controller>
+                            <action>add</action>
+                            <resourse>manufacture-categories</resourse>
+                        </category_add>
+                        <category_edit>
+                            <label>Категории</label>
+                            <module>admin</module>
+                            <controller>manufacture-categories</controller>
+                            <action>edit</action>
+                            <resourse>manufacture-categories</resourse>
+                        </category_edit>
+                    </pages>
                 </manufacture>
                 <pipeline>
                     <label>Трубопроводная арматура</label>
                     <module>admin</module>
                     <controller>pipeline</controller>
                     <resource>pipeline</resource>
+                    <pages>
+                        <add>
+                            <label>Добавить товар</label>
+                            <module>admin</module>
+                            <controller>pipeline</controller>
+                            <action>add</action>
+                            <resourse>pipeline</resourse>
+                        </add>
+                        <edit>
+                            <label>Редактировать товар</label>
+                            <module>admin</module>
+                            <controller>pipeline</controller>
+                            <action>edit</action>
+                            <resourse>pipeline</resourse>
+                        </edit>
+                        <category>
+                            <label>Категории</label>
+                            <module>admin</module>
+                            <controller>pipeline-categories</controller>
+                            <resourse>pipeline-categories</resourse>
+                        </category>
+                        <category_add>
+                            <label>Добавить категорию</label>
+                            <module>admin</module>
+                            <controller>pipeline-categories</controller>
+                            <action>add</action>
+                            <resourse>pipeline-categories</resourse>
+                        </category_add>
+                        <category_edit>
+                            <label>Категории</label>
+                            <module>admin</module>
+                            <controller>pipeline-categories</controller>
+                            <action>edit</action>
+                            <resourse>pipeline-categories</resourse>
+                        </category_edit>
+                    </pages>
                 </pipeline>
                 <oil>
                     <label>Масла</label>
                     <module>admin</module>
                     <controller>oil</controller>
                     <resource>oil</resource>
+                    <pages>
+                        <add>
+                            <label>Добавить товар</label>
+                            <module>admin</module>
+                            <controller>oil</controller>
+                            <action>add</action>
+                            <resourse>oil</resourse>
+                        </add>
+                        <edit>
+                            <label>Редактировать товар</label>
+                            <module>admin</module>
+                            <controller>oil</controller>
+                            <action>edit</action>
+                            <resourse>oil</resourse>
+                        </edit>
+                    </pages>
                 </oil>
                 <forum>
                     <label>Форум</label>
