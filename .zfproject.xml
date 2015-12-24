@@ -845,6 +845,9 @@
               <actionMethod actionName="test"/>
               <actionMethod actionName="new"/>
             </controllerFile>
+            <controllerFile controllerName="ExportCatalogGenerator">
+              <actionMethod actionName="index"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory enabled="false"/>
           <layoutsDirectory enabled="false">
@@ -900,6 +903,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Test">
                 <viewScriptFile forActionName="new"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="ExportCatalogGenerator">
+                <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
