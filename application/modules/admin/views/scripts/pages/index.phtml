@@ -14,7 +14,7 @@ $this->secondary_text = 'Статические страницы';
     </tr>
     </thead>
     <?php foreach ($this->pages as $page):?>
-        <tr>
+        <tr class="<?=$this->contextualClassTr($page);?>">
             <td><?=$page->getId()?></td>
             <td><?=$page->getTitle()?></td>
             <td><?=$page->getPath()?></td>
@@ -25,6 +25,7 @@ $this->secondary_text = 'Статические страницы';
                     'item_controller' => 'pages',
                     'item_id' => $page->getId(),
                     'item_path' => ($page->getPath() != 'home')?'/'.$page->getPath():'',
+                    'deleted' => ($page->getDeleted() != 0)? true : false,
                 ))?>
             </td>
         </tr>

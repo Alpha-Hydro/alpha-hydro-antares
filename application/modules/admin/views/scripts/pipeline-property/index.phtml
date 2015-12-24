@@ -1,14 +1,8 @@
-<div class="page-header clearfix">
-    <h1 class="col-md-9">Трубопроводная арматура. <small>Свойства товаров.</small></h1>
-    <div class="col-md-3 h1">
-        <?php if(!empty($this->pages)):?>
-            <a href="<?=$this->url(
-                array('module'=>'admin', 'controller' => 'pipeline-property', 'action' => 'add'),
-                false,true
-            )?>" class="btn btn-success pull-right">Добавить Свойство</a>
-        <?php endif;?>
-    </div>
-</div>
+<?php
+$this->title = 'Трубопроводная арматура';
+$this->secondary_text = 'Свойства товара';
+?>
+
 <div class="row">
     <div class="col-md-12">
         <?php if(!empty($this->pages)):?>
@@ -34,32 +28,35 @@
                         <td><input type="checkbox" value="<?=$page->getShowList()?>" <?=($page->getShowList() != 0)?'checked':'';?>></td>
                         <td><?=$page->getSorting()?></td>
                         <td><input type="checkbox" value="<?=$page->getActive()?>" <?=($page->getActive() != 0)?'checked':'';?>></td>
-                        <td width="100px">
-                            <a href="<?=$this->url(array(
-                                'module' => 'admin',
-                                'controller' => 'pipeline-property',
-                                'action' => 'edit',
-                                'id'=>$page->getId()),
-                                'adminEdit', true, false);?>"
-                               class="btn btn-default btn-xs"
-                               title="Редактировать">
-                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                            </a>
-                            <a href="<?=$this->url(array(
-                                'module' => 'admin',
-                                'controller' => 'pipeline-property',
-                                'action' => 'delete',
-                                'id'=>$page->getId()),
-                                'adminEdit', true, false);?>"
-                               class="btn btn-default btn-xs"
-                               title="Удалить">
-                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                            </a>
+                        <td width="150px">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a href="<?=$this->url(array(
+                                    'module' => 'admin',
+                                    'controller' => 'pipeline-property',
+                                    'action' => 'edit',
+                                    'id'=>$page->getId()),
+                                    'adminEdit', true, false);?>"
+                                   class="btn btn-default"
+                                   title="Редактировать">
+                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                </a>
+                                <a href="<?=$this->url(array(
+                                    'module' => 'admin',
+                                    'controller' => 'pipeline-property',
+                                    'action' => 'delete',
+                                    'id'=>$page->getId()),
+                                    'adminEdit', true, false);?>"
+                                    class="btn btn-default"
+                                    title="Удалить">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 <?php endforeach;?>
             </table>
             <?= $this->render('components/_paginator.phtml')?>
+            <em class="text-muted">* Удаленные свойства не показываются</em>
         <?php else:?>
             <div class="text-center">
                 <a href="<?=$this->url(

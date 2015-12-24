@@ -40,6 +40,32 @@ class Admin_PipelinePropertyController extends Zend_Controller_Action
         }
 
         $this->view->pages = $pipelineProperties;
+
+        $config = array(
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Категории',
+                'module' => 'admin',
+                'controller' => 'pipeline-categories',
+                'resource' => 'pipeline-categories',
+            )),
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Товары',
+                'module' => 'admin',
+                'controller' => 'pipeline',
+                'resource' => 'pipeline',
+            )),
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Добавить свойство',
+                'module' => 'admin',
+                'controller' => 'pipeline-property',
+                'action' => 'add',
+                'resource' => 'pipeline-property',
+            )),
+        );
+
+        $containerNav = new Zend_Navigation($config);
+
+        $this->view->container_nav = $containerNav;
     }
 
     public function addAction()
@@ -69,6 +95,26 @@ class Admin_PipelinePropertyController extends Zend_Controller_Action
         }
 
         $this->view->form = $form;
+
+        $config = array(
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Добавить свойство',
+                'module' => 'admin',
+                'controller' => 'pipeline-property',
+                'action' => 'add',
+                'resource' => 'pipeline-property',
+            )),
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Отменить',
+                'module' => 'admin',
+                'controller' => 'pipeline-property',
+                'resource' => 'pipeline-property',
+            )),
+        );
+
+        $containerNav = new Zend_Navigation($config);
+
+        $this->view->container_nav = $containerNav;
     }
 
     public function editAction()
@@ -108,6 +154,36 @@ class Admin_PipelinePropertyController extends Zend_Controller_Action
         }
 
         $this->view->form = $form;
+
+        $config = array(
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Добавить свойство',
+                'module' => 'admin',
+                'controller' => 'pipeline-property',
+                'action' => 'add',
+                'resource' => 'pipeline-property',
+            )),
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Удалить свойство',
+                'module' => 'admin',
+                'controller' => 'pipeline-property',
+                'action' => 'delete',
+                'resource' => 'pipeline-property',
+                'params' => array(
+                    'id' => $itemId,
+                ),
+            )),
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Отменить',
+                'module' => 'admin',
+                'controller' => 'pipeline-property',
+                'resource' => 'pipeline-property',
+            )),
+        );
+
+        $containerNav = new Zend_Navigation($config);
+
+        $this->view->container_nav = $containerNav;
     }
 
     public function deleteAction()

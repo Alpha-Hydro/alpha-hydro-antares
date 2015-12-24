@@ -180,6 +180,7 @@ $(function (){
 			<?php foreach ( $subproductParams as $param ) :	?>
 			<th><?=$param -> name ?></th>
 			<?php endforeach; ?>
+			<th>Порядок</th>
 			<th>X</th>
 		</tr>
 		
@@ -189,6 +190,7 @@ $(function (){
 		<?php foreach($sub_product->getParamsValues() as $param) :?>
 		<td><?=$param->value; ?></td>
 		<?php endforeach ?>
+            <td><?=$sub_product->order; ?></td>
 		  <td><a title="Удалить" href="<?=$this->url(array("controller"=>"products", "action"=>"deletesub", "id"=>NULL, "subid"=>$sub_product->id))?>">X</a></td>
 		</tr>
 		<?php endforeach ?>

@@ -15,7 +15,7 @@ $this->secondary_text = 'Список товаров';
     </tr>
     </thead>
     <?php foreach ($this->pages as $page):?>
-        <tr>
+        <tr class="<?=$this->contextualClassTr($page);?>">
             <td><?=$page->getId()?></td>
             <td><?=$this->getManufactureCategory($page->getCategoryId())->getTitle()?></td>
             <td><?=$page->getTitle()?></td>
@@ -26,6 +26,7 @@ $this->secondary_text = 'Список товаров';
                     'item_controller' => 'manufacture',
                     'item_id' => $page->getId(),
                     'item_path' => '/manufacture/'.$page->getFullPath(),
+                    'deleted' => ($page->getDeleted() != 0)? true : false,
                 ))?>
             </td>
         </tr>

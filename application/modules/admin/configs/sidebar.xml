@@ -116,6 +116,26 @@
                             <action>edit</action>
                             <resourse>pipeline-categories</resourse>
                         </category_edit>
+                        <property>
+                            <label>Свойства товара</label>
+                            <module>admin</module>
+                            <controller>pipeline-property</controller>
+                            <resourse>pipeline-property</resourse>
+                        </property>
+                        <property_add>
+                            <label>Добавить свойство</label>
+                            <module>admin</module>
+                            <controller>pipeline-property</controller>
+                            <action>add</action>
+                            <resourse>pipeline-property</resourse>
+                        </property_add>
+                        <property_edit>
+                            <label>Редактировать свойство</label>
+                            <module>admin</module>
+                            <controller>pipeline-property</controller>
+                            <action>edit</action>
+                            <resourse>pipeline-property</resourse>
+                        </property_edit>
                     </pages>
                 </pipeline>
                 <oil>

@@ -1,6 +1,6 @@
 <?php
 
-class Admin_Form_PipelinePropertyEdit extends Twitter_Bootstrap_Form_Horizontal
+class Admin_Form_PipelinePropertyEdit extends Twitter_Bootstrap_Form_Vertical
 {
 
     public function init()
@@ -48,14 +48,18 @@ class Admin_Form_PipelinePropertyEdit extends Twitter_Bootstrap_Form_Horizontal
         ));
 
         $this->addElement('checkbox', 'deleted', array(
-            'label'         => 'Cтраница удалена',
+            'label'         => 'Свойство удалено',
         ));
 
-        $this->addElement('button', 'submit', array(
+        /*$this->addElement('button', 'submit', array(
             'label'         => 'Сохранить',
             'type'          => 'submit',
             'buttonType'    => 'success',
             'ignore' => true,
+        ));*/
+
+        $this->addAttribs(array(
+            'id' => 'itemEdit',
         ));
     }
 
