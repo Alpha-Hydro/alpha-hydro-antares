@@ -30,19 +30,47 @@ class Utils_ExportCatalogGeneratorController extends Zend_Controller_Action
                 $item['name'] = $product->getName();
                 $item['image'] = $product->getImage();
                 $item['uri'] = $product->getFullPath();
+                $item['property'] = $this->getProductParams($product);
                 $expProducts[] = $item;
             }
             //$expProducts = $this->arrayToCsv($expProducts);
         }
 
-        $fp = fopen('./tmp/file.csv', 'w');
+        /*$fp = fopen('./tmp/file.csv', 'w');
         foreach ($expProducts as $fields) {
             fputcsv($fp, $fields, ";");
         }
-        fclose($fp);
+        fclose($fp);*/
+
+        /*$out = fopen('php://output', 'w');
+        fputcsv($out, $expProducts);
+        fclose($out);*/
 
         $this->view->array = $expProducts;
 
+    }
+
+    /**
+     * @param Catalog_Model_Products $product
+     * @return array
+     */
+    public function getProductParams(Catalog_Model_Products $product)
+    {
+        $productMapper = new Catalog_Model_Mapper_Products();
+        $productsParamsMapper = new Catalog_Model_Mapper_ProductParams();
+        $select = $productsParamsMapper->getDbTable()->select()->order('order ASC');
+        $productParams = $productMapper->findProductParams($product->getId(), $select);
+
+        $property = array();
+        if(!empty($productParams)){
+            foreach ($productParams as $productParam) {
+                $value['name'] = $productParam->getName();
+                $value['value'] = $productParam->getValue();
+                $property[] = $value;
+            }
+        }
+
+        return $property;
     }
 
     /**
