@@ -56,7 +56,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         );
 
         $hostHttp = new Zend_Controller_Request_Http();
+
         $host = $hostHttp->getServer('HTTP_HOST');
+        $requestUri = $hostHttp->getServer('REQUEST_URI');
 
         if(in_array($host, $aHostName)){
             $hostnameRoute = new Zend_Controller_Router_Route_Hostname(

@@ -5,6 +5,10 @@
     $this->meta_description = $this->escape($this->page->metaDescription);
     $this->meta_keywords = $this->escape($this->page->metaKeywords);
 ?>
+<div class="hidden">
+    <h1><?=$this->escape($this->page->title);?></h1>
+    <div><?=$this->escape($this->page->description);?></div>
+</div>
 <div class="sections">
     <div class="row">
         <div class="col-md-6 text-center">
