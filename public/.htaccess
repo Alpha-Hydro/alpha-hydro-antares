@@ -65,11 +65,12 @@ RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
 RewriteRule ^ http://%1%{REQUEST_URI} [R=301,L]
 
 # Редирект с внешних доменов на alpha-hydro.com
-# RewriteCond %{HTTP_HOST} ^alpha-hydro\.ru$ [OR]
+RewriteCond %{HTTP_HOST} ^alpha-hydro\.ru$ [OR]
 RewriteCond %{HTTP_HOST} ^4494944\.ru$ [OR]
 RewriteCond %{HTTP_HOST} ^4494944\.org$ [OR]
 RewriteCond %{HTTP_HOST} ^alfa-hydro\.ru$ [OR]
-RewriteCond %{HTTP_HOST} ^alfa-hydro\.com$ [NC]
+RewriteCond %{HTTP_HOST} ^alfa-hydro\.com$
+RewriteCond %{REQUEST_URI} !^/robots\.txt$
 RewriteRule ^ http://alpha-hydro.com%1%{REQUEST_URI} [R=301,L]
 
 # Обязательный слеш в конце пути
