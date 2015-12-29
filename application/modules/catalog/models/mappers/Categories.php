@@ -234,6 +234,36 @@ class Catalog_Model_Mapper_Categories
         return $result;
     }
 
+    /*public function fetchTreeSubCategories($id = null)
+    {
+        if(is_null($id))
+            $id = 0;
+
+        $table = $this->getDbTable();
+        $select = $table->select()
+            ->where('deleted != ?', 1)
+            ->where('active != ?', 0)
+            //->limit(1)
+            ->order('sorting ASC');
+
+        $entries = $this->fetchAll($select->where('parent_id = ?', $id));
+
+        if(!empty($entries))
+            return null;
+
+        $result = array();
+        foreach ($entries as $entry) {
+            $id = $entry->id;
+            $subCategories = $this->fetchAll($select->where('parent_id = ?', $id));
+            if(!empty($subCategories))
+                $entry[]=$this->fetchTreeSubCategories($id);
+
+            $result[] = $entry;
+        }
+
+        return $result;
+    }*/
+
     /**
      * @param $value
      * @param Catalog_Model_Categories $categories
