@@ -848,6 +848,9 @@
             <controllerFile controllerName="ExportCatalogGenerator">
               <actionMethod actionName="index"/>
             </controllerFile>
+            <controllerFile controllerName="TreeCatalog">
+              <actionMethod actionName="index"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory enabled="false"/>
           <layoutsDirectory enabled="false">
@@ -905,6 +908,9 @@
                 <viewScriptFile forActionName="new"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="ExportCatalogGenerator">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="TreeCatalog">
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>

@@ -109,6 +109,14 @@ class Utils_ExportCatalogGeneratorController extends Zend_Controller_Action
 
     public function fetchTreeSubCategory($category_id = null)
     {
+        $categoryMapper = new Catalog_Model_Mapper_Categories();
+        $productMapper = new Catalog_Model_Mapper_Products();
+        $selectProduct = $productMapper->getDbTable()
+            ->select()
+            ->where('deleted != ?', 1)
+            ->where('active != ?', 0)
+            ->order('sorting ASC');
+
         if(is_null($category_id))
             $category_id = 0;
 
@@ -118,6 +126,8 @@ class Utils_ExportCatalogGeneratorController extends Zend_Controller_Action
             foreach ($categories as $category) {
                 $aCategory = $this->getCategoryArray($category);
                 $subCategory = $this->getSubCategory($category->getId());
+                $categoryProducts = $categoryMapper->fetchProductsRel($category->getId(),$selectProduct);
+                $aCategory['products'] = count($categoryProducts);
                 if(!empty($subCategory)){
                     $aCategory['subCategory'] = $this->fetchTreeSubCategory($category->getId());
                 }
