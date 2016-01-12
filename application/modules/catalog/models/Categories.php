@@ -37,6 +37,8 @@ class Catalog_Model_Categories
 
     protected $_deleted = null;
 
+    protected $_subCategories = null;
+
     /**
      * @param $options
      */
@@ -492,6 +494,24 @@ class Catalog_Model_Categories
     public function getDeleted()
     {
         return $this->_deleted;
+    }
+
+    /**
+     * @param null $subCategories
+     * @return Catalog_Model_Categories
+     */
+    public function setSubCategories($subCategories)
+    {
+        $this->_subCategories = $subCategories;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getSubCategories()
+    {
+        return $this->_subCategories;
     }
 
 

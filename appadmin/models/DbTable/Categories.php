@@ -31,12 +31,22 @@ class Model_DbTable_Categories extends Zend_Db_Table_Abstract {
     /**
      * Dependent tables
      */
-    protected $_dependentTables = array('Model_DbTable_CategoryXref', 'Model_DbTable_Categories');
+    protected $_dependentTables = array(
+        'Model_DbTable_CategoryXref',
+        'Model_DbTable_Categories'
+    );
     
     /**
      * Relation tables
      */
-    protected $_referenceMap = array('CategoriesRel' => array('columns' => array('parent_id'), 'refTableClass' => 'Model_DbTable_Categories', 'refColumns' => array('id'), 'onDelete' => self::CASCADE));
+    protected $_referenceMap = array(
+        'CategoriesRel' => array(
+            'columns' => array('parent_id'),
+            'refTableClass' => 'Model_DbTable_Categories',
+            'refColumns' => array('id'),
+            'onDelete' => self::CASCADE
+        )
+    );
 
 }
 ?>

@@ -234,35 +234,59 @@ class Catalog_Model_Mapper_Categories
         return $result;
     }
 
-    /*public function fetchTreeSubCategories($id = null)
+    public function fetchTreeSubCategories($id = null)
     {
+        $frontendOptions = array(
+            'lifetime' => 7200, // время жизни кэша - 2 часа
+            'automatic_serialization' => true
+        );
+
+        $backendOptions = array(
+            'cache_dir' => '../cache/' // директория, в которой размещаются файлы кэша
+        );
+
+        // получение объекта Zend_Cache_Core
+        $cache = Zend_Cache::factory('Core',
+            'File',
+            $frontendOptions,
+            $backendOptions);
+
+        //$cache->clean(Zend_Cache::CLEANING_MODE_ALL);
+
         if(is_null($id))
             $id = 0;
 
-        $table = $this->getDbTable();
-        $select = $table->select()
+        $select = $this->getDbTable()->select()
             ->where('deleted != ?', 1)
             ->where('active != ?', 0)
-            //->limit(1)
+            ->limit(10)
             ->order('sorting ASC');
 
-        $entries = $this->fetchAll($select->where('parent_id = ?', $id));
 
-        if(!empty($entries))
+        $entries = $this->fetchSubCategoriesRel($id, $select);
+
+        if(0 == count($entries))
             return null;
 
-        $result = array();
-        foreach ($entries as $entry) {
-            $id = $entry->id;
-            $subCategories = $this->fetchAll($select->where('parent_id = ?', $id));
-            if(!empty($subCategories))
-                $entry[]=$this->fetchTreeSubCategories($id);
 
-            $result[] = $entry;
+        if(!$result = $cache->load('treeCategories')) {
+            $result = array();
+            foreach ($entries as $entry) {
+//                $data = $this->_getDbData($entry);
+//                $data['id'] = $entry->id;
+                $id = $entry->id;
+                $subCategories = $this->fetchSubCategoriesRel($id, $select);
+                if(!is_null($subCategories))
+                    //$data['subCategories'] = $this->fetchTreeSubCategories($id);
+                    $entry->setSubCategories($this->fetchTreeSubCategories($id));
+
+                $result[] = $entry;
+            }
+            $cache->save($result, 'treeCategories');
         }
 
         return $result;
-    }*/
+    }
 
     /**
      * @param $value
@@ -312,6 +336,41 @@ class Catalog_Model_Mapper_Categories
             $entry = new Catalog_Model_Products();
             $entry = $products->_setDbData($row, $entry);
             $entries[] = $entry;
+        }
+
+        return $entries;
+    }
+
+    /**
+     * @param $id
+     * @param Zend_Db_Table_Select|null $select
+     * @return array|null
+     * @throws Zend_Db_Table_Exception
+     * @throws Zend_Db_Table_Row_Exception
+     */
+    public function fetchSubCategoriesRel($id, Zend_Db_Table_Select $select = null)
+    {
+        $entries = array();
+        if($id != 0){
+            $result = $this->getDbTable()->find($id);
+            if(0 == count($result))
+                return null;
+
+            $category = $result->current();
+            $resultSet = $category->findDependentRowset('Catalog_Model_DbTable_Categories',null, $select);
+
+            foreach ($resultSet as $row) {
+                $entry = new Catalog_Model_Categories();
+                $entry = $this->_setDbData($row, $entry);
+                $entries[] = $entry;
+            }
+        }
+        else{
+            if(is_null($select))
+                $select = $this->getDbTable()->select();
+
+            $select->where('parent_id = ?', 0);
+            $entries = $this->fetchAll($select);
         }
 
         return $entries;
