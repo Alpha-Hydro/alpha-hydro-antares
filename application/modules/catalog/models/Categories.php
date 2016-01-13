@@ -39,6 +39,8 @@ class Catalog_Model_Categories
 
     protected $_subCategories = null;
 
+    protected $_countProducts = null;
+
     /**
      * @param $options
      */
@@ -512,6 +514,24 @@ class Catalog_Model_Categories
     public function getSubCategories()
     {
         return $this->_subCategories;
+    }
+
+    /**
+     * @param null $countProducts
+     * @return Catalog_Model_Categories
+     */
+    public function setCountProducts($countProducts)
+    {
+        $this->_countProducts = $countProducts;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getCountProducts()
+    {
+        return $this->_countProducts;
     }
 
 

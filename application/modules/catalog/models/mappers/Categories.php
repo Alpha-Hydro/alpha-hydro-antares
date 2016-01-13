@@ -234,6 +234,10 @@ class Catalog_Model_Mapper_Categories
         return $result;
     }
 
+    /**
+     * @param null $id
+     * @return array|false|mixed|null
+     */
     public function fetchTreeSubCategories($id = null)
     {
         $frontendOptions = array(
@@ -259,7 +263,6 @@ class Catalog_Model_Mapper_Categories
         $select = $this->getDbTable()->select()
             ->where('deleted != ?', 1)
             ->where('active != ?', 0)
-            ->limit(10)
             ->order('sorting ASC');
 
 
@@ -272,17 +275,90 @@ class Catalog_Model_Mapper_Categories
         if(!$result = $cache->load('treeCategories')) {
             $result = array();
             foreach ($entries as $entry) {
-//                $data = $this->_getDbData($entry);
-//                $data['id'] = $entry->id;
                 $id = $entry->id;
+
+                $productMapper = new Catalog_Model_Mapper_Products();
+                $selectProduct = $productMapper->getDbTable()->select()
+                    ->where('deleted != ?', 1)
+                    ->where('active != ?', 0)
+                    ->order('sorting ASC');
+                $products = $this->fetchProductsRel($id, $selectProduct);
+                if(!is_null($products))
+                    $entry->setCountProducts(count($products));
+
                 $subCategories = $this->fetchSubCategoriesRel($id, $select);
                 if(!is_null($subCategories))
-                    //$data['subCategories'] = $this->fetchTreeSubCategories($id);
                     $entry->setSubCategories($this->fetchTreeSubCategories($id));
 
                 $result[] = $entry;
             }
             $cache->save($result, 'treeCategories');
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param null $id
+     * @return array|false|mixed|null
+     */
+    public function fetchTreeSubCategoriesInArray($id = null)
+    {
+        $frontendOptions = array(
+            'lifetime' => 7200, // время жизни кэша - 2 часа
+            'automatic_serialization' => true
+        );
+
+        $backendOptions = array(
+            'cache_dir' => '../cache/' // директория, в которой размещаются файлы кэша
+        );
+
+        // получение объекта Zend_Cache_Core
+        $cache = Zend_Cache::factory('Core',
+            'File',
+            $frontendOptions,
+            $backendOptions);
+
+        //$cache->clean(Zend_Cache::CLEANING_MODE_ALL);
+
+        if(is_null($id))
+            $id = 0;
+
+        $select = $this->getDbTable()->select()
+            ->where('deleted != ?', 1)
+            ->where('active != ?', 0)
+            ->order('sorting ASC');
+
+
+        $entries = $this->fetchSubCategoriesRel($id, $select);
+
+        if(0 == count($entries))
+            return null;
+
+
+        if(!$result = $cache->load('treeCategoriesArray')) {
+            $result = array();
+            foreach ($entries as $entry) {
+                $id = $entry->id;
+                $data = $this->_getDbData($entry);
+                $data['id'] = $id;
+
+                $productMapper = new Catalog_Model_Mapper_Products();
+                $selectProduct = $productMapper->getDbTable()->select()
+                    ->where('deleted != ?', 1)
+                    ->where('active != ?', 0)
+                    ->order('sorting ASC');
+                $products = $this->fetchProductsRel($id, $selectProduct);
+                if(!is_null($products))
+                    $data['countProducts'] = count($products);
+
+                $subCategories = $this->fetchSubCategoriesRel($id, $select);
+                if(!is_null($subCategories))
+                    $data['subCategories'] = $this->fetchTreeSubCategoriesInArray($id);
+
+                $result[] = $data;
+            }
+            $cache->save($result, 'treeCategoriesArray');
         }
 
         return $result;
