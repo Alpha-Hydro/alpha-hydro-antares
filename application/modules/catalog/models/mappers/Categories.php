@@ -240,22 +240,9 @@ class Catalog_Model_Mapper_Categories
      */
     public function fetchTreeSubCategories($id = null)
     {
-        $frontendOptions = array(
-            'lifetime' => 7200, // время жизни кэша - 2 часа
-            'automatic_serialization' => true
-        );
+        $cache = Zend_Registry::get('cache');
 
-        $backendOptions = array(
-            'cache_dir' => '../cache/' // директория, в которой размещаются файлы кэша
-        );
-
-        // получение объекта Zend_Cache_Core
-        $cache = Zend_Cache::factory('Core',
-            'File',
-            $frontendOptions,
-            $backendOptions);
-
-        //$cache->clean(Zend_Cache::CLEANING_MODE_ALL);
+        //$cache->remove('treeCategories');
 
         if(is_null($id))
             $id = 0;
@@ -304,22 +291,9 @@ class Catalog_Model_Mapper_Categories
      */
     public function fetchTreeSubCategoriesInArray($id = null)
     {
-        $frontendOptions = array(
-            'lifetime' => 7200, // время жизни кэша - 2 часа
-            'automatic_serialization' => true
-        );
+        $cache = Zend_Registry::get('cache');
 
-        $backendOptions = array(
-            'cache_dir' => '../cache/' // директория, в которой размещаются файлы кэша
-        );
-
-        // получение объекта Zend_Cache_Core
-        $cache = Zend_Cache::factory('Core',
-            'File',
-            $frontendOptions,
-            $backendOptions);
-
-        //$cache->clean(Zend_Cache::CLEANING_MODE_ALL);
+        //$cache->remove('treeCategoriesArray');
 
         if(is_null($id))
             $id = 0;

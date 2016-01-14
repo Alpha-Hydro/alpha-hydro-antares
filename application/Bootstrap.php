@@ -83,4 +83,25 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         );
         $router->addRoute('sitemap', $sitemap);
     }
+
+    public function _initCache()
+    {
+        $frontendOptions = array(
+            'lifetime' => 3600 * 24, // время жизни кэша - 24 часа
+            'automatic_serialization' => true
+        );
+
+        $backendOptions = array(
+            'cache_dir' => '../cache/' // директория, в которой размещаются файлы кэша
+        );
+
+        // получение объекта Zend_Cache_Core
+        $cache = Zend_Cache::factory('Core',
+            'File',
+            $frontendOptions,
+            $backendOptions
+        );
+        Zend_Db_Table_Abstract::setDefaultMetadataCache($cache); //cache database table schemata metadata for faster SQL queries
+        Zend_Registry::set('cache',$cache);
+    }
 }

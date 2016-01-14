@@ -2,6 +2,7 @@
 
 class Utils_TreeCatalogController extends Zend_Controller_Action
 {
+    protected $_categoryWithProducts = array();
 
     public function init()
     {
@@ -10,120 +11,238 @@ class Utils_TreeCatalogController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        //Основной массив
-        $expArray = array();
-        $categoryMapper = new Catalog_Model_Mapper_Categories();
+        $cache = Zend_Registry::get('cache');
 
-        //$treeCategories = $categoryMapper->fetchTreeSubCategoriesInArray();
-        $treeCategories = $categoryMapper->fetchTreeSubCategories();
+        if(!$expArray = $cache->load('fullCatalogProducts')){
 
-        $iterator = new RecursiveArrayIterator($treeCategories);
-        //var_dump($iterator->getChildren());
+            //Основной массив
+            $expArray = array();
+            $categoryMapper = new Catalog_Model_Mapper_Categories();
 
-        foreach ($iterator as $item) {
-            $children = $item->getSubCategories();
-            $it = new RecursiveArrayIterator($children);
-            var_dump($it->hasChildren());
-            //$expArray[] = $item['name'];
-            $arr['name'] = $item->name;
-            $arr['children'] = $it->current()->name;
-            $expArray[] = $arr;
+            $treeCategories = $categoryMapper->fetchTreeSubCategoriesInArray();
+
+            foreach ($treeCategories as $item) {
+                $this->setCategoryWithProducts(array());
+                $children = $item['subCategories'];
+                $it = new RecursiveArrayIterator($children);
+                iterator_apply($it, array('Utils_TreeCatalogController','fetchCategoriesWithProducts'), array($it));
+
+                $categoryProducts = $this->getCategoryWithProducts();
+                if(!empty($categoryProducts)){
+                    foreach ($categoryProducts as $key => $categoryProduct) {
+                        $products = $this->getProductsCategory($key);
+                        $categoryProducts[$key]['products'] = $products;
+                    }
+                }
+
+                $expArray[$item['id']] = $categoryProducts;
+            }
+
+            $cache->save($expArray, 'fullCatalogProducts');
         }
 
-        /*foreach ($treeCategories as $category) {
-            $item['name'] = $category->getName();
-            $subCategory = $category->getSubCategories();
 
-            $item['subCategory'] = (!is_array($subCategory))
-                ? 'false'
-                : $subCategory;
-                //: $this->recursiveSubCategories($subCategory, 1);
-
-            $expArray[] = $item;
-        }*/
         $this->view->array = $expArray;
-        //$this->view->array = $treeCategories;
     }
 
     /**
-     * @param null $category_id
-     * @return array
+     * @param RecursiveArrayIterator $iterator
      */
-    public function fetchCategoriesWithProducts($category_id = null)
-    {
-        if(is_null($category_id))
-            $category_id = 0;
-
-        $categoryMapper = new Catalog_Model_Mapper_Categories();
-        $select = $categoryMapper->getDbTable()
-            ->select()
-            ->where('deleted != ?', 1)
-            ->where('active != ?', 0)
-            ->limit(13)
-            ->order('sorting ASC');
-
-        $result = array();
-        $categories = $categoryMapper->fetchSubCategoriesRel($category_id, $select);
-        $item = array();
-        if(!empty($categories)){
-            foreach ($categories as $category) {
-                $category_id = $category->getId();
-                $subCategories = $categoryMapper->fetchSubCategoriesRel($category_id, $select);
-                if(0 == count($subCategories)){
-                    //$item[] = $category_id;
-                    var_dump($category_id);
-                }
-                else{
-                    $this->fetchCategoriesWithProducts($category_id);
-                }
-                $result[] = $item;
+    public function fetchCategoriesWithProducts(RecursiveArrayIterator $iterator) {
+        while ($iterator -> valid()){
+            if ($iterator -> hasChildren()){
+                $this->fetchCategoriesWithProducts($iterator->getChildren());
             }
-
+            else {
+                if($iterator->key() == 'countProducts' && $iterator->current() != '0')
+                    $this->_categoryWithProducts[$iterator->offsetGet('id')] = array(
+                            //'name' => $iterator->offsetGet('name'),
+                            'countProduct' => $iterator->offsetGet('countProducts'),
+                    );
+                    /*$this->_categoryWithProducts[$iterator->offsetGet('id')] =
+                            $iterator->offsetGet('countProducts');*/
+            }
+            $iterator -> next();
         }
-        /*else{
-            $result[] = $category_id;
-        }*/
-
-
-        /*$categories = $this->getSubCategories($category_id);
-
-        if(!empty($categories)){
-            $item = array();
-            foreach ($categories as $category) {
-                $subCategories = $this->getSubCategories($category->getId());
-                $item['name'] = $category->getName();
-                if(!empty($subCategories)){
-                    $item['subCategories'] = $this->fetchCategoriesWithProducts($category->getId());
-                }
-//                $categoryProducts = $categoryMapper->fetchProductsRel($category->getId(),$selectProduct);
-//                if(!empty($categoryProducts))
-//                    $item['products'] = count($categoryProducts);
-
-                $result[] = $item;
-            }
-        }*/
-        return $result;
     }
 
-    public function recursiveSubCategories($data, $level = 0, $p_counter = 1, $prefix = '')
+    /**
+     * @param $category_id
+     * @return array
+     */
+    public function getProductsCategory($category_id)
     {
-        $i = 0;
-        foreach ($data as $item) {
-            $parent_id = $item->getParentId();
-            if($parent_id == 0){
-                $name = $item->getName();
-                $p_counter++;
-            }
+        $cache = Zend_Registry::get('cache');
 
-            elseif($parent_id !=0){
-                $name = $item->getName();
+        if(!$expProducts = $cache->load('productsCategory'.$category_id)) {
+            $expProducts = array();
+            $categoryMapper = new Catalog_Model_Mapper_Categories();
+            $productMapper = new Catalog_Model_Mapper_Products();
+            $selectProduct = $productMapper->getDbTable()->select()
+                ->where('deleted != ?', 1)
+                ->where('active != ?', 0)
+                ->order('sorting ASC');
+            $products = $categoryMapper->fetchProductsRel($category_id, $selectProduct);
+
+            if (!empty($products)) {
+                foreach ($products as $product) {
+                    $expProducts[] = array('item', 'name', 'image', 'uri', 'description', 'note');
+
+                    $item = $this->productToArray($product, false);
+
+                    $expProducts[] = $item;
+
+                    $property = $this->productProperty_Csv($product, false);
+                    if (!empty($property)) {
+                        $expProducts[] = array('propertiesTable');
+                        $expProducts[] = $property['name'];
+                        $expProducts[] = $property['value'];
+                    }
+
+                    $modifications = $this->productModificationTableValues($product, false);
+                    if (!empty($modifications)) {
+                        $expProducts[] = array('modificationsTable');
+                        foreach ($modifications as $modification) {
+                            $expProducts[] = $modification;
+                        }
+                    }
+                }
             }
-            else{
-                $name = $item->getName();
+            $cache->save($expProducts, 'productsCategory'.$category_id);
+        }
+
+        return $expProducts;
+    }
+
+    /**
+     * @param Catalog_Model_Products $product
+     * @param bool $toWin
+     * @return array
+     */
+    public function productToArray(Catalog_Model_Products $product, $toWin = false)
+    {
+        $item = array();
+
+        $item['sku'] = $product->getSku();
+        $item['name'] = (!$toWin)
+            ?$product->getName()
+            :$this->_toWindow($product->getName());
+        $item['image'] = $product->getImage();
+        $item['uri'] = $product->getFullPath();
+        $item['description'] = (!$toWin)
+            ?$product->getDescription()
+            :$this->_toWindow($product->getDescription());
+        $item['note'] = (!$toWin)
+            ?$product->getNote()
+            :$this->_toWindow($product->getNote());
+
+        return $item;
+    }
+
+    /**
+     * @param Catalog_Model_Products $product
+     * @param bool $toWin
+     * @return array
+     */
+    public function productProperty_Csv(Catalog_Model_Products $product, $toWin = false)
+    {
+        $productMapper = new Catalog_Model_Mapper_Products();
+        $productsParamsMapper = new Catalog_Model_Mapper_ProductParams();
+        $select = $productsParamsMapper->getDbTable()->select()->order('order ASC');
+        $productParams = $productMapper->findProductParams($product->getId(), $select);
+
+        $property = array();
+        if(!empty($productParams)){
+            foreach ($productParams as $key => $productParam) {
+                $property['name']['property_'.$key.'_name'] = (!$toWin)
+                    ? $productParam->getName()
+                    : $this->_toWindow($productParam->getName());
+                $property['value']['property_'.$key.'_value'] = (!$toWin)
+                    ? $productParam->getValue()
+                    : $this->_toWindow($productParam->getValue());
             }
         }
 
-        //return $result;
+        return $property;
+    }
+
+    /**
+     * @param Catalog_Model_Products $product
+     * @param bool $toWin
+     * @return array
+     */
+    public function productModificationTableValues(Catalog_Model_Products $product, $toWin = false)
+    {
+        $productMapper = new Catalog_Model_Mapper_Products();
+        $subproducts = new Catalog_Model_Mapper_Subproducts();
+        $select = $subproducts->getDbTable()->select()->order('order ASC');
+        $modifications = $productMapper->findSubproductsRel($product->getId(), $select);
+        $modificationsTableValues = array();
+        if(!empty($modifications)){
+            $modificationsTableValues['headTable'] = $this->productModificationTableTitle($product, $toWin);
+            foreach ($modifications as $modification) {
+                $modificationPropertyValues = $subproducts->findSubProductParamValue($modification->getId());
+                $values = array();
+                $values[] = $modification->getSku();
+                foreach ($modificationPropertyValues as $modificationPropertyValue) {
+                    $values[] = (!$toWin)
+                        ? $modificationPropertyValue->getValue()
+                        : $this->_toWindow($modificationPropertyValue->getValue());
+                }
+
+                $modificationsTableValues[] = $values;
+            }
+        }
+
+        return $modificationsTableValues;
+    }
+
+    public function productModificationTableTitle(Catalog_Model_Products $product, $toWin = false)
+    {
+        $productMapper = new Catalog_Model_Mapper_Products();
+        $subproductParams = new Catalog_Model_Mapper_SubproductParams();
+        $select = $subproductParams->getDbTable()->select()->order('order ASC');
+        $subproductProperty = $productMapper->findSubproductParams($product->getId(), $select);
+        $modificationTableTitle = array();
+        if(!empty($subproductProperty)){
+            $modificationTableTitle[] = (!$toWin)
+                ? 'Название'
+                : $this->_toWindow('Название');
+            foreach ($subproductProperty as $name) {
+                $modificationTableTitle[] = (!$toWin)
+                    ? $name->getName()
+                    :$this->_toWindow($name->getName());
+            }
+        }
+
+        return $modificationTableTitle;
+    }
+
+
+    /**
+     * @param array $categoryWithProducts
+     * @return Utils_TreeCatalogController
+     */
+    public function setCategoryWithProducts($categoryWithProducts)
+    {
+        $this->_categoryWithProducts = $categoryWithProducts;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCategoryWithProducts()
+    {
+        return $this->_categoryWithProducts;
+    }
+
+    /**
+     * @param $ii
+     * @return string
+     */
+    private function _toWindow($ii){
+        return iconv( "utf-8", "windows-1251",$ii);
     }
 
 }
