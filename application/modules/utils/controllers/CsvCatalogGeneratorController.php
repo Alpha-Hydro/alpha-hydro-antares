@@ -1,6 +1,6 @@
 <?php
 
-class Utils_TreeCatalogController extends Zend_Controller_Action
+class Utils_CsvCatalogGeneratorController extends Zend_Controller_Action
 {
     protected $_categoryWithProducts = array();
 
@@ -11,12 +11,17 @@ class Utils_TreeCatalogController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $cache = Zend_Registry::get('cache');
+        /*$cache = Zend_Registry::get('cache');
 
-        if(!$expArray = $cache->load('fullCatalogProducts')){
+        $cache->remove('fullCatalogProducts');
+
+//        if(!$arrayGroupProducts = $cache->load('fullCatalogProducts')){
 
             //Основной массив
-            $expArray = array();
+            $expArrayCsv = array();
+            //Массив по группам
+            $arrayGroupProducts = array();
+
             $categoryMapper = new Catalog_Model_Mapper_Categories();
 
             $treeCategories = $categoryMapper->fetchTreeSubCategoriesInArray();
@@ -25,24 +30,140 @@ class Utils_TreeCatalogController extends Zend_Controller_Action
                 $this->setCategoryWithProducts(array());
                 $children = $item['subCategories'];
                 $it = new RecursiveArrayIterator($children);
-                iterator_apply($it, array('Utils_TreeCatalogController','fetchCategoriesWithProducts'), array($it));
+                iterator_apply($it, array('Utils_CsvCatalogGeneratorController','fetchCategoriesWithProducts'), array($it));
 
                 $categoryProducts = $this->getCategoryWithProducts();
                 if(!empty($categoryProducts)){
                     foreach ($categoryProducts as $key => $categoryProduct) {
+                        $expArrayCsv[] = array('category name', 'uri');
+                        $expArrayCsv[] = array(
+                            'name' => $categoryProduct['name'],
+                            'full_path' => $categoryProduct['full_path'],
+                        );
                         $products = $this->getProductsCategory($key);
-                        $categoryProducts[$key]['products'] = $products;
+                        foreach ($products as $product) {
+                            $expArrayCsv[] = $product;
+                        }
                     }
                 }
 
-                $expArray[$item['id']] = $categoryProducts;
+                //$arrayGroupProducts[] = $categoryProducts;
+
+                //$arrayGroupProducts[$item['id']] = $categoryProducts;
             }
 
-            $cache->save($expArray, 'fullCatalogProducts');
+//            $cache->save($arrayGroupProducts, 'fullCatalogProducts');
+//        }*/
+
+
+//        $this->view->array = $this->getArrayGroupProducts();
+
+        $expArrayCsv = $this->getExpArrayCsv();
+        //$this->fileToCsv('./tmp/catalog_pdf.csv', $expArrayCsv);
+        $this->view->array = $expArrayCsv;
+    }
+
+    /**
+     * @return array
+     * @throws Zend_Exception
+     */
+    public function getExpArrayCsv()
+    {
+        /*$cache = Zend_Registry::get('cache');
+
+        $cache->remove('expArrayCsv');*/
+
+
+        //Основной массив
+        $expArrayCsv = array();
+
+        $categoryMapper = new Catalog_Model_Mapper_Categories();
+
+        $treeCategories = $categoryMapper->fetchTreeSubCategoriesInArray();
+
+        foreach ($treeCategories as $item) {
+            $this->setCategoryWithProducts(array());
+            $children = $item['subCategories'];
+            $it = new RecursiveArrayIterator($children);
+            iterator_apply($it, array('Utils_CsvCatalogGeneratorController','fetchCategoriesWithProducts'), array($it));
+
+            $categoryProducts = $this->getCategoryWithProducts();
+            if(!empty($categoryProducts)){
+                foreach ($categoryProducts as $key => $categoryProduct) {
+                    $expArrayCsv[] = array('category name', 'uri');
+                    $expArrayCsv[] = array(
+                        'name' => $categoryProduct['name'],
+                        'full_path' => $categoryProduct['full_path'],
+                    );
+                    $products = $this->getProductsCategory($key);
+                    foreach ($products as $product) {
+                        $expArrayCsv[] = $product;
+                    }
+                }
+            }
+        }
+
+        return $expArrayCsv;
+    }
+
+    /**
+     * @return array
+     * @throws Zend_Exception
+     */
+    public function getArrayGroupProducts()
+    {
+//        $cache = Zend_Registry::get('cache');
+//
+//        $cache->remove('fullCatalogProducts');
+
+
+        //Массив по группам
+        $arrayGroupProducts = array();
+
+        $categoryMapper = new Catalog_Model_Mapper_Categories();
+
+        $treeCategories = $categoryMapper->fetchTreeSubCategoriesInArray();
+
+        foreach ($treeCategories as $item) {
+            $this->setCategoryWithProducts(array());
+            $children = $item['subCategories'];
+            $it = new RecursiveArrayIterator($children);
+            iterator_apply($it, array('Utils_CsvCatalogGeneratorController','fetchCategoriesWithProducts'), array($it));
+
+            $categoryProducts = $this->getCategoryWithProducts();
+            if(!empty($categoryProducts)){
+                foreach ($categoryProducts as $key => $categoryProduct) {
+                    $products = $this->getProductsCategory($key);
+                    $categoryProducts[$key]['products'] = $products;
+                }
+            }
+
+            $arrayGroupProducts[$item['id']] = $categoryProducts;
         }
 
 
-        $this->view->array = $expArray;
+        return $arrayGroupProducts;
+    }
+
+    /**
+     * @param $filename
+     * @param array $fields
+     * @param string $mode
+     *
+     * - при записи CSV файла в его начало необходимо добавить BOM последовательность,
+     * - которая явно будет указывать на то, что файл в кодировке UTF8
+     * - fwrite($fp,b"\xEF\xBB\xBF");
+     */
+    public function fileToCsv($filename, array &$fields, $mode = 'w')
+    {
+        $fp = fopen($filename, $mode);
+        //при записи CSV файла в его начало необходимо добавить BOM последовательность,
+        //которая явно будет указывать на то, что файл в кодировке UTF8
+        fwrite($fp,b"\xEF\xBB\xBF");
+        foreach ($fields as $field) {
+            fputcsv($fp, $field, ";");
+        }
+        fclose($fp);
     }
 
     /**
@@ -56,7 +177,8 @@ class Utils_TreeCatalogController extends Zend_Controller_Action
             else {
                 if($iterator->key() == 'countProducts' && $iterator->current() != '0')
                     $this->_categoryWithProducts[$iterator->offsetGet('id')] = array(
-                            //'name' => $iterator->offsetGet('name'),
+                            'name' => $iterator->offsetGet('name'),
+                            'full_path' => $iterator->offsetGet('full_path'),
                             'countProduct' => $iterator->offsetGet('countProducts'),
                     );
                     /*$this->_categoryWithProducts[$iterator->offsetGet('id')] =
@@ -220,8 +342,8 @@ class Utils_TreeCatalogController extends Zend_Controller_Action
 
 
     /**
-     * @param array $categoryWithProducts
-     * @return Utils_TreeCatalogController
+     * @param $categoryWithProducts
+     * @return $this
      */
     public function setCategoryWithProducts($categoryWithProducts)
     {

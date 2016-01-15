@@ -30,9 +30,10 @@
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
                         <li class="<?=($controller == 'index')?'active':'';?>"><a href="<?= $this->url(array('controller'=>'index', 'action'=>'index'));?>">Home</a></li>
-                        <li class="<?=($controller == 'models-generator')?'active':'';?>"><a href="<?= $this->url(array('controller'=>'models-generator', 'action'=>'index'));?>">Model mappers</a></li>
+                        <li class="<?=($controller == 'models-generator')?'active':'';?>"><a href="<?= $this->url(array('controller'=>'models-generator', 'action'=>'index'));?>">Model Mappers</a></li>
                         <li class="<?=($controller == 'sefurl')?'active':'';?>"><a href="<?= $this->url(array('controller'=>'sefurl', 'action'=>'index'));?>">SEF URLs</a></li>
-                        <li class="<?=($controller == 'search-index')?'active':'';?>"><a href="<?= $this->url(array('controller'=>'search-index', 'action'=>'index'));?>">Search index</a></li>
+                        <li class="<?=($controller == 'search-index')?'active':'';?>"><a href="<?= $this->url(array('controller'=>'search-index', 'action'=>'index'));?>">Search Index</a></li>
+                        <li class="<?=($controller == 'cache-manager')?'active':'';?>"><a href="<?= $this->url(array('controller'=>'cache-manager', 'action'=>'index'));?>">Cache Manager</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <?php if (Zend_Auth::getInstance()->hasIdentity()): ?>

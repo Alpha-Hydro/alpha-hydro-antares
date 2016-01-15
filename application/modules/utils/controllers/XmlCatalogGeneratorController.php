@@ -1,7 +1,9 @@
 <?php
 
-class Utils_ExportCatalogGeneratorController extends Zend_Controller_Action
+class Utils_XmlCatalogGeneratorController extends Zend_Controller_Action
 {
+
+    protected $_contentsCategory = array();
 
     public function init()
     {
@@ -12,7 +14,37 @@ class Utils_ExportCatalogGeneratorController extends Zend_Controller_Action
     {
 
         //Основной массив
-        $expProducts = array();
+        $expArray = array();
+
+        $categoryMapper = new Catalog_Model_Mapper_Categories();
+
+        $treeCategories = $categoryMapper->fetchTreeSubCategoriesInArray();
+
+        $aIterator = new RecursiveArrayIterator($treeCategories);
+//        iterator_apply($aIterator, array('Utils_XmlCatalogGeneratorController','genContentsCategory'), array($aIterator));
+//        $expArray = $this->getContentsCategory();
+
+//        $iIterator = new RecursiveIteratorIterator($aIterator, RecursiveIteratorIterator::CATCH_GET_CHILD);
+//        $expArray = iterator_to_array($iIterator);
+        //$expArray = $treeCategories;
+
+
+        /*foreach ($iIterator as $key => $value) {
+            $d = $iIterator->getDepth();
+            if($key == 'name')
+                $expArray[$d][] = $value;
+        }*/
+
+        /*foreach ($treeCategories as $category) {
+            $this->setContentsCategory(array());
+            $subCategories = $category['subCategories'];
+
+            $it = new RecursiveArrayIterator($subCategories);
+            iterator_apply($it, array('Utils_XmlCatalogGeneratorController','genContentsCategory'), array($it));
+            $expArray[$category['name']] = $subCategories;
+        }*/
+
+        $expArray = $treeCategories;
 
         /*$category_id = 0;
 
@@ -29,7 +61,7 @@ class Utils_ExportCatalogGeneratorController extends Zend_Controller_Action
         }*/
 
 
-        $treeCategories = $this->fetchTreeSubCategory();
+        /*$treeCategories = $this->fetchTreeSubCategory();
 
 
         $productMapper = new Catalog_Model_Mapper_Products();
@@ -45,48 +77,74 @@ class Utils_ExportCatalogGeneratorController extends Zend_Controller_Action
 
         if(!empty($products)){
             foreach ($products as $product) {
-                $expProducts[] = array('item','name', 'image', 'uri', 'description', 'note');
+                $expArray[] = array('item','name', 'image', 'uri', 'description', 'note');
 
                 $item = $this->getItemArray($product, false);
 
-                /*$item['properties'] = $this->getProductParams($product);
-                $item['modifications'] = $this->getModificationTableValues($product);*/
-                $expProducts[] = $item;
+//                $item['properties'] = $this->getProductParams($product);
+//                $item['modifications'] = $this->getModificationTableValues($product);
+                $expArray[] = $item;
 
                 $property = $this->getProductParamsCsv($product, false);
                 if(!empty($property)){
-                    $expProducts[] = array('propertiesTable');
-                    $expProducts[] = $property['name'];
-                    $expProducts[] = $property['value'];
+                    $expArray[] = array('propertiesTable');
+                    $expArray[] = $property['name'];
+                    $expArray[] = $property['value'];
                 }
 
                 $modifications = $this->getModificationTableValues($product, false);
                 if(!empty($modifications)){
-                    $expProducts[] = array('modificationsTable');
+                    $expArray[] = array('modificationsTable');
                     foreach ($modifications as $modification) {
-                        $expProducts[] = $modification;
+                        $expArray[] = $modification;
                     }
                 }
             }
         }
 
-        $this->fileToCsv('./tmp/file.csv', $expProducts);
+        $this->fileToCsv('./tmp/file.csv', $expArray);*/
 
-        $this->view->array = $treeCategories;
+        $this->view->array = $expArray;
 
+    }
+
+    public function genContentsCategory(RecursiveArrayIterator $iterator)
+    {
+        while ($iterator -> valid()){
+            if ($iterator -> hasChildren()){
+                $this->genContentsCategory($iterator->getChildren());
+            }
+            else {
+                $this->_contentsCategory[$iterator->offsetGet('name')] = $iterator->offsetGet('countProducts');
+                /*foreach ($subCategory as $item) {
+                    $this->_contentsCategory[$iterator->offsetGet('name')] = array(
+                        $item['name'] => $item['id']
+                    );
+                }*/
+
+//                if($iterator->key() == 'countProducts' && $iterator->current() != '0')
+//                    $this->_categoryWithProducts[$iterator->offsetGet('id')] = array(
+//                        'name' => $iterator->offsetGet('name'),
+//                        'full_path' => $iterator->offsetGet('full_path'),
+//                        'countProduct' => $iterator->offsetGet('countProducts'),
+//                    );
+//                $this->_categoryWithProducts[$iterator->offsetGet('id')] =
+//                        $iterator->offsetGet('countProducts');
+            }
+            $iterator -> next();
+        }
     }
 
     public function fileToCsv($filename, array &$fields, $mode = 'w')
     {
         $fp = fopen($filename, $mode);
+        //при записи CSV файла в его начало необходимо добавить BOM последовательность,
+        //которая явно будет указывать на то, что файл в кодировке UTF8
+        fwrite($fp,b"\xEF\xBB\xBF");
         foreach ($fields as $field) {
             fputcsv($fp, $field, ";");
         }
         fclose($fp);
-
-        /*$out = fopen('php://output', 'w');
-        fputcsv($out, $expProducts);
-        fclose($out);*/
     }
 
 
@@ -280,6 +338,24 @@ class Utils_ExportCatalogGeneratorController extends Zend_Controller_Action
         }
 
         return $property;
+    }
+
+    /**
+     * @param array $contentsCategory
+     * @return Utils_XmlCatalogGeneratorController
+     */
+    public function setContentsCategory($contentsCategory)
+    {
+        $this->_contentsCategory = $contentsCategory;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getContentsCategory()
+    {
+        return $this->_contentsCategory;
     }
 
     /**
