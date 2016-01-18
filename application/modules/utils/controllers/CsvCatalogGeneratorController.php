@@ -56,11 +56,11 @@ class Utils_CsvCatalogGeneratorController extends Zend_Controller_Action
 //        }*/
 
 
-//        $this->view->array = $this->getArrayGroupProducts();
+        $this->view->array = $this->getArrayGroupProducts();
 
-        $expArrayCsv = $this->getExpArrayCsv();
+        //$expArrayCsv = $this->getExpArrayCsv();
         //$this->fileToCsv('./tmp/catalog_pdf.csv', $expArrayCsv);
-        $this->view->array = $expArrayCsv;
+        //$this->view->array = $expArrayCsv;
     }
 
     /**

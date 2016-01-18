@@ -18,94 +18,103 @@ class Utils_XmlCatalogGeneratorController extends Zend_Controller_Action
 
         $categoryMapper = new Catalog_Model_Mapper_Categories();
 
-        $treeCategories = $categoryMapper->fetchTreeSubCategoriesInArray();
+        $treeCategories = $categoryMapper->fetchTreeSubCategories();
 
-        $aIterator = new RecursiveArrayIterator($treeCategories);
-//        iterator_apply($aIterator, array('Utils_XmlCatalogGeneratorController','genContentsCategory'), array($aIterator));
-//        $expArray = $this->getContentsCategory();
+        $expArray = $this->getSubGroups($treeCategories, $level = 1);
+        //$this->view->array = $expArray;
 
-//        $iIterator = new RecursiveIteratorIterator($aIterator, RecursiveIteratorIterator::CATCH_GET_CHILD);
-//        $expArray = iterator_to_array($iIterator);
-        //$expArray = $treeCategories;
+        // Disable Layout
+        $this->view->layout()->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
 
+        // Output XML than HTML
+        $this->getResponse()->setHeader('Content-Type', 'text/xml; charset=utf-8');
 
-        /*foreach ($iIterator as $key => $value) {
-            $d = $iIterator->getDepth();
-            if($key == 'name')
-                $expArray[$d][] = $value;
-        }*/
+        //echo $this->array2xml($expArray);
+        echo $this->genArray2Xml($treeCategories, $level = 1);
 
-        /*foreach ($treeCategories as $category) {
-            $this->setContentsCategory(array());
-            $subCategories = $category['subCategories'];
+    }
 
-            $it = new RecursiveArrayIterator($subCategories);
-            iterator_apply($it, array('Utils_XmlCatalogGeneratorController','genContentsCategory'), array($it));
-            $expArray[$category['name']] = $subCategories;
-        }*/
+    public function getSubGroups(&$groups, $level)
+    {
+        $result = array();
+        if(!empty($groups)){
+            foreach ($groups as $group) {
+                $subGroups = $group->getSubCategories();
+                if(!is_null($subGroups)){
 
-        $expArray = $treeCategories;
-
-        /*$category_id = 0;
-
-        //категории 1 уровня
-        $categories = $this->getSubCategory($category_id);
-
-        //Ищем подкатегорию в которой есть товары
-        $treeCategories = array();
-        foreach ($categories as $category) {
-            $treeCategories[] = $this->getCategoryArray($category);
-
-            $category_id = $category->getId();
-            $subCategories = $this->getSubCategory($category_id);
-        }*/
-
-
-        /*$treeCategories = $this->fetchTreeSubCategory();
-
-
-        $productMapper = new Catalog_Model_Mapper_Products();
-        $select = $productMapper->getDbTable()->select();
-
-        $select
-            ->where('deleted != ?', 1)
-            ->where('active != ?', 0)
-            ->limit(3)
-            ->order('sorting ASC');
-
-        $products = $productMapper->fetchAll($select);
-
-        if(!empty($products)){
-            foreach ($products as $product) {
-                $expArray[] = array('item','name', 'image', 'uri', 'description', 'note');
-
-                $item = $this->getItemArray($product, false);
-
-//                $item['properties'] = $this->getProductParams($product);
-//                $item['modifications'] = $this->getModificationTableValues($product);
-                $expArray[] = $item;
-
-                $property = $this->getProductParamsCsv($product, false);
-                if(!empty($property)){
-                    $expArray[] = array('propertiesTable');
-                    $expArray[] = $property['name'];
-                    $expArray[] = $property['value'];
-                }
-
-                $modifications = $this->getModificationTableValues($product, false);
-                if(!empty($modifications)){
-                    $expArray[] = array('modificationsTable');
-                    foreach ($modifications as $modification) {
-                        $expArray[] = $modification;
+                    if($level < 3) {
+                        $result['group_'.$group->getId()] = array(
+                            //'level' => $level,
+                            'name' => $group->getName(),
+                            'groups' => $this->getSubGroups($subGroups, $level+1),
+                        );
                     }
+                    else{
+                        $result['group_'.$group->getId()] = array(
+                            //'level' => $level,
+                            'name' => $group->getName(),
+                            'products' => 'get products subcategories',
+                        );
+                    }
+
+                }
+                else{
+                    $result['group_'.$group->getId()] = array(
+                        'name' => $group->getName(),
+                        'products' => $group->getCountProducts(),
+                    );
                 }
             }
         }
 
-        $this->fileToCsv('./tmp/file.csv', $expArray);*/
+        return $result;
+    }
 
-        $this->view->array = $expArray;
 
+    public function genArray2Xml($data, $level, $xml = false)
+    {
+        if($xml === false){
+            $xml = new SimpleXMLElement('<root/>');
+        }
+        foreach ($data as $item) {
+            $subGroup = $item->getSubCategories();
+            $group = $xml->addChild('group');
+            $group->addAttribute('name', $item->getName());
+            $group->addAttribute('level', $level);
+            if(is_array($subGroup)){
+                if($level < 3){
+                    $this->genArray2Xml($subGroup, $level+1, $group);
+                }
+                else{
+                    $productions = $group->addChild('products');
+                    $countProduct = ($item->getCountProducts() != 0)
+                        ? $item->getCountProducts()
+                        : 'get products subcategories';
+                    $productions->addAttribute('count',$countProduct);
+                }
+            }
+            else{
+                $productions = $group->addChild('products');
+                $productions->addAttribute('count', $item->getCountProducts());
+            }
+        }
+
+        return $xml->asXML();
+    }
+
+    public function array2xml($array, $xml = false){
+        if($xml === false){
+            $xml = new SimpleXMLElement('<root/>');
+        }
+        foreach($array as $key => $value){
+            if(is_array($value)){
+                $this->array2xml($value, $xml->addChild($key));
+            }else{
+                $xml->addChild($key, $value);
+            }
+        }
+        return $xml->asXML();
     }
 
     public function genContentsCategory(RecursiveArrayIterator $iterator)
@@ -115,21 +124,22 @@ class Utils_XmlCatalogGeneratorController extends Zend_Controller_Action
                 $this->genContentsCategory($iterator->getChildren());
             }
             else {
-                $this->_contentsCategory[$iterator->offsetGet('name')] = $iterator->offsetGet('countProducts');
+                //$this->_contentsCategory[$iterator->offsetGet('name')] = $iterator->offsetGet('countProducts');
                 /*foreach ($subCategory as $item) {
                     $this->_contentsCategory[$iterator->offsetGet('name')] = array(
                         $item['name'] => $item['id']
                     );
                 }*/
 
-//                if($iterator->key() == 'countProducts' && $iterator->current() != '0')
-//                    $this->_categoryWithProducts[$iterator->offsetGet('id')] = array(
-//                        'name' => $iterator->offsetGet('name'),
-//                        'full_path' => $iterator->offsetGet('full_path'),
-//                        'countProduct' => $iterator->offsetGet('countProducts'),
-//                    );
-//                $this->_categoryWithProducts[$iterator->offsetGet('id')] =
-//                        $iterator->offsetGet('countProducts');
+                if($iterator->key() == 'countProducts' && $iterator->current() != '0')
+                    $this->_contentsCategory[$iterator->offsetGet('name')] = $iterator->offsetGet('countProducts');
+                    /*$this->_contentsCategory[$iterator->offsetGet('name')] = array(
+                            'name' => $iterator->offsetGet('name'),
+                            'full_path' => $iterator->offsetGet('full_path'),
+                            'countProduct' => $iterator->offsetGet('countProducts'),
+                        );*/
+                //$this->_contentsCategory[$iterator->offsetGet('id')] =
+                        //$iterator->offsetGet('countProducts');
             }
             $iterator -> next();
         }
