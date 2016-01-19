@@ -12,11 +12,8 @@ class Utils_XmlCatalogGeneratorController extends Zend_Controller_Action
 
     public function indexAction()
     {
-
-        //Основной массив
-        $expArray = array();
-
         $categoryMapper = new Catalog_Model_Mapper_Categories();
+        //$this->view->array = $categoryMapper->fetchAllProductsCategory(80);
 
         $treeCategories = $categoryMapper->fetchTreeSubCategories();
 
@@ -81,26 +78,45 @@ class Utils_XmlCatalogGeneratorController extends Zend_Controller_Action
             $subGroup = $item->getSubCategories();
             $group = $xml->addChild('group');
             $group->addAttribute('name', $item->getName());
+            $group->addAttribute('id', $item->getId());
             $group->addAttribute('level', $level);
             if(is_array($subGroup)){
                 if($level < 3){
                     $this->genArray2Xml($subGroup, $level+1, $group);
                 }
                 else{
-                    $productions = $group->addChild('products');
-                    $countProduct = ($item->getCountProducts() != 0)
-                        ? $item->getCountProducts()
-                        : 'get products subcategories';
-                    $productions->addAttribute('count',$countProduct);
+                    $products = $this->getAllProductsCategory($item->getId());
+                    $countProduct = count($products);
+                    $group->addAttribute('products',$countProduct);
+                    if(!empty($products)){
+                        foreach ($products as $product) {
+                            $element = $group->addChild('product');
+                            $this->genProductXml($element, $product);
+                        }
+                    }
                 }
             }
             else{
-                $productions = $group->addChild('products');
-                $productions->addAttribute('count', $item->getCountProducts());
+                $group->addAttribute('products', $item->getCountProducts());
             }
         }
 
         return $xml->asXML();
+    }
+
+    public function genProductXml(SimpleXMLElement $element, Catalog_Model_Products $product)
+    {
+        $element->addAttribute('name', $product->getName());
+
+        return $element;
+    }
+
+    public function getAllProductsCategory($id)
+    {
+        $categoryMapper = new Catalog_Model_Mapper_Categories();
+        $products = $categoryMapper->fetchAllProductsCategory($id);
+
+        return $products;
     }
 
     public function array2xml($array, $xml = false){

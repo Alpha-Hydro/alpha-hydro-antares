@@ -393,6 +393,36 @@ class Catalog_Model_Mapper_Categories
 
     /**
      * @param $id
+     * @param null $result
+     * @param Zend_Db_Table_Select|null $select
+     * @return array
+     */
+    public function fetchAllProductsCategory($id, &$result = null, Zend_Db_Table_Select $select = null)
+    {
+        if(is_null($result))
+            $result = array();
+
+        $productsCategory = $this->fetchProductsRel($id, $select);
+
+        if($productsCategory)
+            $result = array_merge($result, $productsCategory);
+
+        $subCategories = $this->fetchSubCategoriesRel($id);
+        if($subCategories){
+            foreach ($subCategories as $subCategory) {
+                $result = array_merge($result, $this->fetchProductsRel($subCategory->getId()));
+                $children = $this->fetchSubCategoriesRel($subCategory->getId());
+                if($children){
+                    $this->fetchAllProductsCategory($subCategory->getId(), $result);
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param $id
      * @param Zend_Db_Table_Select|null $select
      * @return array|null
      * @throws Zend_Db_Table_Exception

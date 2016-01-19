@@ -87,7 +87,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     public function _initCache()
     {
         $frontendOptions = array(
-            'lifetime' => 3600 * 24, // время жизни кэша - 24 часа
+            'lifetime' => 3600 * 24 * 2, // время жизни кэша - 2 дня
             'automatic_serialization' => true
         );
 
