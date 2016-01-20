@@ -12,13 +12,14 @@ class Utils_XmlCatalogGeneratorController extends Zend_Controller_Action
 
     public function indexAction()
     {
+        $this->forward('xml');
+
+    }
+
+    public function xmlAction()
+    {
         $categoryMapper = new Catalog_Model_Mapper_Categories();
-        //$this->view->array = $categoryMapper->fetchAllProductsCategory(80);
-
         $treeCategories = $categoryMapper->fetchTreeSubCategories();
-
-        $expArray = $this->getSubGroups($treeCategories, $level = 1);
-        //$this->view->array = $expArray;
 
         // Disable Layout
         $this->view->layout()->disableLayout();
@@ -27,9 +28,23 @@ class Utils_XmlCatalogGeneratorController extends Zend_Controller_Action
         // Output XML than HTML
         $this->getResponse()->setHeader('Content-Type', 'text/xml; charset=utf-8');
 
-        //echo $this->array2xml($expArray);
+        $data = $treeCategories[1]->getSubCategories();
         echo $this->genArray2Xml($treeCategories, $level = 1);
+    }
 
+    public function arrayAction()
+    {
+        $categoryMapper = new Catalog_Model_Mapper_Categories();
+        $this->view->array = $categoryMapper->fetchAllProductsCategory(92);
+    }
+
+    public function treeAction()
+    {
+        $categoryMapper = new Catalog_Model_Mapper_Categories();
+        $treeCategories = $categoryMapper->fetchTreeSubCategories();
+
+        $expArray = $this->getSubGroups($treeCategories, $level = 1);
+        $this->view->array = $expArray;
     }
 
     public function getSubGroups(&$groups, $level)
@@ -80,41 +95,118 @@ class Utils_XmlCatalogGeneratorController extends Zend_Controller_Action
             $group->addAttribute('name', $item->getName());
             $group->addAttribute('id', $item->getId());
             $group->addAttribute('level', $level);
-            if(is_array($subGroup)){
-                if($level < 3){
-                    $this->genArray2Xml($subGroup, $level+1, $group);
-                }
-                else{
-                    $products = $this->getAllProductsCategory($item->getId());
-                    $countProduct = count($products);
-                    $group->addAttribute('products',$countProduct);
-                    if(!empty($products)){
-                        foreach ($products as $product) {
-                            $element = $group->addChild('product');
-                            $this->genProductXml($element, $product);
-                        }
-                    }
-                }
+            if(is_array($subGroup) && $level < 3){
+                $this->genArray2Xml($subGroup, $level+1, $group);
             }
             else{
-                $group->addAttribute('products', $item->getCountProducts());
+                $this->addProducts($group, $item->getId());
             }
         }
 
         return $xml->asXML();
     }
 
-    public function genProductXml(SimpleXMLElement $element, Catalog_Model_Products $product)
+    public function addProducts(SimpleXMLElement $group, $group_id)
     {
-        $element->addAttribute('name', $product->getName());
+//        $cache = Zend_Registry::get('cache');
+
+            $products = $this->getAllProductsCategory($group_id);
+            if($products){
+                $countProduct = count($products);
+                $group->addAttribute('products',$countProduct);
+                foreach ($products as $product) {
+                    $element = $group->addChild('product');
+                    $this->addProductXml($element, $product);
+                }
+            }
+
+        return $group;
+    }
+
+    public function addProductXml(SimpleXMLElement $element, Catalog_Model_Products $product)
+    {
+        $element->addAttribute('id', $product->getid());
+        $element->addChild('title', $product->getName())
+            ->addAttribute('sku', $product->getSku());
+        $element->addChild('image', $product->getImage());
+
+        $draftImages = unserialize($product->getAImages());
+        $draft = (!empty($draftImages))?$draftImages[0]:null;
+        $element->addChild('image', $draft);
+
+        $element->addChild('description', $product->getDescription());
+        $element->addChild('note', $product->getNote());
+
+        $properties = $element->addChild('properties');
+        $this->addPropertiesProductXml($properties, $product);
+
+        $modifications = $element->addChild('modificationsTable');
+        //$this->addModificationTableXml($modifications, $product);
 
         return $element;
     }
 
+
+    public function addPropertiesProductXml(SimpleXMLElement $element, Catalog_Model_Products $product)
+    {
+        $productMapper = new Catalog_Model_Mapper_Products();
+        $productsParamsMapper = new Catalog_Model_Mapper_ProductParams();
+        $selectParams = $productsParamsMapper->getDbTable()->select()->order('order ASC');
+        $productParams = $productMapper->findProductParams($product->getId(), $selectParams);
+
+        if($productParams && !empty($productParams)){
+            foreach ($productParams as $productParam) {
+                $element->addChild('property', $productParam->getValue())
+                    ->addAttribute('name', $productParam->getName());
+            }
+        }
+
+        return $element;
+    }
+
+    public function addModificationTableXml(SimpleXMLElement $element, Catalog_Model_Products $product)
+    {
+        $productsMapper = new Catalog_Model_Mapper_Products();
+        $subproductsMapper = new Catalog_Model_Mapper_Subproducts();
+        $selectModification = $subproductsMapper->getDbTable()->select()->order('order ASC');
+        $modifications = $productsMapper->findSubproductsRel($product->getId(), $selectModification);
+
+        if($modifications && !empty($modifications)){
+            $subproductParams = new Catalog_Model_Mapper_SubproductParams();
+            $selectSubproductParams = $subproductParams->getDbTable()->select()->order('order ASC');
+            $subproductProperty = $productsMapper->findSubproductParams($product->getId(), $selectSubproductParams);
+            foreach ($modifications as $modification) {
+                $row = $element->addChild('tr');
+                $row->addAttribute('id', $modification->getId());
+                $row->addChild('td', $modification->getSku())
+                    ->addAttribute('title', 'Наименование');
+                foreach ($subproductProperty as $property) {
+                    $row->addChild('td', $this->_getModificationParamValue($modification->getId(), $property->getId()))
+                        ->addAttribute('title', $property->getName());
+                }
+            }
+        }
+
+    }
+
+    protected function _getModificationParamValue($modification_id, $property_id)
+    {
+        $subproductParamsValuesMapper = new Catalog_Model_Mapper_SubproductParamsValues();
+        $result = $subproductParamsValuesMapper->findBySubproductParam($modification_id, $property_id, new Catalog_Model_SubproductParamsValues());
+
+        return $result->getValue();
+    }
+
     public function getAllProductsCategory($id)
     {
-        $categoryMapper = new Catalog_Model_Mapper_Categories();
-        $products = $categoryMapper->fetchAllProductsCategory($id);
+        $cache = Zend_Registry::get('cache');
+
+        if(!$products = $cache->load('productsCategoryObj'.$id)){
+            $categoryMapper = new Catalog_Model_Mapper_Categories();
+            $products = $categoryMapper->fetchAllProductsCategory($id);
+
+            $cache->save($products, 'productsCategoryObj'.$id);
+        }
 
         return $products;
     }

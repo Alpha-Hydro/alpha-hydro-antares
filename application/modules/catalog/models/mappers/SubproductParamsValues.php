@@ -72,6 +72,27 @@ class Catalog_Model_Mapper_SubproductParamsValues
     }
 
     /**
+     * @param $subproduct_id
+     * @param $param_id
+     * @param Catalog_Model_SubproductParamsValues $subproductparamsvalues
+     * @return Catalog_Model_SubproductParamsValues|null
+     * @throws Zend_Db_Table_Exception
+     */
+    public function findBySubproductParam($subproduct_id, $param_id, Catalog_Model_SubproductParamsValues $subproductparamsvalues)
+    {
+        $result = $this->getDbTable()->find($subproduct_id, $param_id);
+
+        if (0 == count($result)) {
+        	return null;
+        }
+
+        $row = $result->current();
+        $entry = $this->_setDbData($row, $subproductparamsvalues);
+
+        return $entry;
+    }
+
+    /**
      * @param null $select
      * @return array
      */

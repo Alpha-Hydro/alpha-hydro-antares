@@ -134,7 +134,6 @@ class Catalog_ProductsController extends Zend_Controller_Action
         $subproductProperty = $products->findSubproductParams($product->getId(), $select);
         if(!empty($subproductProperty)){
             $this->view->subproductProperty = $subproductProperty;
-
         }
 
         if($product->getMetaDescription() != ''){
