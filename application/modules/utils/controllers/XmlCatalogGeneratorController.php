@@ -7,7 +7,7 @@ class Utils_XmlCatalogGeneratorController extends Zend_Controller_Action
 
     public function init()
     {
-        /* Initialize action controller here */
+
     }
 
     public function indexAction()
@@ -28,8 +28,16 @@ class Utils_XmlCatalogGeneratorController extends Zend_Controller_Action
         // Output XML than HTML
         $this->getResponse()->setHeader('Content-Type', 'text/xml; charset=utf-8');
 
-        $data = $treeCategories[1]->getSubCategories();
-        echo $this->genArray2Xml($treeCategories, $level = 1);
+        /*$data = $treeCategories[1]->getSubCategories();
+        echo $this->genArray2Xml($data, $level = 2);*/
+
+        foreach ($treeCategories as $category) {
+            if($category->getId() == 3){
+                $xmlSection = $this->genArray2Xml(array($category), $level = 1);
+                //echo $xmlSection;
+                $xmlSection->asXml('./tmp/'.$category->getPath().'.xml');
+            }
+        }
     }
 
     public function arrayAction()
@@ -84,10 +92,16 @@ class Utils_XmlCatalogGeneratorController extends Zend_Controller_Action
     }
 
 
+    /**
+     * @param $data
+     * @param $level
+     * @param bool $xml
+     * @return mixed
+     */
     public function genArray2Xml($data, $level, $xml = false)
     {
         if($xml === false){
-            $xml = new SimpleXMLElement('<root/>');
+            $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><root/>');
         }
         foreach ($data as $item) {
             $subGroup = $item->getSubCategories();
@@ -103,13 +117,19 @@ class Utils_XmlCatalogGeneratorController extends Zend_Controller_Action
             }
         }
 
-        return $xml->asXML();
+        return $xml;
     }
 
     public function addProducts(SimpleXMLElement $group, $group_id)
     {
 //        $cache = Zend_Registry::get('cache');
+//
+//        $cache->clean(
+//            Zend_Cache::CLEANING_MODE_MATCHING_TAG,
+//            array('productsCategoryXml')
+//        );
 
+//        if(!$groupXml = $cache->load('productsCategoryXml'.$group_id)){
             $products = $this->getAllProductsCategory($group_id);
             if($products){
                 $countProduct = count($products);
@@ -119,6 +139,16 @@ class Utils_XmlCatalogGeneratorController extends Zend_Controller_Action
                     $this->addProductXml($element, $product);
                 }
             }
+
+//            $groupXml = $group->asXML();
+
+//            $cache->save($groupXml, 'productsCategoryXml'.$group_id, array('productsCategoryXml'));
+//        }
+//        else{
+//            $group = simplexml_load_string($groupXml);
+//        }
+
+        //Zend_Debug::dump($group);
 
         return $group;
     }
@@ -141,7 +171,7 @@ class Utils_XmlCatalogGeneratorController extends Zend_Controller_Action
         $this->addPropertiesProductXml($properties, $product);
 
         $modifications = $element->addChild('modificationsTable');
-        //$this->addModificationTableXml($modifications, $product);
+        $this->addModificationTableXml($modifications, $product);
 
         return $element;
     }
@@ -201,11 +231,13 @@ class Utils_XmlCatalogGeneratorController extends Zend_Controller_Action
     {
         $cache = Zend_Registry::get('cache');
 
+        $cache->remove('productsCategoryObj'.$id);
+
         if(!$products = $cache->load('productsCategoryObj'.$id)){
             $categoryMapper = new Catalog_Model_Mapper_Categories();
             $products = $categoryMapper->fetchAllProductsCategory($id);
 
-            $cache->save($products, 'productsCategoryObj'.$id);
+            $cache->save($products, 'productsCategoryObj'.$id, array('productsCategoryObj'));
         }
 
         return $products;
