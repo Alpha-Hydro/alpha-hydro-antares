@@ -1,7 +1,75 @@
-<div id="view-content">
-	<p>View script for controller <b>ExportCatalogGenerator</b> and script/action name <b>tree</b></p>
-</div>
+<font id="view-content">
+    <p>View script for controller <b>ExportCatalogGenerator</b> and script/action name <b>tree</b></p>
+</font>
 
 <pre>
-    <?php print_r($this->array)?>
+    <?php print_r($this->array) ?>
 </pre>
+
+<font size="2" face="Courier New" color="black">
+    <font color="#0000ff">public</font>
+    function __call($name, $arguments) {
+    <font color="#008000">/** If call cached method */</font>
+    <font color="#0000ff">if</font>
+    (preg_match(
+    <font
+        color="#A31515">'/^cached_(.+)$/'
+    </font>
+    , $name, $methodName)&&method_exists($
+    <font color="#0000ff">this</font>
+    ,$methodName[1]))
+    {
+    <font color="#008000">/** Get cache instance */</font>
+    $cache = My_Cache::getInstance();
+    <font color="#008000">/**
+        Get arguments hash */
+    </font>
+    $argHash = md5(print_r($arguments,
+    <font color="#0000ff">true</font>
+    ));
+    <font
+        color="#008000">/** Get model class name */
+    </font>
+    $className = get_class($
+    <font color="#0000ff">this</font>
+    );
+    <font color="#008000">/** If method result don't cached */</font>
+    <font color="#0000ff">if</font>
+    (!$result =
+    $cache->load(
+    <font color="#A31515">'model_'</font>
+    .$className.
+    <font color="#A31515">'_'</font>
+    .$methodName[1].
+    <font
+        color="#A31515">'_'
+    </font>
+    .$argHash)) { $result = call_user_method_array($methodName[1], $
+    <font color="#0000ff">this</font>
+    ,
+    $arguments); $cache->save($result,
+    <font color="#A31515">'model_'</font>
+    .$className.
+    <font color="#A31515">'_'</font>
+    .$methodName[1].
+    <font
+        color="#A31515">'_'
+    </font>
+    .$argHash, array(
+    <font color="#A31515">'model'</font>
+    ,$className,$methodName[1])); }
+    <font color="#0000ff">return</font>
+    $result; }
+    <font color="#0000ff">else</font>
+    {
+    <font color="#008000">/**
+        Generate exception */
+    </font>
+    <font color="#0000ff">throw</font>
+    <font color="#0000ff">new</font>
+    Exception(
+    <font
+        color="#A31515">'Call to undefined method '
+    </font>
+    .$name); } }
+</font>

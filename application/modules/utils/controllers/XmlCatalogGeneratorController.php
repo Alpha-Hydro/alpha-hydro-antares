@@ -39,7 +39,7 @@ class Utils_XmlCatalogGeneratorController extends Zend_Controller_Action
         /*foreach ($treeCategories as $category) {
             if($category->getId() == 3){
                 $xmlSection = $this->genArray2Xml(array($category), $level = 1);
-                //echo $xmlSection;
+                //echo $xmlSection->asXml;
                 $xmlSection->asXml('./tmp/'.$category->getPath().'.xml');
             }
         }*/
