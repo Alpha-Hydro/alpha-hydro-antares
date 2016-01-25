@@ -28,10 +28,11 @@ class Utils_XmlCatalogGeneratorController extends Zend_Controller_Action
         // Output XML than HTML
         $this->getResponse()->setHeader('Content-Type', 'text/xml; charset=utf-8');
 
-        $data = $treeCategories[1]->getSubCategories();
-        $xml = $this->genArray2Xml($data, $level = 2);
+//        $data = $treeCategories[1]->getSubCategories();
+//        $xml = $this->genArray2Xml($data, $level = 2);
 
-        //$xml = $this->genArray2Xml($treeCategories, $level = 1);
+        set_time_limit(1800);
+        $xml = $this->genArray2Xml($treeCategories, $level = 1);
 
         echo $xml->asXml();
 
