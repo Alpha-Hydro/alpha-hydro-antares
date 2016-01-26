@@ -293,7 +293,7 @@ class Catalog_Model_Mapper_Categories
     {
         $cache = Zend_Registry::get('cache');
 
-        //$cache->remove('treeCategoriesArray');
+        $cache->remove('treeCategoriesArray');
 
         if(is_null($id))
             $id = 0;

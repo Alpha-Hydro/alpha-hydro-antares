@@ -28,21 +28,35 @@ class Utils_XmlCatalogGeneratorController extends Zend_Controller_Action
         // Output XML than HTML
         $this->getResponse()->setHeader('Content-Type', 'text/xml; charset=utf-8');
 
-        $data = $treeCategories[1]->getSubCategories();
-        $xml = $this->genArray2Xml($data, $level = 2);
+//        $data = $treeCategories[1]->getSubCategories();
+//        $xml = $this->genArray2Xml($data, $level = 2);
 
 //        set_time_limit(1800);
 //        $xml = $this->genArray2Xml($treeCategories, $level = 1);
 
-        echo $xml->asXml();
+//        echo $xml->asXml();
 
-        /*foreach ($treeCategories as $category) {
-            if($category->getId() == 3){
-                $xmlSection = $this->genArray2Xml(array($category), $level = 1);
-                //echo $xmlSection->asXml;
-                $xmlSection->asXml('./tmp/'.$category->getPath().'.xml');
+
+
+        $cache = $cache = Zend_Registry::get('cache');
+
+        foreach ($treeCategories as $category) {
+            if($category->getId() == 1){
+                if(!$xmlSection = $cache->load('sectionXml'.$category->getId())){
+                    $xml = $this->genArray2Xml(array($category), $level = 1);
+                    $xmlSection = $xml->asXml();
+                    $cache->save($xmlSection, 'sectionXml'.$category->getId(), array('sectionXml'));
+                }
+//                $xml = $this->genArray2Xml(array($category), $level = 1);
+//                $xmlSection = $xml->asXml();
+                $xmlObj = simplexml_load_string($xmlSection);
+                $xmlObj->asXML('./tmp/'.$category->getPath().'.xml');
+
+                echo $xmlSection;
+                //$xmlSection->saveXml('./tmp/'.$category->getPath().'.xml');
+                //$xmlSection->asXml('./tmp/'.$category->getPath().'.xml');
             }
-        }*/
+        }
     }
 
     public function arrayAction()
@@ -128,11 +142,6 @@ class Utils_XmlCatalogGeneratorController extends Zend_Controller_Action
     public function addProducts(SimpleXMLElement $group, $group_id)
     {
 //        $cache = Zend_Registry::get('cache');
-//
-//        $cache->clean(
-//            Zend_Cache::CLEANING_MODE_MATCHING_TAG,
-//            array('productsCategoryXml')
-//        );
 
 //        if(!$groupXml = $cache->load('productsCategoryXml'.$group_id)){
             $products = $this->getAllProductsCategory($group_id);
@@ -145,18 +154,16 @@ class Utils_XmlCatalogGeneratorController extends Zend_Controller_Action
                 }
             }
 
-//            $groupXml = $group->asXML();
+            $groupXml = $group->asXML();
 
 //            $cache->save($groupXml, 'productsCategoryXml'.$group_id, array('productsCategoryXml'));
 //        }
-//        else{
-//            $group = simplexml_load_string($groupXml);
-//        }
 
-        //Zend_Debug::dump($group);
+//        $group = simplexml_load_string($groupXml);
 
-        return $group;
+        return $groupXml;
     }
+
 
     public function addProductXml(SimpleXMLElement $element, Catalog_Model_Products $product)
     {
@@ -173,10 +180,10 @@ class Utils_XmlCatalogGeneratorController extends Zend_Controller_Action
         $element->addChild('note', $product->getNote());
 
         $properties = $element->addChild('properties');
-        $this->addPropertiesProductXml($properties, $product);
+        //$this->addPropertiesProductXml($properties, $product);
 
         $modifications = $element->addChild('modificationsTable');
-        $this->addModificationTableXml($modifications, $product);
+        //$this->addModificationTableXml($modifications, $product);
 
         return $element;
     }
@@ -236,13 +243,17 @@ class Utils_XmlCatalogGeneratorController extends Zend_Controller_Action
     {
         $cache = Zend_Registry::get('cache');
 
-        $cache->remove('productsCategoryObj'.$id);
-
         if(!$products = $cache->load('productsCategoryObj'.$id)){
             $categoryMapper = new Catalog_Model_Mapper_Categories();
             $products = $categoryMapper->fetchAllProductsCategory($id);
 
-            $cache->save($products, 'productsCategoryObj'.$id, array('productsCategoryObj'));
+            $cache->save(
+                $products,
+                'productsCategoryObj'.$id,
+                array(
+                    'productsCategoryObj'
+                )
+            );
         }
 
         return $products;
