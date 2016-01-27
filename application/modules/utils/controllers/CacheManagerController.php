@@ -14,6 +14,8 @@ class Utils_CacheManagerController extends Zend_Controller_Action
 
         Zend_Debug::dump($cache->getTags());
 
+        $cache->clean(Zend_Cache::CLEANING_MODE_OLD);
+
         /*$xml = simplexml_load_string($cache->load('productsCategoryXml83'));
 
         Zend_Debug::dump($xml);*/
@@ -26,7 +28,14 @@ class Utils_CacheManagerController extends Zend_Controller_Action
             array(
                 'sectionXml',
                 'productsCategoryObj',
-                'productsCategoryXml,
+                'productsCategoryXml',
+                )
+        );*/
+
+        /*$cache->clean(
+            Zend_Cache::CLEANING_MODE_MATCHING_TAG,
+            array(
+                'productsCategoryXml',
                 )
         );*/
     }

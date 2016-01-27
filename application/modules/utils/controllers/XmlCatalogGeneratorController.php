@@ -41,20 +41,18 @@ class Utils_XmlCatalogGeneratorController extends Zend_Controller_Action
         $cache = $cache = Zend_Registry::get('cache');
 
         foreach ($treeCategories as $category) {
-            if($category->getId() == 1){
+            if($category->getId() == 7){
                 if(!$xmlSection = $cache->load('sectionXml'.$category->getId())){
                     $xml = $this->genArray2Xml(array($category), $level = 1);
                     $xmlSection = $xml->asXml();
                     $cache->save($xmlSection, 'sectionXml'.$category->getId(), array('sectionXml'));
                 }
-//                $xml = $this->genArray2Xml(array($category), $level = 1);
-//                $xmlSection = $xml->asXml();
                 $xmlObj = simplexml_load_string($xmlSection);
                 $xmlObj->asXML('./tmp/'.$category->getPath().'.xml');
 
                 echo $xmlSection;
-                //$xmlSection->saveXml('./tmp/'.$category->getPath().'.xml');
-                //$xmlSection->asXml('./tmp/'.$category->getPath().'.xml');
+                /*$xml = $this->genArray2Xml(array($category), $level = 1);
+                echo $xml->asXml();*/
             }
         }
     }
@@ -154,14 +152,13 @@ class Utils_XmlCatalogGeneratorController extends Zend_Controller_Action
                 }
             }
 
-            $groupXml = $group->asXML();
-
+//            $groupXml = $group->asXML();
 //            $cache->save($groupXml, 'productsCategoryXml'.$group_id, array('productsCategoryXml'));
 //        }
 
 //        $group = simplexml_load_string($groupXml);
 
-        return $groupXml;
+        return $group;
     }
 
 
@@ -180,10 +177,10 @@ class Utils_XmlCatalogGeneratorController extends Zend_Controller_Action
         $element->addChild('note', $product->getNote());
 
         $properties = $element->addChild('properties');
-        //$this->addPropertiesProductXml($properties, $product);
+        $this->addPropertiesProductXml($properties, $product);
 
         $modifications = $element->addChild('modificationsTable');
-        //$this->addModificationTableXml($modifications, $product);
+        $this->addModificationTableXml($modifications, $product);
 
         return $element;
     }
@@ -211,7 +208,24 @@ class Utils_XmlCatalogGeneratorController extends Zend_Controller_Action
         $productsMapper = new Catalog_Model_Mapper_Products();
         $subproductsMapper = new Catalog_Model_Mapper_Subproducts();
         $selectModification = $subproductsMapper->getDbTable()->select()->order('order ASC');
-        $modifications = $productsMapper->findSubproductsRel($product->getId(), $selectModification);
+
+
+        $cache = Zend_Cache::factory('Core',
+            'File',
+            array(
+                'lifetime' => 3600 * 24 * 2, // время жизни кэша - 2 дня
+                'automatic_serialization' => true
+            ),
+            array(
+                'cache_dir' => '../cache//modifications/' // директория, в которой размещаются файлы кэша
+            )
+        );
+
+        if(!$modifications = $cache->load('modifications'.$product->getId())){
+            $modifications = $productsMapper->findSubproductsRel($product->getId(), $selectModification);
+            $cache->save($modifications, 'modifications'.$product->getId(), array('modificationsTable'));
+        }
+
 
         if($modifications && !empty($modifications)){
             $subproductParams = new Catalog_Model_Mapper_SubproductParams();
