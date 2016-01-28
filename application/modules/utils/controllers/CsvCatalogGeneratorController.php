@@ -2,11 +2,62 @@
 
 class Utils_CsvCatalogGeneratorController extends Zend_Controller_Action
 {
+    /**
+     * @var Catalog_Model_Mapper_Categories
+     */
+    protected $_categoriesModelMapper;
+
+    /**
+     * @var Catalog_Model_Mapper_Products
+     */
+    protected $_productsModelMapper;
+
+    /**
+     * @var Catalog_Model_Mapper_Subproducts
+     */
+    protected $_subproductsModelMapper;
+
+    /**
+     * @var Catalog_Model_Mapper_ProductParams
+     */
+    protected $_productsParamsMapper;
+
+    /**
+     * @var Catalog_Model_Mapper_SubproductParams
+     */
+    protected $_subproductsParamsMapper;
+
+    /**
+     * @var Catalog_Model_Mapper_SubproductParamsValues
+     */
+    protected $_subproductParamsValuesMapper;
+
+    /**
+     * @var Catalog_Model_Categories[]
+     */
+    protected $_treeCategories;
+
+    /**
+     * @var array
+     */
+    protected $_treeCategoriesArray = array();
+
+    /**
+     * @var array
+     */
     protected $_categoryWithProducts = array();
 
     public function init()
     {
-        /* Initialize action controller here */
+        $this->_categoriesModelMapper = new Catalog_Model_Mapper_Categories();
+        $this->_productsModelMapper = new Catalog_Model_Mapper_Products();
+        $this->_productsParamsMapper = new Catalog_Model_Mapper_ProductParams();
+        $this->_subproductsModelMapper = new Catalog_Model_Mapper_Subproducts();
+        $this->_subproductsParamsMapper = new Catalog_Model_Mapper_SubproductParams();
+        $this->_subproductParamsValuesMapper = new Catalog_Model_Mapper_SubproductParamsValues();
+
+        $this->_treeCategories = $this->_categoriesModelMapper->fetchTreeSubCategories();
+        $this->_treeCategoriesArray = $this->getSubGroups($this->_treeCategories, $level = 1);
     }
 
     public function indexAction()
@@ -55,13 +106,107 @@ class Utils_CsvCatalogGeneratorController extends Zend_Controller_Action
 //            $cache->save($arrayGroupProducts, 'fullCatalogProducts');
 //        }*/
 
-
-        $this->view->array = $this->getArrayGroupProducts();
+        //$treeCategoriesArray = $this->getSubGroups($this->_treeCategories, $level = 1);
+        $this->view->array = $this->_treeCategoriesArray;
+        //$this->view->array = $this->getArrayGroupProducts();
 
         //$expArrayCsv = $this->getExpArrayCsv();
         //$this->fileToCsv('./tmp/catalog_pdf.csv', $expArrayCsv);
         //$this->view->array = $expArrayCsv;
     }
+
+
+    /**
+     * @param $groups Catalog_Model_Categories[]
+     * @param $level
+     * @return array
+     */
+    public function getSubGroups(&$groups, $level)
+    {
+        $result = array();
+        if(!empty($groups)){
+            foreach ($groups as $group) {
+                $subGroups = $group->getSubCategories();
+                if(is_array($subGroups) && $level < 3){
+                    $result[$group->getId()] = array(
+                        'name' => $group->getName(),
+                        'groups' => $this->getSubGroups($subGroups, $level+1),
+                    );
+                }
+                else{
+                    $products = $this->getAllProductsCategory($group->getId());
+                    $result[$group->getId()] = array(
+                        'name' => $group->getName(),
+                        'countProduct' => count($products),
+                        'products' => $this->productsCategoryToArray($products),
+                    );
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param $id
+     * @return Catalog_Model_Products[]
+     * @throws Zend_Exception
+     */
+    public function getAllProductsCategory($id)
+    {
+        $cache = Zend_Registry::get('cache');
+
+        if(!$products = $cache->load('productsCategoryObj'.$id)){
+
+            $products = $this->_categoriesModelMapper->fetchAllProductsCategory($id);
+
+            $cache->save(
+                $products,
+                'productsCategoryObj'.$id,
+                array(
+                    'productsCategoryObj'
+                )
+            );
+        }
+
+        return $products;
+    }
+
+    /**
+     * @param $products Catalog_Model_Products[]
+     * @return array
+     */
+    public function productsCategoryToArray(&$products)
+    {
+        $result = array();
+
+        if(!empty($products)){
+            foreach ($products as $product) {
+                $result[$product->getId()] = $this->productToArray($product);
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param Catalog_Model_Products $product
+     * @return array
+     */
+    public function productToArray(Catalog_Model_Products $product)
+    {
+        $item = array();
+
+        $item['sku'] = $product->getSku();
+        $item['name'] = $product->getName();
+        $item['image'] = $product->getImage();
+        $item['uri'] = $product->getFullPath();
+        $item['description'] = $product->getDescription();
+        $item['note'] = $product->getNote();
+
+        return $item;
+    }
+
 
     /**
      * @return array
@@ -210,7 +355,7 @@ class Utils_CsvCatalogGeneratorController extends Zend_Controller_Action
                 foreach ($products as $product) {
                     $expProducts[] = array('item', 'name', 'image', 'uri', 'description', 'note');
 
-                    $item = $this->productToArray($product, false);
+                    $item = $this->productToArray($product);
 
                     $expProducts[] = $item;
 
@@ -234,31 +379,6 @@ class Utils_CsvCatalogGeneratorController extends Zend_Controller_Action
         }
 
         return $expProducts;
-    }
-
-    /**
-     * @param Catalog_Model_Products $product
-     * @param bool $toWin
-     * @return array
-     */
-    public function productToArray(Catalog_Model_Products $product, $toWin = false)
-    {
-        $item = array();
-
-        $item['sku'] = $product->getSku();
-        $item['name'] = (!$toWin)
-            ?$product->getName()
-            :$this->_toWindow($product->getName());
-        $item['image'] = $product->getImage();
-        $item['uri'] = $product->getFullPath();
-        $item['description'] = (!$toWin)
-            ?$product->getDescription()
-            :$this->_toWindow($product->getDescription());
-        $item['note'] = (!$toWin)
-            ?$product->getNote()
-            :$this->_toWindow($product->getNote());
-
-        return $item;
     }
 
     /**
