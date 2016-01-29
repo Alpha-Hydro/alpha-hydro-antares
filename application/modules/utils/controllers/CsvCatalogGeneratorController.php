@@ -47,6 +47,11 @@ class Utils_CsvCatalogGeneratorController extends Zend_Controller_Action
      */
     protected $_categoryWithProducts = array();
 
+    /**
+     * @var array
+     */
+    protected $_sectionsArray = array();
+
     public function init()
     {
         $this->_categoriesModelMapper = new Catalog_Model_Mapper_Categories();
@@ -62,57 +67,34 @@ class Utils_CsvCatalogGeneratorController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        /*$cache = Zend_Registry::get('cache');
+        $select = $this->_categoriesModelMapper->getDbTable()->select()
+            ->where('parent_id = ?', 0)
+            ->where('active = ?', 1)
+            ->where('generate = ?', 1)
+            ->order('sorting ASC');
 
-        $cache->remove('fullCatalogProducts');
+        $categories = $this->_categoriesModelMapper->fetchAll($select);
+        $this->view->categories = $categories;
 
-//        if(!$arrayGroupProducts = $cache->load('fullCatalogProducts')){
+        $request = $this->getRequest();
 
-            //Основной массив
-            $expArrayCsv = array();
-            //Массив по группам
-            $arrayGroupProducts = array();
+        $category_id = $request->getParam('category_id');
+        $category = $this->_categoriesModelMapper->find($category_id, new Catalog_Model_Categories());
 
-            $categoryMapper = new Catalog_Model_Mapper_Categories();
+        $expArrayCsv = $this->expArrayForCsv($category_id);
+        $this->fileToCsv('./tmp/'.$category->getPath().'.csv', $expArrayCsv);
+        $this->view->array = $expArrayCsv;
 
-            $treeCategories = $categoryMapper->fetchTreeSubCategoriesInArray();
+    }
 
-            foreach ($treeCategories as $item) {
-                $this->setCategoryWithProducts(array());
-                $children = $item['subCategories'];
-                $it = new RecursiveArrayIterator($children);
-                iterator_apply($it, array('Utils_CsvCatalogGeneratorController','fetchCategoriesWithProducts'), array($it));
+    public function expArrayAction()
+    {
+        $this->view->array = $this->_categoriesModelMapper->fetchTreeSubCategoriesInArray();
+    }
 
-                $categoryProducts = $this->getCategoryWithProducts();
-                if(!empty($categoryProducts)){
-                    foreach ($categoryProducts as $key => $categoryProduct) {
-                        $expArrayCsv[] = array('category name', 'uri');
-                        $expArrayCsv[] = array(
-                            'name' => $categoryProduct['name'],
-                            'full_path' => $categoryProduct['full_path'],
-                        );
-                        $products = $this->getProductsCategory($key);
-                        foreach ($products as $product) {
-                            $expArrayCsv[] = $product;
-                        }
-                    }
-                }
-
-                //$arrayGroupProducts[] = $categoryProducts;
-
-                //$arrayGroupProducts[$item['id']] = $categoryProducts;
-            }
-
-//            $cache->save($arrayGroupProducts, 'fullCatalogProducts');
-//        }*/
-
-        //$treeCategoriesArray = $this->getSubGroups($this->_treeCategories, $level = 1);
+    public function treeArrayAction()
+    {
         $this->view->array = $this->_treeCategoriesArray;
-        //$this->view->array = $this->getArrayGroupProducts();
-
-        //$expArrayCsv = $this->getExpArrayCsv();
-        //$this->fileToCsv('./tmp/catalog_pdf.csv', $expArrayCsv);
-        //$this->view->array = $expArrayCsv;
     }
 
 
@@ -130,12 +112,14 @@ class Utils_CsvCatalogGeneratorController extends Zend_Controller_Action
                 if(is_array($subGroups) && $level < 3){
                     $result[$group->getId()] = array(
                         'name' => $group->getName(),
+                        'path' => $group->getPath(),
                         'groups' => $this->getSubGroups($subGroups, $level+1),
                     );
                 }
                 else{
                     $products = $this->getAllProductsCategory($group->getId());
-                    $result[$group->getId()] = array(
+                    $result[] = array(
+                        'id' => $group->getId(),
                         'name' => $group->getName(),
                         'countProduct' => count($products),
                         'products' => $this->productsCategoryToArray($products),
@@ -197,6 +181,7 @@ class Utils_CsvCatalogGeneratorController extends Zend_Controller_Action
     {
         $item = array();
 
+        //$item['id'] = $product->getId();
         $item['sku'] = $product->getSku();
         $item['name'] = $product->getName();
         $item['image'] = $product->getImage();
@@ -205,6 +190,123 @@ class Utils_CsvCatalogGeneratorController extends Zend_Controller_Action
         $item['note'] = $product->getNote();
 
         return $item;
+    }
+
+
+    public function expArrayForCsv($category_id)
+    {
+        $expArrayCsv = array();
+
+        $sections = $this->_treeCategoriesArray;
+
+        foreach ($sections as $key => $item) {
+            if($key == $category_id){
+                $expArrayCsv[] = array(
+                    'section',
+                    $item['name']
+                );
+                //$this->setSectionsArray(array());
+                $children = $item['groups'];
+                $it = new RecursiveArrayIterator($children);
+                iterator_apply($it, array('Utils_CsvCatalogGeneratorController','fetchIteratorCategory'), array($it));
+
+                $categoriesProducts = $this->getSectionsArray();
+
+                if(!empty($categoriesProducts)){
+                    foreach ($categoriesProducts as $categoryProducts) {
+                        if(!empty($categoryProducts)){
+                            foreach ($categoryProducts as $id => $categoryProduct) {
+                                $expArrayCsv[] = array('item', 'name', 'image', 'uri', 'description', 'note');
+                                $expArrayCsv[] = $categoryProduct;
+                                $expArrayCsv[] = array('properties');
+                                $properties = $this->productPropertyArrayForCsv($id);
+                                if(!empty($properties)){
+                                    foreach ($properties as $property) {
+                                        $expArrayCsv[] = $property;
+                                    }
+                                }
+                                $expArrayCsv[] = array('modifications table');
+                                $expArrayCsv[] = $this->modificationTableTitleArrayForCsv($id);
+                                $modificationTableRows = $this->modificationTableValuesArrayForCsv($id);
+                                if(!empty($modificationTableRows)){
+                                    foreach ($modificationTableRows as $modificationTableRow) {
+                                        $expArrayCsv[] = $modificationTableRow;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                //$this->fileToCsv('./tmp/'.$item['path'].'.csv', $expArrayCsv);
+            }
+        }
+
+        //Zend_Debug::dump($this->getSectionsArray());
+        //Zend_Debug::dump($expArrayCsv);
+
+        return $expArrayCsv;
+    }
+
+
+    public function productPropertyArrayForCsv($product_id)
+    {
+
+        $select = $this->_productsParamsMapper->getDbTable()->select()->order('order ASC');
+        $productParams = $this->_productsModelMapper->findProductParams($product_id, $select);
+
+        $property = array();
+        if(!empty($productParams)){
+            foreach ($productParams as $key => $productParam) {
+                /* @var $productParam Catalog_Model_ProductParams */
+                $property['name']['property_'.$key.'_name'] = $productParam->getName();
+                $property['value']['property_'.$key.'_value'] = $productParam->getValue();
+            }
+        }
+
+        return $property;
+    }
+
+    public function modificationTableTitleArrayForCsv($product_id)
+    {
+        $select = $this->_subproductsParamsMapper->getDbTable()->select()->order('order ASC');
+        $subproductProperty = $this->_productsModelMapper->findSubproductParams($product_id, $select);
+
+        $modificationTableTitle = array();
+        if(!empty($subproductProperty)){
+            $modificationTableTitle[] = 'Название';
+            foreach ($subproductProperty as $property) {
+                /* @var $property Catalog_Model_SubproductParams */
+                $modificationTableTitle[] = $property->getName();
+            }
+        }
+
+        return $modificationTableTitle;
+    }
+
+    public function modificationTableValuesArrayForCsv($product_id)
+    {
+        $productMapper = new Catalog_Model_Mapper_Products();
+        $subproducts = new Catalog_Model_Mapper_Subproducts();
+
+        $select = $subproducts->getDbTable()->select()->order('order ASC');
+        $modifications = $productMapper->findSubproductsRel($product_id, $select);
+        $modificationsTableValues = array();
+        if(!empty($modifications)){
+            foreach ($modifications as $modification) {
+                /* @var $modification Catalog_Model_Subproducts */
+                $modificationPropertyValues = $subproducts->findSubProductParamValue($modification->getId());
+                $values = array();
+                $values[] = $modification->getSku();
+                foreach ($modificationPropertyValues as $modificationPropertyValue) {
+                    /* @var $modificationPropertyValue Catalog_Model_SubproductParamsValues */
+                    $values[] = $modificationPropertyValue->getValue();
+                }
+                $modificationsTableValues[] = $values;
+            }
+        }
+
+        return $modificationsTableValues;
     }
 
 
@@ -222,9 +324,7 @@ class Utils_CsvCatalogGeneratorController extends Zend_Controller_Action
         //Основной массив
         $expArrayCsv = array();
 
-        $categoryMapper = new Catalog_Model_Mapper_Categories();
-
-        $treeCategories = $categoryMapper->fetchTreeSubCategoriesInArray();
+        $treeCategories = $this->_categoriesModelMapper->fetchTreeSubCategoriesInArray();
 
         foreach ($treeCategories as $item) {
             $this->setCategoryWithProducts(array());
@@ -309,6 +409,22 @@ class Utils_CsvCatalogGeneratorController extends Zend_Controller_Action
             fputcsv($fp, $field, ";");
         }
         fclose($fp);
+    }
+
+    /**
+     * @param RecursiveArrayIterator $iterator
+     */
+    public function fetchIteratorCategory(RecursiveArrayIterator $iterator) {
+        while ($iterator -> valid()){
+            if ($iterator -> hasChildren()){
+                $this->fetchIteratorCategory($iterator->getChildren());
+            }
+            else {
+                if($iterator->key() == 'countProduct' && $iterator->current() != '0')
+                    $this->_sectionsArray[$iterator->offsetGet('id')] = $iterator->offsetGet('products');
+            }
+            $iterator -> next();
+        }
     }
 
     /**
@@ -441,10 +557,10 @@ class Utils_CsvCatalogGeneratorController extends Zend_Controller_Action
 
     public function productModificationTableTitle(Catalog_Model_Products $product, $toWin = false)
     {
-        $productMapper = new Catalog_Model_Mapper_Products();
-        $subproductParams = new Catalog_Model_Mapper_SubproductParams();
-        $select = $subproductParams->getDbTable()->select()->order('order ASC');
-        $subproductProperty = $productMapper->findSubproductParams($product->getId(), $select);
+
+        $select = $this->_subproductsParamsMapper->getDbTable()->select()->order('order ASC');
+        $subproductProperty = $this->_productsModelMapper->findSubproductParams($product->getId(), $select);
+
         $modificationTableTitle = array();
         if(!empty($subproductProperty)){
             $modificationTableTitle[] = (!$toWin)
@@ -485,6 +601,24 @@ class Utils_CsvCatalogGeneratorController extends Zend_Controller_Action
      */
     private function _toWindow($ii){
         return iconv( "utf-8", "windows-1251",$ii);
+    }
+
+    /**
+     * @param array $sectionsArray
+     * @return Utils_CsvCatalogGeneratorController
+     */
+    public function setSectionsArray($sectionsArray)
+    {
+        $this->_sectionsArray = $sectionsArray;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSectionsArray()
+    {
+        return $this->_sectionsArray;
     }
 
 }
