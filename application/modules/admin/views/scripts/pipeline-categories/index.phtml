@@ -19,7 +19,12 @@ $this->secondary_text = 'Список категорий';
     <?php foreach ($this->pages as $page):?>
         <tr class="<?=$this->contextualClassTr($page);?>">
             <td><?=$page->getId()?></td>
-            <td><?=$page->getTitle()?></td>
+            <td><a href="<?=$this->url(array(
+                    'module'=>'admin',
+                    'controller'=>'pipeline',
+                    'action'=>'category',
+                    'id'=>$page->getId(),
+                ), null, true)?>"><?=$page->getTitle()?></a></td>
             <td><?=$page->getPath()?></td>
             <td><?=$page->getSorting()?></td>
             <td><input type="checkbox" value="<?=$page->getActive()?>" <?=($page->getActive() != 0)?'checked':'';?>></td>

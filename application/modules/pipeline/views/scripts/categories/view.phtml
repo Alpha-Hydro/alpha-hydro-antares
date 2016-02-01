@@ -1,0 +1,17 @@
+<?php
+$this->headTitle($this->title);
+$this->meta_title = $this->title;
+$this->sidebar_headers = false;
+$this->breadcrumbs = true;
+?>
+
+<div class="col-md-12">
+    <?php if($this->category->getImage()):?>
+        <div class="col-md-3 pull-right">
+            <div class="thumbnail">
+                <img src="<?=$this->category->getImage()?>" alt="<?=$this->category->getTitle()?>">
+            </div>
+        </div>
+    <?php endif;?>
+    <?=$this->category->getContentHtml();?>
+</div>

@@ -2,6 +2,7 @@
 
 class Pipeline_CategoriesController extends Zend_Controller_Action
 {
+
     protected $_fullPath = null;
 
     public function init()
@@ -28,11 +29,14 @@ class Pipeline_CategoriesController extends Zend_Controller_Action
     {
         $fullPath =  $this->getFullPath();
         $categoriesMapper = new Pipeline_Model_Mapper_PipelineCategories();
+        //Получаем категорию по переданному url
         $category = $categoriesMapper
             ->findByFulPath($fullPath, new Pipeline_Model_PipelineCategories());
 
+        //Если нет категории с таким url
         if(is_null($category)) {
             //throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+            //перенаправляем в товар, может быть это товар
             $this->forward('view', 'pipeline');
             return;
         }
@@ -41,7 +45,6 @@ class Pipeline_CategoriesController extends Zend_Controller_Action
         $this->view->category = $category;
         $this->view->title = $category->getTitle();
         $this->view->adminPath = 'pipeline-categories/edit/'.$category->getId();
-
 
         if($current_category_id !== 0){
             $select = $categoriesMapper->getDbTable()->select();
@@ -69,6 +72,7 @@ class Pipeline_CategoriesController extends Zend_Controller_Action
     /**
      * @param null $fullPath
      * @return Pipeline_CategoriesController
+     *
      */
     public function setFullPath($fullPath)
     {
@@ -78,11 +82,20 @@ class Pipeline_CategoriesController extends Zend_Controller_Action
 
     /**
      * @return null
+     *
      */
     public function getFullPath()
     {
         return $this->_fullPath;
     }
 
+    public function viewAction()
+    {
+        // action body
+    }
+
+
 }
+
+
 

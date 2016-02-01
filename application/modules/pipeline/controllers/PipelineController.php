@@ -34,9 +34,13 @@ class Pipeline_PipelineController extends Zend_Controller_Action
 
         $pipelineItems = $pipelineMapper->fetchAll($select);
 
-        if(!empty($pipelineItems))
+        if(!empty($pipelineItems)){
             $this->view->listItems = $pipelineItems;
-
+        }
+        else{
+            $this->forward('view', 'categories');
+            return;
+        }
     }
 
     public function viewAction()

@@ -79,8 +79,8 @@
                 <pipeline>
                     <label>Трубопроводная арматура</label>
                     <module>admin</module>
-                    <controller>pipeline</controller>
-                    <resource>pipeline</resource>
+                    <controller>pipeline-categories</controller>
+                    <resource>pipeline-categories</resource>
                     <pages>
                         <add>
                             <label>Добавить товар</label>
