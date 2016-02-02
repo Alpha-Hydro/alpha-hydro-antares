@@ -99,7 +99,7 @@ class Admin_PipelineController extends Zend_Controller_Action
             'imageDraftLoad'    => '/files/images/product/2012-05-22_foto_nv.jpg',
         ));
 
-        $form->getDisplayGroup('desc')->addAttribs(array('class'=>'active'));
+        $form->getDisplayGroup('desc')->addAttribs(array('class'=>'tab-pane active'));
 
         $imageTableElement = $form->getElement('imageTable');
         $imageTablePrepend = '<button type="button" class="btn btn-default" id="imageTableLoadBtn"><span class="glyphicon glyphicon-save"></span></button>';

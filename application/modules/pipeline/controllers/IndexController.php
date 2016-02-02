@@ -7,10 +7,12 @@ class Pipeline_IndexController extends Zend_Controller_Action
     {
         $this->view->title = 'Трубопроводная арматура';
 
+        /*//Заглушка
         if(!Zend_Auth::getInstance()->hasIdentity()){
             $this->_helper->layout->setLayout('_cap');
             $this->render('cap');
-        }
+        }*/
+
         $this->view->adminPath = 'pipeline';
     }
 
@@ -33,6 +35,7 @@ class Pipeline_IndexController extends Zend_Controller_Action
 
     public function capAction()
     {
+        //Показывается заглушка
     }
 
 

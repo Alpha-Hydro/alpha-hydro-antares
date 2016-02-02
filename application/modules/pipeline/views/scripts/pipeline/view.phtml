@@ -1,6 +1,8 @@
 <?php
 $this->headTitle($this->title);
 $this->meta_title = $this->title;
+$this->meta_description = $this->pipeline->getMetaDescription();
+$this->meta_keywords = $this->pipeline->getMetaKeywords();
 $this->breadcrumbs = true;
 $this->sidebar_headers = true;
 ?>
@@ -53,16 +55,22 @@ $this->sidebar_headers = true;
     <?php endif;?>
 
     <?php if($this->pipeline->getDescription()):?>
-        <div class="footnote">
+        <div class="mb2">
             <h4>Описание</h4>
             <?=$this->pipeline->getDescription()?>
         </div>
     <?php endif;?>
 
     <?php if($this->pipeline->getImageTable()):?>
-        <div class="btn-group btn-group-lg" role="group">
+        <div class="btn-group btn-group-lg mb2" role="group">
             <a href="<?=$this->pipeline->getImageTable()?>" class="btn btn-default" target="_blank">Модификации и размеры</a>
             <button class="btn btn-info" disabled="disabled"><span class="fa fa-external-link"></span></button>
+        </div>
+    <?php endif;?>
+
+    <?php if($this->pipeline->getContentHtml()):?>
+        <div class="mb2">
+            <?=$this->pipeline->getContentHtml()?>
         </div>
     <?php endif;?>
 
