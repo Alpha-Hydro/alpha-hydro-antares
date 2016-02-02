@@ -60,6 +60,12 @@ class Admin_PipelineCategoriesController extends Zend_Controller_Action
         $this->view->container_nav = $containerNav;
     }
 
+    public function listAction()
+    {
+        $this->forward('index', 'pipeline', 'admin', array('category_id' => $this->_getParam('id')));
+        return;
+    }
+
     public function addAction()
     {
         $request = $this->getRequest();

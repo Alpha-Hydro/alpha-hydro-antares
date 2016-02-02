@@ -27,8 +27,15 @@ class Admin_PipelineController extends Zend_Controller_Action
         $select->where('deleted != ?', 1)
             ->order('sorting ASC');
 
-        if($request->getParam('category_id'))
-            $select->where('category_id = ?', $request->getParam('category_id'));
+        if($request->getParam('category_id')){
+            $pipelineCategoryMapper = new Pipeline_Model_Mapper_PipelineCategories();
+            $category = $pipelineCategoryMapper->find($request->getParam('category_id'), new Pipeline_Model_PipelineCategories());
+
+            if(!is_null($category)){
+                $select->where('category_id = ?', $request->getParam('category_id'));
+                $this->view->categoryName = $category->getTitle().' - ';
+            }
+        }
 
         $pipelineItems = $pipelineMapper->fetchAll($select);
 
@@ -77,14 +84,6 @@ class Admin_PipelineController extends Zend_Controller_Action
         $containerNav = new Zend_Navigation($config);
 
         $this->view->container_nav = $containerNav;
-    }
-
-    public function categoryAction()
-    {
-        $request = $this->getRequest();
-
-        $this->forward('index', null, null, array('category_id' => $request->getParam('id')));
-        return;
     }
 
     public function addAction()

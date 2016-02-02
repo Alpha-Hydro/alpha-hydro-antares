@@ -96,12 +96,19 @@
                             <action>edit</action>
                             <resourse>pipeline</resourse>
                         </edit>
-                        <category>
+                        <categories>
                             <label>Категории</label>
                             <module>admin</module>
                             <controller>pipeline-categories</controller>
                             <resourse>pipeline-categories</resourse>
-                        </category>
+                        </categories>
+                        <category_view>
+                            <label>Список товаров в категории</label>
+                            <module>admin</module>
+                            <controller>pipeline-categories</controller>
+                            <action>list</action>
+                            <resourse>pipeline-categories</resourse>
+                        </category_view>
                         <category_add>
                             <label>Добавить категорию</label>
                             <module>admin</module>

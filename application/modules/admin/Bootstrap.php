@@ -101,20 +101,6 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         );
         $router->addRoute('adminEdit', $route);
 
-        /*$route = new Zend_Controller_Router_Route(
-            'admin/:controller/:action/:id',
-            array(
-                'module' => 'admin',
-                'action' => 'index',
-                'id' => null,
-            ),
-            array(
-                'controller' => '[\w\-]+',
-                'id' => '\d+',
-            )
-        );
-        $router->addRoute('adminEdit', $route);*/
-
     }
 
     /*protected function _initNavigation()

@@ -21,8 +21,8 @@ $this->secondary_text = 'Список категорий';
             <td><?=$page->getId()?></td>
             <td><a href="<?=$this->url(array(
                     'module'=>'admin',
-                    'controller'=>'pipeline',
-                    'action'=>'category',
+                    'controller'=>'pipeline-categories',
+                    'action'=>'list',
                     'id'=>$page->getId(),
                 ), null, true)?>"><?=$page->getTitle()?></a></td>
             <td><?=$page->getPath()?></td>
