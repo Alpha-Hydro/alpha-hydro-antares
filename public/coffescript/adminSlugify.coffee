@@ -5,6 +5,8 @@
     slug = $('#'+dataSlug)
 #    console.log(slug)
     getSlugify('/admin/index/slugify',value, slug)
+    $('#saveItemEdit').removeClass 'hidden'
+      .addClass 'show'
     false
 
   getSlugify = (url, value, ajaxContent) ->

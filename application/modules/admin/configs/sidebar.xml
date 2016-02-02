@@ -82,6 +82,13 @@
                     <controller>pipeline-categories</controller>
                     <resource>pipeline-categories</resource>
                     <pages>
+                        <index>
+                            <label>Список товаров</label>
+                            <module>admin</module>
+                            <controller>pipeline</controller>
+                            <action>index</action>
+                            <resourse>pipeline</resourse>
+                        </index>
                         <add>
                             <label>Добавить товар</label>
                             <module>admin</module>
@@ -102,13 +109,13 @@
                             <controller>pipeline-categories</controller>
                             <resourse>pipeline-categories</resourse>
                         </categories>
-                        <category_view>
+                        <category_list>
                             <label>Список товаров в категории</label>
                             <module>admin</module>
                             <controller>pipeline-categories</controller>
                             <action>list</action>
                             <resourse>pipeline-categories</resourse>
-                        </category_view>
+                        </category_list>
                         <category_add>
                             <label>Добавить категорию</label>
                             <module>admin</module>

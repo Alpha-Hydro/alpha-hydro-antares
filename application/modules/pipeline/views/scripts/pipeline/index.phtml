@@ -25,9 +25,15 @@ $this->sidebar_headers = true;
                     </div>
                 </div>
                 <div class="col-md-9">
-                    <h2 class="h4">
-                        <a href="<?=$this->url()?>"><?=$this->escape($item->getTitle());?></a>
-                        <small><?=$this->escape($item->getTitle());?></small>
+                    <h2 class="h4 mb2">
+                        <a href="<?=$this->url(
+                            array(
+                                'controller' => 'pipeline',
+                                'action' => 'view',
+                                'fullPath' => $item->getFullPath()
+                            ),'pipeline',true,false
+                        )?>"><?=$this->escape($item->getTitle());?></a>
+                        <!--<small><?/*=$this->escape($item->getTitle());*/?></small>-->
                     </h2>
                     <div class="product-property">
                         <?php $properties = $this->getPipelineProperties($item->getId())?>

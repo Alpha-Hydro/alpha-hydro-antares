@@ -10,10 +10,14 @@ loadFile = (event, id)->
 (($) ->
   $('[data-toggle="tooltip"]').tooltip()
 
-  $(document).one 'change', 'form#itemEdit', ()->
+#  $(document).one 'change', 'form#itemEdit', ()->
+#    $('#saveItemEdit').removeClass 'hidden'
+#      .addClass 'show'
+#    console.log 'OK'
+
+  $('form#itemEdit').change ->
     $('#saveItemEdit').removeClass 'hidden'
       .addClass 'show'
-#    console.log 'OK'
 
   $('#imageLoad').click ()->
     $('#imageLoadFile').trigger 'click'
