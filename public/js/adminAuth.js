@@ -25,4 +25,5 @@ var AdminAuth = (function () {
     };
     return AdminAuth;
 })();
+//var goAdmin = new AdminAuth();
 //# sourceMappingURL=adminAuth.js.map

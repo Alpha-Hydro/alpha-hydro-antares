@@ -1,6 +1,57 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Forum</b> and script/action name <b>index</b></p>
-</div>
+<?php
+/* @var $noReply Forum_Model_Forum */
+$this->title = 'Форум';
+//$this->secondary_text = 'Список категорий';
+$this->headScript()
+    ->appendFile('/js/forumActions.js');
+?>
 
-<?php Zend_Debug::dump($this->no_reply)?>
+<?php if($this->no_reply):?>
+    <h3>Без ответа</h3>
+    <?php foreach ($this->no_reply as $noReply):?>
+        <div class="panel panel-default">
+            <div class="panel-heading clearfix">
+                <em><u><?=date("d.m.Y", strtotime($noReply->getTimestamp()));?></u> г.,</em>
+                <strong><?=$noReply->getAuthor();?></strong> (<?=$noReply->getCategory();?>)
+
+                <div class="btn-group btn-group-xs pull-right" role="group" aria-label="..."  id="<?=$noReply->getId();?>">
+                    <button type="button" class="btn btn-success reply-forum" data-action="reply">
+                        <span class="glyphicon glyphicon-share" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-danger delete-forum" data-action="delete">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <?=$noReply->getContent();?>
+            </div>
+        </div>
+    <?php endforeach;?>
+<?php endif;?>
+
+<!--<div id="modalForumAdmin" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            ...
+        </div>
+    </div>
+</div>-->
+
+<div class="modal fade" id="modalForumAdmin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-primary">Сохранить</button>
+            </div>
+        </div>
+    </div>
+</div>

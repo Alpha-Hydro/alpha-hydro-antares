@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "adminForum.js",
+  "sourceRoot": "..\\coffescript",
+  "sources": [
+    "adminForum.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;EAAA,CAAC,SAAC,CAAD,GAAA,CAAD,CAAA,CAEE,MAFF;AAAA"
+}

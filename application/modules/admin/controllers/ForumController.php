@@ -7,12 +7,16 @@ class Admin_ForumController extends Zend_Controller_Action
      */
     protected $_forumMapper;
 
-    protected $_topics = array();
+    protected $_forums = array();
     protected $_noReply = array();
+
+    protected $_count_item_on_page = null;
 
     public function init()
     {
         $this->_forumMapper = new Forum_Model_Mapper_Forum();
+
+        $this->setCountItemOnPage(10);
 
         $select = $this->_forumMapper->getDbTable()->select();
 
@@ -42,36 +46,61 @@ class Admin_ForumController extends Zend_Controller_Action
                 }
 
                 if(!empty($topic))
-                    $forums['topic'][] = $topic;
+                    $forums[] = $topic;
             }
 
             $this->setNoReply($noReply);
-            $this->setTopics($forums);
+            $this->setForums($forums);
         }
     }
 
     public function indexAction()
     {
-        $this->view->assign('no_reply',$this->getNoReply());
+        $request = $this->getRequest();
 
+        $noReply = $this->getNoReply();
+        if(!empty($noReply))
+            $this->view->assign('no_reply',$noReply);
+
+        $pageItems = $this->getForums();
+
+        if(!empty($pageItems)){
+            if(count($pageItems)> $this->getCountItemOnPage()){
+
+                $pages = array_chunk($pageItems, $this->getCountItemOnPage());
+
+                $currentPage = 0;
+
+                if($request->getParam('page') && $request->getParam('page')>0)
+                    $currentPage = $request->getParam('page')-1;
+
+                if($request->getParam('page') && $request->getParam('page')>count($pages))
+                    $currentPage = count($pages)-1;
+
+                $pageItems = $pages[$currentPage];
+                $this->view->countPage = count($pages);
+                $this->view->currentPage = $currentPage+1;
+            }
+            $this->view->assign('forums',$pageItems);
+        }
     }
 
     /**
      * @param array $topics
      * @return Admin_ForumController
      */
-    public function setTopics($topics)
+    public function setForums($topics)
     {
-        $this->_topics = $topics;
+        $this->_forums = $topics;
         return $this;
     }
 
     /**
      * @return array
      */
-    public function getTopics()
+    public function getForums()
     {
-        return $this->_topics;
+        return $this->_forums;
     }
 
     /**
@@ -90,6 +119,24 @@ class Admin_ForumController extends Zend_Controller_Action
     public function getNoReply()
     {
         return $this->_noReply;
+    }
+
+    /**
+     * @param null $count_item_on_page
+     * @return Admin_ForumController
+     */
+    public function setCountItemOnPage($count_item_on_page)
+    {
+        $this->_count_item_on_page = $count_item_on_page;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getCountItemOnPage()
+    {
+        return $this->_count_item_on_page;
     }
 
 
