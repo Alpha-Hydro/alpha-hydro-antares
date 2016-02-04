@@ -5,7 +5,20 @@ class Pipeline_IndexController extends Zend_Controller_Action
 
     public function init()
     {
-        $this->view->title = 'Трубопроводная арматура';
+        $pageTitle = 'Детали трубопроводов';
+
+        $pageMapper = new Default_Model_Mapper_Pages();
+        $page = $pageMapper->findByPath('pipeline', new Default_Model_Pages());
+
+        if($page){
+            $pageTitle = $page->getTitle();
+
+            $this->view->meta_title = $page->getMetaTitle();
+            $this->view->meta_description = $page->getMetaDescription();
+            $this->view->meta_keywords = $page->getMetaKeywords();
+        }
+
+        $this->view->title = $pageTitle;
 
         /*//Заглушка
         if(!Zend_Auth::getInstance()->hasIdentity()){
@@ -29,8 +42,6 @@ class Pipeline_IndexController extends Zend_Controller_Action
         $categories = $categoriesMapper->fetchAll($select);
 
         $this->view->categories = $categories;
-        $this->view->meta_description = 'Альфа-Гидро - Трубопроводная арматура. Оптовые поставки трубных элементов, в продаже заглушки, отводы, переходы, тройники, трубы, фланцы.';
-        $this->view->meta_keywords = 'трубопроводная арматура, заглушки, отводы, переходы, тройники, трубы, фланцы';
     }
 
     public function capAction()

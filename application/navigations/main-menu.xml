@@ -13,7 +13,7 @@
         <route>default</route>
     </production>	
     <pipeline>
-        <label>Трубопроводная арматура</label>
+        <label>Детали трубопроводов</label>
         <module>pipeline</module>
         <controller>index</controller>
         <route>default</route>

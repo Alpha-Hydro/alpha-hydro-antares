@@ -72,6 +72,29 @@ class Default_Model_Mapper_Pages
     }
 
     /**
+     * @param $path
+     * @param Default_Model_Pages $pages
+     * @return Default_Model_Pages|null
+     */
+    public function findByPath($path, Default_Model_Pages $pages)
+    {
+        $table = $this->getDbTable();
+        $select = $table->select()
+            ->where('path = ?', $path);
+
+        $result = $table->fetchAll($select);
+
+        if(0 == count($result))
+            return null;
+
+        $row = $result->current();
+
+        $page = $this->_setDbData($row, $pages);
+
+        return $page;
+    }
+
+    /**
      * @param null $select
      * @return array
      */
