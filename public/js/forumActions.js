@@ -1,13 +1,10 @@
-/// <reference path="jquery.d.ts" />
-/// <reference path="classie.d.ts" />
-/// <reference path="bootstrap.d.ts" />
 var ForumActions = (function () {
     function ForumActions() {
         var _this = this;
         this.modalShow = function (title, body, button) {
             var actionButton = _this.modalForumForm.elements.action, modalBody = _this.modalForumForm.children.item('modalBody');
             _this.modalForumForm.action = _this.action + '/' + _this.itemId;
-            _this.modal.querySelector('#modalLabel').innerText = title;
+            _this.modal.querySelector('#modalLabel').innerHTML = title;
             modalBody.innerHTML = '';
             modalBody.appendChild(body);
             actionButton.setAttribute('class', button.className);
@@ -31,8 +28,7 @@ var ForumActions = (function () {
         button.forEach(function (btn) {
             btn.addEventListener('click', function (ev) {
                 ev.preventDefault();
-                var el = ev.target, action = el.dataset.action;
-                //console.log(btn.dataset.action);
+                var el = ev.currentTarget, action = el.dataset.action;
                 self._initAction(idGroup, action);
             });
         });
@@ -55,35 +51,28 @@ var ForumActions = (function () {
         }
     };
     ForumActions.prototype._del = function () {
-        console.log(this.itemId, this.action);
-        /* var title:any = 'Удалить сообщение',
-             body:any = document.createElement('p'),
-             button = {
-                 className: 'btn btn-danger',
-                 text: 'Удалить'
-             };
- 
-         body.textContent = 'Вы действительно хотите удалить сообщение '+this.itemId+'!';
- 
-         this.modalShow(title, body, button);*/
+        var title = 'Удалить сообщение', body = document.createElement('p'), button = {
+            className: 'btn btn-danger',
+            text: 'Удалить'
+        };
+        body.textContent = 'Вы действительно хотите удалить сообщение ' + this.itemId + '!';
+        this.modalShow(title, body, button);
     };
     ForumActions.prototype._reply = function () {
-        console.log(this.itemId, this.action);
-        /*var title:any = 'Ответить на сообщение',
-            body:any = document.createElement('textarea'),
-            button = {
-                className: 'btn btn-success',
-                text: 'Отправить'
-            };
-
-        body.name = "contentMarkdown";
-        body.rows = "8";
-        body.setAttribute('class', 'form-control');
-        body.autofocus = true;
-
-        console.log(body);
-
-        this.modalShow(title, body, button);*/
+        var title = 'Ответить на сообщение', quest = document.getElementById('question' + this.itemId).querySelector('.panel-body'), body = document.createElement('div'), textarea = document.createElement('textarea'), button = {
+            className: 'btn btn-success',
+            text: 'Отправить'
+        };
+        body.appendChild(quest.cloneNode(true));
+        textarea.name = "contentMarkdown";
+        textarea.rows = "8";
+        textarea.setAttribute('class', 'form-control');
+        textarea.onfocus = true;
+        body.appendChild(textarea);
+        $(this.modal).on('shown.bs.modal', function () {
+            $(textarea).focus();
+        });
+        this.modalShow(title, body, button);
     };
     ForumActions.prototype._edit = function () {
         console.log(this.itemId, this.action);

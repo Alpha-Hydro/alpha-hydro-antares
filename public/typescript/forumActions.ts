@@ -37,9 +37,8 @@ class ForumActions{
         button.forEach(function(btn){
             btn.addEventListener('click',(ev)=>{
                 ev.preventDefault();
-                var el:any = ev.target,
+                var el:any = ev.currentTarget,
                     action:string = el.dataset.action;
-                //console.log(btn.dataset.action);
                 self._initAction(idGroup, action);
             });
         });
@@ -68,8 +67,7 @@ class ForumActions{
     }
 
     _del(){
-        console.log(this.itemId, this.action);
-       /* var title:any = 'Удалить сообщение',
+        var title:any = 'Удалить сообщение',
             body:any = document.createElement('p'),
             button = {
                 className: 'btn btn-danger',
@@ -78,26 +76,35 @@ class ForumActions{
 
         body.textContent = 'Вы действительно хотите удалить сообщение '+this.itemId+'!';
 
-        this.modalShow(title, body, button);*/
+        this.modalShow(title, body, button);
     }
+
     _reply(){
-        console.log(this.itemId, this.action);
-        /*var title:any = 'Ответить на сообщение',
-            body:any = document.createElement('textarea'),
+        var title:any = 'Ответить на сообщение',
+            quest:any = document.getElementById('question'+this.itemId).querySelector('.panel-body'),
+            body:any = document.createElement('div'),
+            textarea:any = document.createElement('textarea'),
             button = {
                 className: 'btn btn-success',
                 text: 'Отправить'
             };
 
-        body.name = "contentMarkdown";
-        body.rows = "8";
-        body.setAttribute('class', 'form-control');
-        body.autofocus = true;
+        body.appendChild(quest.cloneNode(true));
 
-        console.log(body);
+        textarea.name = "contentMarkdown";
+        textarea.rows = "8";
+        textarea.setAttribute('class', 'form-control');
+        textarea.onfocus = true;
 
-        this.modalShow(title, body, button);*/
+        body.appendChild(textarea);
+
+        $(this.modal).on('shown.bs.modal', ()=>{
+            $(textarea).focus();
+        });
+
+        this.modalShow(title, body, button);
     }
+
     _edit(){
         console.log(this.itemId, this.action);
     }
@@ -108,7 +115,7 @@ class ForumActions{
             modalBody:any = this.modalForumForm.children.item('modalBody');
 
         this.modalForumForm.action = this.action+'/'+this.itemId;
-        this.modal.querySelector('#modalLabel').innerText = title;
+        this.modal.querySelector('#modalLabel').innerHTML = title;
         modalBody.innerHTML = '';
         modalBody.appendChild(body);
 
