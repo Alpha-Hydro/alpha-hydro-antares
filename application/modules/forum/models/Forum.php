@@ -17,6 +17,12 @@ class Forum_Model_Forum
 
     protected $_timestamp = null;
 
+    protected $_active = null;
+
+    protected $_deleted = null;
+
+    protected $_content_markdown = null;
+
     /**
      * @param $options
      */
@@ -252,6 +258,72 @@ class Forum_Model_Forum
     public function getTimestamp()
     {
         return $this->_timestamp;
+    }
+
+    /**
+     * Set value Active
+     *
+     * @return $this 
+     * @param $active
+     */
+    public function setActive($active)
+    {
+        $this->_active = $active;
+        return $this;
+    }
+
+    /**
+     * Get value Active
+     *
+     * @return mixed
+     */
+    public function getActive()
+    {
+        return $this->_active;
+    }
+
+    /**
+     * Set value Deleted
+     *
+     * @return $this 
+     * @param $deleted
+     */
+    public function setDeleted($deleted)
+    {
+        $this->_deleted = $deleted;
+        return $this;
+    }
+
+    /**
+     * Get value Deleted
+     *
+     * @return mixed
+     */
+    public function getDeleted()
+    {
+        return $this->_deleted;
+    }
+
+    /**
+     * Set value ContentMarkdown
+     *
+     * @return $this 
+     * @param $content_markdown
+     */
+    public function setContentMarkdown($content_markdown)
+    {
+        $this->_content_markdown = $content_markdown;
+        return $this;
+    }
+
+    /**
+     * Get value ContentMarkdown
+     *
+     * @return mixed
+     */
+    public function getContentMarkdown()
+    {
+        return $this->_content_markdown;
     }
 
 

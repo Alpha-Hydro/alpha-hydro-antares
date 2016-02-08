@@ -14,7 +14,9 @@ class Utils_CacheManagerController extends Zend_Controller_Action
 
         Zend_Debug::dump($cache->getTags());
 
-        $cache->clean(Zend_Cache::CLEANING_MODE_OLD);
+        $cache->clean(Zend_Cache::CLEANING_MODE_ALL);
+
+        //$cache->clean(Zend_Cache::CLEANING_MODE_OLD);
         //$cache->remove('treeCategories');
 
         /*$xml = simplexml_load_string($cache->load('productsCategoryXml83'));

@@ -21,6 +21,7 @@ class Admin_ForumController extends Zend_Controller_Action
         $select = $this->_forumMapper->getDbTable()->select();
 
         $select->where('parent_id is null')
+            ->where('deleted != ?', 1)
             ->order('timestamp DESC');
         $forumItems = $this->_forumMapper->fetchAll($select);
 
@@ -33,6 +34,7 @@ class Admin_ForumController extends Zend_Controller_Action
 
                 $select->reset()
                     ->where('parent_id = ?', $forumItem->getId())
+                    ->where('deleted != ?', 1)
                     ->order('timestamp ASC');
 
                 $reply = $this->_forumMapper->fetchAll($select);
@@ -83,6 +85,25 @@ class Admin_ForumController extends Zend_Controller_Action
             }
             $this->view->assign('forums',$pageItems);
         }
+    }
+
+    public function deleteAction()
+    {
+        $request = $this->getRequest();
+        $itemId = $request->getParam('id');
+
+        if(is_null($itemId))
+            return $this->_helper->redirector('index');
+
+        $item = $this->_forumMapper->find($itemId, new Forum_Model_Forum());
+
+        if(is_null($item))
+            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+        $item->setDeleted(1);
+        $this->_forumMapper->save($item);
+
+        return $this->_helper->redirector('index');
     }
 
     /**
