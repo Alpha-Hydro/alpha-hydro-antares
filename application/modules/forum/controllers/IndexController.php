@@ -129,13 +129,13 @@ class Forum_IndexController extends Zend_Controller_Action
         $textHtml .= '<p>Автор: '.$post->getAuthor().' ('.$post->getEmail().')</p>';
 
         $mailToAdmin->setBodyHtml($textHtml);
-        $mailToAdmin->addTo("admin@alpha-hydro.com", "ALPHA-HYDRO info");
-        /*$mailToAdmin->addTo("info@alpha-hydro.com", "ALPHA-HYDRO info");
+//        $mailToAdmin->addTo("admin@alpha-hydro.com", "ALPHA-HYDRO info");
+        $mailToAdmin->addTo("info@alpha-hydro.com", "ALPHA-HYDRO info");
         $mailToAdmin->addBcc(array(
             "fra@alpha-hydro.com",
             "kma@alpha-hydro.com",
             "admin@alpha-hydro.com")
-        );*/
+        );
         $mailToAdmin->send();
 
         return $this;

@@ -163,10 +163,13 @@ class Admin_ForumController extends Zend_Controller_Action
         $textHtml .= '<p>Ответил: '.$reply->getAuthor().' ('.$reply->getEmail().')</p>';
 
         $mailToAdmin->setBodyHtml($textHtml);
-        $mailToAdmin->addTo("admin@alpha-hydro.com");
-        $mailToAdmin->addBcc($question->getEmail());
-//        $mailToAdmin->addBcc("fra@alpha-hydro.com");
-//        $mailToAdmin->addBcc("kma@alpha-hydro.com");
+        $mailToAdmin->addTo($question->getEmail());
+        $mailToAdmin->addBcc(array(
+                "fra@alpha-hydro.com",
+                "kma@alpha-hydro.com",
+                "admin@alpha-hydro.com",
+            )
+        );
         $mailToAdmin->send();
 
         return $this;
