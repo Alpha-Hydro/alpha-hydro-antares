@@ -164,9 +164,12 @@ class Admin_ForumController extends Zend_Controller_Action
 
         $mailToAdmin->setBodyHtml($textHtml);
         $mailToAdmin->addTo("admin@alpha-hydro.com");
+        $mailToAdmin->addBcc($question->getEmail());
 //        $mailToAdmin->addBcc("fra@alpha-hydro.com");
 //        $mailToAdmin->addBcc("kma@alpha-hydro.com");
         $mailToAdmin->send();
+
+        return $this;
     }
 
     /**
