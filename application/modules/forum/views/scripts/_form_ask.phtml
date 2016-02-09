@@ -6,6 +6,8 @@ $this->headScript()
 <div class="form-ask" id="formAsk">
     <h3>Написать нам:</h3>
     <form action="/forum/index/ask" method="post" id="forum_ask">
+        <?=$this->form_ask->active?>
+        <?=$this->form_ask->deleted?>
         <div class="form-inline clearfix">
             <div class="pull-left">
                 <?=$this->form_ask->author?>

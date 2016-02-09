@@ -5,6 +5,14 @@ class Forum_Form_ForumAsk extends Twitter_Bootstrap_Form_Vertical
 
     public function init()
     {
+        $this->addElement('hidden', 'active');
+        $this->addElement('hidden', 'deleted');
+
+        $this->setDefaults(array(
+            'active'        => 1,
+            'deleted'       => 0,
+        ));
+
         $this->addElement('text', 'author', array(
             'label'         => 'Имя',
             'placeholder'   => 'Ваше имя',
