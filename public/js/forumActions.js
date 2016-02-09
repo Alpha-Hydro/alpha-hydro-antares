@@ -1,3 +1,6 @@
+/// <reference path="jquery.d.ts" />
+/// <reference path="classie.d.ts" />
+/// <reference path="bootstrap.d.ts" />
 var ForumActions = (function () {
     function ForumActions() {
         var _this = this;
