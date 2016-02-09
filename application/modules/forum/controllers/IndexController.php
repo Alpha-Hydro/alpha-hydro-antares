@@ -96,37 +96,10 @@ class Forum_IndexController extends Zend_Controller_Action
                 $forumMapper->save($newPost);
 
                 //Письмо администратору
-                $mailToAdmin = new Zend_Mail("UTF-8");
-                $mailToAdmin->setFrom($newPost->getEmail(), $newPost->getAuthor());
-                $mailToAdmin->setSubject('Новое сообщение с форума ALPHA-HYDRO');
-
-                $textHtml = '<h1>'.$newPost->getCategory().'</h1>';
-                $textHtml .= '<p>Сообщение: '.$newPost->getContent().'</p>';
-                $textHtml .= '<p>Автор: '.$newPost->getAuthor().' ('.$newPost->getEmail().')</p>';
-
-                $mailToAdmin->setBodyHtml($textHtml);
-                $mailToAdmin->addTo("info@alpha-hydro.com", "ALPHA-HYDRO info");
-                $mailToAdmin->addBcc("fra@alpha-hydro.com");
-                $mailToAdmin->addBcc("kma@alpha-hydro.com");
-                $mailToAdmin->addBcc("admin@alpha-hydro.com");
-                $mailToAdmin->send();
+                $this->sendAdminMail($newPost);
 
                 //Письмо пользователю
-                $mailToUser = new Zend_Mail("UTF-8");
-                $mailToUser->setFrom("info@alpha-hydro.com", "ALPHA-HYDRO info");
-                $mailToUser->setSubject('Cообщение на форуме ALPHA-HYDRO');
-
-                $textHtml = '<h3>Вы разместили сообщение на форуме сайта <a href="http://alpha-hydro.com/forum">ALPHA-HYDRO</a></h3>';
-                $textHtml .= '<p>Категория: '.$newPost->getCategory().'</p>';
-                $textHtml .= '<p>Сообщение: '.$newPost->getContent().'</p>';
-                $textHtml .= '<p>Ваше сообщение обязательно будет рассмотрено и в ближайшее время наши менеджеры Вам на него ответят.</p>';
-                $textHtml .= '<p>Спасибо за проявленный интерес к нашей компании.</p>';
-
-                $mailToUser->setBodyHtml($textHtml);
-                $mailToUser->addTo($newPost->getEmail(), $newPost->getAuthor());
-                //$mailToUser->addTo($form_ask->getValue('email'), $newPost->getAuthor());
-                $mailToUser->send();
-
+                $this->sendUserMail($newPost);
 
                 $error = false;
                 $message .= 'Ваше сообщение успешно отправлено.' . "<br/>";
@@ -143,6 +116,49 @@ class Forum_IndexController extends Zend_Controller_Action
             $this->view->error = $error;
             $this->view->message = $message;
         }
+    }
+
+    public function sendAdminMail(Forum_Model_Forum $post)
+    {
+        $mailToAdmin = new Zend_Mail("UTF-8");
+        $mailToAdmin->setFrom($post->getEmail(), $post->getAuthor());
+        $mailToAdmin->setSubject('Новое сообщение с форума ALPHA-HYDRO');
+
+        $textHtml = '<h1>'.$post->getCategory().'</h1>';
+        $textHtml .= '<p>Сообщение: '.$post->getContent().'</p>';
+        $textHtml .= '<p>Автор: '.$post->getAuthor().' ('.$post->getEmail().')</p>';
+
+        $mailToAdmin->setBodyHtml($textHtml);
+        $mailToAdmin->addTo("admin@alpha-hydro.com", "ALPHA-HYDRO info");
+        /*$mailToAdmin->addTo("info@alpha-hydro.com", "ALPHA-HYDRO info");
+        $mailToAdmin->addBcc(array(
+            "fra@alpha-hydro.com",
+            "kma@alpha-hydro.com",
+            "admin@alpha-hydro.com")
+        );*/
+        $mailToAdmin->send();
+
+        return $this;
+    }
+
+    public function sendUserMail(Forum_Model_Forum $post)
+    {
+        $mailToUser = new Zend_Mail("UTF-8");
+        $mailToUser->setFrom("info@alpha-hydro.com", "ALPHA-HYDRO info");
+        $mailToUser->setSubject('Cообщение на форуме ALPHA-HYDRO');
+
+        $textHtml = '<h3>Вы разместили сообщение на форуме сайта <a href="http://alpha-hydro.com/forum">ALPHA-HYDRO</a></h3>';
+        $textHtml .= '<p>Категория: '.$post->getCategory().'</p>';
+        $textHtml .= '<p>Сообщение: '.$post->getContent().'</p>';
+        $textHtml .= '<p>Ваше сообщение обязательно будет рассмотрено и в ближайшее время наши менеджеры Вам на него ответят.</p>';
+        $textHtml .= '<p>Спасибо за проявленный интерес к нашей компании.</p>';
+
+        $mailToUser->setBodyHtml($textHtml);
+        $mailToUser->addTo($post->getEmail(), $post->getAuthor());
+        //$mailToUser->addTo($form_ask->getValue('email'), $newPost->getAuthor());
+        $mailToUser->send();
+
+        return $this;
     }
 
     public function refreshCaptchaAction()
