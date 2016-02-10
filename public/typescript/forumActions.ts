@@ -94,6 +94,7 @@ class ForumActions{
         textarea.name = "contentMarkdown";
         textarea.rows = "8";
         textarea.setAttribute('class', 'form-control');
+        textarea.required = true;
         textarea.onfocus = true;
 
         body.appendChild(textarea);
@@ -106,7 +107,28 @@ class ForumActions{
     }
 
     _edit(){
-        console.log(this.itemId, this.action);
+        var title:any = 'Редактировать сообщение',
+            context:any = document.getElementById('reply'+this.itemId).querySelector('.markdown-content'),
+            body:any = document.createElement('div'),
+            textarea:any = document.createElement('textarea'),
+            button = {
+                className: 'btn btn-success',
+                text: 'Сохранить'
+            };
+
+        textarea.name = "contentMarkdown";
+        textarea.rows = "8";
+        textarea.setAttribute('class', 'form-control');
+        textarea.required = true;
+        textarea.onfocus = true;
+
+        textarea.innerHTML = context.textContent.trim();
+
+        //console.log(context.textContent.trim());
+
+        body.appendChild(textarea);
+
+        this.modalShow(title, body, button);
     }
 
     modalShow = (title:string, body:any, button:any)=>{

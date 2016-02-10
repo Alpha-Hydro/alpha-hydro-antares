@@ -13,5 +13,12 @@
         <email>gaa@alpha-hydro.com</email>
         <password>98805b298dc7c7c4f9c2734b37fdf37c65fce0f7</password>
     </user2>
+    <user3>
+        <name>test</name>
+        <fullname>test_manager</fullname>
+        <role>manager</role>
+        <email>vlmeh@mail.ru</email>
+        <password>1a8565a9dc72048ba03b4156be3e569f22771f23</password>
+    </user3>
 </users>
 
