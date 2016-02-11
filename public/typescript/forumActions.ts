@@ -12,7 +12,6 @@ class ForumActions{
     modalTitle:any;
     modalForumForm:any;
 
-
     constructor(){
         this.btnGroups = [].slice.call(document.querySelectorAll('.btn-group'));
         this.modal = document.getElementById('modalForumAdmin');

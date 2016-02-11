@@ -10,7 +10,8 @@ class Admin_CatalogController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        // action body
+        $this->_helper->layout->disableLayout();
+        $this->forward('index', 'index', 'catalog');
     }
 
 

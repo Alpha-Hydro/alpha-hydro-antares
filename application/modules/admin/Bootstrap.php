@@ -35,21 +35,25 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         $acl = new Zend_Acl();
 
         // указываем, что у нас есть ресурсы
-        //$acl->addResource(new Zend_Acl_Resource('error'));
+        $acl->addResource(new Zend_Acl_Resource('error'));
         $acl->addResource(new Zend_Acl_Resource('auth'));
         $acl->addResource(new Zend_Acl_Resource('index'));
         $acl->addResource(new Zend_Acl_Resource('pages'));
+
         $acl->addResource(new Zend_Acl_Resource('catalog'));
-        $acl->addResource(new Zend_Acl_Resource('oil'));
-        $acl->addResource(new Zend_Acl_Resource('forum'));
-        $acl->addResource(new Zend_Acl_Resource('media'));
-        $acl->addResource(new Zend_Acl_Resource('media-categories'));
-        $acl->addResource(new Zend_Acl_Resource('manufacture-categories'));
         $acl->addResource(new Zend_Acl_Resource('manufacture'));
+        $acl->addResource(new Zend_Acl_Resource('manufacture-categories'));
         $acl->addResource(new Zend_Acl_Resource('pipeline'));
         $acl->addResource(new Zend_Acl_Resource('pipeline-categories'));
         $acl->addResource(new Zend_Acl_Resource('pipeline-property'));
         $acl->addResource(new Zend_Acl_Resource('pipeline-property-value'));
+        $acl->addResource(new Zend_Acl_Resource('oil'));
+        $acl->addResource(new Zend_Acl_Resource('forum'));
+        $acl->addResource(new Zend_Acl_Resource('media'));
+        $acl->addResource(new Zend_Acl_Resource('media-categories'));
+        $acl->addResource(new Zend_Acl_Resource('about'));
+        $acl->addResource(new Zend_Acl_Resource('contacts'));
+
         $acl->addResource(new Zend_Acl_Resource('search-index'));
         $acl->addResource(new Zend_Acl_Resource('trash'));
         $acl->addResource(new Zend_Acl_Resource('utils'));

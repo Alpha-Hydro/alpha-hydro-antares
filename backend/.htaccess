@@ -1,0 +1,90 @@
+Options +FollowSymlinks
+
+DirectoryIndex index.php
+
+AddDefaultCharset UTF-8
+
+RewriteEngine On
+
+<IfModule mod_headers.c>
+	Header unset ETag
+	FileETag None
+	<FilesMatch "\.(js|json|xml|gz|css|map)$">
+		Header append Vary: Accept-Encoding
+	</FilesMatch>
+	<FilesMatch "\.(ico|jpe?g|png|gif|swf)$">
+        Header set Cache-Control "public"
+    </FilesMatch>
+    <FilesMatch "\.(css)$">
+        Header set Cache-Control "public"
+    </FilesMatch>
+    <FilesMatch "\.(js)$">
+        Header set Cache-Control "private"
+    </FilesMatch>
+    <FilesMatch "\.(x?html?|php)$">
+        Header set Cache-Control "private, must-revalidate"
+    </FilesMatch>
+</IfModule>
+
+<IfModule mod_expires.c>
+	ExpiresActive On
+	ExpiresByType image/x-icon "access plus 1 week"
+	ExpiresByType image/gif "access plus 1 week"
+	ExpiresByType image/jpeg "access plus 1 week"
+	ExpiresByType image/png "access plus 1 week"
+	ExpiresByType text/css "access plus 1 week"
+	ExpiresByType text/javascript "access plus 1 week"
+	ExpiresByType application/x-javascript "access plus 1 week"
+</IfModule>
+<ifModule mod_headers.c>
+	Header set Connection keep-alive
+</ifModule>
+
+# Apache 2.2
+<IfModule mod_deflate.c>
+	AddOutputFilterByType DEFLATE text/html text/plain text/xml application/xml application/xhtml+xml text/css text/javascript application/javascript application/x-javascript
+	<IfModule mod_setenvif.c>
+		BrowserMatch ^Mozilla/4 gzip-only-text/html
+		BrowserMatch ^Mozilla/4\.0[678] no-gzip
+		BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+	</IfModule>
+</IfModule>
+
+# Apache 1.3, 2.0
+<ifModule mod_gzip.c>
+	mod_gzip_on Yes
+	mod_gzip_dechunk Yes
+	mod_gzip_item_include file .(css|js)$
+	mod_gzip_item_include mime ^application/javascript$
+	mod_gzip_item_include mime ^application/x-javascript$
+	mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
+</ifModule>
+
+# Редирект с www на /
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteCond %{REQUEST_URI} !^/robots\.txt$ [NC]
+RewriteCond %{REQUEST_URI} !^/yandex\_(.+)\.html$ [NC]
+RewriteRule ^ http://%1%{REQUEST_URI} [R=301,L]
+
+# Редирект с внешних доменов на alpha-hydro.com
+RewriteCond %{HTTP_HOST} ^alpha-hydro\.ru$ [OR]
+RewriteCond %{HTTP_HOST} ^4494944\.ru$ [OR]
+RewriteCond %{HTTP_HOST} ^4494944\.org$ [OR]
+RewriteCond %{HTTP_HOST} ^alfa-hydro\.ru$ [OR]
+RewriteCond %{HTTP_HOST} ^alfa-hydro\.com$
+RewriteCond %{REQUEST_URI} !^/robots\.txt$
+RewriteCond %{REQUEST_URI} !^/yandex\_(.+)\.html$ [NC]
+RewriteRule ^ http://alpha-hydro.com%1%{REQUEST_URI} [R=301,L]
+
+# Обязательный слеш в конце пути
+RewriteCond %{REQUEST_METHOD} GET [NC]
+RewriteCond %{REQUEST_URI} !/$
+RewriteCond %{REQUEST_URI} !\.
+RewriteRule ^.*$ %{REQUEST_URI}/ [R=301,L]
+
+# Редирект на index.php по правилам zend
+RewriteCond %{REQUEST_FILENAME} -s [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.*$ - [NC,L]
+RewriteRule ^.*$ index.php [NC,L]

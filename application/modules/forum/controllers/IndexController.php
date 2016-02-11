@@ -10,6 +10,8 @@ class Forum_IndexController extends Zend_Controller_Action
             ->addActionContext('ask', 'html')
             ->addActionContext('refresh-captcha', 'json')
             ->initContext('html');
+
+        $this->view->adminPath = 'forum/?page='.$this->getRequest()->getParam('page');
     }
 
     public function indexAction()
@@ -24,6 +26,7 @@ class Forum_IndexController extends Zend_Controller_Action
         $forumMapper = new Forum_Model_Mapper_Forum();
         $select = $forumMapper->getDbTable()->select();
         $select->where('parent_id is null')
+            ->where('deleted != ?', 1)
             ->order('timestamp DESC');
 
         $category = $forumMapper->getCategoryArray();
@@ -44,6 +47,7 @@ class Forum_IndexController extends Zend_Controller_Action
 
                 $select->reset()
                     ->where('parent_id = ?', $forumItem->getId())
+                    ->where('deleted != ?', 1)
                     ->order('timestamp ASC');
 
                 $reply = $forumMapper->fetchAll($select);

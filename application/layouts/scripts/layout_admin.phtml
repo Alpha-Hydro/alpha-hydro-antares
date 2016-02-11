@@ -1,0 +1,44 @@
+<?php
+/* @var $this Zend_View_Helper_Abstract */
+echo $this->doctype()
+?>
+<html lang="ru">
+<head>
+    <?php
+    echo $this->headTitle();
+
+    echo $this->render("components/_meta_head.phtml");
+
+    $this->headLink()
+        ->appendStylesheet($this->baseUrl().'/css/global.min.css')
+        ->headLink(array('rel' => 'shortcut icon',
+            'type' => "image/x-icon",
+            'href' => $this->baseUrl().'/favicon.ico'),
+            'PREPEND');
+    echo $this->headLink();
+
+    $this->headScript()
+        ->prependFile('//code.jquery.com/jquery-1.11.3.min.js');
+    ?>
+</head>
+<body>
+<div class="layout">
+    <?= $this->render("components/_header.phtml")?>
+    <div class="main" role="main">
+        <div class="container">
+            <?php /*echo $this->layout()->content */?>
+            <?= $this->render('_module.phtml') ?>
+        </div>
+    </div>
+    <div class="layout-footer"></div>
+</div>
+<?= $this->render("components/_footer.phtml")?>
+<?= $this->render("components/_admin_auth.phtml");?>
+<?= $this->headScript();?>
+<?php
+    if(!Zend_Auth::getInstance()->hasIdentity())
+        echo $this->render("components/_counters.phtml");
+?>
+<?php ?>
+</body>
+</html>

@@ -5,7 +5,7 @@ class Admin_Model_Auth implements Zend_Auth_Adapter_Interface
     /**
      * Username
      *
-     * @var unknown
+     * @var string
      */
     protected $user = NULL;
 

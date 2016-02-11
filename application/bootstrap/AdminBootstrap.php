@@ -1,6 +1,6 @@
 <?php
 
-class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
+class AdminBootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
     /**
      * Initialize auto loader and add resource loaders
@@ -37,51 +37,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
         $pluginsLoader = new Zend_Loader_PluginLoader();
         $pluginsLoader->addPrefixPath("Plugin", APPLICATION_PATH.'/plugins');
-
-        $pluginsLoader->load("Redirect");
-        $front = Zend_Controller_Front::getInstance();
-        if ( $pluginsLoader->isLoaded("Redirect"))
-            $front->registerPlugin(new Plugin_Redirect());
-
-    }
-
-    public function _initRoute()
-    {
-        $router = Zend_Controller_Front::getInstance()->getRouter();
-        $aHostName = array(
-            'hansa-flex.pro',
-            'hansa-flex.su',
-            'hansa-flex.org',
-            'xn----7sbavhvfm6b0af.xn--p1ai',
-        );
-
-        $hostHttp = new Zend_Controller_Request_Http();
-
-        $host = $hostHttp->getServer('HTTP_HOST');
-        $requestUri = $hostHttp->getServer('REQUEST_URI');
-
-        if(in_array($host, $aHostName)){
-            $hostnameRoute = new Zend_Controller_Router_Route_Hostname(
-                $host,
-                array(
-                    'controller' => 'index',
-                    'action'     => 'plug',
-                    'module'     => 'default'
-                )
-            );
-            $router->addRoute('hostAlfa', $hostnameRoute);
-        }
-
-        $sitemap = new Zend_Controller_Router_Route_Regex(
-            'sitemap.xml',
-            array(
-                'module' => 'default',
-                'controller' => 'sitemap',
-                'action' => 'index',
-            ),
-            'sitemap.xml'
-        );
-        $router->addRoute('sitemap', $sitemap);
+        $pluginsLoader->load("Acl");
     }
 
     public function _initCache()
@@ -92,7 +48,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         );
 
         $backendOptions = array(
-            'cache_dir' => '../cache/' // директория, в которой размещаются файлы кэша
+            'cache_dir' => APPLICATION_ROOT.'/cache/' // директория, в которой размещаются файлы кэша
         );
 
         // получение объекта Zend_Cache_Core
@@ -104,4 +60,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         Zend_Db_Table_Abstract::setDefaultMetadataCache($cache); //cache database table schemata metadata for faster SQL queries
         Zend_Registry::set('cache',$cache);
     }
+
+    public function _initRoute()
+    {
+    }
+
 }

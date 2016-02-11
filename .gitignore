@@ -44,6 +44,7 @@ public/tmp
 
 #UglifyJS
 *.min.min.js
+*.min.min.css
 
 #checkout
 /scripts/*.js
@@ -53,3 +54,4 @@ public/tmp
 /js
 
 *.php.bak
+~*

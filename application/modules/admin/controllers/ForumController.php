@@ -9,17 +9,21 @@ class Admin_ForumController extends Zend_Controller_Action
      */
     protected $_forumMapper;
 
+    /**
+     * @var Zend_Auth
+     */
     protected $_userAuth;
-
-    protected $_forums = array();
-    protected $_noReply = array();
-
-    protected $_count_item_on_page = null;
 
     /**
      * @var Zend_Controller_Action_Helper_Redirector
      */
     protected $_redirector = null;
+
+    protected $_forums = array();
+    protected $_noReply = array();
+    protected $_count_item_on_page = null;
+
+    protected $_currentUrl = null;
 
     public function init()
     {
@@ -33,11 +37,19 @@ class Admin_ForumController extends Zend_Controller_Action
 
         $this->_redirector = $this->_helper->getHelper('Redirector');
 
-        //Zend_Debug::dump($this->getRequest()->getRequestUri());
+        $this->setCurrentUrl(
+            ($this->getRequest()->getParam('page'))
+                ?'/admin/forum/?page='.$this->getRequest()->getParam('page')
+                :'/admin/forum'
+            );
     }
 
     public function indexAction()
     {
+        $request = $this->getRequest();
+        if($request->getParam('page'))
+            $this->view->currentPage = $request->getParam('page');
+
         $noReply = $this->getNoReply();
         if(!empty($noReply))
             $this->view->assign('no_reply',$noReply);
@@ -56,25 +68,21 @@ class Admin_ForumController extends Zend_Controller_Action
         $itemId = $request->getParam('id');
 
         if(is_null($itemId)){
-            $this->_redirector->gotoSimpleAndExit('index',null, null, array('page' => $request->getParam('page')));
+            $this->_redirector->gotoUrlAndExit($this->getCurrentUrl());
             return;
         }
-
-
 
         $item = $this->_forumMapper->find($itemId, new Forum_Model_Forum());
 
         if(is_null($item))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
-        //$date = $item->getTimestamp();
-
-        //$item->setTimestamp($date);
         $item->setActive(0);
         $item->setDeleted(1);
         $this->_forumMapper->save($item);
 
-        $this->_redirector->gotoSimpleAndExit('index',null, null, array('page' => $request->getParam('page')));
+        //$this->_redirector->gotoSimpleAndExit('index',null, null, array('page' => $request->getParam('page')));
+        $this->_redirector->gotoUrlAndExit($this->getCurrentUrl());
     }
 
     public function replyAction()
@@ -83,7 +91,7 @@ class Admin_ForumController extends Zend_Controller_Action
         $itemId = $request->getParam('id');
 
         if(is_null($itemId)){
-            $this->_redirector->gotoSimpleAndExit('index',null, null, array('page' => $request->getParam('page')));
+            $this->_redirector->gotoUrlAndExit($this->getCurrentUrl());
             return;
         }
 
@@ -100,16 +108,18 @@ class Admin_ForumController extends Zend_Controller_Action
         $item->setDeleted(0);
 
         $markdown = $request->getParam('contentMarkdown');
-        $context_html = Markdown::defaultTransform($markdown);
+        if($markdown && $markdown != ''){
+            $context_html = Markdown::defaultTransform($markdown);
 
-        $item->setContent($context_html);
-        $item->setContentMarkdown($markdown);
+            $item->setContent($context_html);
+            $item->setContentMarkdown($markdown);
 
-        $this->_forumMapper->save($item);
+            $this->_forumMapper->save($item);
 
-        $this->sendReplyMail($quest, $item);
+            $this->sendReplyMail($quest, $item);
+        }
 
-        $this->_redirector->gotoSimpleAndExit('index',null, null, array('page' => $request->getParam('page')));
+        $this->_redirector->gotoUrlAndExit($this->getCurrentUrl());
     }
 
     public function editAction()
@@ -118,7 +128,7 @@ class Admin_ForumController extends Zend_Controller_Action
         $itemId = $request->getParam('id');
 
         if(is_null($itemId)){
-            $this->_redirector->gotoSimpleAndExit('index',null, null, array('page' => $request->getParam('page')));
+            $this->_redirector->gotoUrlAndExit($this->getCurrentUrl());
             return;
         }
 
@@ -128,17 +138,19 @@ class Admin_ForumController extends Zend_Controller_Action
         $oldContent = $item->getContent();
 
         $markdown = $request->getParam('contentMarkdown');
-        $context_html = Markdown::defaultTransform($markdown);
+        if($markdown && $markdown != ''){
+            $context_html = Markdown::defaultTransform($markdown);
 
-        $item->setContent($context_html);
-        $item->setContentMarkdown($markdown);
+            $item->setContent($context_html);
+            $item->setContentMarkdown($markdown);
 
-        $this->_forumMapper->save($item);
+            $this->_forumMapper->save($item);
 
-        if($this->_userAuth->email != $item->getEmail())
-            $this->sendEditMail($item, $oldContent);
+            if($this->_userAuth->email != $item->getEmail())
+                $this->sendEditMail($item, $oldContent);
+        }
 
-        $this->_redirector->gotoSimpleAndExit('index',null, null, array('page' => $request->getParam('page')));
+        $this->_redirector->gotoUrlAndExit($this->getCurrentUrl());
     }
 
     public function sendEditMail(Forum_Model_Forum $reply, $oldContent)
@@ -334,6 +346,23 @@ class Admin_ForumController extends Zend_Controller_Action
         return $this->_count_item_on_page;
     }
 
+    /**
+     * @param null $currentUrl
+     * @return Admin_ForumController
+     */
+    public function setCurrentUrl($currentUrl)
+    {
+        $this->_currentUrl = $currentUrl;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getCurrentUrl()
+    {
+        return $this->_currentUrl;
+    }
 
 }
 

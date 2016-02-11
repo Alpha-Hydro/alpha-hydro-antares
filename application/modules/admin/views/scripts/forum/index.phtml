@@ -9,7 +9,6 @@ $this->headScript()
     ->appendFile('/js/forumActions.js');
 
 ?>
-<?= $this->user->role ?>
 <?php if($this->no_reply):?>
     <h3>Без ответа</h3>
     <div class="col-lg-offset-1">
@@ -124,6 +123,9 @@ $this->headScript()
                     <button type="submit" class="btn btn-primary" name="action">Сохранить</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
                 </div>
+                <?php if($this->currentPage):?>
+                    <input type="hidden" name="page" value="<?=$this->currentPage?>"/>
+                <?php endif;?>
             </form>
         </div>
     </div>
