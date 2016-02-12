@@ -1,5 +1,7 @@
 <?php
-/* @var $this Zend_View_Helper_Abstract */
+/**
+ * @var $this Zend_View_Abstract
+ */
 echo $this->doctype()
 ?>
 <html lang="ru">
@@ -23,22 +25,18 @@ echo $this->doctype()
 </head>
 <body>
 <div class="layout">
-    <?= $this->render("components/_header.phtml")?>
-    <div class="main" role="main">
+    <?= $this->render("components/admin/_admin_top_panel.phtml")?>
+    <?/*= $this->render("components/_header.phtml")*/?>
+    <div class="main mt3" role="main">
         <div class="container">
             <?php /*echo $this->layout()->content */?>
-            <?= $this->render('_module.phtml') ?>
+            <?= $this->render('_module_admin.phtml') ?>
         </div>
     </div>
     <div class="layout-footer"></div>
 </div>
-<?= $this->render("components/_footer.phtml")?>
 <?= $this->render("components/_admin_auth.phtml");?>
 <?= $this->headScript();?>
-<?php
-    if(!Zend_Auth::getInstance()->hasIdentity())
-        echo $this->render("components/_counters.phtml");
-?>
-<?php ?>
+
 </body>
 </html>

@@ -41,6 +41,9 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         $acl->addResource(new Zend_Acl_Resource('pages'));
 
         $acl->addResource(new Zend_Acl_Resource('catalog'));
+        $acl->addResource(new Zend_Acl_Resource('categories'));
+        $acl->addResource(new Zend_Acl_Resource('products'));
+
         $acl->addResource(new Zend_Acl_Resource('manufacture'));
         $acl->addResource(new Zend_Acl_Resource('manufacture-categories'));
         $acl->addResource(new Zend_Acl_Resource('pipeline'));
@@ -57,6 +60,7 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         $acl->addResource(new Zend_Acl_Resource('search-index'));
         $acl->addResource(new Zend_Acl_Resource('trash'));
         $acl->addResource(new Zend_Acl_Resource('utils'));
+        $acl->addResource(new Zend_Acl_Resource('cache-manager'));
 
         // далее переходим к созданию ролей, которых у нас 2:
         // гость (неавторизированный пользователь)

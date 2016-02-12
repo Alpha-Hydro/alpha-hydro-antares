@@ -12,4 +12,11 @@
             <action>logout</action>
         </logout>
     </nav>
+    <main>
+        <site>
+            <label>На сайт</label>
+            <uri>http://alpha-hydro.loc</uri>
+        </site>
+
+    </main>
 </config>

@@ -1,7 +1,7 @@
 <?php
 include_once 'vlmeh/Filter/Slugify.php';
 
-class Admin_IndexController extends Zend_Controller_Action
+class IndexController extends Zend_Controller_Action
 {
 
     public function init()
@@ -13,7 +13,8 @@ class Admin_IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        // action body
+        $this->_helper->layout->setLayout('layout_admin');
+        $this->forward('index', 'index', 'pages');
     }
 
     public function slugifyAction()

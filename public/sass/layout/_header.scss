@@ -32,6 +32,12 @@
   &.svg{
     background: image-url('logo/alpha-hydro-logo-ru.svg', false, false) no-repeat;
     background-size: 244px 48px;
+    &.admin{
+      background:{
+        size: 150px 29px;
+        position: 0 8px;
+      }
+    }
   }
   &.png{
     background: image-url('logo/alfa-hydro.png', false, false) no-repeat;

@@ -1,0 +1,40 @@
+<?php
+$this->headScript()->appendFile('/js/catalog.min.js');
+?>
+
+
+<?php echo $this->render('_page_header.phtml') ?>
+
+<div class="row">
+    <div class="col-md-9 col-md-push-3 categories-list">
+        <?php if($this->breadcrumbs):?>
+        <div class="row">
+            <div class="col-md-12">
+                <?= $this->action(
+                    "index",
+                    "breadcrumbs",
+                    "catalog",
+                    array(
+                        'category' => $this->current_category,
+                        'product' => $this->product_id,
+                    )
+                );?>
+            </div>
+        </div>
+        <?php endif; ?>
+        <div class="row">
+            <?php echo $this->layout()->content ?>
+        </div>
+    </div>
+    <div class="col-md-3 col-md-pull-9">
+        <?= $this->action(
+            "index",
+            "sidebar",
+            "catalog",
+            array(
+                'category' => $this->current_category,
+                'headers' => $this->sidebar_headers,
+            )
+        );?>
+    </div>
+</div>
