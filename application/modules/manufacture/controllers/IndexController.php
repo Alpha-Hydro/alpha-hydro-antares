@@ -47,14 +47,18 @@ class Manufacture_IndexController extends Zend_Controller_Action
     public function categoriesAction()
     {
         $request = $this->getRequest();
-        $categoryPath = $request->getParam('manufacture_path_category');
+        $categoryPath = $request->getParam('fullPath');
 
         $manufactureCategoriesMapper = new Manufacture_Model_Mapper_ManufactureCategories();
         $manufactureCategory = $manufactureCategoriesMapper
             ->findByPath($categoryPath, new Manufacture_Model_ManufactureCategories());
 
-        if(is_null($manufactureCategory))
-            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+        if(is_null($manufactureCategory)){
+            //throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+            $this->forward('view');
+            return;
+        }
+
 
         $this->view->category = $manufactureCategory;
         $this->view->adminPath = 'manufacture-categories/edit/'.$manufactureCategory->getId();
@@ -95,23 +99,11 @@ class Manufacture_IndexController extends Zend_Controller_Action
     public function viewAction()
     {
         $request = $this->getRequest();
-        $categoryPath = $request->getParam('manufacture_path_category');
-
-        $manufactureCategoriesMapper = new Manufacture_Model_Mapper_ManufactureCategories();
-        $manufactureCategory = $manufactureCategoriesMapper
-            ->findByPath($categoryPath, new Manufacture_Model_ManufactureCategories());
-
-        if(is_null($manufactureCategory))
-            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
-
-        $this->view->category = $manufactureCategory;
-
-        $manufacturePath = $request->getParam('manufacture_path_item');
-        $manufactureFullPath = $categoryPath.'/'.$manufacturePath;
+        $fullPath = $request->getParam('fullPath');
 
         $manufactureMapper = new Manufacture_Model_Mapper_Manufacture();
         $manufacture = $manufactureMapper
-            ->findByFullPath($manufactureFullPath, new Manufacture_Model_Manufacture());
+            ->findByFullPath($fullPath, new Manufacture_Model_Manufacture());
 
         if(is_null($manufacture))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
@@ -120,7 +112,13 @@ class Manufacture_IndexController extends Zend_Controller_Action
         $this->view->meta_description = $manufacture->getMetaDescription();
         $this->view->meta_keywords = $manufacture->getMetaKeywords();
         $this->view->adminPath = 'manufacture/edit/'.$manufacture->getId();
-        //var_dump($this->getAllParams());
+
+        $manufactureCategoryMapper = new Manufacture_Model_Mapper_ManufactureCategories();
+        $manufactureCategory = $manufactureCategoryMapper->find(
+            $manufacture->getCategoryId(),
+            new Manufacture_Model_ManufactureCategories()
+        );
+        $this->view->category = $manufactureCategory;
     }
 
     /**

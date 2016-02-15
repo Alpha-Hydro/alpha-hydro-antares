@@ -7,7 +7,7 @@ class Oil_IndexController extends Zend_Controller_Action
 
     public function init()
     {
-        $this->_count_item_on_page = 10;
+        $this->_count_item_on_page = 5;
         $this->view->adminPath = 'oil';
     }
 
@@ -54,7 +54,7 @@ class Oil_IndexController extends Zend_Controller_Action
     {
         $request = $this->getRequest();
 
-        $oilPathItem = $request->getParam('oil_path_item');
+        $oilPathItem = $request->getParam('fullPath');
         $oilMapper = new Oil_Model_Mapper_Oil();
 
         $oilItem = $oilMapper->findByPath($oilPathItem, new Oil_Model_Oil());

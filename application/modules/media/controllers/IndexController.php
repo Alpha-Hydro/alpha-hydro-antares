@@ -36,9 +36,16 @@ class Media_IndexController extends Zend_Controller_Action
         $mediaCategoryMapper = new Media_Model_Mapper_MediaCategories();
 
         $request = $this->getRequest();
-        if($request->getParam('media_path_category')){
+        if($request->getParam('fullPath')){
             $mediaCategory = $mediaCategoryMapper
-                ->findByPath($request->getParam('media_path_category'), new Media_Model_MediaCategories());
+                ->findByPath($request->getParam('fullPath'), new Media_Model_MediaCategories());
+
+            if(is_null($mediaCategory)){
+                //throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+                $this->forward('view');
+                return;
+            }
+
             $this->setCategoriesDefaultId($mediaCategory->getId());
         }
 
@@ -95,25 +102,19 @@ class Media_IndexController extends Zend_Controller_Action
     {
         $request = $this->getRequest();
 
-        $mediaPathCategory = $request->getParam('media_path_category');
-        $mediaCategoryMapper = new Media_Model_Mapper_MediaCategories();
-        $currentCategory = $mediaCategoryMapper->findByPath($mediaPathCategory, new Media_Model_MediaCategories());
-
-        if(is_null($currentCategory))
-            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
-
-
-        $this->view->currentCategory = $currentCategory;
-
-        $mediaPathItem = $request->getParam('media_path_item');
+        $mediaPathItem = $request->getParam('fullPath');
         $mediaMapper = new Media_Model_Mapper_Media();
-        $fullPath = $mediaPathCategory.'/'.$mediaPathItem;
-        $mediaItem = $mediaMapper->findByFullPath($fullPath, new Media_Model_Media());
+
+        $mediaItem = $mediaMapper->findByFullPath($mediaPathItem, new Media_Model_Media());
 
         if(is_null($mediaItem))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
         $this->view->mediaItem = $mediaItem;
+
+        $mediaCategoryMapper = new Media_Model_Mapper_MediaCategories();
+        $currentCategory = $mediaCategoryMapper->find($mediaItem->getCategoryId(), new Media_Model_MediaCategories());
+        $this->view->currentCategory = $currentCategory;
 
         $meta_description =($mediaItem->getMetaDescription() != '')
             ? $mediaItem->getMetaDescription()

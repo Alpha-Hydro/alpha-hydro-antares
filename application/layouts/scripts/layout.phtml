@@ -15,7 +15,8 @@
     echo $this->headLink();
 
     $this->headScript()
-        ->prependFile('//code.jquery.com/jquery-1.11.3.min.js');
+        ->prependFile('//code.jquery.com/jquery-1.11.3.min.js')
+        ->appendFile("/js/adminAuth.min.js");
     ?>
 </head>
 <body>
@@ -30,8 +31,9 @@
     <div class="layout-footer"></div>
 </div>
 <?= $this->render("components/_footer.phtml")?>
-<?= $this->render("components/_admin_auth.phtml");?>
+<?//= $this->render("components/_admin_auth.phtml");?>
 <?= $this->headScript();?>
+
 <?php
     if(!Zend_Auth::getInstance()->hasIdentity())
         echo $this->render("components/_counters.phtml");

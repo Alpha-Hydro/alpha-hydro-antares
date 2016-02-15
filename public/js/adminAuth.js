@@ -1,20 +1,14 @@
 /// <reference path="jquery.d.ts" />
 /// <reference path="bootstrap.d.ts" />
 var AdminAuth = (function () {
-    function AdminAuth(params) {
+    function AdminAuth() {
         var _this = this;
-        if (params === void 0) { params = null; }
-        this.params = params;
         this.handle = function (e) {
             var self = _this;
-            console.log(e.type);
+            //console.log(e.type);
+            console.log(window.location.hostname + window.location.pathname + window.location.search);
             if (e.altKey && e.keyCode == 120) {
-                if (self.modalAuth) {
-                    $(self.modalAuth).modal('show');
-                }
-                else {
-                    window.location.href = '/admin/' + _this.params;
-                }
+                window.location.href = 'http://admin.' + window.location.hostname + window.location.pathname + window.location.search;
             }
         };
         this.modalAuth = document.getElementById('modalAuth');
@@ -25,5 +19,6 @@ var AdminAuth = (function () {
     };
     return AdminAuth;
 })();
-//var goAdmin = new AdminAuth();
+var goAdmin = new AdminAuth();
+goAdmin.init();
 //# sourceMappingURL=adminAuth.js.map

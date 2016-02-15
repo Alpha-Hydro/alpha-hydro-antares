@@ -12,11 +12,8 @@ $this->breadcrumbs = false;
                     <div class="media-left col-md-3">
                         <div class="thumbnail col-md-10 hover-shadow">
                             <a href="<?=$this->url(array(
-                                'module' => 'oil',
-                                'controller' => 'index',
-                                'action' => 'view',
-                                'oil_path_item' => $this->escape($pageItems->getPath())
-                            ),  'oilPath', true, false)?>/">
+                                'fullPath' => $pageItems->getPath()
+                            ),  'oil', true, false)?>">
                                 <img src="<?=$this->escape($pageItems->getImage())?>" alt="<?=$this->escape($pageItems->getTitle())?>" class="media-object"/>
                             </a>
                         </div>
@@ -25,11 +22,8 @@ $this->breadcrumbs = false;
                 <div class="media-body">
                     <h4 class="media-heading">
                         <a href="<?=$this->url(array(
-                            'module' => 'oil',
-                            'controller' => 'index',
-                            'action' => 'view',
-                            'oil_path_item' => $this->escape($pageItems->getPath())
-                        ),  'oilPath', true, false)?>/"><?=$this->escape($pageItems->getTitle())?></a>
+                            'fullPath' => $pageItems->getPath()
+                        ),  'oil', true, false)?>"><?=$this->escape($pageItems->getTitle())?></a>
 
                     </h4>
                     <p class="text-muted"><small><em><?=date("d.m.Y", strtotime($pageItems->getDateCreate()));?> г.</em></small></p>

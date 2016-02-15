@@ -10,13 +10,89 @@
             <module>admin</module>
             <controller>auth</controller>
             <action>logout</action>
+            <route>default</route>
         </logout>
     </nav>
     <main>
-        <site>
-            <label>На сайт</label>
-            <uri>http://alpha-hydro.loc</uri>
-        </site>
-
+        <products>
+            <label>Продукция</label>
+            <module>catalog</module>
+            <controller>index</controller>
+            <route>default</route>
+            <pages>
+                <categories>
+                    <label>Категории</label>
+                    <module>catalog</module>
+                    <controller>categories</controller>
+                    <route>catalog</route>
+                </categories>
+            </pages>
+        </products>
+        <manufacture>
+            <label>Производство</label>
+            <module>manufacture</module>
+            <controller>index</controller>
+            <route>default</route>
+            <pages>
+                <categories>
+                    <label>Категории</label>
+                    <module>manufacture</module>
+                    <controller>index</controller>
+                    <route>manufacture</route>
+                </categories>
+            </pages>
+        </manufacture>
+        <pipeline>
+            <label>Детали трубопроводов</label>
+            <module>pipeline</module>
+            <controller>index</controller>
+            <route>default</route>
+            <pages>
+                <categories>
+                    <label>Категории</label>
+                    <module>pipeline</module>
+                    <controller>categories</controller>
+                    <route>pipeline</route>
+                </categories>
+            </pages>
+        </pipeline>
+        <oils>
+            <label>Масла</label>
+            <module>oil</module>
+            <controller>index</controller>
+            <route>default</route>
+            <pages>
+                <production>
+                    <label>Продукция</label>
+                    <module>oil</module>
+                    <controller>index</controller>
+                    <route>oil</route>
+                </production>
+            </pages>
+        </oils>
+        <forum>
+            <label>Форум</label>
+            <module>forum</module>
+            <controller>index</controller>
+            <route>default</route>
+        </forum>
+        <media>
+            <label>Пресса</label>
+            <module>media</module>
+            <controller>index</controller>
+            <route>default</route>
+        </media>
+        <aboutus>
+            <label>О нас</label>
+            <module>pages</module>
+            <controller>about</controller>
+            <route>default</route>
+        </aboutus>
+        <contacts>
+            <label>Контакты</label>
+            <module>pages</module>
+            <controller>contacts</controller>
+            <route>default</route>
+        </contacts>
     </main>
 </config>

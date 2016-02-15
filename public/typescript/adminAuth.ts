@@ -3,7 +3,7 @@
 
 class AdminAuth {
     modalAuth:Element;
-    constructor(public params:any = null){
+    constructor(){
         this.modalAuth = document.getElementById('modalAuth');
         this.init();
     }
@@ -13,18 +13,20 @@ class AdminAuth {
 
     handle = (e) => {
         var self = this;
-        console.log(e.type);
+        //console.log(e.type);
+        console.log(window.location.hostname+window.location.pathname+window.location.search);
         if(e.altKey && e.keyCode == 120){
-            if(self.modalAuth){
-                $(self.modalAuth).modal('show');
-            }
-            else{
-                window.location.href = '/admin/'+this.params;
-                //console.log(this.params);
-            }
+            window.location.href = 'http://admin.'+window.location.hostname+window.location.pathname+window.location.search;
+            //if(self.modalAuth){
+            //    $(self.modalAuth).modal('show');
+            //}
+            //else{
+            //    window.location.href = '/admin/'+this.params;
+            //    console.log(window.location.href);
+            //}
         }
     }
 }
-
-//var goAdmin = new AdminAuth();
+var goAdmin = new AdminAuth();
+goAdmin.init();
 

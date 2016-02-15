@@ -2,10 +2,19 @@
 
 class AuthController extends Zend_Controller_Action
 {
+    /**
+     * @var Zend_Controller_Action_Helper_Redirector
+     */
+    protected $_redirector = null;
+
+    protected $_curUrl = null;
 
     public function init()
     {
-        /* Initialize action controller here */
+        $this->_redirector = $this->_helper->getHelper('Redirector');
+
+        $hostHttp = new Zend_Controller_Request_Http();
+        $this->_curUrl = $hostHttp->getRequestUri();
     }
 
     public function indexAction()
@@ -13,12 +22,14 @@ class AuthController extends Zend_Controller_Action
         // проверяем, авторизирован ли пользователь
         if (Zend_Auth::getInstance()->hasIdentity()) {
             // если да, то делаем редирект, чтобы исключить многократную авторизацию
-            $this->_helper->redirector('index', 'index');
+            $this->_redirector->gotoSimpleAndExit('index', 'index');
+            return;
         }
 
         // создаём форму и передаём её во view
         $form = new Admin_Form_Auth();
         $this->view->form_auth = $form;
+
 
         // Если к нам идёт Post запрос
         if ($this->getRequest()->isPost()) {
@@ -54,13 +65,9 @@ class AuthController extends Zend_Controller_Action
                     $authStorage->write($identity);
 
                     // Используем библиотечный helper для редиректа
-                    // на controller = index, action = index
-                    if($this->getRequest()->getPost('adminPath') && $this->getRequest()->getPost('adminPath') != ''){
-                        $this->redirect('/admin/'.$this->getRequest()->getPost('adminPath'));
-                    }
-                    else{
-                        $this->_helper->redirector();
-                    }
+                    // на текущий url
+                    $this->_redirector->gotoUrlAndExit($this->_curUrl);
+                    return;
 
                 } else {
                     $this->view->errMessage = 'Вы ввели неверное имя пользователя или неверный пароль';
@@ -71,11 +78,12 @@ class AuthController extends Zend_Controller_Action
 
     public function logoutAction()
     {
+        $url = 'http://alpha-hydro.loc';
         // уничтожаем информацию об авторизации пользователя
         Zend_Auth::getInstance()->clearIdentity();
 
         // и отправляем его на главную
-        $this->_helper->redirector('index', 'index');
+        $this->_redirector->gotoUrl($url);
     }
 
 

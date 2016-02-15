@@ -18,7 +18,22 @@ class Media_Bootstrap extends Zend_Application_Module_Bootstrap
         $front = Zend_Controller_Front::getInstance();
         $router = $front->getRouter();
 
-        $routeCategory = new Zend_Controller_Router_Route(
+        $route_media = new Zend_Controller_Router_Route_Regex(
+            'media/([\w\-\/]+)',
+            array(
+                'module' => 'media',
+                'controller' => 'index',
+                'action' => 'index',
+                1 => null,
+            ),
+            array(
+                1 => 'fullPath',
+            ),
+            'media/%s/'
+        );
+        $router->addRoute('media', $route_media);
+
+        /*$routeCategory = new Zend_Controller_Router_Route(
             'media/:media_path_category',
             array(
                 'module' => 'media',
@@ -47,6 +62,6 @@ class Media_Bootstrap extends Zend_Application_Module_Bootstrap
         $routeFullPath
             ->chain($routeCategory)
             ->chain($routeItem);
-        $router->addRoute('mediaFullPath', $routeFullPath);
+        $router->addRoute('mediaFullPath', $routeFullPath);*/
     }
 }
