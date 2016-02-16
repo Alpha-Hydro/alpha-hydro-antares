@@ -1,6 +1,6 @@
 <?php
 
-class Admin_PipelinePropertyController extends Zend_Controller_Action
+class PipelinePropertyController extends Zend_Controller_Action
 {
 
     protected $_count_item_on_page = null;

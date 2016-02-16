@@ -1,14 +1,14 @@
-[class*=icon-]{
+[class*=alpha-icon-]{
   background: $icon-sprite no-repeat;
 }
-.icon-action{
+.alpha-icon-action{
   padding-left: 35px;
   background-position: sprite-position($icon-sprite, stocks-index-icon);
   .btn &{
     background-position: sprite-position($icon-sprite, stocks-index-icon, 0, 2px);
   }
 }
-.icon-print{
+.alpha-icon-print{
   padding-left: 25px;
   background-position: sprite-position($icon-sprite, print);
   .btn &{

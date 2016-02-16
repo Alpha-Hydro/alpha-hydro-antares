@@ -13,6 +13,7 @@ class Manufacture_Bootstrap extends Zend_Application_Module_Bootstrap
 
     }
 
+
     public function _initRoute(){
 
         $front = Zend_Controller_Front::getInstance();

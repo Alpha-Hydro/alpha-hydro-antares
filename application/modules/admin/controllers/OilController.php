@@ -2,7 +2,7 @@
 use \Michelf\Markdown;
 include_once 'Michelf/Markdown.php';
 
-class Admin_OilController extends Zend_Controller_Action
+class OilController extends Zend_Controller_Action
 {
 
     public function init()

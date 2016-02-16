@@ -1,6 +1,6 @@
 <?php
 
-class Admin_SearchIndexController extends Zend_Controller_Action
+class SearchIndexController extends Zend_Controller_Action
 {
 
     public function init()

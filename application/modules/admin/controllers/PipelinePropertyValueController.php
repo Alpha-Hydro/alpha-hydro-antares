@@ -1,7 +1,7 @@
 <?php
 include_once 'vlmeh/Filter/Slugify.php';
 
-class Admin_PipelinePropertyValueController extends Zend_Controller_Action
+class PipelinePropertyValueController extends Zend_Controller_Action
 {
 
     protected $_redirector = null;

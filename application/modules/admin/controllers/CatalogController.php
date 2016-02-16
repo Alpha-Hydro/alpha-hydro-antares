@@ -1,6 +1,6 @@
 <?php
 
-class Admin_CatalogController extends Zend_Controller_Action
+class CatalogController extends Zend_Controller_Action
 {
 
     public function init()
@@ -10,7 +10,7 @@ class Admin_CatalogController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $this->_helper->layout->disableLayout();
+        //$this->_helper->layout->disableLayout();
         $this->forward('index', 'index', 'catalog');
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-class Admin_TrashController extends Zend_Controller_Action
+class TrashController extends Zend_Controller_Action
 {
 
     public function init()

@@ -30,6 +30,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $view = $this->getResource('view');
         $view->doctype('HTML5');
         $view->addScriptPath(APPLICATION_PATH."/layouts/scripts/");
+        $view->addBasePath(APPLICATION_PATH."/modules/admin/views/");
     }
 
     protected function _initPlugins() {

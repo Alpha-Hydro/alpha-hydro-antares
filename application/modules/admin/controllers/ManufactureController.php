@@ -2,7 +2,7 @@
 use \Michelf\Markdown;
 include_once 'Michelf/Markdown.php';
 
-class Admin_ManufactureController extends Zend_Controller_Action
+class ManufactureController extends Zend_Controller_Action
 {
     protected $_count_item_on_page = null;
 

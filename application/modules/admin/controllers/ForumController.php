@@ -2,7 +2,7 @@
 use \Michelf\Markdown;
 include_once 'Michelf/Markdown.php';
 
-class Admin_ForumController extends Zend_Controller_Action
+class ForumController extends Zend_Controller_Action
 {
     /**
      * @var Forum_Model_Mapper_Forum

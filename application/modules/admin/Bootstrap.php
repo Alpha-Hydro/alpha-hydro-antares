@@ -116,6 +116,21 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
 
     }
 
+    public function _initAutoloader()
+    {
+        /*$loader = Zend_Loader_Autoloader::getInstance();
+        $loader->registerNamespace('Admin_');*/
+
+        /*$loader = new Zend_Application_Module_Autoloader(array(
+            'namespace' => 'Admin',
+            'basePath'  => APPLICATION_PATH . '/modules/admin',
+        ));
+
+        $loader->addResourceType('Admin',APPLICATION_PATH . '/modules/admin/controllers/', 'Admin');
+
+        return $loader;*/
+    }
+
     /*protected function _initNavigation()
     {
         $layout = Zend_Layout::getMvcInstance();

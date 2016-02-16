@@ -4,6 +4,7 @@ class Manufacture_IndexController extends Zend_Controller_Action
 {
     protected $_count_item_on_page = null;
     protected $_categories = array();
+    protected $_authUser = null;
 
 
     public function init()
@@ -20,7 +21,11 @@ class Manufacture_IndexController extends Zend_Controller_Action
         $this->setCategories($manufactureCategories);
 
         $this->view->categories = $this->getCategories();
-        $this->view->adminPath = 'manufacture';
+        //$this->view->adminPath = 'manufacture';
+
+        $this->_authUser = Zend_Auth::getInstance()->getIdentity();
+        if(!is_null($this->_authUser))
+            $this->view->authUser = $this->_authUser;
 
     }
 

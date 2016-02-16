@@ -13,6 +13,7 @@ echo $this->doctype()
 
     $this->headLink()
         ->appendStylesheet($this->baseUrl().'/css/global.min.css')
+        ->appendStylesheet($this->baseUrl().'/css/admin.min.css')
         ->headLink(array('rel' => 'shortcut icon',
             'type' => "image/x-icon",
             'href' => $this->baseUrl().'/favicon.ico'),
@@ -20,23 +21,36 @@ echo $this->doctype()
     echo $this->headLink();
 
     $this->headScript()
-        ->prependFile('//code.jquery.com/jquery-1.11.3.min.js');
+        ->prependFile('//code.jquery.com/jquery-1.11.3.min.js')
+        ->appendFile('//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js')
+        ->appendFile('/js/admin.min.js');
     ?>
 </head>
 <body>
-<div class="layout">
     <?= $this->render("components/admin/_admin_top_panel.phtml")?>
-    <?/*= $this->render("components/_header.phtml")*/?>
-    <div class="main mt4" role="main">
-        <div class="container">
-            <?php /*echo $this->layout()->content */?>
-            <?= $this->render('_module_admin.phtml') ?>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-11">
+                <div class="container mb4">
+                    <?= $this->render('_module_admin.phtml') ?>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div id="admin-panel"></div>
+                <!--<nav class="affix side-nav right mw70">
+                    <ul class="navigation">
+                        <li><a href="" data-toggle="tooltip" data-placement="left" title="Редактировать"><i class="text-muted fa fa-pencil-square-o fa-fw fa-2x"></i></a></li>
+                        <li><a href="" data-toggle="tooltip" data-placement="left" title="Редактировать"><i class="text-muted fa fa-share-alt fa-fw fa-2x"></i></a></li>
+                        <li><a href="" data-toggle="tooltip" data-placement="left" title="Редактировать"><i class="text-muted fa fa-plus fa-fw fa-2x"></i></a></li>
+                        <li class="divider"></li>
+                        <li><a href="" data-toggle="tooltip" data-placement="left" title="Редактировать"><i class="text-muted fa fa-eye-slash fa-fw fa-2x"></i></a></li>
+                        <li><a href="" data-toggle="tooltip" data-placement="left" title="Редактировать"><i class="text-muted fa fa-trash-o fa-fw fa-2x"></i></a></li>
+                    </ul>
+                </nav>-->
+            </div>
         </div>
     </div>
-    <div class="layout-footer"></div>
-</div>
-<?= $this->render("components/_admin_auth.phtml");?>
-<?= $this->headScript();?>
-
+    <?= $this->render("components/_admin_auth.phtml");?>
+    <?= $this->headScript();?>
 </body>
 </html>
