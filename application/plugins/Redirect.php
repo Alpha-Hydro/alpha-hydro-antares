@@ -14,7 +14,9 @@ class Plugin_Redirect extends Zend_Controller_Plugin_Abstract
         if($request->getParam('fullPath'))
             $this->validatePath($request->getParam('fullPath'));
 
-        if($request->getParam('module') == 'admin');
+        //Zend_Debug::dump($request->getModuleName());
+
+        if($request->getModuleName() === 'admin' || $request->getModuleName() === 'utils')
             $this->redirectAdmin();
     }
 
@@ -64,7 +66,11 @@ class Plugin_Redirect extends Zend_Controller_Plugin_Abstract
 
     public function redirectAdmin()
     {
-        $url = 'http://admin.alpha-hydro.loc';
+        $hostHttp = new Zend_Controller_Request_Http();
+        $host = $hostHttp->getServer('HTTP_HOST');
+        $requestUri = $hostHttp->getServer('REQUEST_URI');
+
+        $url = 'http://admin.'.$host.$requestUri;
         Zend_Controller_Front::getInstance()->getResponse()->setRedirect($url, 301);
         return;
     }

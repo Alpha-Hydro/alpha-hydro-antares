@@ -1,14 +1,15 @@
 var debug = process.env.NODE_ENV !== "production";
 var webpack = require('webpack');
+var path = require('path');
 
 module.exports = {
-    context: __dirname + "/reactjs",
+    context: path.join(__dirname, "reactjs"),
     devtool: debug ? "inline-sourcemap" : null,
     entry: "./admin.js",
     module: {
         loaders: [
             {
-                test: /\.js?$/,
+                test: /\.jsx?$/,
                 exclude: /(node_modules|bower_components)/,
                 loader: 'babel-loader',
                 query: {
