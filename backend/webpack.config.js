@@ -3,7 +3,7 @@ var webpack = require('webpack');
 var path = require('path');
 
 module.exports = {
-    context: path.join(__dirname, "reactjs"),
+    context: path.join(__dirname, "src"),
     devtool: debug ? "inline-sourcemap" : null,
     entry: "./admin.js",
     module: {
@@ -26,6 +26,6 @@ module.exports = {
     plugins: debug ? [] : [
         new webpack.optimize.DedupePlugin(),
         new webpack.optimize.OccurenceOrderPlugin(),
-        new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
-    ],
+        new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false })
+    ]
 };
