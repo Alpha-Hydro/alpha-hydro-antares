@@ -1,6 +1,9 @@
 @import "compass/css3";
 @import "vendors/corpus/whitespace";
+@import "vendors/corpus/breakpoints";
+@import "vendors/corpus/grid";
 @import "components/input-spinner";
+@import "layout/paginator";
 
 html, body {
   margin: 0;
@@ -177,4 +180,11 @@ span{
     text-decoration: line-through;
   }
 }
-@import "layout/paginator";
+
+.custom-modal{
+  width: 90%;
+}
+
+.w90   { width:  calc(90%  -  #{$padding + $margin}); }
+.w95   { width:  calc(95%  -  #{$padding + $margin}); }
+.w100  { width:  calc(100% -  #{$padding + $margin}); }

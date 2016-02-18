@@ -1,12 +1,16 @@
 import React from "react";
+import ReactDOM from "react-dom";
+
 
 export default class Button extends React.Component{
+
 	test(e){
 		console.log(this.props.action);
 	}
 
   render(){
-		var icon = React.DOM.i({
+
+		const icon = React.DOM.i({
 			className: "text-muted fa fa-fw fa-2x fa-"+ (this.props.icon)
 		});
 
