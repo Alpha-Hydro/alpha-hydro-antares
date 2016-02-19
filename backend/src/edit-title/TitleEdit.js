@@ -4,10 +4,10 @@ import Title from "./Title";
 
 export default class TitleEdit extends React.Component {
 
-	constructor(){
-		super();
+	constructor(props){
+		super(props);
 		this.state = {
-			title: '',
+			title: props.title,
 			showEdit: false,
 			showTitle: true
 		}
@@ -34,8 +34,8 @@ export default class TitleEdit extends React.Component {
 	render() {
 		return (
 			<div>
-				<Title show = {this.state.showTitle} title = {this.props.title} toggleShowEdit = {this.toggleShowEdit.bind(this)}/>
-				<Edit show = {this.state.showEdit} title = {this.props.title} toggleShowTitle = {this.toggleShowTitle.bind(this)} changeTitle = {this.changeTitle.bind(this)}/>
+				<Title show = {this.state.showTitle} title = {this.state.title} toggleShowEdit = {this.toggleShowEdit.bind(this)}/>
+				<Edit show = {this.state.showEdit} title = {this.state.title} toggleShowTitle = {this.toggleShowTitle.bind(this)} changeTitle = {this.changeTitle.bind(this)}/>
 			</div>
 		)
 	}

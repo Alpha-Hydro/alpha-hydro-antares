@@ -1,6 +1,3 @@
-/// <reference path="jquery.d.ts" />
-/// <reference path="classie.d.ts" />
-/// <reference path="bootstrap.d.ts" />
 var ForumActions = (function () {
     function ForumActions() {
         var _this = this;
@@ -89,7 +86,6 @@ var ForumActions = (function () {
         textarea.required = true;
         textarea.onfocus = true;
         textarea.innerHTML = context.textContent.trim();
-        //console.log(context.textContent.trim());
         body.appendChild(textarea);
         this.modalShow(title, body, button);
     };

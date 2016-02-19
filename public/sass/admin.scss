@@ -188,3 +188,8 @@ span{
 .w90   { width:  calc(90%  -  #{$padding + $margin}); }
 .w95   { width:  calc(95%  -  #{$padding + $margin}); }
 .w100  { width:  calc(100% -  #{$padding + $margin}); }
+
+.row-edit {
+  margin-top: 47px;
+  margin-bottom: 10px;
+}

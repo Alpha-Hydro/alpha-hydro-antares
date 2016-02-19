@@ -1,2 +1,2 @@
-//import AdminPanel from "./adminPanel";
+import AdminPanel from "./adminPanel";
 import EditTitle from "./editTitle";
