@@ -6,4 +6,7 @@ import TitleEdit from "./edit-title/TitleEdit";
 const pageTitle = document.querySelector('h1');
 const title = pageTitle.textContent;
 
-ReactDOM.render(<TitleEdit title={title}/>, document.querySelector('.page-header'));
+const pageHeader = document.querySelector('.page-header');
+
+if(pageHeader)
+	ReactDOM.render(<TitleEdit title={title}/>, pageHeader);

@@ -36,7 +36,7 @@ export default class Edit extends React.Component {
 				</div>
 				<div class="col-md-1">
 					<button type="button" class={this.state.btnClass} onClick={this.handleShow.bind(this)}>
-						<span class="glyphicon glyphicon-save" aria-hidden="true"/>
+						<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"/>
 					</button>
 				</div>
 			</div>

@@ -58,3 +58,8 @@ $this->meta_keywords = $this->escape($this->page->metaKeywords);
         <?=$this->render('index/_block_forum.phtml');?>
     </div>
 </div>
+
+<?php $this->headScript()->captureStart() ?>
+    var data = <?= Zend_Json::encode($this->page->getOptions()) ?>;
+    console.log(data);
+<?php $this->headScript()->captureEnd() ?>
