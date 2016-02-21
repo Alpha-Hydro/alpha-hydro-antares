@@ -19,8 +19,8 @@ export default class Buttons extends React.Component{
 		this.setState({show: false});
 	}
 
-	test(e){
-		console.log(this.props.action);
+	test(){
+		//console.log(this.props.action);
 	}
 
 	render() {
@@ -32,8 +32,8 @@ export default class Buttons extends React.Component{
 		const Buttons = [
 			{icon: "pencil-square-o", click: this.showModal.bind(this), action: "edit"},
 			{icon: "plus", click: this.showModal.bind(this), action: "add"},
-			{icon: "trash", click: this.test.bind(this), action: "delete"},
-			{icon: "eye-slash", click: this.test.bind(this), action: "disabled"},
+			{icon: "trash", click: this.showModal.bind(this), action: "delete"},
+			{icon: "eye-slash", click: this.showModal.bind(this), action: "disabled"},
 			{icon: "share-alt", click: this.showModal.bind(this), action: "seo"}
 		].map((button, i) =>
 			<Button key={i} bsStyle={bsStyle} eventClick={button.click} action={button.action} icon={button.icon}/>
