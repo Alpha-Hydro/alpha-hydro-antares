@@ -21,6 +21,9 @@ class Pages_AboutController extends Zend_Controller_Action
         $this->view->page = $page;
         $this->view->meta_description = $page->getMetaDescription();
         $this->view->meta_keywords = $page->getMetaKeywords();
+
+        $this->view->controllerAdmin = "pages";
+        $this->view->dataAdmin = $page->getOptions();
     }
 
 

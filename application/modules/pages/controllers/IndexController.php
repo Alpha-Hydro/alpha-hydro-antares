@@ -8,6 +8,7 @@ class Pages_IndexController extends Zend_Controller_Action
     {
         $this->_page_id = 1;
         $this->view->adminPath = 'pages/edit/'.$this->getPageId();
+
     }
 
     public function indexAction()
@@ -62,6 +63,9 @@ class Pages_IndexController extends Zend_Controller_Action
             $this->view->articleItem = array_shift($articleItem);
 
         $this->view->page = $page;
+
+        $this->view->controllerAdmin = "pages";
+        $this->view->dataPage = $page->getOptions();
     }
 
     /**

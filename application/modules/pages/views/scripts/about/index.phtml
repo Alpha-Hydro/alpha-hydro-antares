@@ -45,3 +45,6 @@ $this->headScript()
         <?=$this->partial('components/_sidebar_contact_info.phtml')?>
     </div>
 </div>
+<?php $this->headScript()->captureStart() ?>
+var dataPage = $.extend({controller: "<?=$this->controllerAdmin?>"}, <?= Zend_Json::encode($this->page->getOptions()); ?>);
+<?php $this->headScript()->captureEnd() ?>

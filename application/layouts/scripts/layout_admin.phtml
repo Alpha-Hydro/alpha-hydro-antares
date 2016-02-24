@@ -42,6 +42,12 @@ echo $this->doctype()
     </div>
     <div id="modal" class="my-div"></div>
     <?/*= $this->render("components/_admin_auth.phtml");*/?>
+
+    <?php /*Zend_Debug::dump($this->paramsPage());*/?>
+
+    <?php /*Zend_Debug::dump(Zend_Json::encode($this->dataPage))*/?>
     <?= $this->headScript();?>
+
+<?php Zend_Debug::dump($this->paramsPage());?>
 </body>
 </html>

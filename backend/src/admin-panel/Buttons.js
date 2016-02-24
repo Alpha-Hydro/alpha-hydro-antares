@@ -13,19 +13,18 @@ export default class Buttons extends React.Component{
 
 	showModal() {
 		this.setState({show: true});
+		console.log(this.props.action);
 	}
 
 	hideModal() {
 		this.setState({show: false});
 	}
 
-	test(){
-		//console.log(this.props.action);
-	}
-
 	render() {
 
-		const data = {title: "Заголовок окна", action: 'action'};
+		//const data = {title: "Заголовок окна", action: 'action'};
+		const data = dataPage;
+		console.log(dataPage);
 
 		const bsStyle = "primary";
 

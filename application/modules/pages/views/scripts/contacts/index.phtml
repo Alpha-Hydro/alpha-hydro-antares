@@ -48,3 +48,6 @@ $this->headScript()
         </div>
     </div>
 </div>
+<?php $this->headScript()->captureStart() ?>
+    var dataPage = $.extend({controller: "<?=$this->controllerAdmin?>"}, <?= Zend_Json::encode($this->page->getOptions()); ?>);
+<?php $this->headScript()->captureEnd() ?>
