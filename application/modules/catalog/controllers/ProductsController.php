@@ -99,6 +99,13 @@ class Catalog_ProductsController extends Zend_Controller_Action
         if(is_null($product))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
+        if(!is_null($this->getRequest()->getParam('json'))
+            && Zend_Auth::getInstance()->hasIdentity()){
+
+            $this->forward('json', 'products', 'admin', array('id' => $product->getId()));
+            return;
+        }
+
         $this->view->product = $product;
         $this->view->title = $product->getSku();
         $this->view->secondaryHeader = $product->getName();

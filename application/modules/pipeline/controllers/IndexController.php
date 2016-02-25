@@ -31,6 +31,17 @@ class Pipeline_IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
+        if(!is_null($this->getRequest()->getParam('json'))
+            && Zend_Auth::getInstance()->hasIdentity()){
+            $page = $this->pageModule();
+
+            $id = ($this->getRequest()->getParam('json') != '')
+                ?$this->getRequest()->getParam('json')
+                :$page->getId();
+
+            $this->forward('json', 'pages', 'admin', array('id' => $id));
+            return;
+        }
 
         $categoriesMapper = new Pipeline_Model_Mapper_PipelineCategories();
         $select =  $categoriesMapper->getDbTable()->select();
@@ -46,9 +57,18 @@ class Pipeline_IndexController extends Zend_Controller_Action
 
     public function capAction()
     {
-        //Показывается заглушка
+        //Показывается заглушка - не удалять
     }
 
+    public function pageModule()
+    {
+        $pagesMapper = new Pages_Model_Mapper_Pages();
+        $pageCatalogPath = $this->getRequest()->getModuleName();
+
+        $page = $pagesMapper->findByPath($pageCatalogPath, new Pages_Model_Pages());
+
+        return $page;
+    }
 
 }
 

@@ -31,8 +31,21 @@ class Manufacture_IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
+        $request = $this->getRequest();
+
         $pageMapper = new Default_Model_Mapper_Pages();
-        $page = $pageMapper->find(4, new Default_Model_Pages());
+        $page = $pageMapper->findByPath($request->getModuleName(), new Default_Model_Pages());
+
+        if(!is_null($this->getRequest()->getParam('json'))
+            && Zend_Auth::getInstance()->hasIdentity()){
+
+            $id = ($this->getRequest()->getParam('json') != '')
+                ?$this->getRequest()->getParam('json')
+                :$page->getId();
+
+            $this->forward('json', 'pages', 'admin', array('id' => $id));
+            return;
+        }
 
         $this->view->page = $page;
 

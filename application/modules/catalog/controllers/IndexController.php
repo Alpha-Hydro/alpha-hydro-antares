@@ -12,6 +12,18 @@ class Catalog_IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
+        if(!is_null($this->getRequest()->getParam('json'))
+            && Zend_Auth::getInstance()->hasIdentity()){
+            $pageCatalog = $this->pageModule();
+
+            $id = ($this->getRequest()->getParam('json') != '')
+                ?$this->getRequest()->getParam('json')
+                :$pageCatalog->getId();
+
+            $this->forward('json', 'pages', 'admin', array('id' => $id));
+            return;
+        }
+
         $categories = new Catalog_Model_Mapper_Categories();
 
         $select = $categories->getDbTable()->select();
@@ -22,6 +34,19 @@ class Catalog_IndexController extends Zend_Controller_Action
         $entries = $categories->fetchAll($select);
 
         $this->view->entries = $entries;
+    }
+
+    /**
+     * @return null|Pages_Model_Pages
+     */
+    public function pageModule()
+    {
+        $pagesMapper = new Pages_Model_Mapper_Pages();
+        $pageCatalogPath = $this->getRequest()->getModuleName();
+
+        $page = $pagesMapper->findByPath($pageCatalogPath, new Pages_Model_Pages());
+
+        return $page;
     }
 
 

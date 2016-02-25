@@ -16,6 +16,18 @@ class Oil_IndexController extends Zend_Controller_Action
         $this->view->title = 'Масла гидравлические';
         $request = $this->getRequest();
 
+        if(!is_null($request->getParam('json'))
+            && Zend_Auth::getInstance()->hasIdentity()){
+            $page = $this->pageModule();
+
+            $id = ($request->getParam('json') != '')
+                ?$this->getRequest()->getParam('json')
+                :$page->getId();
+
+            $this->forward('json', 'pages', 'admin', array('id' => $id));
+            return;
+        }
+
         $oilMapper = new Oil_Model_Mapper_Oil();
         $select = $oilMapper->getDbTable()->select();
         $select
@@ -66,6 +78,17 @@ class Oil_IndexController extends Zend_Controller_Action
         $this->view->meta_description = $oilItem->getMetaDescription();
         $this->view->meta_keywords = $oilItem->getMetaKeywords();
         $this->view->adminPath = 'oil/edit/'.$oilItem->getId();
+    }
+
+
+    public function pageModule()
+    {
+        $pagesMapper = new Pages_Model_Mapper_Pages();
+        $pageCatalogPath = $this->getRequest()->getModuleName();
+
+        $page = $pagesMapper->findByPath($pageCatalogPath, new Pages_Model_Pages());
+
+        return $page;
     }
 
     /**

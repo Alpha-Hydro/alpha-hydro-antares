@@ -14,6 +14,12 @@
         </logout>
     </nav>
     <main>
+        <home>
+            <label>Главная</label>
+            <module>pages</module>
+            <controller>index</controller>
+            <route>default</route>
+        </home>
         <products>
             <label>Продукция</label>
             <module>catalog</module>

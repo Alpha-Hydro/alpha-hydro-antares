@@ -3,20 +3,46 @@
 class Pages_IndexController extends Zend_Controller_Action
 {
     protected $_page_id = null;
+    protected $_page_default_path = null;
+
+    /**
+     * @var Pages_Model_Mapper_Pages
+     */
+    protected $_pagesMapper = null;
+
+    /**
+     * @var Pages_Model_Pages
+     */
+    protected $_page = null;
 
     public function init()
     {
-        $this->_page_id = 1;
+
+        $this->setPageDefaultPath('home');
+
+        $this->_pagesMapper = new Pages_Model_Mapper_Pages();
+        $this->_page = $this->_pagesMapper->findByPath($this->getPageDefaultPath(), new Pages_Model_Pages());
+        $this->setPageId($this->_page->getId());
+
         $this->view->adminPath = 'pages/edit/'.$this->getPageId();
+        $this->view->itemId = $this->getPageId();
 
     }
 
     public function indexAction()
     {
-        $pagesMapper = new Pages_Model_Mapper_Pages();
-        $page = new Pages_Model_Pages();
+        if(!is_null($this->getRequest()->getParam('json'))
+            && Zend_Auth::getInstance()->hasIdentity()){
+            $id = ($this->getRequest()->getParam('json') != '')
+                ?$this->getRequest()->getParam('json')
+                :$this->getPageId();
 
-        $page = $pagesMapper->find($this->getPageId(), $page);
+            $this->forward('json', 'pages', 'admin', array('id' => $id));
+            return;
+        }
+
+
+        $this->view->page = $this->_page;
 
         $forumMapper = new Forum_Model_Mapper_Forum();
         $select = $forumMapper->getDbTable()->select();
@@ -62,10 +88,6 @@ class Pages_IndexController extends Zend_Controller_Action
         if(!empty($articleItem))
             $this->view->articleItem = array_shift($articleItem);
 
-        $this->view->page = $page;
-
-        $this->view->controllerAdmin = "pages";
-        $this->view->dataPage = $page->getOptions();
     }
 
     /**
@@ -84,6 +106,24 @@ class Pages_IndexController extends Zend_Controller_Action
     public function getPageId()
     {
         return $this->_page_id;
+    }
+
+    /**
+     * @param null $page_default_path
+     * @return Pages_IndexController
+     */
+    public function setPageDefaultPath($page_default_path)
+    {
+        $this->_page_default_path = $page_default_path;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getPageDefaultPath()
+    {
+        return $this->_page_default_path;
     }
 
 

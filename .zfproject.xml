@@ -317,6 +317,21 @@
               <actionMethod actionName="edit"/>
               <actionMethod actionName="delete"/>
             </controllerFile>
+            <controllerFile controllerName="About">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Contacts">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="CatalogCategories">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Categories">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Products">
+              <actionMethod actionName="index"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="PageEdit"/>
@@ -515,6 +530,21 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="MediaCategories">
                 <viewScriptFile forActionName="delete"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="About">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Contacts">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="CatalogCategories">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Categories">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Products">
+                <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>

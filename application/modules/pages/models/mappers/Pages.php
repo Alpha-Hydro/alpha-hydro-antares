@@ -89,6 +89,27 @@ class Pages_Model_Mapper_Pages
         return $entries;
     }
 
+    public function findByPath($value, Pages_Model_Pages $pages, Zend_Db_Select $select = null)
+    {
+        $table = $this->getDbTable();
+        if(is_null($select))
+            $select = $table->select();
+
+        $select->where("path = ?", $value);
+
+
+        $result = $table->fetchAll($select);
+
+        if (0 == count($result)) {
+            return null;
+        }
+
+        $row = $result->current();
+        $entry = $this->_setDbData($row, $pages);
+
+        return $entry;
+    }
+
     /**
      * @return mixed
      */

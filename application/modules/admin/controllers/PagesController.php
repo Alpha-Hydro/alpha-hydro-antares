@@ -4,10 +4,31 @@ include_once 'Michelf/Markdown.php';
 
 class PagesController extends Zend_Controller_Action
 {
+    protected $_page_id = null;
+
+    /**
+     * @var Pages_Model_Mapper_Pages
+     */
+    protected $_pagesMapper = null;
+
+    /**
+     * @var Pages_Model_Pages
+     */
+    protected $_page = null;
+
 
     public function init()
     {
-        /* Initialize action controller here */
+        $this->_pagesMapper = new Pages_Model_Mapper_Pages();
+
+        /*$ajaxContext = $this->_helper->getHelper('AjaxContext');
+        $ajaxContext
+            ->addActionContext('json', 'json');*/
+
+        $contextSwitch = $this->_helper->getHelper('contextSwitch');
+        $contextSwitch
+            ->addActionContext('json', array('json'))
+            ->initContext();
     }
 
     public function indexAction()
@@ -200,6 +221,40 @@ class PagesController extends Zend_Controller_Action
         $pagesMapper->save($page);
 
         return $this->_helper->redirector('index');
+    }
+
+    public function jsonAction()
+    {
+        $request = $this->getRequest();
+        $pageId = $request->getParam('id');
+
+        $jsonData = array();
+
+        if($pageId){
+            $this->_page = $this->_pagesMapper->find($pageId, new Pages_Model_Pages());
+            $jsonData = $this->_page->getOptions();
+        }
+
+
+        return $this->_helper->json->sendJson($jsonData);
+    }
+
+    /**
+     * @param null $page_id
+     * @return PagesController
+     */
+    public function setPageId($page_id)
+    {
+        $this->_page_id = $page_id;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getPageId()
+    {
+        return $this->_page_id;
     }
 
 }

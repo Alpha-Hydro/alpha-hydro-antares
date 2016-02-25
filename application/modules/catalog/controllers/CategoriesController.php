@@ -21,13 +21,24 @@ class Catalog_CategoriesController extends Zend_Controller_Action
 
         if(is_null($category)) {
             //throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
-            $this->forward('view', 'products');
+            $this->forward(
+                'view',
+                'products'
+            );
             return;
         }
+
 
         $current_category_id = $category->getId();
 
         if($current_category_id !== 0){
+
+            if(!is_null($this->getRequest()->getParam('json'))
+                && Zend_Auth::getInstance()->hasIdentity()){
+
+                $this->forward('json', 'categories', 'admin', array('id' => $current_category_id));
+                return;
+            }
 
             $select = $categories->getDbTable()->select();
             $select->where('parent_id = ?', $current_category_id)
