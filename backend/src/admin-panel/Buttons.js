@@ -8,12 +8,37 @@ import ModalPanel from "./modal/ModalPanel";
 export default class Buttons extends React.Component{
 	constructor(){
 		super();
-		this.state = {show: false};
+		this.state = {
+			show: false,
+			action: '',
+			data: {}
+		};
 	}
 
-	showModal() {
-		this.setState({show: true});
-		console.log(this.props.action);
+	componentDidMount() {
+		this.loadDataPage();
+	}
+
+	loadDataPage() {
+		$.ajax({
+			url: window.location.href,
+			data: {json:""},
+			dataType: 'json',
+			cache: false,
+			success: function(data) {
+				this.setState({data: data});
+			}.bind(this),
+			error: function(xhr, status, err) {
+				console.error(window.location.href, status, err.toString());
+			}.bind(this)
+		});
+	}
+
+	showModal(action) {
+		this.setState({
+			show: true,
+			action: action
+		});
 	}
 
 	hideModal() {
@@ -21,11 +46,6 @@ export default class Buttons extends React.Component{
 	}
 
 	render() {
-
-		//const data = {title: "Заголовок окна", action: 'action'};
-		const data = dataPage;
-		console.log(dataPage);
-
 		const bsStyle = "primary";
 
 		const Buttons = [
@@ -41,7 +61,12 @@ export default class Buttons extends React.Component{
 		return (
 			<div class="btn-group-vertical">
 				{Buttons}
-				<ModalPanel show={this.state.show} hide={this.hideModal.bind(this)} data={data}/>
+				<ModalPanel
+					show={this.state.show}
+					hide={this.hideModal.bind(this)}
+					data={this.state.data}
+					title={this.state.action}
+				/>
 			</div>
 		);
 	}

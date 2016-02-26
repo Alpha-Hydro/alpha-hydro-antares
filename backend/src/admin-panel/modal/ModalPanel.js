@@ -18,7 +18,7 @@ export default class ModalPanel extends React.Component{
 				dialogClassName="w100"
 			>
 				<Modal.Header closeButton>
-					<Modal.Title id="contained-modal-title-lg">{this.props.data.title}</Modal.Title>
+					<Modal.Title id="contained-modal-title-lg">{this.props.title}</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					<h4>Wrapped Text</h4>
