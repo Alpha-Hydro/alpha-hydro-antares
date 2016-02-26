@@ -77,6 +77,12 @@ class Manufacture_IndexController extends Zend_Controller_Action
             return;
         }
 
+        if(!is_null($this->getRequest()->getParam('json'))
+            && Zend_Auth::getInstance()->hasIdentity()){
+
+            $this->forward('json', 'manufacture-categories', 'admin', array('id' => $manufactureCategory->getId()));
+            return;
+        }
 
         $this->view->category = $manufactureCategory;
         $this->view->adminPath = 'manufacture-categories/edit/'.$manufactureCategory->getId();
@@ -125,6 +131,13 @@ class Manufacture_IndexController extends Zend_Controller_Action
 
         if(is_null($manufacture))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+        if(!is_null($this->getRequest()->getParam('json'))
+            && Zend_Auth::getInstance()->hasIdentity()){
+
+            $this->forward('json', 'manufacture', 'admin', array('id' => $manufacture->getId()));
+            return;
+        }
 
         $this->view->manufacture = $manufacture;
         $this->view->meta_description = $manufacture->getMetaDescription();

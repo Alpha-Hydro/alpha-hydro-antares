@@ -74,6 +74,13 @@ class Oil_IndexController extends Zend_Controller_Action
         if(is_null($oilItem))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
+        if(!is_null($this->getRequest()->getParam('json'))
+            && Zend_Auth::getInstance()->hasIdentity()){
+
+            $this->forward('json', 'oil', 'admin', array('id' => $oilItem->getId()));
+            return;
+        }
+
         $this->view->pageItem = $oilItem;
         $this->view->meta_description = $oilItem->getMetaDescription();
         $this->view->meta_keywords = $oilItem->getMetaKeywords();
@@ -87,6 +94,9 @@ class Oil_IndexController extends Zend_Controller_Action
         $pageCatalogPath = $this->getRequest()->getModuleName();
 
         $page = $pagesMapper->findByPath($pageCatalogPath, new Pages_Model_Pages());
+
+        if(is_null($page))
+            throw new Zend_Controller_Action_Exception("Раздел '".$pageCatalogPath."' не добален в таблицу 'Pages'", 404);
 
         return $page;
     }

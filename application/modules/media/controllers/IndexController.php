@@ -36,6 +36,7 @@ class Media_IndexController extends Zend_Controller_Action
         $mediaCategoryMapper = new Media_Model_Mapper_MediaCategories();
 
         $request = $this->getRequest();
+
         if($request->getParam('fullPath')){
             $mediaCategory = $mediaCategoryMapper
                 ->findByPath($request->getParam('fullPath'), new Media_Model_MediaCategories());
@@ -50,6 +51,14 @@ class Media_IndexController extends Zend_Controller_Action
         }
 
         $mediaCategoryId = $this->getCategoriesDefaultId();
+
+        if(!is_null($this->getRequest()->getParam('json'))
+            && Zend_Auth::getInstance()->hasIdentity()){
+
+            $this->forward('json', 'media-categories', 'admin', array('id' => $mediaCategoryId));
+            return;
+        }
+
 
         $mediaMapper = new Media_Model_Mapper_Media();
         $select = $mediaMapper->getDbTable()->select();
@@ -110,6 +119,13 @@ class Media_IndexController extends Zend_Controller_Action
         if(is_null($mediaItem))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
+        if(!is_null($this->getRequest()->getParam('json'))
+            && Zend_Auth::getInstance()->hasIdentity()){
+
+            $this->forward('json', 'media', 'admin', array('id' => $mediaItem->getId()));
+            return;
+        }
+
         $this->view->mediaItem = $mediaItem;
 
         $mediaCategoryMapper = new Media_Model_Mapper_MediaCategories();
@@ -125,6 +141,19 @@ class Media_IndexController extends Zend_Controller_Action
             ? $mediaItem->getMetaKeywords()
             : $mediaItem->getName().', '.$currentCategory->getName().', пресса';
         $this->view->meta_keywords = $meta_keywords;
+    }
+
+    public function pageModule()
+    {
+        $pagesMapper = new Pages_Model_Mapper_Pages();
+        $pageCatalogPath = $this->getRequest()->getModuleName();
+
+        $page = $pagesMapper->findByPath($pageCatalogPath, new Pages_Model_Pages());
+
+        if(is_null($page))
+            throw new Zend_Controller_Action_Exception("Раздел '".$pageCatalogPath."' не добален в таблицу 'Pages'", 404);
+
+        return $page;
     }
 
     /**

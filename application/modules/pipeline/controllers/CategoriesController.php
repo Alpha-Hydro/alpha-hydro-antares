@@ -47,6 +47,14 @@ class Pipeline_CategoriesController extends Zend_Controller_Action
         $this->view->adminPath = 'pipeline-categories/edit/'.$category->getId();
 
         if($current_category_id !== 0){
+
+            if(!is_null($this->getRequest()->getParam('json'))
+                && Zend_Auth::getInstance()->hasIdentity()){
+
+                $this->forward('json', 'pipeline-categories', 'admin', array('id' => $current_category_id));
+                return;
+            }
+
             $select = $categoriesMapper->getDbTable()->select();
             $select->where('parent_id = ?', $current_category_id)
                 ->where('deleted != ?', 1)

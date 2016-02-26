@@ -20,6 +20,18 @@ class Forum_IndexController extends Zend_Controller_Action
 
         $request = $this->getRequest();
 
+        if(!is_null($request->getParam('json'))
+            && Zend_Auth::getInstance()->hasIdentity()){
+            $page = $this->pageModule();
+
+            $id = ($request->getParam('json') != '')
+                ?$this->getRequest()->getParam('json')
+                :$page->getId();
+
+            $this->forward('json', 'pages', 'admin', array('id' => $id));
+            return;
+        }
+
         $form_ask = new Forum_Form_ForumAsk();
         $this->view->form_ask = $form_ask;
 
@@ -176,6 +188,19 @@ class Forum_IndexController extends Zend_Controller_Action
         $data['src'] = $captcha->getImgUrl().$captcha->getId().$captcha->getSuffix();
 
         $this->_helper->json($data);
+    }
+
+    public function pageModule()
+    {
+        $pagesMapper = new Pages_Model_Mapper_Pages();
+        $pageCatalogPath = $this->getRequest()->getModuleName();
+
+        $page = $pagesMapper->findByPath($pageCatalogPath, new Pages_Model_Pages());
+
+        if(is_null($page))
+            throw new Zend_Controller_Action_Exception("Раздел '".$pageCatalogPath."' не добален в таблицу 'Pages'", 404);
+
+        return $page;
     }
 
 }

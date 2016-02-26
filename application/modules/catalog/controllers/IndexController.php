@@ -38,6 +38,7 @@ class Catalog_IndexController extends Zend_Controller_Action
 
     /**
      * @return null|Pages_Model_Pages
+     * @throws Zend_Controller_Action_Exception
      */
     public function pageModule()
     {
@@ -45,6 +46,9 @@ class Catalog_IndexController extends Zend_Controller_Action
         $pageCatalogPath = $this->getRequest()->getModuleName();
 
         $page = $pagesMapper->findByPath($pageCatalogPath, new Pages_Model_Pages());
+
+        if(is_null($page))
+            throw new Zend_Controller_Action_Exception("Раздел '".$pageCatalogPath."' не добален в таблицу 'Pages'", 404);
 
         return $page;
     }

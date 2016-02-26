@@ -4,16 +4,24 @@ include_once 'Michelf/Markdown.php';
 
 class OilController extends Zend_Controller_Action
 {
+    /**
+     * @var Oil_Model_Mapper_Oil
+     */
+    protected $_modelMapper = null;
 
     public function init()
     {
-        /* Initialize action controller here */
+        $this->_modelMapper = new Oil_Model_Mapper_Oil();
+
+        $contextSwitch = $this->_helper->getHelper('contextSwitch');
+        $contextSwitch
+            ->addActionContext('json', array('json'))
+            ->initContext();
     }
 
     public function indexAction()
     {
-        $oilMapper = new Oil_Model_Mapper_Oil();
-        $this->view->pages = $oilMapper->fetchAll();
+        $this->view->pages = $this->_modelMapper->fetchAll();
 
         $config = array(
             Zend_Navigation_Page_Mvc::factory(array(
@@ -38,8 +46,7 @@ class OilController extends Zend_Controller_Action
         if(is_null($itemId))
             return $this->_helper->redirector('index');
 
-        $oilMapper = new Oil_Model_Mapper_Oil();
-        $page = $oilMapper->find($itemId, new Oil_Model_Oil());
+        $page = $this->_modelMapper->find($itemId, new Oil_Model_Oil());
 
         if(is_null($page))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
@@ -154,17 +161,34 @@ class OilController extends Zend_Controller_Action
         if(is_null($oilId))
             return $this->_helper->redirector('index');
 
-        $oilMapper = new Oil_Model_Mapper_Oil();
-        $oilItem = $oilMapper->find($oilId, new Oil_Model_Oil());
+        $oilItem = $this->_modelMapper->find($oilId, new Oil_Model_Oil());
 
         if(is_null($oilItem))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
         $oilItem->setDeleted(1);
-        $oilMapper->save($oilItem);
+        $this->_modelMapper->save($oilItem);
 
         return $this->_helper->redirector('index');
     }
+
+    public function jsonAction()
+    {
+        $request = $this->getRequest();
+        $id = $request->getParam('id');
+
+        $jsonData = array($request->getControllerKey() => $request->getControllerName());
+
+        if($id){
+            $entry = $this->_modelMapper->find($id, new Oil_Model_Oil());
+            if(!is_null($entry))
+                $jsonData = array_merge($jsonData, $entry->getOptions());
+        }
+
+
+        return $this->_helper->json->sendJson($jsonData);
+    }
+
 
     /**
      * @param Admin_Form_OilEdit $form
@@ -188,12 +212,10 @@ class OilController extends Zend_Controller_Action
         if(empty($metaDescription) && !empty($description))
             $oilItem->setMetaDescription($description);
 
-        $oilMapper = new Oil_Model_Mapper_Oil();
-        $oilMapper->save($oilItem);
+        $this->_modelMapper->save($oilItem);
 
         return $this->_helper->redirector('index');
     }
-
 
 }
 

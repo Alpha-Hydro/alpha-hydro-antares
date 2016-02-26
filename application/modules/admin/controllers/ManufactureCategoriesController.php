@@ -4,11 +4,23 @@ include_once 'Michelf/Markdown.php';
 
 class ManufactureCategoriesController extends Zend_Controller_Action
 {
+    /**
+     * @var Manufacture_Model_Mapper_ManufactureCategories
+     */
+    protected $_modelMapper = null;
+
     protected $_count_item_on_page = null;
 
     public function init()
     {
         $this->_count_item_on_page = 10;
+
+        $this->_modelMapper = new Manufacture_Model_Mapper_ManufactureCategories();
+
+        $contextSwitch = $this->_helper->getHelper('contextSwitch');
+        $contextSwitch
+            ->addActionContext('json', array('json'))
+            ->initContext();
     }
 
     public function indexAction()
@@ -185,6 +197,23 @@ class ManufactureCategoriesController extends Zend_Controller_Action
         $manufactureCategoryMapper->save($manufactureCategory);
 
         return $this->_helper->redirector('index');
+    }
+
+    public function jsonAction()
+    {
+        $request = $this->getRequest();
+        $id = $request->getParam('id');
+
+        $jsonData = array($request->getControllerKey() => $request->getControllerName());
+
+        if($id){
+            $entry = $this->_modelMapper->find($id, new Manufacture_Model_ManufactureCategories());
+            if(!is_null($entry))
+                $jsonData = array_merge($jsonData, $entry->getOptions());
+        }
+
+
+        return $this->_helper->json->sendJson($jsonData);
     }
 
     /**

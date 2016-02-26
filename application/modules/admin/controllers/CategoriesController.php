@@ -27,11 +27,12 @@ class CategoriesController extends Zend_Controller_Action
         $request = $this->getRequest();
         $id = $request->getParam('id');
 
-        $jsonData = array();
+        $jsonData = array($request->getControllerKey() => $request->getControllerName());
 
         if($id){
-            $categories = $this->_modelMapper->find($id, new Catalog_Model_Categories());
-            $jsonData = $categories->getOptions();
+            $entry = $this->_modelMapper->find($id, new Catalog_Model_Categories());
+            if(!is_null($entry))
+                $jsonData = array_merge($jsonData, $entry->getOptions());
         }
 
 

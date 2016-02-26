@@ -28,13 +28,13 @@ class ProductsController extends Zend_Controller_Action
         $request = $this->getRequest();
         $id = $request->getParam('id');
 
-        $jsonData = array();
+        $jsonData = array($request->getControllerKey() => $request->getControllerName());
 
         if($id){
-            $product = $this->_modelMapper->find($id, new Catalog_Model_Products());
-            $jsonData = $product->getOptions();
+            $entry = $this->_modelMapper->find($id, new Catalog_Model_Products());
+            if(!is_null($entry))
+                $jsonData = array_merge($jsonData, $entry->getOptions());
         }
-
 
         return $this->_helper->json->sendJson($jsonData);
     }

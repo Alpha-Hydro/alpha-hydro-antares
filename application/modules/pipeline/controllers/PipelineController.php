@@ -53,6 +53,13 @@ class Pipeline_PipelineController extends Zend_Controller_Action
         if(is_null($pipeline))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
+        if(!is_null($this->getRequest()->getParam('json'))
+            && Zend_Auth::getInstance()->hasIdentity()){
+
+            $this->forward('json', 'pipeline', 'admin', array('id' => $pipeline->getId()));
+            return;
+        }
+
         $categoriesMapper = new Pipeline_Model_Mapper_PipelineCategories();
         $category = $categoriesMapper->find($pipeline->getCategoryId(), new Pipeline_Model_PipelineCategories());
 

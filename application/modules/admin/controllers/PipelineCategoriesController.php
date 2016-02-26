@@ -5,11 +5,23 @@ include_once 'Michelf/Markdown.php';
 
 class PipelineCategoriesController extends Zend_Controller_Action
 {
+    /**
+     * @var Pipeline_Model_Mapper_PipelineCategories
+     */
+    protected $_modelMapper = null;
+
     protected $_count_item_on_page = null;
 
     public function init()
     {
         $this->_count_item_on_page = 10;
+
+        $this->_modelMapper = new Pipeline_Model_Mapper_PipelineCategories();
+
+        $contextSwitch = $this->_helper->getHelper('contextSwitch');
+        $contextSwitch
+            ->addActionContext('json', array('json'))
+            ->initContext();
     }
 
     public function indexAction()
@@ -197,9 +209,27 @@ class PipelineCategoriesController extends Zend_Controller_Action
         return $this->_helper->redirector('index');
     }
 
+    public function jsonAction()
+    {
+        $request = $this->getRequest();
+        $id = $request->getParam('id');
+
+        $jsonData = array($request->getControllerKey() => $request->getControllerName());
+
+        if($id){
+            $entry = $this->_modelMapper->find($id, new Pipeline_Model_PipelineCategories());
+            if(!is_null($entry))
+                $jsonData = array_merge($jsonData, $entry->getOptions());
+        }
+
+
+        return $this->_helper->json->sendJson($jsonData);
+    }
+
+
     /**
      * @param null $count_item_on_page
-     * @return Admin_PipelineCategoriesController
+     * @return PipelineCategoriesController
      */
     public function setCountItemOnPage($count_item_on_page)
     {

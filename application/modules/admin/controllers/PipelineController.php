@@ -4,11 +4,22 @@ include_once 'Michelf/Markdown.php';
 
 class PipelineController extends Zend_Controller_Action
 {
+    /**
+     * @var Pipeline_Model_Mapper_Pipeline
+     */
+    protected $_modelMapper = null;
 
     protected $_count_item_on_page = null;
 
     public function init()
     {
+        $this->_modelMapper = new Pipeline_Model_Mapper_Pipeline();
+
+        $contextSwitch = $this->_helper->getHelper('contextSwitch');
+        $contextSwitch
+            ->addActionContext('json', array('json'))
+            ->initContext();
+
         $ajaxContext = $this->_helper->getHelper('AjaxContext');
         $ajaxContext
             ->addActionContext('select-add-property', 'html')
@@ -274,6 +285,23 @@ class PipelineController extends Zend_Controller_Action
     public function deleteAction()
     {
         // action body
+    }
+
+    public function jsonAction()
+    {
+        $request = $this->getRequest();
+        $id = $request->getParam('id');
+
+        $jsonData = array($request->getControllerKey() => $request->getControllerName());
+
+        if($id){
+            $entry = $this->_modelMapper->find($id, new Pipeline_Model_Pipeline());
+            if(!is_null($entry))
+                $jsonData = array_merge($jsonData, $entry->getOptions());
+        }
+
+
+        return $this->_helper->json->sendJson($jsonData);
     }
 
     /**

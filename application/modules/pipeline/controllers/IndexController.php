@@ -35,12 +35,16 @@ class Pipeline_IndexController extends Zend_Controller_Action
             && Zend_Auth::getInstance()->hasIdentity()){
             $page = $this->pageModule();
 
-            $id = ($this->getRequest()->getParam('json') != '')
-                ?$this->getRequest()->getParam('json')
-                :$page->getId();
+            if ($page){
+                $id = ($this->getRequest()->getParam('json') != '')
+                    ?$this->getRequest()->getParam('json')
+                    :$page->getId();
 
-            $this->forward('json', 'pages', 'admin', array('id' => $id));
-            return;
+                $this->forward('json', 'pages', 'admin', array('id' => $id));
+                return;
+            }
+
+
         }
 
         $categoriesMapper = new Pipeline_Model_Mapper_PipelineCategories();
@@ -66,6 +70,9 @@ class Pipeline_IndexController extends Zend_Controller_Action
         $pageCatalogPath = $this->getRequest()->getModuleName();
 
         $page = $pagesMapper->findByPath($pageCatalogPath, new Pages_Model_Pages());
+
+        if(is_null($page))
+            throw new Zend_Controller_Action_Exception("Раздел '".$pageCatalogPath."' не добален в таблицу 'Pages'", 404);
 
         return $page;
     }
