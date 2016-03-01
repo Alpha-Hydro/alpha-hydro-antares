@@ -15,7 +15,15 @@ export default class ModalPanel extends React.Component{
 				{...this.props}
 				show={this.props.show}
 				onHide={this.hideModal.bind(this)}
-				dialogClassName="w100"
+				dialogClassName={
+					(() => {
+						switch (this.props.title) {
+							case "delete":   return "modal-sm";
+							case "disabled": return "modal-sm";
+							default:      return "w100";
+						}
+					})()
+				}
 			>
 				<Modal.Header closeButton>
 					<Modal.Title id="contained-modal-title-lg">{this.props.title}</Modal.Title>
