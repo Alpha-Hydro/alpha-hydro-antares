@@ -11,10 +11,20 @@ class Plugin_Redirect extends Zend_Controller_Plugin_Abstract
 
     public function preDispatch(Zend_Controller_Request_Abstract $request)
     {
+        $aHostName = array(
+            'hansa-flex.pro',
+            'hansa-flex.su',
+            'hansa-flex.org',
+            'xn----7sbavhvfm6b0af.xn--p1ai',
+        );
+
+        if(in_array($request->getServer('HTTP_HOST'), $aHostName)){
+            $layout = Zend_Layout::getMvcInstance();
+            $layout->setLayout('plug');
+        }
+
         if($request->getParam('fullPath'))
             $this->validatePath($request->getParam('fullPath'));
-
-        //Zend_Debug::dump($request->getModuleName());
 
         if($request->getModuleName() === 'admin' || $request->getModuleName() === 'utils')
             $this->redirectAdmin();

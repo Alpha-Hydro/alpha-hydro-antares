@@ -49,31 +49,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     public function _initRoute()
     {
         $router = Zend_Controller_Front::getInstance()->getRouter();
-        $aHostName = array(
-            'hansa-flex.pro',
-            'hansa-flex.su',
-            'hansa-flex.org',
-            'xn----7sbavhvfm6b0af.xn--p1ai',
-        );
-
-        $hostHttp = new Zend_Controller_Request_Http();
-
-        $host = $hostHttp->getServer('HTTP_HOST');
-        $requestUri = $hostHttp->getServer('REQUEST_URI');
-
-        //Zend_Debug::dump($requestUri);
-
-        if(in_array($host, $aHostName)){
-            $hostnameRoute = new Zend_Controller_Router_Route_Hostname(
-                $host,
-                array(
-                    'controller' => 'index',
-                    'action'     => 'plug',
-                    'module'     => 'default'
-                )
-            );
-            $router->addRoute('hostAlfa', $hostnameRoute);
-        }
 
         $sitemap = new Zend_Controller_Router_Route_Regex(
             'sitemap.xml',
