@@ -25,7 +25,9 @@ class Zend_View_Helper_ParamsPage extends Zend_Controller_Plugin_Abstract
             'controller' => $moduleName,
             'itemId' => $this->view->itemId
         ));*/
-        $params = $request->getParams();
+        $params = $request->getControllerKey();
+
+        $params = Zend_Auth::getInstance()->getIdentity()->role;
 
         return $params;
 
