@@ -17,7 +17,7 @@ export default class ModalPanel extends React.Component{
 				onHide={this.hideModal.bind(this)}
 				dialogClassName={
 					(() => {
-						switch (this.props.title) {
+						switch (this.props.action) {
 							case "delete":   return "modal-sm";
 							case "disabled": return "modal-sm";
 							default:      return "w100";

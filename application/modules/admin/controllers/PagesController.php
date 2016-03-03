@@ -228,7 +228,10 @@ class PagesController extends Zend_Controller_Action
         $request = $this->getRequest();
         $pageId = $request->getParam('id');
 
-        $jsonData = array($request->getControllerKey() => $request->getControllerName());
+        $jsonData = array(
+            $request->getControllerKey() => $request->getControllerName(),
+            'role' => Zend_Auth::getInstance()->getIdentity()->role
+        );
 
         if($pageId){
             $this->_page = $this->_pagesMapper->find($pageId, new Pages_Model_Pages());

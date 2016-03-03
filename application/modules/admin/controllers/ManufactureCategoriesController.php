@@ -204,7 +204,10 @@ class ManufactureCategoriesController extends Zend_Controller_Action
         $request = $this->getRequest();
         $id = $request->getParam('id');
 
-        $jsonData = array($request->getControllerKey() => $request->getControllerName());
+        $jsonData = array(
+            $request->getControllerKey() => $request->getControllerName(),
+            'role' => Zend_Auth::getInstance()->getIdentity()->role
+        );
 
         if($id){
             $entry = $this->_modelMapper->find($id, new Manufacture_Model_ManufactureCategories());

@@ -77,10 +77,19 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         $acl->allow('guest', 'auth');
         $acl->allow('manager', array(
             'index',
-            'forum',
+            'pages',
+            'categories',
+            'products',
+            'manufacture',
+            'manufacture-categories',
             'pipeline',
             'pipeline-categories',
-            'pipeline-property'));
+            'pipeline-property',
+            'oil',
+            'forum',
+            'media',
+            'media-categories'
+        ));
         $acl->allow('admin');
 
         // получаем экземпляр главного контроллера

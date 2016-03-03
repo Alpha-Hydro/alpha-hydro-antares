@@ -1,34 +1,38 @@
-class PageData {
+import React from "react";
 
+export default class PageData extends React.Component {
 	constructor(){
-		//this.init();
+		super();
+		this.state = {
+			data: {}
+		};
+		this.props = {
+			data: {}
+		};
 	}
 
-	init() {
-		//localStorage.clear();
-		var dataPage;
+	componentDidMount() {
+		this.loadDataPage();
+	}
+
+	loadDataPage() {
 		$.ajax({
 			url: window.location.href,
 			data: {json:""},
 			dataType: 'json',
 			cache: false,
 			success: function(data) {
-				//localStorage.setItem('dataPage', JSON.stringify(data));
-				dataPage = JSON.stringify(data);
-			},
+				this.setState({data: data});
+			}.bind(this),
 			error: function(xhr, status, err) {
 				console.error(window.location.href, status, err.toString());
-			}
+			}.bind(this)
 		});
-		console.log(dataPage);
 	}
 
-	getData(){
-		return this.init();
+	render(){
+		return (
+			<script />
+		);
 	}
 }
-
-var pageData = new PageData();
-//pageData.init();
-
-export default pageData;

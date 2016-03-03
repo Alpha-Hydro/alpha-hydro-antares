@@ -222,7 +222,10 @@ class ManufactureController extends Zend_Controller_Action
         $request = $this->getRequest();
         $id = $request->getParam('id');
 
-        $jsonData = array($request->getControllerKey() => $request->getControllerName());
+        $jsonData = array(
+            $request->getControllerKey() => $request->getControllerName(),
+            'role' => Zend_Auth::getInstance()->getIdentity()->role
+        );
 
         if($id){
             $entry = $this->_modelMapper->find($id, new Manufacture_Model_Manufacture());
@@ -235,7 +238,7 @@ class ManufactureController extends Zend_Controller_Action
 
     /**
      * @param null $count_item_on_page
-     * @return Admin_ManufactureController
+     * @return ManufactureController
      */
     public function setCountItemOnPage($count_item_on_page)
     {
