@@ -4,22 +4,32 @@ include_once 'Michelf/Markdown.php';
 
 class PagesController extends Zend_Controller_Action
 {
+
     protected $_page_id = null;
 
     /**
      * @var Pages_Model_Mapper_Pages
+     *
      */
     protected $_pagesMapper = null;
 
     /**
      * @var Pages_Model_Pages
+     *
      */
     protected $_page = null;
 
+    /**
+     * @var Zend_Controller_Action_Helper_Redirector
+     *
+     */
+    protected $_redirector = null;
 
     public function init()
     {
         $this->_pagesMapper = new Pages_Model_Mapper_Pages();
+
+        $this->_redirector = $this->_helper->getHelper('Redirector');
 
         /*$ajaxContext = $this->_helper->getHelper('AjaxContext');
         $ajaxContext
@@ -135,6 +145,33 @@ class PagesController extends Zend_Controller_Action
         $this->view->container_nav = $containerNav;
     }
 
+    public function seoAction()
+    {
+        $request = $this->getRequest();
+        $pageId = $request->getParam('id');
+
+        if(is_null($pageId))
+            $this->_redirector->gotoSimpleAndExit('index');
+
+        $page = $this->_pagesMapper->find($pageId, new Pages_Model_Pages());
+
+        if ($this->getRequest()->isPost()){
+            if($request->getParam('metaTitle'))
+                $page->setMetaTitle($request->getParam('metaTitle'));
+
+            if($request->getParam('metaDescription'))
+                $page->setMetaDescription($request->getParam('metaDescription'));
+
+            if($request->getParam('metaKeywords'))
+                $page->setMetaKeywords($request->getParam('metaKeywords'));
+
+            $this->_pagesMapper->save($page);
+        }
+
+        $url = ($page->getPath() != 'home')? '/'.$page->getPath():'/';
+        $this->_redirector->gotoUrlAndExit($url);
+    }
+
     public function addAction()
     {
         $request = $this->getRequest();
@@ -209,18 +246,38 @@ class PagesController extends Zend_Controller_Action
         $pageId = $request->getParam('id');
 
         if(is_null($pageId))
-            return $this->_helper->redirector('index');
+            $this->_redirector->gotoSimpleAndExit('index');
 
-        $pagesMapper = new Default_Model_Mapper_Pages();
-        $page = $pagesMapper->find($pageId, new Default_Model_Pages());
+        $page = $this->_pagesMapper->find($pageId, new Pages_Model_Pages());
 
         if(is_null($page))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
         $page->setDeleted(1);
-        $pagesMapper->save($page);
+        $page->setActive(0);
+        $this->_pagesMapper->save($page);
 
-        return $this->_helper->redirector('index');
+        $this->_redirector->gotoSimpleAndExit('index');
+    }
+
+    public function disabledAction()
+    {
+        $request = $this->getRequest();
+        $pageId = $request->getParam('id');
+
+        if(is_null($pageId))
+            $this->_redirector->gotoSimpleAndExit('index');
+
+        $page = $this->_pagesMapper->find($pageId, new Pages_Model_Pages());
+
+        if(is_null($page))
+            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+        $page->setActive(0);
+        $this->_pagesMapper->save($page);
+
+        $url = ($page->getPath() != 'home')? '/'.$page->getPath():'/';
+        $this->_redirector->gotoUrlAndExit($url);
     }
 
     public function jsonAction()
@@ -247,6 +304,7 @@ class PagesController extends Zend_Controller_Action
     /**
      * @param null $page_id
      * @return PagesController
+     *
      */
     public function setPageId($page_id)
     {
@@ -256,6 +314,7 @@ class PagesController extends Zend_Controller_Action
 
     /**
      * @return null
+     *
      */
     public function getPageId()
     {
@@ -263,6 +322,8 @@ class PagesController extends Zend_Controller_Action
     }
 
 }
+
+
 
 
 

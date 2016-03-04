@@ -239,6 +239,7 @@
               <actionMethod actionName="edit"/>
               <actionMethod actionName="add"/>
               <actionMethod actionName="delete"/>
+              <actionMethod actionName="seo"/>
             </controllerFile>
             <controllerFile controllerName="Oil">
               <actionMethod actionName="index"/>
@@ -545,6 +546,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Products">
                 <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Pages">
+                <viewScriptFile forActionName="seo"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>

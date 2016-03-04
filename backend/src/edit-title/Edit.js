@@ -15,13 +15,12 @@ export default class Edit extends React.Component {
 	handleChange(e){
 		const title = e.target.value;
 		this.props.changeTitle(title);
-        if(title.length !== 0){
-            this.setState({btnClass: "btn btn-success"});
-        }
-        else{
-            this.setState({btnClass: "btn btn-success disabled"});
-        }
-
+		if(title.length !== 0){
+				this.setState({btnClass: "btn btn-success"});
+		}
+		else{
+				this.setState({btnClass: "btn btn-success disabled"});
+		}
 	}
 
 	rowClass(){

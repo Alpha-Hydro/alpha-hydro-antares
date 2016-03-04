@@ -61,11 +61,13 @@ export default class Buttons extends React.Component{
 			{icon: "plus", click: this.showModal.bind(this), action: "add", role: "admin", title:"Добавить"},
 			{icon: "trash", click: this.showModal.bind(this), action: "delete", role: "admin", title:"Удалить"},
 			{icon: "eye-slash", click: this.showModal.bind(this), action: "disabled", role: "admin", title:"Страница заглушка"},
-		].map((button, i) =>{
+		].map((button, i) =>
+			<Button key={i} bsStyle={bsStyle} eventClick={button.click} action={button.action} icon={button.icon} title={button.title}/>
+		/*{
 			if(this.precedence(this.state.data.role) >= this.precedence(button.role)){
 				return <Button key={i} bsStyle={bsStyle} eventClick={button.click} action={button.action} icon={button.icon} title={button.title}/>
 			}
-		}
+		}*/
 
 		);
 
