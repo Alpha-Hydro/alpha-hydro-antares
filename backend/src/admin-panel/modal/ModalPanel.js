@@ -29,15 +29,17 @@ export default class ModalPanel extends React.Component{
 				}
 			>
 				<Modal.Header closeButton>
-					<Modal.Title id="contained-modal-title-lg">{this.props.title}</Modal.Title>
+					<Modal.Title id="contained-modal-title-lg">
+						{this.props.data.title}
+						<small>{this.props.title}</small>
+					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<h4>{this.props.data.title}</h4>
 					<Forms {...this.props}/>
 				</Modal.Body>
 				<Modal.Footer>
-					<Button onClick={this.hideModal.bind(this)}>Close</Button>
-					<Button form="formModal" bsStyle="primary" onClick={this.hideModal.bind(this)} type="submit">Save changes</Button>
+					<Button onClick={this.hideModal.bind(this)}>Отмена</Button>
+					<Button form="formModal" bsStyle="primary" type="submit">Сохранить изменения</Button>
 				</Modal.Footer>
 			</Modal>
 		);

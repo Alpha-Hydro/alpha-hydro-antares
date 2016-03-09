@@ -1,13 +1,21 @@
 import React from "react";
-import {Input} from "react-bootstrap/lib";
+import {Grid, Row, Col, Input, Image} from "react-bootstrap/lib";
 
 export default class InputsEdit extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			metaTitle : props.data.metaTitle,
-			metaDescription: props.data.metaDescription,
-			metaKeywords: props.data.metaKeywords
+			title : (!props.data.title)
+				?props.data.name
+				:props.data.title,
+			path: props.data.path,
+			description: props.data.description,
+			contentMarkdown: props.data.contentMarkdown,
+			contentHtml: props.data.contentHtml,
+			sorting: props.data.sorting,
+			image: (!props.data.image)
+				?"/files/images/product/2012-05-22_foto_nv.jpg"
+				:props.data.image
 		}
 	}
 
@@ -21,24 +29,55 @@ export default class InputsEdit extends React.Component{
 
 	render(){
 		return (
-			<div>
-				<Input type="text" label="meta Title" placeholder="Enter meta Title"
-							 name="metaTitle"
-							 value={this.state.metaTitle}
-							 onChange={this.handleChange('metaTitle').bind(this)}
-				/>
-				<Input type="textarea" label="meta Description" placeholder="Enter meta Description"
-							 name="metaDescription"
-							 value={this.state.metaDescription}
-							 onChange={this.handleChange('metaDescription').bind(this)}
+			<Grid fluid={true}>
+				<Row className="show-grid">
+					<Col md={3}>
+						<Image src={this.state.image} thumbnail />
+						<Input type="file" name="fileLoad"/>
+					</Col>
+					<Col md={9}>
+						<Input type="text" label="Заголовок" placeholder="Заголовок"
+									 name="dataPage[title]"
+									 value={this.state.title}
+									 onChange={this.handleChange('title').bind(this)}
+									 required
+						/>
+						<Input type="text" label="Url страницы" placeholder="Url страницы"
+									 name="dataPage[path]"
+									 value={this.state.path}
+									 onChange={this.handleChange('path').bind(this)}
+									 required
+						/>
+						<Input type="textarea" label="Краткое описание" placeholder="Краткое описание"
+									 name="dataPage[description]"
+									 value={this.state.description}
+									 onChange={this.handleChange('description').bind(this)}
+									 rows="4"
+						/>
+						<Input type="textarea" label="Текст на странице (markdown)" placeholder="Текст на странице"
+									 name="dataPage[contentMarkdown]"
+									 value={this.state.contentMarkdown}
+									 onChange={this.handleChange('contentMarkdown').bind(this)}
+									 rows="8"
+						/>
+						<div className="form-horizontal">
+							<Input type="text" label="Сортировка"
+										 labelClassName="col-md-2"
+										 wrapperClassName="col-md-1"
+										 name="dataPage[sorting]"
+										 value={this.state.sorting}
+										 onChange={this.handleChange('sorting').bind(this)}
+										 required
+							/>
+						</div>
 
-				/>
-				<Input type="text" label="meta Keywords" placeholder="Enter meta Keywords"
-							 name="metaKeywords"
-							 value={this.state.metaKeywords}
-							 onChange={this.handleChange('metaKeywords').bind(this)}
-				/>
-			</div>
+						<Input type="hidden"
+									 name="dataPage[contentHtml]"
+									 value={this.state.contentHTML}
+						/>
+					</Col>
+				</Row>
+			</Grid>
 		);
 	}
 

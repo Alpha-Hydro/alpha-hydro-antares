@@ -66,10 +66,9 @@ class PagesController extends Zend_Controller_Action
         $pageId = $request->getParam('id');
 
         if(is_null($pageId))
-            return $this->_helper->redirector('index');
+            $this->_redirector->gotoSimpleAndExit('index');
 
-        $pagesMapper = new Default_Model_Mapper_Pages();
-        $page = $pagesMapper->find($pageId, new Default_Model_Pages());
+        $page = $this->_pagesMapper->find($pageId, new Pages_Model_Pages());
 
         if(is_null($page))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
@@ -86,9 +85,23 @@ class PagesController extends Zend_Controller_Action
             :'/files/images/product/2012-05-22_foto_nv.jpg';
         $form->setDefault('imageLoad', $imageValue);
 
-        if ($this->getRequest()->isPost()){
+        if ($request->isPost()){
+
+            $upload = new Zend_File_Transfer();
+            $upload->setDestination(APPLICATION_ROOT.'/upload/pages')
+                ->addValidator('Size', false, 1024000)
+                ->addValidator('Extension', false, 'jpg,png,gif,svg');
+            $upload->receive();
+
+            Zend_Debug::dump($upload->getFileInfo('fileLoad'));
+
+            /*if($request->getParam('dataPage')){
+                $page->setOptions($request->getParam('dataPage'));
+                $this->_pagesMapper->save($page);
+            }
+
             if ($form->isValid($request->getPost())) {
-                $newPage = new Default_Model_Pages($form->getValues());
+                $newPage = new Pages_Model_Pages($form->getValues());
 
                 $file = $form->imageLoadFile->getFileInfo();
                 if(!empty($file) && $file['imageLoadFile']['name'] != ''){
@@ -105,13 +118,12 @@ class PagesController extends Zend_Controller_Action
                 if(empty($metaDescription) && !empty($description))
                     $newPage->setMetaDescription($description);
 
-                $pagesMapper->save($newPage);
-
-                return $this->_helper->redirector('index');
-
-            }
-
-            $form->setDefaults($form->getValues());
+                $this->_pagesMapper->save($newPage);
+                $form->setDefaults($form->getValues());
+            }*/
+//            $this->_redirector->gotoSimpleAndExit('index');
+//            $url = ($page->getPath() != 'home')? '/'.$page->getPath():'/';
+//            $this->_redirector->gotoUrlAndExit($url);
         }
 
         $this->view->form = $form;

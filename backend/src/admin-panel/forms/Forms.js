@@ -1,4 +1,5 @@
 import React from "react";
+import InputsEdit from "./inputs/InputsEdit";
 import InputsSeo from "./inputs/InputsSeo";
 
 export default class Forms extends React.Component{
@@ -8,11 +9,11 @@ export default class Forms extends React.Component{
 
 	selectInputs(){
 		switch (this.props.action) {
-			case "edit":   return this.props.action;
-			case "seo": return <InputsSeo data = {this.props.data}/>;
-			case "add": return this.props.action;
+			case "edit":  return <InputsEdit data = {this.props.data}/>;
+			case "seo": 	return <InputsSeo data = {this.props.data}/>;
+			case "add": 	return this.props.action;
 			case "delete": return "Вы действительно хотите удалить этот раздел!";
-			case "disabled": return "Вы действительно хотите отключить этот раздел и поставить страницу заглушку!";
+			case "disabled": return "Вы действительно хотите отключить этот раздел!";
 		}
 	}
 
@@ -22,6 +23,7 @@ export default class Forms extends React.Component{
 				action={'/admin/'+this.props.data.controller+'/'+this.props.action+'/'+this.props.data.id}
 				id="formModal"
 				method="post"
+				encType="multipart/form-data"
 			>
 				{this.selectInputs()}
 			</form>

@@ -7,6 +7,7 @@ class Admin_Form_PageEdit extends Twitter_Bootstrap_Form_Vertical
     {
         //$this->setIsArray(true);
 
+
         $this->addElement('hidden', 'id');
 
         $this->addElement('text', 'title', array(
