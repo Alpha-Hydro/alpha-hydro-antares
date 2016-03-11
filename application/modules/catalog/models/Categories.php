@@ -9,6 +9,8 @@ class Catalog_Model_Categories
 
     protected $_image = null;
 
+    protected $_upload_path = null;
+
     protected $_name = null;
 
     protected $_description = null;
@@ -532,6 +534,24 @@ class Catalog_Model_Categories
     public function getCountProducts()
     {
         return $this->_countProducts;
+    }
+
+    /**
+     * @param null $upload_path
+     * @return Catalog_Model_Categories
+     */
+    public function setUploadPath($upload_path)
+    {
+        $this->_upload_path = $upload_path;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getUploadPath()
+    {
+        return $this->_upload_path;
     }
 
 

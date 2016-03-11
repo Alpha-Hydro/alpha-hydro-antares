@@ -2,6 +2,26 @@
 
 class Manufacture_IndexController extends Zend_Controller_Action
 {
+    protected $_page_id = null;
+
+    /**
+     * @var Pages_Model_Mapper_Pages
+     *
+     */
+    protected $_pagesMapper = null;
+
+    /**
+     * @var Pages_Model_Pages
+     *
+     */
+    protected $_page = null;
+
+    /**
+     * @var Zend_Controller_Action_Helper_Redirector
+     *
+     */
+    protected $_redirector = null;
+
     protected $_count_item_on_page = null;
     protected $_categories = array();
     protected $_authUser = null;
@@ -10,6 +30,9 @@ class Manufacture_IndexController extends Zend_Controller_Action
     public function init()
     {
         $this->_count_item_on_page = 6;
+
+        $this->_pagesMapper = new Pages_Model_Mapper_Pages();
+        $this->_redirector = $this->_helper->getHelper('Redirector');
 
         $manufactureCategoriesMapper = new Manufacture_Model_Mapper_ManufactureCategories();
         $select = $manufactureCategoriesMapper->getDbTable()->select();
@@ -33,8 +56,7 @@ class Manufacture_IndexController extends Zend_Controller_Action
     {
         $request = $this->getRequest();
 
-        $pageMapper = new Default_Model_Mapper_Pages();
-        $page = $pageMapper->findByPath($request->getModuleName(), new Default_Model_Pages());
+        $page = $this->pageModule();
 
         if(!is_null($this->getRequest()->getParam('json'))
             && Zend_Auth::getInstance()->hasIdentity()){
@@ -49,17 +71,20 @@ class Manufacture_IndexController extends Zend_Controller_Action
 
         $this->view->page = $page;
 
-        $meta_description = ($page->getMetaDescription() != '')
-            ? $page->getMetaDescription()
-            : 'Альфа-Гидро - Производство.';
+        $meta_title = (!$page->getMetaTitle())
+            ? $page->getTitle()
+            : $page->getMetaTitle();
+        $this->view->meta_title = $meta_title;
+
+        $meta_description = (!$page->getMetaDescription())
+            ? 'Альфа-Гидро - Производство.'
+            : $page->getMetaDescription();
         $this->view->meta_description = $meta_description;
 
-        $meta_keywords = ($page->getMetaKeywords() != '')
-            ? $page->getMetaKeywords()
-            : 'расчет, проектировка, производство, ремонт, гидростанций, гидроцилиндров, опрессовка, гидравлического оборудования';
+        $meta_keywords = (!$page->getMetaKeywords())
+            ? 'расчет, проектировка, производство, ремонт, гидростанций, гидроцилиндров, опрессовка, гидравлического оборудования'
+            : $page->getMetaKeywords();
         $this->view->meta_keywords = $meta_keywords;
-
-
     }
 
     public function categoriesAction()
@@ -186,6 +211,22 @@ class Manufacture_IndexController extends Zend_Controller_Action
     public function getCategories()
     {
         return $this->_categories;
+    }
+
+    /**
+     * @return null|Pages_Model_Pages
+     * @throws Zend_Controller_Action_Exception
+     */
+    public function pageModule()
+    {
+        $pageModulePath = $this->getRequest()->getModuleName();
+
+        $page = $this->_pagesMapper->findByPath($pageModulePath, new Pages_Model_Pages());
+
+        if(is_null($page))
+            throw new Zend_Controller_Action_Exception("Раздел '".$pageModulePath."' не добален в таблицу 'Pages'", 404);
+
+        return $page;
     }
 
 

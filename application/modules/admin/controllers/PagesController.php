@@ -87,16 +87,33 @@ class PagesController extends Zend_Controller_Action
 
         if ($request->isPost()){
 
-            $upload = new Zend_File_Transfer();
-            $upload->setDestination(APPLICATION_ROOT.'/upload/pages')
-                ->addValidator('Size', false, 1024000)
-                ->addValidator('Extension', false, 'jpg,png,gif,svg');
-            $upload->receive();
+            if($request->getParam('dataPage')){
 
-            Zend_Debug::dump($upload->getFileInfo('fileLoad'));
+                $dataPage = $request->getParam('dataPage');
+                $page->setOptions($dataPage);
 
-            /*if($request->getParam('dataPage')){
-                $page->setOptions($request->getParam('dataPage'));
+                $upload = new Zend_File_Transfer();
+                if($upload->isUploaded()){
+                    $destinationPath = UPLOAD_DIR.'/pages/'.$request->getParam('id');
+
+                    if(!file_exists($destinationPath))
+                        mkdir($destinationPath, 0755);
+
+                    $upload->setDestination($destinationPath)
+                        ->addValidator('Size', false, 1024000)
+                        ->addValidator('Extension', false, 'jpg,png,gif,svg');
+                    $upload->receive();
+
+                    $imageFile = $upload->getFileInfo('fileLoad');
+                    $page->setImage('/upload/pages/'.$request->getParam('id').'/'.$imageFile['fileLoad']['name']);
+                }
+
+                if($dataPage['contentHtml'] === '' && $dataPage['contentMarkdown'] != ''){
+                    $markdown = $dataPage['contentMarkdown'];
+                    $context_html = Markdown::defaultTransform($markdown);
+                    $page->setContentHtml($context_html);
+                }
+
                 $this->_pagesMapper->save($page);
             }
 
@@ -120,10 +137,11 @@ class PagesController extends Zend_Controller_Action
 
                 $this->_pagesMapper->save($newPage);
                 $form->setDefaults($form->getValues());
-            }*/
+            }
+
 //            $this->_redirector->gotoSimpleAndExit('index');
-//            $url = ($page->getPath() != 'home')? '/'.$page->getPath():'/';
-//            $this->_redirector->gotoUrlAndExit($url);
+            $url = ($page->getPath() != 'home')? '/'.$page->getPath():'/';
+            $this->_redirector->gotoUrlAndExit($url);
         }
 
         $this->view->form = $form;

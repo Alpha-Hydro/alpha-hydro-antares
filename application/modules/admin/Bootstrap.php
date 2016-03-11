@@ -57,10 +57,12 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         $acl->addResource(new Zend_Acl_Resource('about'));
         $acl->addResource(new Zend_Acl_Resource('contacts'));
 
-        $acl->addResource(new Zend_Acl_Resource('search-index'));
         $acl->addResource(new Zend_Acl_Resource('trash'));
+
         $acl->addResource(new Zend_Acl_Resource('utils'));
+        $acl->addResource(new Zend_Acl_Resource('search-index'));
         $acl->addResource(new Zend_Acl_Resource('cache-manager'));
+        $acl->addResource(new Zend_Acl_Resource('update-image-catalog'));
 
         // далее переходим к созданию ролей, которых у нас 2:
         // гость (неавторизированный пользователь)

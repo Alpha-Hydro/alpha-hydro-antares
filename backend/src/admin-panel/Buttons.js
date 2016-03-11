@@ -53,12 +53,13 @@ export default class Buttons extends React.Component{
 	}
 
 	render() {
+		console.log(this.state.data);
 		const bsStyle = "primary";
 
 		const Buttons = [
 			{icon: "pencil-square-o", click: this.showModal.bind(this), action: "edit", role: "manager", title:"Параметры страницы"},
 			{icon: "share-alt", click: this.showModal.bind(this), action: "seo", role: "admin", title:"Мета теги"},
-			{icon: "plus", click: this.showModal.bind(this), action: "add", role: "admin", title:"Добавить"},
+			//{icon: "plus", click: this.showModal.bind(this), action: "add", role: "admin", title:"Добавить"},
 			{icon: "trash", click: this.showModal.bind(this), action: "delete", role: "admin", title:"Удалить"},
 			{icon: "eye-slash", click: this.showModal.bind(this), action: "disabled", role: "admin", title:"Страница заглушка"},
 		].map((button, i) =>

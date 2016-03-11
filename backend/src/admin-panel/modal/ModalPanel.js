@@ -12,6 +12,8 @@ export default class ModalPanel extends React.Component{
 	}
 
 	render() {
+		const title = (!this.props.data.title)?this.props.data.name:this.props.data.title;
+
 		return (
 			<Modal
 				{...this.props}
@@ -29,8 +31,8 @@ export default class ModalPanel extends React.Component{
 				}
 			>
 				<Modal.Header closeButton>
-					<Modal.Title id="contained-modal-title-lg">
-						{this.props.data.title}
+					<Modal.Title id="contained-modal-title-lg" className="h3">
+						{title}
 						<small>{this.props.title}</small>
 					</Modal.Title>
 				</Modal.Header>

@@ -19,6 +19,12 @@ define('APPLICATION_ROOT', realpath(__DIR__.'/../'));
 defined('FONT_DIR')
 || define('FONT_DIR', __DIR__ . '/../files/pdf/fonts');
 
+/**
+ * Path to upload folder
+ */
+defined('UPLOAD_DIR')
+|| define('UPLOAD_DIR',realpath(__DIR__.'/../upload'));
+
 
 // Ensure library/ is on include_path
 set_include_path(implode(PATH_SEPARATOR, array(

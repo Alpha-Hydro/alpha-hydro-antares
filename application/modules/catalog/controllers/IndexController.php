@@ -2,11 +2,43 @@
 
 class Catalog_IndexController extends Zend_Controller_Action
 {
+    protected $_page_id = null;
+
+    /**
+     * @var Pages_Model_Mapper_Pages
+     *
+     */
+    protected $_pagesMapper = null;
+
+    /**
+     * @var Pages_Model_Pages
+     *
+     */
+    protected $_page = null;
+
+    /**
+     * @var Zend_Controller_Action_Helper_Redirector
+     *
+     */
+    protected $_redirector = null;
 
     public function init()
     {
-        $this->view->meta_description = 'Альфа-Гидро - Каталог продукции: Гидравлическое оборудование, гидрокомпоненты, рукава высокого давления, шланги, втулки и фитинги, защита для шлангов, БРС, скобы, трубы, соединительная арматура, краны, манометры, уплотнительная техника.';
-        $this->view->meta_keywords = 'каталог, оборудование, гидрокомпоненты, РВД, шланги, втулки, фитинги, защита для шлангов, БРС, скобы, трубы, арматура, краны, манометры, уплотнители.';
+        $this->_pagesMapper = new Pages_Model_Mapper_Pages();
+        $this->_redirector = $this->_helper->getHelper('Redirector');
+
+        $this->_page = $this->pageModule();
+
+        $this->view->meta_title = (!$this->_page->getMetaTitle())
+            ?$this->_page->getTitle()
+            :$this->_page->getMetaTitle();
+        $this->view->meta_description = (!$this->_page->getMetaDescription())
+            ?'Альфа-Гидро - Каталог продукции: Гидравлическое оборудование, гидрокомпоненты, рукава высокого давления, шланги, втулки и фитинги, защита для шлангов, БРС, скобы, трубы, соединительная арматура, краны, манометры, уплотнительная техника.'
+            :$this->_page->getMetaDescription();
+        $this->view->meta_keywords = (!$this->_page->getMetaKeywords())
+            ?'каталог, оборудование, гидрокомпоненты, РВД, шланги, втулки, фитинги, защита для шлангов, БРС, скобы, трубы, арматура, краны, манометры, уплотнители.'
+            :$this->_page->getMetaKeywords();
+
         $this->view->adminPath = '';
     }
 
@@ -42,13 +74,12 @@ class Catalog_IndexController extends Zend_Controller_Action
      */
     public function pageModule()
     {
-        $pagesMapper = new Pages_Model_Mapper_Pages();
-        $pageCatalogPath = $this->getRequest()->getModuleName();
+        $pageModulePath = $this->getRequest()->getModuleName();
 
-        $page = $pagesMapper->findByPath($pageCatalogPath, new Pages_Model_Pages());
+        $page = $this->_pagesMapper->findByPath($pageModulePath, new Pages_Model_Pages());
 
         if(is_null($page))
-            throw new Zend_Controller_Action_Exception("Раздел '".$pageCatalogPath."' не добален в таблицу 'Pages'", 404);
+            throw new Zend_Controller_Action_Exception("Раздел '".$pageModulePath."' не добален в таблицу 'Pages'", 404);
 
         return $page;
     }
