@@ -1,9 +1,11 @@
 import React from "react";
-import {Grid, Row, Col, Input, Image, ButtonGroup, Button} from "react-bootstrap/lib";
+import {Grid, Row, Col, Input, Button, Glyphicon} from "react-bootstrap/lib";
 
 import ImagesUpload from "./ImagesUpload";
+import CategoryChangeButton from "../../buttons/CategoryChangeButton";
+import categoryHelpers from "../../../helpers/categoryHelper";
 
-export default class InputsEdit extends React.Component{
+export default class catalogCategoriesEdit extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
@@ -22,6 +24,21 @@ export default class InputsEdit extends React.Component{
 		}
 	}
 
+	componentDidMount(){
+		var parentId = this.props.data.parentId;
+		if(parentId != 0){
+			categoryHelpers.getCategoryInfo(parentId)
+				.then(function(categoryInfo){
+					this.setState({parentCategoryInfo: categoryInfo});
+				}.bind(this));
+		}
+
+		categoryHelpers.getGategoryList(parentId)
+			.then(function(categoryList){
+			this.setState({categoryList: categoryList});
+		}.bind(this));
+	}
+
 	handleChange(key){
 		return (e) => {
 			var data = {};
@@ -32,6 +49,12 @@ export default class InputsEdit extends React.Component{
 
 	render(){
 		const imgSrc = this.state.uploadPath + this.state.image;
+		const parentCategoryName = (!this.state.parentCategoryInfo)
+			?'root'
+			:this.state.parentCategoryInfo.name;
+		const innerButton = <CategoryChangeButton
+			currentId={this.props.data.id}
+			categoryList={this.state.categoryList}/>;
 
 		return (
 			<Grid fluid={true}>
@@ -46,11 +69,11 @@ export default class InputsEdit extends React.Component{
 									 onChange={this.handleChange('title').bind(this)}
 									 required
 						/>
-						<Input type="text" label="Url страницы" placeholder="Url страницы"
+						<Input type="text" label="Родительская категория"
 									 name="dataPage[path]"
-									 value={this.state.path}
-									 onChange={this.handleChange('path').bind(this)}
-									 required
+									 disabled
+									 value={parentCategoryName}
+									 buttonBefore={innerButton}
 						/>
 						<Input type="textarea" label="Краткое описание" placeholder="Краткое описание"
 									 name="dataPage[description]"
@@ -75,7 +98,7 @@ export default class InputsEdit extends React.Component{
 							/>
 						</div>
 
-						<Input type="hidden"
+						<input type="hidden"
 									 name="dataPage[contentHtml]"
 									 value={this.state.contentHTML}
 						/>

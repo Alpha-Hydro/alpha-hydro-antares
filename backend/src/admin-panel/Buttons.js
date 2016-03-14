@@ -53,7 +53,6 @@ export default class Buttons extends React.Component{
 	}
 
 	render() {
-		console.log(this.state.data);
 		const bsStyle = "primary";
 
 		const Buttons = [

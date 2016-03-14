@@ -14,6 +14,7 @@ class CategoriesController extends Zend_Controller_Action
         $contextSwitch = $this->_helper->getHelper('contextSwitch');
         $contextSwitch
             ->addActionContext('json', array('json'))
+            ->addActionContext('list', array('json'))
             ->initContext();
     }
 
@@ -39,6 +40,38 @@ class CategoriesController extends Zend_Controller_Action
         }
 
 
+        return $this->_helper->json->sendJson($jsonData);
+    }
+
+
+    public function listAction()
+    {
+        $request = $this->getRequest();
+        $parent_id = $request->getParam('id');
+
+        $jsonData = array();
+
+        if(isset($parent_id)){
+            $select = $this->_modelMapper->getDbTable()->select();
+            $select->where('parent_id = ?', $parent_id)
+                ->order('sorting ASC');
+
+            $entries = $this->_modelMapper->fetchAll($select);
+            if(!is_null($entries)){
+                /** @var Catalog_Model_Categories $entry */
+                foreach ($entries as $entry) {
+                    $categoryInfo = array(
+                        'id' => $entry->getId(),
+                        'name' => $entry->getName(),
+                        'active' => $entry->getActive(),
+                        'deleted' => $entry->getDeleted()
+                    );
+                    $jsonData[] = $categoryInfo;
+                }
+            }
+        }
+
+        //Zend_Debug::dump($jsonData);
         return $this->_helper->json->sendJson($jsonData);
     }
 }

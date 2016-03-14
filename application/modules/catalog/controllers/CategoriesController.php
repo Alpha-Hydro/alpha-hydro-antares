@@ -33,10 +33,10 @@ class Catalog_CategoriesController extends Zend_Controller_Action
 
         if($current_category_id !== 0){
 
-            if(!is_null($this->getRequest()->getParam('json'))
-                && Zend_Auth::getInstance()->hasIdentity()){
-
-                $this->forward('json', 'categories', 'admin', array('id' => $current_category_id));
+            $jsonRequest = $this->getRequest()->getParam('json');
+            if(isset($jsonRequest)){
+                $id = ($jsonRequest !== '')? $jsonRequest : $current_category_id;
+                $this->forward('json', 'categories', 'admin', array('id' => $id));
                 return;
             }
 
