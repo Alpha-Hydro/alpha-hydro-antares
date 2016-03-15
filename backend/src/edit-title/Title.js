@@ -11,10 +11,10 @@ export default class Title extends React.Component {
 
 	render(){
 		return(
-			<div class={this.rowClass()}>
+			<div className={this.rowClass()}>
 				{this.props.title}
-				<button type="button" class="btn btn-primary btn-sm ml2" onClick={this.handleShow.bind(this)}>
-					<span class="glyphicon glyphicon-pencil" aria-hidden="true" />
+				<button type="button" className="btn btn-primary btn-sm ml2" onClick={this.handleShow.bind(this)}>
+					<span className="glyphicon glyphicon-pencil" aria-hidden="true" />
 				</button>
 			</div>
 		)

@@ -16,7 +16,6 @@ export default class ImagesUpload extends React.Component {
 	}
 
 	handleFiles(e){
-		console.log(e.target);
 		var _reader = new FileReader();
 		_reader.onload = () => {
 			this.setState({

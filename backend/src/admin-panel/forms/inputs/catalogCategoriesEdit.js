@@ -53,7 +53,7 @@ export default class catalogCategoriesEdit extends React.Component{
 			?'root'
 			:this.state.parentCategoryInfo.name;
 		const innerButton = <CategoryChangeButton
-			currentId={this.props.data.id}
+			currentCategory={this.props.data}
 			categoryList={this.state.categoryList}/>;
 
 		return (
@@ -70,7 +70,6 @@ export default class catalogCategoriesEdit extends React.Component{
 									 required
 						/>
 						<Input type="text" label="Родительская категория"
-									 name="dataPage[path]"
 									 disabled
 									 value={parentCategoryName}
 									 buttonBefore={innerButton}

@@ -8,7 +8,6 @@ var helpers = {
 
 		return axios.get(url + param + categoryId)
 			.then(function (response) {
-				console.log(response.data);
 				return response.data;
 			})
 			.catch(function (response) {
@@ -19,7 +18,6 @@ var helpers = {
 	getGategoryList: function(id){
 		return axios.get("/admin/categories/list/?id=" + id)
 			.then(function (response) {
-				console.log(response);
 				return response.data;
 			})
 			.catch(function (response) {

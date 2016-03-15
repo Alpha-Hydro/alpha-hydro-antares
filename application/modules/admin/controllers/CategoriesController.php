@@ -64,15 +64,27 @@ class CategoriesController extends Zend_Controller_Action
                         'id' => $entry->getId(),
                         'name' => $entry->getName(),
                         'active' => $entry->getActive(),
-                        'deleted' => $entry->getDeleted()
+                        'deleted' => $entry->getDeleted(),
+                        'countSubCategories' => $this->_countSubCategories($entry->getId())
                     );
                     $jsonData[] = $categoryInfo;
                 }
             }
         }
 
-        //Zend_Debug::dump($jsonData);
+        // Zend_Debug::dump($jsonData);
         return $this->_helper->json->sendJson($jsonData);
+    }
+
+    protected function _countSubCategories($id)
+    {
+        $select = $this->_modelMapper->getDbTable()->select();
+        $select->where('parent_id = ?', $id)
+            ->order('sorting ASC');
+
+        $entries = $this->_modelMapper->fetchAll($select);
+
+        return count($entries);
     }
 }
 

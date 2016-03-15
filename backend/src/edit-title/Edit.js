@@ -29,13 +29,13 @@ export default class Edit extends React.Component {
 
 	render(){
 		return(
-			<div class={this.rowClass()}>
-				<div class="col-md-7">
-					<input type="text" class="form-control" onChange={this.handleChange.bind(this)} value={this.props.title}/>
+			<div className={this.rowClass()}>
+				<div className="col-md-7">
+					<input type="text" className="form-control" onChange={this.handleChange.bind(this)} value={this.props.title}/>
 				</div>
-				<div class="col-md-1">
-					<button type="button" class={this.state.btnClass} onClick={this.handleShow.bind(this)}>
-						<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"/>
+				<div className="col-md-1">
+					<button type="button" className={this.state.btnClass} onClick={this.handleShow.bind(this)}>
+						<span className="glyphicon glyphicon-floppy-disk" aria-hidden="true"/>
 					</button>
 				</div>
 			</div>

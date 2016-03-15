@@ -72,7 +72,7 @@ export default class Buttons extends React.Component{
 		);
 
 		return (
-			<div class="btn-group-vertical">
+			<div className="btn-group-vertical">
 				{Buttons}
 				<ModalPanel
 					show={this.state.show}
