@@ -2,11 +2,7 @@ var axios = require('axios');
 
 var helpers = {
 	getCategoryInfo: function(id){
-		var categoryId = (id != 0)? id : '';
-		var url = window.location.href;
-		var param = "?json=";
-
-		return axios.get(url + param + categoryId)
+		return axios.get("/admin/categories/json/?id=" + id)
 			.then(function (response) {
 				return response.data;
 			})

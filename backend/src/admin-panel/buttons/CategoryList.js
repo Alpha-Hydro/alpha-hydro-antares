@@ -1,36 +1,54 @@
 import React from "react";
-import {ListGroupItem, Input} from "react-bootstrap/lib";
+import {ListGroupItem, Row, Col, Input, Badge, Button} from "react-bootstrap/lib";
 
 export default class CategoryList extends React.Component {
 	constructor(props){
 		super(props);
 	}
 
-	handleClick(e){
+	handlerClick(e){
 		this.props.eventClick(this.props.category.id);
+	}
+
+	selectedCategory(e){
+		this.props.handlerSelect(e.target.id);
 	}
 
 	render(){
 		const category = this.props.category;
-		const label = (category.countSubCategories != 0)
-			? React.DOM.a( {
-					null,
-					onClick: this.handleClick.bind(this)
-				}, category.name + ' (' + category.countSubCategories + ')' )
-			: category.name;
+		const badgeInstance = <Badge
+				pullRight={true}
+				className={(category.countSubCategories != 0)?"":"hidden"}>
+				{category.countSubCategories}
+			</Badge>;
+
+		const labelInstance = (category.countSubCategories != 0)
+			? <a href="#"
+					 className={(category.active != 0)?"":"text-muted"}
+					 onClick={this.handlerClick.bind(this)}>{category.name}</a>
+			: <span
+					className={(category.active != 0)?"":"text-muted"}>
+					{category.name}</span>;
 
 		return(
-
-				<ListGroupItem>
-					<Input
-						groupClassName="mtb0"
-						wrapperClassName="mtb0"
-						type="radio"
-						name="catalogCategory"
-						label={label}
-						defaultChecked={(category.id != this.props.currentId)?"":"checked"}
-						id={category.id}
-					/>
+				<ListGroupItem  className={(category.id != this.props.currentId)?"":"hidden"}>
+					<Row>
+						<Col xs={1}>
+							<input
+								type="radio"
+								name="catalogCategory"
+								defaultChecked=""
+								id={category.id}
+								onClick={this.selectedCategory.bind(this)}
+							/>
+						</Col>
+						<Col xs={10}>
+								{labelInstance}
+						</Col>
+						<Col xs={1}>
+							{badgeInstance}
+						</Col>
+					</Row>
 				</ListGroupItem>
 
 		)

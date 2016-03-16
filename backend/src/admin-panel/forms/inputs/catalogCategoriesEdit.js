@@ -20,7 +20,8 @@ export default class catalogCategoriesEdit extends React.Component{
 			uploadPath: (!props.data.uploadPath)?'':props.data.uploadPath,
 			image: (!props.data.image)
 				?"/files/images/product/2012-05-22_foto_nv.jpg"
-				:props.data.image
+				:props.data.image,
+			selectedCategory: ''
 		}
 	}
 
@@ -47,6 +48,17 @@ export default class catalogCategoriesEdit extends React.Component{
 		};
 	}
 
+	selectCategory(id){
+		console.log('SELECTED CATEGORY',id);
+		categoryHelpers.getCategoryInfo(id)
+			.then(function(categoryInfo){
+				this.setState({
+					parentCategoryInfo: categoryInfo,
+					selectedCategory: id
+				});
+			}.bind(this));
+	}
+
 	render(){
 		const imgSrc = this.state.uploadPath + this.state.image;
 		const parentCategoryName = (!this.state.parentCategoryInfo)
@@ -54,7 +66,9 @@ export default class catalogCategoriesEdit extends React.Component{
 			:this.state.parentCategoryInfo.name;
 		const innerButton = <CategoryChangeButton
 			currentCategory={this.props.data}
-			categoryList={this.state.categoryList}/>;
+			categoryList={this.state.categoryList}
+			selectCategory={this.selectCategory.bind(this)}
+		/>;
 
 		return (
 			<Grid fluid={true}>

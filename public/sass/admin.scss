@@ -175,12 +175,9 @@ span{
     max-width: 150px;
   };
 }
-.table{
-  .deleted{
-    text-decoration: line-through;
-  }
+.deleted{
+  text-decoration: line-through;
 }
-
 .custom-modal{
   width: 90%;
 }
