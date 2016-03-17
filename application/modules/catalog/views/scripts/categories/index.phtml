@@ -14,7 +14,7 @@ $this->sidebar_headers = true;
                 'action' => 'index',
                 'fullPath'=>$entry->fullPath,
             ),'catalog',true,false) ?>">
-            <img src="/files/images/category/<?=$entry->image;?>" alt="<?=$entry->name?>"/>
+            <img src="<?=$entry->uploadPath.$entry->image;?>" alt="<?=$entry->name?>"/>
             <p class="categories-list-item-name"><?=$entry->name?></p>
         </a>
     </div>

@@ -190,3 +190,11 @@ span{
   margin-top: 45px;
   margin-bottom: 10px;
 }
+
+.categories-item,
+.categories-list-item{
+  .disabled{
+    @extend .mt2;
+    opacity: 0.3;
+  }
+}

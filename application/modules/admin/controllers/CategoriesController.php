@@ -2,14 +2,27 @@
 
 class CategoriesController extends Zend_Controller_Action
 {
+
     /**
      * @var Catalog_Model_Mapper_Categories
      */
     protected $_modelMapper = null;
 
+    /**
+     * @var Zend_Controller_Request_Abstract
+     */
+    protected $_request = null;
+
+    /**
+     * @var Zend_Controller_Action_Helper_Redirector
+     */
+    protected $_redirector = null;
+
     public function init()
     {
         $this->_modelMapper = new Catalog_Model_Mapper_Categories();
+        $this->_request = $this->getRequest();
+        $this->_redirector = $this->_helper->getHelper('Redirector');
 
         $contextSwitch = $this->_helper->getHelper('contextSwitch');
         $contextSwitch
@@ -20,7 +33,72 @@ class CategoriesController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        // action body
+        $this->view->auth = Zend_Auth::getInstance()->hasIdentity();
+    }
+
+    public function addAction()
+    {
+        Zend_Debug::dump($this->_request->getParams());
+    }
+
+    public function editAction()
+    {
+        $categoryId = $this->_request->getParam('id');
+
+        if(is_null($categoryId))
+            $this->_redirector->gotoSimpleAndExit('index');
+
+        $category = $this->_modelMapper->find($categoryId, new Catalog_Model_Categories());
+
+        if(is_null($category))
+            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+        if($this->_request->isPost()){
+            if ($this->_request->getParam('dataFormCategory')) {
+                $dataCategory = $this->_request->getParam('dataFormCategory');
+                $category->setOptions($dataCategory);
+
+                $upload = new Zend_File_Transfer();
+                if ($upload->isUploaded()) {
+                    $destinationPath = UPLOAD_DIR . '/categories/' . $this->_request->getParam('id');
+
+                    if (!file_exists($destinationPath))
+                        mkdir($destinationPath, 0755);
+
+                    $upload->setDestination($destinationPath)
+                        ->addValidator('Size', false, 1024000)
+                        ->addValidator('Extension', false, 'jpg,png,gif,svg');
+                    $upload->receive();
+
+                    $imageFile = $upload->getFileInfo('fileLoad');
+
+                    $category->setUploadPath('/upload/categories/' . $this->_request->getParam('id') . '/');
+                    $category->setImage($imageFile['fileLoad']['name']);
+                }
+
+                $this->_modelMapper->save($category);
+            }
+
+            $url = '/catalog/'.$category->getFullPath().'/';
+            $this->_redirector->gotoUrlAndExit($url);
+        }
+
+        Zend_Debug::dump($this->_request->getParams());
+    }
+
+    public function seoAction()
+    {
+        Zend_Debug::dump($this->_request->getParams());
+    }
+
+    public function deleteAction()
+    {
+        Zend_Debug::dump($this->_request->getParams());
+    }
+
+    public function disabledAction()
+    {
+        Zend_Debug::dump($this->_request->getParams());
     }
 
     public function jsonAction()
@@ -43,7 +121,6 @@ class CategoriesController extends Zend_Controller_Action
 
         return $this->_helper->json->sendJson($jsonData);
     }
-
 
     public function listAction()
     {
@@ -87,5 +164,16 @@ class CategoriesController extends Zend_Controller_Action
 
         return count($entries);
     }
+
 }
+
+
+
+
+
+
+
+
+
+
 

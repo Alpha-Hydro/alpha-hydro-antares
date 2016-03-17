@@ -1,12 +1,9 @@
 /// <reference path="../../public/typescript/jquery.d.ts" />
 
 ;(function($){
-    $('form#itemEdit').change(function(){
-        $('#saveItemEdit').removeClass('hidden').addClass('show');
-    });
     var height;
     height = 200;
-    $('.categories-list-item').each(function() {
+    $('.categories-list-item, .categories-item').each(function() {
         var e;
         e = $(this);
         if (e.height() > height) {

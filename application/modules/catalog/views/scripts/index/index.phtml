@@ -7,11 +7,31 @@
 
 <div class="col-md-12">
     <?php foreach ($this->entries as $entry): ?>
-        <div class="col-md-3 text-center">
-            <a href="<?=$this->url(array('fullPath'=>$entry->fullPath),'catalog',true,false) ?>">
-                <img src="/files/images/category/<?=$entry->image;?>" alt="<?=$entry->name?>"/>
-                <span><?=$entry->name?></span>
-            </a>
+        <div class="col-md-3 text-center categories-item">
+            <div class="text-center <?=($entry->active != 0)?'':'disabled';?>">
+                <a href="<?=$this->url(array('fullPath'=>$entry->fullPath),'catalog',true,false) ?>">
+                    <img src="<?=$entry->uploadPath.$entry->image;?>" alt="<?=$entry->name?>"/>
+                    <div><?=$entry->name?></div>
+                </a>
+            </div>
+            <?php if($this->auth):?>
+            <div
+                class="btn-group btn-group-sm mt1"
+                data-id="<?=$entry->id?>"
+                data-controller="categories"
+            >
+                <button type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                </button>
+                <button type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                </button>
+                <button type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-eye-<?=($entry->active != 0)?"close":"open";?>"
+                          aria-hidden="true"></span>
+                </button>
+            </div>
+            <?php endif;?>
         </div>
     <?php endforeach; ?>
 </div>

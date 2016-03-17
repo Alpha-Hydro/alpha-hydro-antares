@@ -22,8 +22,8 @@ export default class CategoriesFormEdit extends React.Component{
 			image: (!props.data.image)
 				?"/files/images/product/2012-05-22_foto_nv.jpg"
 				:props.data.image,
-			parentCategoryInfo: '',
-			selectedCategory: ''
+			parentId: props.data.parentId,
+			parentCategoryInfo: ''
 		}
 	}
 
@@ -56,7 +56,7 @@ export default class CategoriesFormEdit extends React.Component{
 			.then(function(categoryInfo){
 				this.setState({
 					parentCategoryInfo: categoryInfo,
-					selectedCategory: id
+					parentId: id
 				});
 			}.bind(this));
 	}
@@ -78,7 +78,7 @@ export default class CategoriesFormEdit extends React.Component{
 					</Col>
 					<Col md={9}>
 						<Input type="text" label="Заголовок" placeholder="Заголовок"
-									 name="dataPage[title]"
+									 name="dataFormCategory[name]"
 									 value={this.state.title}
 									 onChange={this.handleChange('title').bind(this)}
 									 required
@@ -88,23 +88,17 @@ export default class CategoriesFormEdit extends React.Component{
 									 value={parentCategoryName}
 									 buttonBefore={innerButton}
 						/>
-						<Input type="textarea" label="Краткое описание" placeholder="Краткое описание"
-									 name="dataPage[description]"
+						<Input type="textarea" label="Описание категории" placeholder="Описание категории"
+									 name="dataFormCategory[description]"
 									 value={this.state.description}
 									 onChange={this.handleChange('description').bind(this)}
-									 rows="4"
-						/>
-						<Input type="textarea" label="Текст на странице (markdown)" placeholder="Текст на странице"
-									 name="dataPage[contentMarkdown]"
-									 value={this.state.contentMarkdown}
-									 onChange={this.handleChange('contentMarkdown').bind(this)}
 									 rows="8"
 						/>
 						<div className="form-horizontal">
 							<Input type="text" label="Сортировка"
 										 labelClassName="col-md-2"
-										 wrapperClassName="col-md-1"
-										 name="dataPage[sorting]"
+										 wrapperClassName="col-md-2"
+										 name="dataFormCategory[sorting]"
 										 value={this.state.sorting}
 										 onChange={this.handleChange('sorting').bind(this)}
 										 required
@@ -112,7 +106,11 @@ export default class CategoriesFormEdit extends React.Component{
 						</div>
 
 						<input type="hidden"
-									 name="dataPage[contentHtml]"
+									 name="dataFormCategory[parentId]"
+									 value={this.state.parentId}
+						/>
+						<input type="hidden"
+									 name="dataFormCategory[contentHtml]"
 									 value={this.state.contentHTML}
 						/>
 					</Col>
