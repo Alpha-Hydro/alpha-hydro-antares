@@ -1,9 +1,9 @@
 import React from "react";
 import {Grid, Row, Col, Input, Image, ButtonGroup, Button} from "react-bootstrap/lib";
 
-import ImagesUpload from "./ImagesUpload";
+import ImagesUpload from "./../../utils/ImagesUpload";
 
-export default class InputsEdit extends React.Component{
+export default class PagesEdit extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {

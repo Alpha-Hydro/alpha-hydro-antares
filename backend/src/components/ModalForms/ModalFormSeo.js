@@ -1,7 +1,7 @@
 import React from "react";
 import {Input} from "react-bootstrap/lib";
 
-export default class InputsSeo extends React.Component{
+export default class ModalFormSeo extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {

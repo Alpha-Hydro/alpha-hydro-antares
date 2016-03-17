@@ -30,7 +30,8 @@ class CategoriesController extends Zend_Controller_Action
 
         $jsonData = array(
             $request->getControllerKey() => $request->getControllerName(),
-            'role' => Zend_Auth::getInstance()->getIdentity()->role
+            'role' => Zend_Auth::getInstance()->getIdentity()->role,
+            'name' => 'Root'
         );
 
         if($id){

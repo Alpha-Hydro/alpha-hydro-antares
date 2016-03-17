@@ -1,12 +1,12 @@
 import React from "react";
-import Buttons from "./Buttons";
+import PanelButtonsComponent from "./PanelButtonsComponent";
 
-export default class Nav extends React.Component {
+export default class PanelNavComponent extends React.Component {
     render() {
         return(
 					<div>
             <nav className="affix side-nav right mw70">
-              <Buttons />
+              <PanelButtonsComponent />
             </nav>
 					</div>
         );

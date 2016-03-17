@@ -1,9 +1,9 @@
 import React from "react";
-
 import Btn from "react-bootstrap/lib/Button";
-import FaIcon from "./FaIcon";
 
-export default class Button extends React.Component{
+import FaIcon from "./../FaIconComponent";
+
+export default class ButtonComponent extends React.Component{
 
 	handleClick(e){
 		this.props.eventClick(this.props.action, this.props.title);

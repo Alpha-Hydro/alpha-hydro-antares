@@ -1,11 +1,10 @@
 import React from "react";
-
-import Button from "./buttons/Button";
 import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
 
-import ModalPanel from "./modal/ModalPanel";
+import ButtonComponent from "./PanelButtons/ButtonComponent";
+import PanelModalComponent from "./PanelModalComponent";
 
-export default class Buttons extends React.Component{
+export default class PanelButtonsComponent extends React.Component{
 	constructor(){
 		super();
 		this.roles = ['manager', 'admin'];
@@ -62,7 +61,7 @@ export default class Buttons extends React.Component{
 			{icon: "trash", click: this.showModal.bind(this), action: "delete", role: "admin", title:"Удалить"},
 			{icon: "eye-slash", click: this.showModal.bind(this), action: "disabled", role: "admin", title:"Страница заглушка"},
 		].map((button, i) =>
-			<Button key={i} bsStyle={bsStyle} eventClick={button.click} action={button.action} icon={button.icon} title={button.title}/>
+			<ButtonComponent key={i} bsStyle={bsStyle} eventClick={button.click} action={button.action} icon={button.icon} title={button.title}/>
 		/*{
 			if(this.precedence(this.state.data.role) >= this.precedence(button.role)){
 				return <Button key={i} bsStyle={bsStyle} eventClick={button.click} action={button.action} icon={button.icon} title={button.title}/>
@@ -74,7 +73,7 @@ export default class Buttons extends React.Component{
 		return (
 			<div className="btn-group-vertical">
 				{Buttons}
-				<ModalPanel
+				<PanelModalComponent
 					show={this.state.show}
 					hide={this.hideModal.bind(this)}
 					data={this.state.data}

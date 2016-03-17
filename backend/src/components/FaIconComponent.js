@@ -1,6 +1,6 @@
 import React from "react";
 
-export default class FaIcon extends React.Component{
+export default class FaIconComponent extends React.Component{
 	render(){
 		return (
 			React.DOM.i({

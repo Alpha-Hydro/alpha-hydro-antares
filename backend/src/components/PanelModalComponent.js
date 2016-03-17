@@ -3,9 +3,9 @@ import React from "react";
 import Modal from "react-bootstrap/lib/Modal";
 import Button from "react-bootstrap/lib/Button";
 
-import Forms from "../forms/Forms"
+import ModalForms from "./ModalFormsComponent"
 
-export default class ModalPanel extends React.Component{
+export default class PanelModalComponent extends React.Component{
 
 	hideModal() {
 		this.props.hide()
@@ -37,7 +37,7 @@ export default class ModalPanel extends React.Component{
 					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<Forms {...this.props}/>
+					<ModalForms {...this.props}/>
 				</Modal.Body>
 				<Modal.Footer>
 					<Button onClick={this.hideModal.bind(this)}>Отмена</Button>

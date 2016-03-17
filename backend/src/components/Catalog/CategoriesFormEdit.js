@@ -1,11 +1,12 @@
 import React from "react";
 import {Grid, Row, Col, Input, Button, Glyphicon} from "react-bootstrap/lib";
 
-import ImagesUpload from "./ImagesUpload";
-import CategoryChangeButton from "../../buttons/CategoryChangeButton";
-import categoryHelpers from "../../../helpers/categoryHelper";
+import ImagesUpload from "./../../utils/ImagesUpload";
+import categoryHelpers from "../../utils/categoryHelper";
 
-export default class catalogCategoriesEdit extends React.Component{
+import CategoryReplace from "./CategoryReplaceComponent";
+
+export default class CategoriesFormEdit extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
@@ -21,18 +22,19 @@ export default class catalogCategoriesEdit extends React.Component{
 			image: (!props.data.image)
 				?"/files/images/product/2012-05-22_foto_nv.jpg"
 				:props.data.image,
+			parentCategoryInfo: '',
 			selectedCategory: ''
 		}
 	}
 
 	componentDidMount(){
 		var parentId = this.props.data.parentId;
-		if(parentId != 0){
-			categoryHelpers.getCategoryInfo(parentId)
-				.then(function(categoryInfo){
-					this.setState({parentCategoryInfo: categoryInfo});
-				}.bind(this));
-		}
+
+		categoryHelpers.getCategoryInfo(parentId)
+			.then(function(categoryInfo){
+				this.setState({parentCategoryInfo: categoryInfo});
+			}.bind(this));
+
 
 		categoryHelpers.getGategoryList(parentId)
 			.then(function(categoryList){
@@ -61,10 +63,8 @@ export default class catalogCategoriesEdit extends React.Component{
 
 	render(){
 		const imgSrc = this.state.uploadPath + this.state.image;
-		const parentCategoryName = (!this.state.parentCategoryInfo)
-			?'root'
-			:this.state.parentCategoryInfo.name;
-		const innerButton = <CategoryChangeButton
+		const parentCategoryName = this.state.parentCategoryInfo && this.state.parentCategoryInfo.name;
+		const innerButton = <CategoryReplace
 			currentCategory={this.props.data}
 			categoryList={this.state.categoryList}
 			selectCategory={this.selectCategory.bind(this)}

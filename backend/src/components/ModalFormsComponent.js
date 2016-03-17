@@ -1,16 +1,17 @@
 import React from "react";
-import InputsEdit from "./inputs/InputsEdit";
-import InputsSeo from "./inputs/InputsSeo";
 
-export default class Forms extends React.Component{
+import ModalFormsEdit from "./ModalForms/ModalFormsEdit";
+import ModalFormSeo from "./ModalForms/ModalFormSeo";
+
+export default class ModalFormsComponent extends React.Component{
 	constructor(props){
 		super(props);
 	}
 
 	selectInputs(){
 		switch (this.props.action) {
-			case "edit":  return <InputsEdit data = {this.props.data}/>;
-			case "seo": 	return <InputsSeo data = {this.props.data}/>;
+			case "edit":  return <ModalFormsEdit data = {this.props.data}/>;
+			case "seo": 	return <ModalFormSeo data = {this.props.data}/>;
 			case "add": 	return this.props.action;
 			case "delete": return "Вы действительно хотите удалить этот раздел!";
 			case "disabled": return "Вы действительно хотите отключить этот раздел!";
