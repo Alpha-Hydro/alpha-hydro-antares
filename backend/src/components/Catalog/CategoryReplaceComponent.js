@@ -1,7 +1,7 @@
 import React from "react";
 import {Button, Glyphicon, Modal, ListGroup, ListGroupItem, Row, Col, Badge} from "react-bootstrap/lib";
 
-import categoryHelpers from "../../utils/categoryHelper"
+import categoryHelpers from "../../utils/getDataHelper"
 
 import CategoryRaplaceList from "./CategoryRaplaceList";
 

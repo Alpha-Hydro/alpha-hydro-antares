@@ -1,8 +1,8 @@
 import React from "react";
-import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
+import dataHelpers from "../utils/getDataHelper";
 
 import ButtonComponent from "./PanelButtons/ButtonComponent";
-import PanelModalComponent from "./PanelModalComponent";
+import ModalComponent from "./ModalComponent";
 
 export default class PanelButtonsComponent extends React.Component{
 	constructor(){
@@ -12,35 +12,12 @@ export default class PanelButtonsComponent extends React.Component{
 			show: false,
 			action: '',
 			title: '',
-			data: {}
+			data: ''
 		};
 	}
 
-	componentDidMount() {
-		this.loadDataPage();
-	}
-
-	loadDataPage() {
-		$.ajax({
-			url: window.location.href,
-			data: {json:""},
-			dataType: 'json',
-			cache: false,
-			success: function(data) {
-				this.setState({data: data});
-			}.bind(this),
-			error: function(xhr, status, err) {
-				console.error(window.location.href, status, err.toString());
-			}.bind(this)
-		});
-	}
-
-	showModal(action, title) {
-		this.setState({
-			show: true,
-			action: action,
-			title: title
-		});
+	showModal() {
+		this.setState({show: true});
 	}
 
 	hideModal() {
@@ -51,17 +28,28 @@ export default class PanelButtonsComponent extends React.Component{
 		return this.roles.indexOf(role);
 	}
 
+	handlerClickButton(action, title){
+		dataHelpers.getPageInfo()
+			.then(function(pageInfo){
+				this.setState({
+					data: pageInfo,
+					action: action,
+					title: title,
+					show: true
+				});
+			}.bind(this));
+	}
+
 	render() {
 		const bsStyle = "primary";
 
 		const Buttons = [
-			{icon: "pencil-square-o", click: this.showModal.bind(this), action: "edit", role: "manager", title:"Параметры страницы"},
-			{icon: "share-alt", click: this.showModal.bind(this), action: "seo", role: "admin", title:"Мета теги"},
-			//{icon: "plus", click: this.showModal.bind(this), action: "add", role: "admin", title:"Добавить"},
-			{icon: "trash", click: this.showModal.bind(this), action: "delete", role: "admin", title:"Удалить"},
-			{icon: "eye-slash", click: this.showModal.bind(this), action: "disabled", role: "admin", title:"Страница заглушка"},
+			{icon: "edit", action: "edit", role: "manager", title:"Редактировать"},
+			{icon: "cog", action: "seo", role: "admin", title:"Мета теги"},
+			{icon: "trash", action: "delete", role: "admin", title:"Удалить"},
+			{icon: "eye-close", action: "disabled", role: "admin", title:"Скрыть"}
 		].map((button, i) =>
-			<ButtonComponent key={i} bsStyle={bsStyle} eventClick={button.click} action={button.action} icon={button.icon} title={button.title}/>
+			<ButtonComponent key={i} bsStyle={bsStyle} eventClick={this.handlerClickButton.bind(this)} action={button.action} icon={button.icon} title={button.title}/>
 		/*{
 			if(this.precedence(this.state.data.role) >= this.precedence(button.role)){
 				return <Button key={i} bsStyle={bsStyle} eventClick={button.click} action={button.action} icon={button.icon} title={button.title}/>
@@ -71,9 +59,9 @@ export default class PanelButtonsComponent extends React.Component{
 		);
 
 		return (
-			<div className="btn-group-vertical">
+			<div className="btn-group-vertical btn-group-lg">
 				{Buttons}
-				<PanelModalComponent
+				<ModalComponent
 					show={this.state.show}
 					hide={this.hideModal.bind(this)}
 					data={this.state.data}

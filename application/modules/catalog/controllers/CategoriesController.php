@@ -4,10 +4,17 @@ class Catalog_CategoriesController extends Zend_Controller_Action
 {
     protected $_fullPath = null;
 
+    /**
+     * @var Zend_Auth
+     */
+    protected $_auth = null;
+
     public function init()
     {
         $request = $this->getRequest();
         $this->_fullPath =  $request->getParam('fullPath');
+        $this->_auth = Zend_Auth::getInstance()->hasIdentity();
+
         $this->view->adminPath = '';
     }
 
@@ -42,8 +49,10 @@ class Catalog_CategoriesController extends Zend_Controller_Action
 
             $select = $categories->getDbTable()->select();
             $select->where('parent_id = ?', $current_category_id)
-                ->where('active != ?', 0)
+                ->where('deleted != ?', 1)
                 ->order('sorting ASC');
+
+            if(!$this->_auth) $select->where('active != ?', 0);
 
             $entries = $categories->fetchAll($select);
 

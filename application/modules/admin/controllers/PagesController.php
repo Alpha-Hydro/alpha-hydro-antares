@@ -10,17 +10,20 @@ class PagesController extends Zend_Controller_Action
     /**
      * @var Pages_Model_Mapper_Pages
      *
+     *
      */
     protected $_pagesMapper = null;
 
     /**
      * @var Pages_Model_Pages
      *
+     *
      */
     protected $_page = null;
 
     /**
      * @var Zend_Controller_Action_Helper_Redirector
+     *
      *
      */
     protected $_redirector = null;
@@ -310,6 +313,26 @@ class PagesController extends Zend_Controller_Action
         $this->_redirector->gotoUrlAndExit($url);
     }
 
+    public function enabledAction()
+    {
+        $request = $this->getRequest();
+        $pageId = $request->getParam('id');
+
+        if(is_null($pageId))
+            $this->_redirector->gotoSimpleAndExit('index');
+
+        $page = $this->_pagesMapper->find($pageId, new Pages_Model_Pages());
+
+        if(is_null($page))
+            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+        $page->setActive(1);
+        $this->_pagesMapper->save($page);
+
+        $url = ($page->getPath() != 'home')? '/'.$page->getPath():'/';
+        $this->_redirector->gotoUrlAndExit($url);
+    }
+
     public function jsonAction()
     {
         $request = $this->getRequest();
@@ -335,6 +358,7 @@ class PagesController extends Zend_Controller_Action
      * @param null $page_id
      * @return PagesController
      *
+     *
      */
     public function setPageId($page_id)
     {
@@ -345,13 +369,15 @@ class PagesController extends Zend_Controller_Action
     /**
      * @return null
      *
+     *
      */
     public function getPageId()
     {
         return $this->_page_id;
     }
-
 }
+
+
 
 
 

@@ -3,6 +3,7 @@
 @import "vendors/corpus/breakpoints";
 @import "vendors/corpus/grid";
 @import "components/input-spinner";
+@import "components/vertical-center";
 @import "layout/paginator";
 
 html, body {
@@ -197,4 +198,9 @@ span{
     @extend .mt2;
     opacity: 0.3;
   }
+
+}
+.edit-buttons-group{
+  margin-top: -50px;
+  margin-bottom: 20px;
 }

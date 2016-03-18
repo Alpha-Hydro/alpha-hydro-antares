@@ -19,15 +19,15 @@ class Zend_View_Helper_ParamsPage extends Zend_Controller_Plugin_Abstract
         $frontController = Zend_Controller_Front::getInstance();
         $request = $frontController->getRequest();
         $moduleName = $request->getModuleName();
-        /*$request->clearParams();
 
+        /*$request->clearParams();
         $request->setParams(array(
             'controller' => $moduleName,
             'itemId' => $this->view->itemId
         ));*/
-        $params = $request->getControllerKey();
+        //$params = $request->getControllerKey();
 
-        $params = Zend_Auth::getInstance()->getIdentity()->role;
+        $params = $request->getParams();
 
         return $params;
 

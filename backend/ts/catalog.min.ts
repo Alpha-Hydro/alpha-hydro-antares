@@ -11,4 +11,7 @@
         }
         return e.height(height);
     });
+    $('.add-item').height(function (i,val) {
+        return val = $(this).width();
+    })
 })(jQuery);

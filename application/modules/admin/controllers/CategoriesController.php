@@ -5,16 +5,19 @@ class CategoriesController extends Zend_Controller_Action
 
     /**
      * @var Catalog_Model_Mapper_Categories
+     *
      */
     protected $_modelMapper = null;
 
     /**
      * @var Zend_Controller_Request_Abstract
+     *
      */
     protected $_request = null;
 
     /**
      * @var Zend_Controller_Action_Helper_Redirector
+     *
      */
     protected $_redirector = null;
 
@@ -101,6 +104,11 @@ class CategoriesController extends Zend_Controller_Action
         Zend_Debug::dump($this->_request->getParams());
     }
 
+    public function enabledAction()
+    {
+        Zend_Debug::dump($this->_request->getParams());
+    }
+
     public function jsonAction()
     {
         $request = $this->getRequest();
@@ -165,7 +173,10 @@ class CategoriesController extends Zend_Controller_Action
         return count($entries);
     }
 
+
 }
+
+
 
 
 

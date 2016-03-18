@@ -22,10 +22,9 @@ export default class PanelModalComponent extends React.Component{
 				dialogClassName={
 					(() => {
 						switch (this.props.action) {
-							case "delete":   return "modal-sm";
-							case "disabled": return "modal-sm";
-							case "seo": return "modal-lg";
-							default:      return "w100";
+							case "edit":	return "w100";
+							case "seo": 	return "modal-lg";
+							default:    	return "";
 						}
 					})()
 				}

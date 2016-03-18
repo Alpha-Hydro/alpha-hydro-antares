@@ -15,23 +15,30 @@
                 </a>
             </div>
             <?php if($this->auth):?>
-            <div
-                class="btn-group btn-group-sm mt1"
-                data-id="<?=$entry->id?>"
-                data-controller="categories"
-            >
-                <button type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                </button>
-                <button type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                </button>
-                <button type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-eye-<?=($entry->active != 0)?"close":"open";?>"
-                          aria-hidden="true"></span>
-                </button>
-            </div>
+                <div class="itemButtonsComponent"
+                     data-id="<?=$entry->id?>"
+                     data-controller="categories"
+                     data-active="<?=($entry->active != 0)?true:false?>"
+                ></div>
             <?php endif;?>
         </div>
     <?php endforeach; ?>
+    <?php if($this->auth):?>
+        <div class="col-md-3 text-center">
+            <!--<div class="text-center mt2">
+                <button
+                    class="btn btn-default btn-lg col-md-10 col-md-offset-1 add-item mb1"
+                    data-controller="categories">
+                    
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                </button>
+                <div class="mt1">Добавить категорию</div>
+            </div>-->
+
+            <a href="#" class="categories-list-item z-depth-1">
+                <p class="categories-list-item-name">Добавить категорию</p>
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </a>
+        </div>
+    <?php endif;?>
 </div>

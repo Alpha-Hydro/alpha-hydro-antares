@@ -68,17 +68,12 @@ class Catalog_IndexController extends Zend_Controller_Action
         $select = $categories->getDbTable()->select();
         $select->where('parent_id = ?', 0)
             ->where('deleted != ?', 1)
-            ->where('active != ?', 0)
             ->order('sorting ASC');
+
+        if(!$this->_auth) $select->where('active != ?', 0);
+
         $entries = $categories->fetchAll($select);
 
-        if($this->_auth){
-            $select->reset()
-                ->where('parent_id = ?', 0)
-                ->where('deleted != ?', 1)
-                ->order('sorting ASC');
-            $entries = $categories->fetchAll($select);
-        }
         $this->view->entries = $entries;
     }
 

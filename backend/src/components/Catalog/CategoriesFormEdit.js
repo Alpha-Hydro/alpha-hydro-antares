@@ -2,7 +2,7 @@ import React from "react";
 import {Grid, Row, Col, Input, Button, Glyphicon} from "react-bootstrap/lib";
 
 import ImagesUpload from "./../../utils/ImagesUpload";
-import categoryHelpers from "../../utils/categoryHelper";
+import categoryHelpers from "../../utils/getDataHelper";
 
 import CategoryReplace from "./CategoryReplaceComponent";
 

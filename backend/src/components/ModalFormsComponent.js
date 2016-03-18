@@ -15,6 +15,7 @@ export default class ModalFormsComponent extends React.Component{
 			case "add": 	return this.props.action;
 			case "delete": return "Вы действительно хотите удалить этот раздел!";
 			case "disabled": return "Вы действительно хотите отключить этот раздел!";
+			case "enabled": return "Вы действительно хотите показать этот раздел!";
 		}
 	}
 

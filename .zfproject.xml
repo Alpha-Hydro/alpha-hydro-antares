@@ -240,6 +240,7 @@
               <actionMethod actionName="add"/>
               <actionMethod actionName="delete"/>
               <actionMethod actionName="seo"/>
+              <actionMethod actionName="enabled"/>
             </controllerFile>
             <controllerFile controllerName="Oil">
               <actionMethod actionName="index"/>
@@ -334,6 +335,7 @@
               <actionMethod actionName="seo"/>
               <actionMethod actionName="delete"/>
               <actionMethod actionName="disabled"/>
+              <actionMethod actionName="enabled"/>
             </controllerFile>
             <controllerFile controllerName="Products">
               <actionMethod actionName="index"/>
@@ -569,6 +571,12 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Categories">
                 <viewScriptFile forActionName="disabled"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Categories">
+                <viewScriptFile forActionName="enabled"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Pages">
+                <viewScriptFile forActionName="enabled"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
