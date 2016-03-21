@@ -5,7 +5,8 @@ export default class ImagesUpload extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			image: props.image
+			image: props.image,
+			delete: props.delete
 		}
 	}
 
@@ -50,7 +51,7 @@ export default class ImagesUpload extends React.Component {
 					<Button bsStyle="primary" onClick={this.fileSelect.bind(this)}>
 						<Glyphicon glyph="download-alt" />
 					</Button>
-					<Button bsStyle="danger"  onClick={this.fileDelete.bind(this)}>
+					<Button bsStyle="danger" className={this.state.delete} onClick={this.fileDelete.bind(this)}>
 						<Glyphicon glyph="trash" />
 					</Button>
 				</ButtonGroup>

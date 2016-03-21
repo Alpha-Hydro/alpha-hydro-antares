@@ -118,7 +118,7 @@ export default class CategoryChangeButton extends React.Component {
 								/>
 							</Col>
 							<Col xs={11}>
-								Нет категории (Root)
+								Нет категории (В корне каталога)
 							</Col>
 						</Row>
 					</ListGroupItem>

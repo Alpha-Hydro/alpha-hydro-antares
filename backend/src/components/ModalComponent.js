@@ -23,6 +23,7 @@ export default class PanelModalComponent extends React.Component{
 					(() => {
 						switch (this.props.action) {
 							case "edit":	return "w100";
+							case "add":	return "w100";
 							case "seo": 	return "modal-lg";
 							default:    	return "";
 						}

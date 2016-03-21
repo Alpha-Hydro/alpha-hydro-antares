@@ -25,20 +25,14 @@
     <?php endforeach; ?>
     <?php if($this->auth):?>
         <div class="col-md-3 text-center">
-            <!--<div class="text-center mt2">
-                <button
-                    class="btn btn-default btn-lg col-md-10 col-md-offset-1 add-item mb1"
-                    data-controller="categories">
-                    
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                </button>
-                <div class="mt1">Добавить категорию</div>
-            </div>-->
-
-            <a href="#" class="categories-list-item z-depth-1">
-                <p class="categories-list-item-name">Добавить категорию</p>
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-            </a>
+            <div class="catalog-add-button">
+                <div id="addButtonComponent"
+                     data-id="0"
+                     data-controller = "categories"
+                     data-action="add"
+                     data-title="Добавить категорию"
+                ></div>
+            </div>
         </div>
     <?php endif;?>
 </div>

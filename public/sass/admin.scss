@@ -1,7 +1,7 @@
 @import "compass/css3";
 @import "vendors/corpus/whitespace";
 @import "vendors/corpus/breakpoints";
-@import "vendors/corpus/grid";
+//@import "vendors/corpus/grid";
 @import "components/input-spinner";
 @import "components/vertical-center";
 @import "layout/paginator";
@@ -198,8 +198,16 @@ span{
     @extend .mt2;
     opacity: 0.3;
   }
-
 }
+
+.catalog-add-button {
+  .categories-list-item{
+    @extend .mt2;
+    @extend .mb0;
+    max-height: 180px;
+  }
+}
+
 .edit-buttons-group{
   margin-top: -50px;
   margin-bottom: 20px;

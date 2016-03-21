@@ -30,9 +30,11 @@ $this->sidebar_headers = true;
 <?php endforeach; ?>
 <?php if($this->auth):?>
     <div class="col-md-3 text-center">
-        <a href="#" class="categories-list-item z-depth-1">
-            <p class="categories-list-item-name">Добавить категорию</p>
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-        </a>
+        <div id="addButtonComponent"
+             data-id="<?=$this->current_category?>"
+             data-controller = "categories"
+             data-action="add"
+             data-title="Добавить категорию"
+        ></div>
     </div>
 <?php endif;?>

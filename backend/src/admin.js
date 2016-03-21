@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 
 import PanelNavComponent from "./components/PanelNavComponent";
 import ItemButtonsComponent from "./components/ItemButtonsComponent";
+import AddButtonComponent from "./components/AddButtonComponent";
 //import TitleEdit from "./edit-title/TitleEdit";
 
 const adminPanel = document.getElementById('admin-panel');
@@ -21,6 +22,18 @@ if(document.querySelector('.itemButtonsComponent')){
 		ReactDOM.render(<ItemButtonsComponent dataItem = {dataItem}/>, item);
 	});
 }
+
+const addButtton = document.getElementById('addButtonComponent');
+if (addButtton){
+	var dataItem = {
+		controller: addButtton.getAttribute('data-controller'),
+		id: addButtton.getAttribute('data-id'),
+		action: addButtton.getAttribute('data-action'),
+		title: addButtton.getAttribute('data-title')
+	};
+	ReactDOM.render(<AddButtonComponent dataItem = {dataItem}/>, addButtton);
+}
+
 
 //const pageTitle = document.querySelector('h1');
 //const title = pageTitle.textContent;

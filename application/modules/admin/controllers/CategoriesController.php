@@ -41,7 +41,44 @@ class CategoriesController extends Zend_Controller_Action
 
     public function addAction()
     {
-        Zend_Debug::dump($this->_request->getParams());
+        $category = new Catalog_Model_Categories();
+
+        if($this->_request->isPost()){
+            if ($this->_request->getParam('dataFormCategory')) {
+                $dataCategory = $this->_request->getParam('dataFormCategory');
+                $category->setOptions($dataCategory);
+                $category
+                    ->setActive(1)
+                    ->setDeleted(0);
+
+                $this->_modelMapper->save($category);
+                $id = $this->_modelMapper->getDbTable()->getAdapter()->lastInsertId();
+
+                $upload = new Zend_File_Transfer();
+                if ($upload->isUploaded()) {
+                    $destinationPath = UPLOAD_DIR . '/categories/' . $id;
+
+                    if (!file_exists($destinationPath))
+                        mkdir($destinationPath, 0755);
+
+                    $upload->setDestination($destinationPath)
+                        ->addValidator('Size', false, 1024000)
+                        ->addValidator('Extension', false, 'jpg,png,gif,svg');
+                    $upload->receive();
+
+                    $imageFile = $upload->getFileInfo('fileLoad');
+
+                    $category = $this->_modelMapper->find($id, new Catalog_Model_Categories());
+                    $category->setUploadPath('/upload/categories/' . $id . '/');
+                    $category->setImage($imageFile['fileLoad']['name']);
+                    $this->_modelMapper->save($category);
+                }
+            }
+
+            $url = $this->_request->getParam('currentUrl');
+            $this->_redirector->gotoUrlAndExit($url);
+        }
+
     }
 
     public function editAction()
@@ -82,7 +119,7 @@ class CategoriesController extends Zend_Controller_Action
                 $this->_modelMapper->save($category);
             }
 
-            $url = '/catalog/'.$category->getFullPath().'/';
+            $url = $this->_request->getParam('currentUrl');
             $this->_redirector->gotoUrlAndExit($url);
         }
 
@@ -117,7 +154,8 @@ class CategoriesController extends Zend_Controller_Action
         $jsonData = array(
             $request->getControllerKey() => $request->getControllerName(),
             'role' => Zend_Auth::getInstance()->getIdentity()->role,
-            'name' => 'Root'
+            'name' => 'Каталог',
+            'id' => '0'
         );
 
         if($id){

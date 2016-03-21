@@ -2,6 +2,7 @@ import React from "react";
 
 import ModalFormsEdit from "./ModalForms/ModalFormsEdit";
 import ModalFormSeo from "./ModalForms/ModalFormSeo";
+import ModalFormsAdd from "./ModalForms/ModalFormsAdd";
 
 export default class ModalFormsComponent extends React.Component{
 	constructor(props){
@@ -12,7 +13,7 @@ export default class ModalFormsComponent extends React.Component{
 		switch (this.props.action) {
 			case "edit":  return <ModalFormsEdit data = {this.props.data}/>;
 			case "seo": 	return <ModalFormSeo data = {this.props.data}/>;
-			case "add": 	return this.props.action;
+			case "add": 	return <ModalFormsAdd data = {this.props.data}/>;
 			case "delete": return "Вы действительно хотите удалить этот раздел!";
 			case "disabled": return "Вы действительно хотите отключить этот раздел!";
 			case "enabled": return "Вы действительно хотите показать этот раздел!";
@@ -28,6 +29,7 @@ export default class ModalFormsComponent extends React.Component{
 				encType="multipart/form-data"
 			>
 				{this.selectInputs()}
+				<input type="hidden" name="currentUrl" value={window.location.href}/>
 			</form>
 		);
 	}

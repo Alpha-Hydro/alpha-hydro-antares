@@ -28,7 +28,7 @@ class IndexController extends Zend_Controller_Action
 
         $result = $filterSlugify->filter($slug);
 
-        echo $this->_helper->json($result);
+        echo $this->_helper->json->sendJson($result);
     }
 
     /**
