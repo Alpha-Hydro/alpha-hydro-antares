@@ -50,4 +50,14 @@ $this->sidebar_headers = true;
         </div>
     <?php endforeach; ?>
     <?php endif; ?>
+    <?php if($this->auth):?>
+        <div class="col-md-3 text-center">
+            <div id="addButtonComponent"
+                 data-id="<?=$this->current_category?>"
+                 data-controller = "categories"
+                 data-action="add"
+                 data-title="Добавить категорию"
+            ></div>
+        </div>
+    <?php endif;?>
 </div>

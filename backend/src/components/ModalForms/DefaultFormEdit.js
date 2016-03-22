@@ -3,7 +3,7 @@ import {Grid, Row, Col, Input, Image, ButtonGroup, Button} from "react-bootstrap
 
 import ImagesUpload from "./../../utils/ImagesUpload";
 
-export default class PagesEdit extends React.Component{
+export default class DefaultFormEdit extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
@@ -13,6 +13,7 @@ export default class PagesEdit extends React.Component{
 			contentMarkdown: props.data.contentMarkdown,
 			contentHtml: props.data.contentHtml,
 			sorting: props.data.sorting,
+			uploadPath: (!props.data.uploadPath)?'':props.data.uploadPath,
 			image: (!props.data.image)
 				?"/files/images/product/2012-05-22_foto_nv.jpg"
 				:props.data.image
@@ -28,11 +29,13 @@ export default class PagesEdit extends React.Component{
 	}
 
 	render(){
+		const imgSrc = this.state.uploadPath + this.state.image;
+
 		return (
 			<Grid fluid={true}>
 				<Row className="show-grid">
 					<Col md={3}>
-						<ImagesUpload image={this.state.image}/>
+						<ImagesUpload image={imgSrc}/>
 					</Col>
 					<Col md={9}>
 						<Input type="text" label="Заголовок" placeholder="Заголовок"

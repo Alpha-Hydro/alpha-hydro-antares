@@ -16,6 +16,12 @@ class Catalog_BreadcrumbsController extends Zend_Controller_Action
 
     public function indexAction()
     {
+        $breadcrumbs = $this->genBreadcrumbs();
+        $this->view->breadcrumbs = $breadcrumbs;
+    }
+
+    public function genBreadcrumbs()
+    {
         $breadcrumbs = new Zend_Navigation();
 
         $categoriesMapper = new Catalog_Model_Mapper_Categories();
@@ -81,7 +87,7 @@ class Catalog_BreadcrumbsController extends Zend_Controller_Action
             )
         );
 
-        $this->view->breadcrumbs = $breadcrumbs;
+        return $breadcrumbs;
     }
 
     /**

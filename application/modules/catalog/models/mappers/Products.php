@@ -166,6 +166,7 @@ class Catalog_Model_Mapper_Products
             ->setParentId($categoryRow->parent_id)
             ->setName($categoryRow->name)
             ->setImage($categoryRow->image)
+            ->setUploadPath($categoryRow->upload_path)
             ->setDescription($categoryRow->description)
             ->setAddDate($categoryRow->add_date)
             ->setModDate($categoryRow->mod_date)
@@ -175,7 +176,10 @@ class Catalog_Model_Mapper_Products
             ->setPath($categoryRow->path)
             ->setFullPath($categoryRow->full_path)
             ->setOrder($categoryRow->order)
+            ->setSorting($categoryRow->sorting)
+            ->setGenerate($categoryRow->generate)
             ->setActive($categoryRow->active)
+            ->setDeleted($categoryRow->deleted)
         ;
 
         return $categories;

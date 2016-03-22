@@ -339,6 +339,7 @@
             </controllerFile>
             <controllerFile controllerName="Products">
               <actionMethod actionName="index"/>
+              <actionMethod actionName="category"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -577,6 +578,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Pages">
                 <viewScriptFile forActionName="enabled"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Products">
+                <viewScriptFile forActionName="category"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>

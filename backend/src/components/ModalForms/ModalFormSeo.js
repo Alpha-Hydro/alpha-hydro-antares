@@ -23,18 +23,18 @@ export default class ModalFormSeo extends React.Component{
 		return (
 			<div>
 				<Input type="text" label="meta Title" placeholder="Enter meta Title"
-							 name="metaTitle"
+							 name="dataFormSeo[metaTitle]"
 							 value={this.state.metaTitle}
 							 onChange={this.handleChange('metaTitle').bind(this)}
 				/>
 				<Input type="textarea" label="meta Description" placeholder="Enter meta Description"
-							 name="metaDescription"
+							 name="dataFormSeo[metaDescription]"
 							 value={this.state.metaDescription}
 							 onChange={this.handleChange('metaDescription').bind(this)}
 
 				/>
 				<Input type="text" label="meta Keywords" placeholder="Enter meta Keywords"
-							 name="metaKeywords"
+							 name="dataFormSeo[metaKeywords]"
 							 value={this.state.metaKeywords}
 							 onChange={this.handleChange('metaKeywords').bind(this)}
 				/>

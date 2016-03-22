@@ -10,6 +10,16 @@ var helpers = {
 				console.log(response);
 			});
 	},
+	
+	getCategoryProduct: function (id) {
+		return axios.get("/admin/products/category/?id=" + id)
+			.then(function (response) {
+				return response.data;
+			})
+			.catch(function (response) {
+				console.log(response);
+			});
+	},
 
 	getGategoryList: function(id){
 		return axios.get("/admin/categories/list/?id=" + id)

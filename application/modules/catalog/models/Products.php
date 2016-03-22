@@ -9,6 +9,8 @@ class Catalog_Model_Products
 
     protected $_image = null;
 
+    protected $_upload_path = null;
+
     protected $_a_images = null;
 
     protected $_sku = null;
@@ -564,6 +566,24 @@ class Catalog_Model_Products
     public function getDeleted()
     {
         return $this->_deleted;
+    }
+
+    /**
+     * @param null $upload_path
+     * @return Catalog_Model_Products
+     */
+    public function setUploadPath($upload_path)
+    {
+        $this->_upload_path = $upload_path;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getUploadPath()
+    {
+        return $this->_upload_path;
     }
 
 

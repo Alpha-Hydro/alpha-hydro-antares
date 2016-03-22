@@ -189,16 +189,11 @@ class PagesController extends Zend_Controller_Action
         $page = $this->_pagesMapper->find($pageId, new Pages_Model_Pages());
 
         if ($this->getRequest()->isPost()){
-            if($request->getParam('metaTitle'))
-                $page->setMetaTitle($request->getParam('metaTitle'));
-
-            if($request->getParam('metaDescription'))
-                $page->setMetaDescription($request->getParam('metaDescription'));
-
-            if($request->getParam('metaKeywords'))
-                $page->setMetaKeywords($request->getParam('metaKeywords'));
-
-            $this->_pagesMapper->save($page);
+            if($this->getRequest()->getParam('dataFormSeo')){
+                $dataFormSeo = $this->getRequest()->getParam('dataFormSeo');
+                $page->setOptions($dataFormSeo);
+                $this->_pagesMapper->save($page);
+            }
         }
 
         $url = ($page->getPath() != 'home')? '/'.$page->getPath():'/';
