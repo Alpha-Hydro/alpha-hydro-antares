@@ -2,7 +2,7 @@ import React from "react";
 import {Button, Glyphicon, Modal, ListGroup, ListGroupItem, Row, Col, Badge} from "react-bootstrap/lib";
 
 import categoryHelpers from "../../utils/getDataHelper"
-
+import CatalogParentCategoryReplaceItemList from "./CatalogParentCategoryReplaceItemList"
 import CategoryRaplaceList from "./CategoryRaplaceList";
 
 export default class CategoryReplaceComponent extends React.Component {
@@ -33,8 +33,7 @@ export default class CategoryReplaceComponent extends React.Component {
 					showModal: true,
 					currentCategory: this.props.currentCategory,
 					currentId: this.props.currentCategory.id,
-					parentId: this.props.currentCategory.parentId,
-					selectedCategory: ''
+					parentId: this.props.currentCategory.parentId
 				});
 			}.bind(this));
 	}
@@ -81,38 +80,6 @@ export default class CategoryReplaceComponent extends React.Component {
 		this.close();
 	}
 
-	parentCategory() {
-		return (
-			(this.state.parentId != 0)
-				?<ListGroupItem onClick={this.returnParentCategory.bind(this)}>
-						<Row>
-							<Col xs={1}>
-								<Glyphicon glyph="level-up"/>
-							</Col>
-							<Col xs={11}>
-								...
-							</Col>
-						</Row>
-					</ListGroupItem>
-				:<ListGroupItem >
-					<Row>
-						<Col xs={1}>
-							<input
-								type="radio"
-								name="catalogCategory"
-								defaultChecked=""
-								id="0"
-								onClick={this.selectRootCategory.bind(this)}
-							/>
-						</Col>
-						<Col xs={11}>
-							Нет категории (В корне каталога)
-						</Col>
-					</Row>
-				</ListGroupItem>
-		);
-	}
-
 	render(){
 		const categoryList = this.state.categoryList;
 		const categoryListComponent = categoryList.map((category,i) =>
@@ -138,8 +105,13 @@ export default class CategoryReplaceComponent extends React.Component {
 						<Modal.Title>Выбор категории</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>
+                        <p>{this.state.currentCategory.name} - CurrentId - {this.state.currentId}</p>
+                        <p>ParentId - {this.state.parentId}</p>
 						<ListGroup>
-							{this.parentCategory()}
+							<CatalogParentCategoryReplaceItemList
+                                returnParentCategory = {this.returnParentCategory.bind(this)}
+                                selectRootCategory = {this.selectRootCategory.bind(this)}
+                                currentId = {this.state.currentId}/>
 							{categoryListComponent}
 						</ListGroup>
 					</Modal.Body>

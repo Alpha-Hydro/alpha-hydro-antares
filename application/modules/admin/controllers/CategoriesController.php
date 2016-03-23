@@ -178,6 +178,7 @@ class CategoriesController extends Zend_Controller_Action
                     ->setModDate(date("Y-m-d H:i:s"));
                 $this->_modelMapper->save($category);
             }
+
             $this->_redirector->gotoUrlAndExit($url);
         }
     }

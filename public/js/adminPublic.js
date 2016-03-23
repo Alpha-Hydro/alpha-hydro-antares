@@ -1,8 +1,11 @@
 ;
 (function ($) {
+    $('form#itemEdit').change(function () {
+        $('#saveItemEdit').removeClass('hidden').addClass('show');
+    });
     var height;
     height = 200;
-    $('.categories-list-item, .categories-item').each(function () {
+    $('.categories-list-item').each(function () {
         var e;
         e = $(this);
         if (e.height() > height) {
@@ -10,8 +13,5 @@
         }
         return e.height(height);
     });
-    $('.add-item').height(function (i, val) {
-        return val = $(this).width();
-    });
 })(jQuery);
-//# sourceMappingURL=catalog.min.js.map
+//# sourceMappingURL=adminPublic.js.map

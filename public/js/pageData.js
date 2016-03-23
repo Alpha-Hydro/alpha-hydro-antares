@@ -1,4 +1,3 @@
-/// <reference path="jquery.d.ts" />
 var PageData = (function () {
     function PageData(controllerAdmin, modelOptions) {
         var _this = this;
