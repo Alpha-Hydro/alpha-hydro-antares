@@ -65,13 +65,29 @@ class ProductsController extends Zend_Controller_Action
             $category = $this->_modelMapper->findCategoryRel($id, new Catalog_Model_Categories());
             if(!is_null($category)){
                 $jsonData = $category->getOptions();
-                $categoryMapper = new Catalog_Model_Mapper_Categories();
-                
+
+                $breadcrumbs = $this->breadcrumbs($category->getId());
+                $jsonData = array_merge($jsonData, $breadcrumbs);
             }
         }
 
         return $this->_helper->json->sendJson($jsonData);
         //Zend_Debug::dump($jsonData);
+    }
+
+    public function breadcrumbs($id){
+        $categoryMapper = new Catalog_Model_Mapper_Categories();
+        $entries = $categoryMapper->fetchTreeParentCategories($id);
+        $breadcrumbs = array();
+        foreach ($entries as $entry) {
+            $breadcrumbs[] = $entry->name;
+        }
+
+        $treeCategories = array(
+          'breadcrumbs' =>  implode(" > ", array_reverse($breadcrumbs))
+        );
+
+        return $treeCategories;
     }
 
 

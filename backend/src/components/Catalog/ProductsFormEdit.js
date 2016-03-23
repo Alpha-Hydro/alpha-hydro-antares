@@ -3,6 +3,7 @@ import {Grid, Row, Col, Input, Image, ButtonGroup, Button} from "react-bootstrap
 
 import ImagesUpload from "./../../utils/ImagesUpload";
 import categoryHelpers from "../../utils/getDataHelper";
+import CategoryReplace from "./CategoryReplaceComponent";
 
 export default class ProductsFormEdit extends React.Component{
 	constructor(props){
@@ -26,6 +27,7 @@ export default class ProductsFormEdit extends React.Component{
 
 	componentDidMount(){
 		var id = this.props.data.id;
+
 		categoryHelpers.getCategoryProduct(id)
 			.then(function(categoryInfo){
 				this.setState({categoryInfo: categoryInfo});
@@ -40,10 +42,22 @@ export default class ProductsFormEdit extends React.Component{
 		};
 	}
 
+	selectCategory(id){
+		console.log('SELECTED CATEGORY',id);
+		categoryHelpers.getCategoryInfo(id)
+			.then(function(categoryInfo){
+				this.setState({
+					categoryInfo: categoryInfo
+				});
+			}.bind(this));
+	}
+
 	render(){
 		const imgSrc = this.state.uploadPath + this.state.image;
-		const categoryName = this.state.categoryInfo && this.state.categoryInfo.name;
-		const categoryId = this.state.categoryInfo && this.state.categoryInfo.id;
+		const innerButton = <CategoryReplace
+			currentCategory={this.state.categoryInfo}
+			selectCategory={this.selectCategory.bind(this)}
+		/>;
 
 		return (
 			<Grid fluid={true}>
@@ -66,7 +80,8 @@ export default class ProductsFormEdit extends React.Component{
 						/>
 						<Input type="text" label="Категория"
 									 disabled
-									 value={categoryName}
+									 value={this.state.categoryInfo.breadcrumbs}
+									 buttonAfter={innerButton}
 						/>
 						<Input type="textarea" label="Примечание" placeholder="Примечание"
 									 name="dataFormProducts[note]"

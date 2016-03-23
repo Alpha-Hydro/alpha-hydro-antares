@@ -5,15 +5,16 @@ import categoryHelpers from "../../utils/getDataHelper"
 
 import CategoryRaplaceList from "./CategoryRaplaceList";
 
-export default class CategoryChangeButton extends React.Component {
+export default class CategoryReplaceComponent extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
 			showModal: false,
-			curCategory: {},
-			categories: [],
+			currentCategory: '',
 			currentId: '',
-			parentId:''
+			parentId: '',
+			categoryList: [],
+			selectedCategory: ''
 		};
 
 		this.selectCategory = this.selectCategory.bind(this);
@@ -23,16 +24,19 @@ export default class CategoryChangeButton extends React.Component {
 		this.setState({ showModal: false });
 	}
 
-
 	open() {
-		this.setState({
-			showModal: true,
-			categories: this.props.categoryList,
-			curCategory: this.props.currentCategory,
-			currentId: this.props.currentCategory.id,
-			parentId: (this.props.currentCategory.parentId != 0)?this.props.currentCategory.parentId:'',
-			selectedCategory: ''
-		});
+		var id = this.props.currentCategory.parentId;
+		categoryHelpers.getGategoryList(id)
+			.then(function(categoryList){
+				this.setState({
+					categoryList: categoryList,
+					showModal: true,
+					currentCategory: this.props.currentCategory,
+					currentId: this.props.currentCategory.id,
+					parentId: this.props.currentCategory.parentId,
+					selectedCategory: ''
+				});
+			}.bind(this));
 	}
 
 	changeCategoryList(id){
@@ -41,7 +45,7 @@ export default class CategoryChangeButton extends React.Component {
 		categoryHelpers.getCategoryInfo(id)
 			.then(function(categoryInfo){
 				this.setState({
-					curCategory: categoryInfo,
+					currentCategory: categoryInfo,
 					currentId: categoryInfo.id,
 					parentId: categoryInfo.parentId
 				});
@@ -50,7 +54,7 @@ export default class CategoryChangeButton extends React.Component {
 		categoryHelpers.getGategoryList(id)
 			.then(function(categoryList){
 				this.setState({
-					categories: categoryList
+					categoryList: categoryList
 				});
 			}.bind(this));
 
@@ -60,6 +64,7 @@ export default class CategoryChangeButton extends React.Component {
 	}
 
 	returnParentCategory(){
+		console.log(this.state.parentId);
 		this.changeCategoryList(this.state.parentId);
 	}
 
@@ -76,23 +81,10 @@ export default class CategoryChangeButton extends React.Component {
 		this.close();
 	}
 
-	render(){
-		const categories = this.state.categories;
-
-		const categoriesList = categories.map((category,i) =>
-			<CategoryRaplaceList
-				key={i}
-				category={category}
-				currentId={this.state.currentId}
-				eventClick={this.changeCategoryList.bind(this)}
-				handlerSelect={this.selectCategory.bind(this)}
-			/>
-		);
-
-		const parentCategory = (() => {
-			if(this.state.parentId){
-				return (
-					<ListGroupItem	onClick={this.returnParentCategory.bind(this)}>
+	parentCategory() {
+		return (
+			(this.state.parentId != 0)
+				?<ListGroupItem onClick={this.returnParentCategory.bind(this)}>
 						<Row>
 							<Col xs={1}>
 								<Glyphicon glyph="level-up"/>
@@ -102,29 +94,36 @@ export default class CategoryChangeButton extends React.Component {
 							</Col>
 						</Row>
 					</ListGroupItem>
-				)
-			}
-			else{
-				return (
-					<ListGroupItem >
-						<Row>
-							<Col xs={1}>
-								<input
-									type="radio"
-									name="catalogCategory"
-									defaultChecked=""
-									id="0"
-									onClick={this.selectRootCategory.bind(this)}
-								/>
-							</Col>
-							<Col xs={11}>
-								Нет категории (В корне каталога)
-							</Col>
-						</Row>
-					</ListGroupItem>
-				)
-			}
-		})();
+				:<ListGroupItem >
+					<Row>
+						<Col xs={1}>
+							<input
+								type="radio"
+								name="catalogCategory"
+								defaultChecked=""
+								id="0"
+								onClick={this.selectRootCategory.bind(this)}
+							/>
+						</Col>
+						<Col xs={11}>
+							Нет категории (В корне каталога)
+						</Col>
+					</Row>
+				</ListGroupItem>
+		);
+	}
+
+	render(){
+		const categoryList = this.state.categoryList;
+		const categoryListComponent = categoryList.map((category,i) =>
+			<CategoryRaplaceList
+				key={i}
+				category={category}
+				currentId={this.state.currentId}
+				eventClick={this.changeCategoryList.bind(this)}
+				handlerSelect={this.selectCategory.bind(this)}
+			/>
+		);
 
 		return(
 			<div>
@@ -140,8 +139,8 @@ export default class CategoryChangeButton extends React.Component {
 					</Modal.Header>
 					<Modal.Body>
 						<ListGroup>
-							{parentCategory}
-							{categoriesList}
+							{this.parentCategory()}
+							{categoryListComponent}
 						</ListGroup>
 					</Modal.Body>
 					<Modal.Footer>

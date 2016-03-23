@@ -31,7 +31,6 @@ export default class PanelButtonsComponent extends React.Component{
 	componentDidMount(){
 		dataHelpers.getPageInfo()
 			.then(function(pageInfo){
-				console.log(pageInfo);
 				this.setState({
 					data: pageInfo
 				});

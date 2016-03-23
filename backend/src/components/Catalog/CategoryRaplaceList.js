@@ -31,7 +31,7 @@ export default class CategoryList extends React.Component {
 					{category.name}</span>;
 
 		return(
-				<ListGroupItem  className={(category.id != this.props.currentId)?"":"hidden"}>
+				<ListGroupItem  >
 					<Row>
 						<Col xs={1}>
 							<input

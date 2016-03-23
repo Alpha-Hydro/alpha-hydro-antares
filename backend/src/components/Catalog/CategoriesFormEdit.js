@@ -34,12 +34,6 @@ export default class CategoriesFormEdit extends React.Component{
 			.then(function(categoryInfo){
 				this.setState({parentCategoryInfo: categoryInfo});
 			}.bind(this));
-
-
-		categoryHelpers.getGategoryList(parentId)
-			.then(function(categoryList){
-			this.setState({categoryList: categoryList});
-		}.bind(this));
 	}
 
 	handleChange(key){
@@ -65,8 +59,7 @@ export default class CategoriesFormEdit extends React.Component{
 		const imgSrc = this.state.uploadPath + this.state.image;
 		const parentCategoryName = this.state.parentCategoryInfo && this.state.parentCategoryInfo.name;
 		const innerButton = <CategoryReplace
-			currentCategory={this.props.data}
-			categoryList={this.state.categoryList}
+			currentCategory={this.state.parentCategoryInfo}
 			selectCategory={this.selectCategory.bind(this)}
 		/>;
 
