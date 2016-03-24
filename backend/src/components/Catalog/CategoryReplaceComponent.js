@@ -109,9 +109,9 @@ export default class CategoryReplaceComponent extends React.Component {
                         <p>ParentId - {this.state.parentId}</p>
 						<ListGroup>
 							<CatalogParentCategoryReplaceItemList
-                                returnParentCategory = {this.returnParentCategory.bind(this)}
-                                selectRootCategory = {this.selectRootCategory.bind(this)}
-                                currentId = {this.state.currentId}/>
+									returnParentCategory = {this.returnParentCategory.bind(this)}
+									selectRootCategory = {this.selectRootCategory.bind(this)}
+									currentId = {this.state.currentId} />
 							{categoryListComponent}
 						</ListGroup>
 					</Modal.Body>

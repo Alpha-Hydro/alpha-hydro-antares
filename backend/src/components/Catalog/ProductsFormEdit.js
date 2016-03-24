@@ -21,7 +21,8 @@ export default class ProductsFormEdit extends React.Component{
 			image: (!props.data.image)
 				?"/files/images/product/2012-05-22_foto_nv.jpg"
 				:props.data.image,
-			categoryInfo: ''
+			categoryInfo: '',
+			parentId: ''
 		}
 	}
 
@@ -30,7 +31,10 @@ export default class ProductsFormEdit extends React.Component{
 
 		categoryHelpers.getCategoryProduct(id)
 			.then(function(categoryInfo){
-				this.setState({categoryInfo: categoryInfo});
+				this.setState({
+					categoryInfo: categoryInfo,
+					parentId: categoryInfo.parentId
+				});
 			}.bind(this));
 	}
 
@@ -47,7 +51,8 @@ export default class ProductsFormEdit extends React.Component{
 		categoryHelpers.getCategoryInfo(id)
 			.then(function(categoryInfo){
 				this.setState({
-					categoryInfo: categoryInfo
+					categoryInfo: categoryInfo,
+					parentId: id
 				});
 			}.bind(this));
 	}

@@ -25,10 +25,10 @@ export default class CategoryList extends React.Component {
 		const labelInstance = (category.countSubCategories != 0)
 			? <a href="#"
 					 className={(category.active != 0)?"":"text-muted"}
-					 onClick={this.handlerClick.bind(this)}>{category.name}</a>
+					 onClick={this.handlerClick.bind(this)}>{category.name} - {category.id}</a>
 			: <span
 					className={(category.active != 0)?"":"text-muted"}>
-					{category.name}</span>;
+					{category.name} - {category.id}</span>;
 
 		return(
 				<ListGroupItem  >

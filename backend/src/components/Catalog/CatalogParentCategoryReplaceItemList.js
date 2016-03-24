@@ -11,7 +11,7 @@ function CatalogParentCategoryReplaceItemList(props) {
                     <Glyphicon glyph="level-up"/>
                 </Col>
                 <Col xs={11}>
-                    ...
+                    ... {props.currentId}
                 </Col>
             </Row>
             </ListGroupItem>
