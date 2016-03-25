@@ -11,7 +11,6 @@ export default class CategoryReplaceComponent extends React.Component {
 		this.state = {
 			showModal: false,
 			currentCategory: '',
-			currentId: '',
 			parentId: '',
 			categoryList: [],
 			selectedCategory: ''
@@ -25,27 +24,49 @@ export default class CategoryReplaceComponent extends React.Component {
 	}
 
 	open() {
-		var id = this.props.currentCategory.parentId;
+		var id = this.props.currentCategory.id;
+
 		categoryHelpers.getGategoryList(id)
 			.then(function(categoryList){
 				this.setState({
 					categoryList: categoryList,
 					showModal: true,
 					currentCategory: this.props.currentCategory,
-					currentId: this.props.currentCategory.id,
 					parentId: this.props.currentCategory.parentId
 				});
 			}.bind(this));
 	}
 
-	changeCategoryList(id){
+	subCategoriesList(id){
 		this.setState({ showModal: false });
 
 		categoryHelpers.getCategoryInfo(id)
 			.then(function(categoryInfo){
 				this.setState({
 					currentCategory: categoryInfo,
-					currentId: categoryInfo.id,
+					parentId: id
+				});
+			}.bind(this));
+
+		categoryHelpers.getSubGategoryList(id)
+			.then(function(categoryList){
+				this.setState({
+					categoryList: categoryList
+				});
+			}.bind(this));
+
+		setTimeout(function() {
+			this.setState({ showModal: true });
+		}.bind(this), 500);
+	}
+
+	currentCategoriesList(id){
+		this.setState({ showModal: false });
+
+		categoryHelpers.getCategoryInfo(id)
+			.then(function(categoryInfo){
+				this.setState({
+					currentCategory: categoryInfo,
 					parentId: categoryInfo.parentId
 				});
 			}.bind(this));
@@ -63,8 +84,7 @@ export default class CategoryReplaceComponent extends React.Component {
 	}
 
 	returnParentCategory(){
-		console.log(this.state.parentId);
-		this.changeCategoryList(this.state.parentId);
+		this.currentCategoriesList(this.state.parentId);
 	}
 
 	selectCategory(id){
@@ -86,9 +106,9 @@ export default class CategoryReplaceComponent extends React.Component {
 			<CategoryRaplaceList
 				key={i}
 				category={category}
-				currentId={this.state.currentId}
-				eventClick={this.changeCategoryList.bind(this)}
+				eventClick={this.subCategoriesList.bind(this)}
 				handlerSelect={this.selectCategory.bind(this)}
+				currentId={this.props.currentCategory.id}
 			/>
 		);
 
@@ -105,13 +125,12 @@ export default class CategoryReplaceComponent extends React.Component {
 						<Modal.Title>Выбор категории</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>
-                        <p>{this.state.currentCategory.name} - CurrentId - {this.state.currentId}</p>
-                        <p>ParentId - {this.state.parentId}</p>
 						<ListGroup>
 							<CatalogParentCategoryReplaceItemList
 									returnParentCategory = {this.returnParentCategory.bind(this)}
 									selectRootCategory = {this.selectRootCategory.bind(this)}
-									currentId = {this.state.currentId} />
+									parentId = {this.state.parentId}
+							/>
 							{categoryListComponent}
 						</ListGroup>
 					</Modal.Body>

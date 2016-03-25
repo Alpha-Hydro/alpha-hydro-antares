@@ -19,20 +19,23 @@ export default class CategoriesFormEdit extends React.Component{
 			contentHtml: props.data.contentHtml,
 			sorting: props.data.sorting,
 			uploadPath: (!props.data.uploadPath)?'':props.data.uploadPath,
+			breadcrumbs: props.data.breadcrumbs,
 			image: (!props.data.image)
 				?"/files/images/product/2012-05-22_foto_nv.jpg"
 				:props.data.image,
 			parentId: props.data.parentId,
-			parentCategoryInfo: ''
+			categoryInfo: ''
 		}
 	}
 
 	componentDidMount(){
-		var parentId = this.props.data.parentId;
+		var id = this.props.data.parentId;
 
-		categoryHelpers.getCategoryInfo(parentId)
+		categoryHelpers.getCategoryInfo(id)
 			.then(function(categoryInfo){
-				this.setState({parentCategoryInfo: categoryInfo});
+				this.setState({
+					categoryInfo: categoryInfo
+				});
 			}.bind(this));
 	}
 
@@ -49,25 +52,28 @@ export default class CategoriesFormEdit extends React.Component{
 		categoryHelpers.getCategoryInfo(id)
 			.then(function(categoryInfo){
 				this.setState({
-					parentCategoryInfo: categoryInfo,
-					parentId: id
+					categoryInfo: categoryInfo
 				});
 			}.bind(this));
 	}
 
-	render(){
-		const imgSrc = this.state.uploadPath + this.state.image;
-		const parentCategoryName = this.state.parentCategoryInfo && this.state.parentCategoryInfo.name;
-		const innerButton = <CategoryReplace
-			currentCategory={this.state.parentCategoryInfo}
-			selectCategory={this.selectCategory.bind(this)}
-		/>;
+	imgSrc(){
+		return this.state.uploadPath + this.state.image
+	}
 
+	innerButton(){
+		return <CategoryReplace
+			currentCategory={this.state.categoryInfo}
+			selectCategory={this.selectCategory.bind(this)}
+		/>
+	}
+
+	render(){
 		return (
 			<Grid fluid={true}>
 				<Row className="show-grid">
 					<Col md={3}>
-						<ImagesUpload image={imgSrc}/>
+						<ImagesUpload image={this.imgSrc()}/>
 					</Col>
 					<Col md={9}>
 						<Input type="text" label="Заголовок" placeholder="Заголовок"
@@ -77,9 +83,8 @@ export default class CategoriesFormEdit extends React.Component{
 									 required
 						/>
 						<Input type="text" label="Родительская категория"
-									 disabled
-									 value={parentCategoryName}
-									 buttonBefore={innerButton}
+									 value={this.state.breadcrumbs}
+									 buttonAfter={this.innerButton()}
 						/>
 						<Input type="textarea" label="Описание категории" placeholder="Описание категории"
 									 name="dataFormCategory[description]"

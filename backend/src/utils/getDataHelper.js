@@ -30,7 +30,17 @@ var helpers = {
 				console.log(response);
 			});
 	},
-	
+
+	getSubGategoryList: function(id){
+		return axios.get("/admin/categories/list/?id=" + id + "&children=true")
+			.then(function (response) {
+				return response.data;
+			})
+			.catch(function (response) {
+				console.log(response);
+			});
+	},
+
 	getDataInfo: function(controller, id) {
 		var url = "/admin/"+controller+"/json/?id=";
 		return axios.get(url + id)

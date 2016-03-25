@@ -340,6 +340,12 @@
             <controllerFile controllerName="Products">
               <actionMethod actionName="index"/>
               <actionMethod actionName="category"/>
+              <actionMethod actionName="edit"/>
+              <actionMethod actionName="add"/>
+              <actionMethod actionName="seo"/>
+              <actionMethod actionName="delete"/>
+              <actionMethod actionName="disabled"/>
+              <actionMethod actionName="enabled"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -581,6 +587,24 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Products">
                 <viewScriptFile forActionName="category"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Products">
+                <viewScriptFile forActionName="edit"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Products">
+                <viewScriptFile forActionName="add"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Products">
+                <viewScriptFile forActionName="seo"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Products">
+                <viewScriptFile forActionName="delete"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Products">
+                <viewScriptFile forActionName="disabled"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Products">
+                <viewScriptFile forActionName="enabled"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>

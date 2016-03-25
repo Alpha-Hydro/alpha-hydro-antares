@@ -4,15 +4,11 @@ var PropTypes = React.PropTypes;
 var {Glyphicon, ListGroupItem, Row, Col} = require("react-bootstrap/lib");
 
 function CatalogParentCategoryReplaceItemList(props) {
-    return props.currentId != 0
+    return props.parentId != 0
         ?   <ListGroupItem onClick={props.returnParentCategory}>
             <Row>
-                <Col xs={1}>
-                    <Glyphicon glyph="level-up"/>
-                </Col>
-                <Col xs={11}>
-                    ... {props.currentId}
-                </Col>
+                <Col xs={1}><Glyphicon glyph="level-up"/></Col>
+                <Col xs={11}>...</Col>
             </Row>
             </ListGroupItem>
 
@@ -35,7 +31,7 @@ function CatalogParentCategoryReplaceItemList(props) {
 }
 
 CatalogParentCategoryReplaceItemList.propTypes = {
-    currentId: PropTypes.string.isRequired,
+		parentId: PropTypes.string.isRequired,
     returnParentCategory: PropTypes.func.isRequired,
     selectRootCategory: PropTypes.func.isRequired
 };

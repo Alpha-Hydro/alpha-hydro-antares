@@ -6,17 +6,35 @@ class ProductsController extends Zend_Controller_Action
     /**
      * @var Catalog_Model_Mapper_Products
      *
+     *
+     *
+     *
+     *
+     *
+     *
      */
     protected $_modelMapper = null;
 
     /**
      * @var Zend_Controller_Request_Abstract
      *
+     *
+     *
+     *
+     *
+     *
+     *
      */
     protected $_request = null;
 
     /**
      * @var Zend_Controller_Action_Helper_Redirector
+     *
+     *
+     *
+     *
+     *
+     *
      *
      */
     protected $_redirector = null;
@@ -75,13 +93,17 @@ class ProductsController extends Zend_Controller_Action
         //Zend_Debug::dump($jsonData);
     }
 
-    public function breadcrumbs($id){
+    public function breadcrumbs($id)
+    {
         $categoryMapper = new Catalog_Model_Mapper_Categories();
         $entries = $categoryMapper->fetchTreeParentCategories($id);
         $breadcrumbs = array();
         foreach ($entries as $entry) {
             $breadcrumbs[] = $entry->name;
         }
+
+        if(!empty($breadcrumbs))
+            array_shift($breadcrumbs);
 
         $treeCategories = array(
           'breadcrumbs' =>  implode(" > ", array_reverse($breadcrumbs))
@@ -90,8 +112,48 @@ class ProductsController extends Zend_Controller_Action
         return $treeCategories;
     }
 
+    public function editAction()
+    {
+        Zend_Debug::dump($this->_request->getParams());
+    }
 
+    public function addAction()
+    {
+        Zend_Debug::dump($this->_request->getParams());
+    }
+
+    public function seoAction()
+    {
+        Zend_Debug::dump($this->_request->getParams());
+    }
+
+    public function deleteAction()
+    {
+        Zend_Debug::dump($this->_request->getParams());
+    }
+
+    public function disabledAction()
+    {
+        Zend_Debug::dump($this->_request->getParams());
+    }
+
+    public function enabledAction()
+    {
+        Zend_Debug::dump($this->_request->getParams());
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -21,8 +21,7 @@ export default class ProductsFormEdit extends React.Component{
 			image: (!props.data.image)
 				?"/files/images/product/2012-05-22_foto_nv.jpg"
 				:props.data.image,
-			categoryInfo: '',
-			parentId: ''
+			categoryInfo: ''
 		}
 	}
 
@@ -32,8 +31,7 @@ export default class ProductsFormEdit extends React.Component{
 		categoryHelpers.getCategoryProduct(id)
 			.then(function(categoryInfo){
 				this.setState({
-					categoryInfo: categoryInfo,
-					parentId: categoryInfo.parentId
+					categoryInfo: categoryInfo
 				});
 			}.bind(this));
 	}
@@ -51,24 +49,34 @@ export default class ProductsFormEdit extends React.Component{
 		categoryHelpers.getCategoryInfo(id)
 			.then(function(categoryInfo){
 				this.setState({
-					categoryInfo: categoryInfo,
-					parentId: id
+					categoryInfo: categoryInfo
 				});
 			}.bind(this));
 	}
 
-	render(){
-		const imgSrc = this.state.uploadPath + this.state.image;
-		const innerButton = <CategoryReplace
+	imgSrc(){
+		return this.state.uploadPath + this.state.image
+	}
+
+	breadcrumbs(){
+		return (this.state.categoryInfo.breadcrumbs)
+			? this.state.categoryInfo.breadcrumbs + ' > ' + this.state.categoryInfo.name
+			: this.state.categoryInfo.name
+	}
+
+	innerButton(){
+		return <CategoryReplace
 			currentCategory={this.state.categoryInfo}
 			selectCategory={this.selectCategory.bind(this)}
-		/>;
+		/>
+	}
 
+	render(){
 		return (
 			<Grid fluid={true}>
 				<Row className="show-grid">
 					<Col md={3}>
-						<ImagesUpload image={imgSrc}/>
+						<ImagesUpload image={this.imgSrc()}/>
 					</Col>
 					<Col md={9}>
 						<Input type="text" label="Код товара" placeholder="Код товара"
@@ -84,9 +92,8 @@ export default class ProductsFormEdit extends React.Component{
 									 required
 						/>
 						<Input type="text" label="Категория"
-									 disabled
-									 value={this.state.categoryInfo.breadcrumbs}
-									 buttonAfter={innerButton}
+									 value={this.breadcrumbs()}
+									 buttonAfter={this.innerButton()}
 						/>
 						<Input type="textarea" label="Примечание" placeholder="Примечание"
 									 name="dataFormProducts[note]"
@@ -113,6 +120,10 @@ export default class ProductsFormEdit extends React.Component{
 						<input type="hidden"
 									 name="dataFormProducts[path]"
 									 value={this.state.path}
+						/>
+						<input type="hidden"
+									 name="categoryId"
+									 value={this.state.categoryInfo.id}
 						/>
 					</Col>
 				</Row>

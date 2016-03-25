@@ -1,5 +1,5 @@
 import React from "react";
-import {ListGroupItem, Row, Col, Input, Badge, Button} from "react-bootstrap/lib";
+import {ListGroupItem, Row, Col, Input, Badge, Button, Glyphicon} from "react-bootstrap/lib";
 
 export default class CategoryList extends React.Component {
 	constructor(props){
@@ -7,6 +7,7 @@ export default class CategoryList extends React.Component {
 	}
 
 	handlerClick(e){
+		e.preventDefault();
 		this.props.eventClick(this.props.category.id);
 	}
 
@@ -23,27 +24,31 @@ export default class CategoryList extends React.Component {
 			</Badge>;
 
 		const labelInstance = (category.countSubCategories != 0)
-			? <a href="#"
+			? <a href=""
 					 className={(category.active != 0)?"":"text-muted"}
-					 onClick={this.handlerClick.bind(this)}>{category.name} - {category.id}</a>
+					 onClick={this.handlerClick.bind(this)}>{category.name}</a>
 			: <span
 					className={(category.active != 0)?"":"text-muted"}>
-					{category.name} - {category.id}</span>;
+					{category.name}</span>;
+
+		const radioInstance = (category.id != this.props.currentId)
+			? <input
+					type="radio"
+					name="catalogCategory"
+					defaultChecked=""
+					id={category.id}
+					onClick={this.selectedCategory.bind(this)}
+				/>
+			: <Glyphicon glyph="ok" />;
 
 		return(
 				<ListGroupItem  >
 					<Row>
 						<Col xs={1}>
-							<input
-								type="radio"
-								name="catalogCategory"
-								defaultChecked=""
-								id={category.id}
-								onClick={this.selectedCategory.bind(this)}
-							/>
+							{radioInstance}
 						</Col>
 						<Col xs={10}>
-								{labelInstance}
+							{labelInstance}
 						</Col>
 						<Col xs={1}>
 							{badgeInstance}

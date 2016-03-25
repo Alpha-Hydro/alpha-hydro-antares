@@ -242,13 +242,15 @@ class CategoriesController extends Zend_Controller_Action
             $request->getControllerKey() => $request->getControllerName(),
             'role' => Zend_Auth::getInstance()->getIdentity()->role,
             'name' => 'Каталог',
-            'id' => '0'
+            'id' => '0',
         );
 
         if($id){
             $entry = $this->_modelMapper->find($id, new Catalog_Model_Categories());
-            if(!is_null($entry))
+            if(!is_null($entry)){
                 $jsonData = array_merge($jsonData, $entry->getOptions());
+                $jsonData = array_merge($jsonData, $this->breadcrumbs($id));
+            }
         }
 
 
@@ -258,11 +260,17 @@ class CategoriesController extends Zend_Controller_Action
     public function listAction()
     {
         $request = $this->getRequest();
-        $parent_id = $request->getParam('id');
+        $id = $request->getParam('id');
 
         $jsonData = array();
 
-        if(isset($parent_id)){
+        if(isset($id)){
+            $category = $this->_modelMapper->find($id, new Catalog_Model_Categories());
+            $parent_id = $category->getParentId();
+
+            if($request->getParam('children'))
+                $parent_id = $category->getId();
+
             $select = $this->_modelMapper->getDbTable()->select();
             $select->where('parent_id = ?', $parent_id)
                 ->order('sorting ASC');
@@ -273,6 +281,7 @@ class CategoriesController extends Zend_Controller_Action
                 foreach ($entries as $entry) {
                     $categoryInfo = array(
                         'id' => $entry->getId(),
+                        'parentId' => $entry->getParentId(),
                         'name' => $entry->getName(),
                         'active' => $entry->getActive(),
                         'deleted' => $entry->getDeleted(),
@@ -282,9 +291,26 @@ class CategoriesController extends Zend_Controller_Action
                 }
             }
         }
-
-        // Zend_Debug::dump($jsonData);
+//        Zend_Debug::dump($request->getParams());
+//        Zend_Debug::dump($jsonData);
         return $this->_helper->json->sendJson($jsonData);
+    }
+
+    public function breadcrumbs($id){
+        $entries = $this->_modelMapper->fetchTreeParentCategories($id);
+        $breadcrumbs = array();
+        foreach ($entries as $entry) {
+            $breadcrumbs[] = $entry->name;
+        }
+
+        if(!empty($breadcrumbs))
+            array_shift($breadcrumbs);
+
+        $treeCategories = array(
+            'breadcrumbs' =>  implode(" > ", array_reverse($breadcrumbs))
+        );
+
+        return $treeCategories;
     }
 
     protected function _countSubCategories($id)
