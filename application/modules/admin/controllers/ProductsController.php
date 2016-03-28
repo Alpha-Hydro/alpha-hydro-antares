@@ -6,23 +6,17 @@ class ProductsController extends Zend_Controller_Action
     /**
      * @var Catalog_Model_Mapper_Products
      *
-     *
-     *
-     *
-     *
-     *
-     *
      */
     protected $_modelMapper = null;
 
     /**
+     * @var Catalog_Model_Mapper_ProductParams
+     *
+     */
+    protected $_paramsMapper = null;
+
+    /**
      * @var Zend_Controller_Request_Abstract
-     *
-     *
-     *
-     *
-     *
-     *
      *
      */
     protected $_request = null;
@@ -30,18 +24,13 @@ class ProductsController extends Zend_Controller_Action
     /**
      * @var Zend_Controller_Action_Helper_Redirector
      *
-     *
-     *
-     *
-     *
-     *
-     *
      */
     protected $_redirector = null;
 
     public function init()
     {
         $this->_modelMapper = new Catalog_Model_Mapper_Products();
+        $this->_paramsMapper = new Catalog_Model_Mapper_ProductParams();
         $this->_request = $this->getRequest();
         $this->_redirector = $this->_helper->getHelper('Redirector');
 
@@ -49,6 +38,7 @@ class ProductsController extends Zend_Controller_Action
         $contextSwitch
             ->addActionContext('json', array('json'))
             ->addActionContext('category', array('json'))
+            ->addActionContext('property', array('json'))
             ->initContext();
     }
 
@@ -68,11 +58,19 @@ class ProductsController extends Zend_Controller_Action
 
         if($id){
             $entry = $this->_modelMapper->find($id, new Catalog_Model_Products());
-            if(!is_null($entry))
+            if(!is_null($entry)){
                 $jsonData = array_merge($jsonData, $entry->getOptions());
+
+                $select = $this->_paramsMapper->getDbTable()->select()->order('order ASC');
+                $properties = $this->_modelMapper->findProductParams($id, $select, true);
+
+                if(!empty($properties))
+                    $jsonData['properties'] = $properties;
+            }
         }
 
         return $this->_helper->json->sendJson($jsonData);
+        //Zend_Debug::dump($jsonData);
     }
 
     public function categoryAction()
@@ -141,7 +139,19 @@ class ProductsController extends Zend_Controller_Action
     {
         Zend_Debug::dump($this->_request->getParams());
     }
+
+    public function propertyAction()
+    {
+        $id = $this->_request->getParam('id');
+        $select = $this->_paramsMapper->getDbTable()->select()->order('order ASC');
+        $properties = $this->_modelMapper->findProductParams($id, $select, true);
+
+        return $this->_helper->json->sendJson($properties);
+        //Zend_Debug::dump($properties);
+    }
 }
+
+
 
 
 

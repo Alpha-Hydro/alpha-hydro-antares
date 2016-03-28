@@ -346,6 +346,7 @@
               <actionMethod actionName="delete"/>
               <actionMethod actionName="disabled"/>
               <actionMethod actionName="enabled"/>
+              <actionMethod actionName="property"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -605,6 +606,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Products">
                 <viewScriptFile forActionName="enabled"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Products">
+                <viewScriptFile forActionName="property"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>

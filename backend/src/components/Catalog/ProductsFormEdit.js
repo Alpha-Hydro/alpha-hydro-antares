@@ -4,6 +4,7 @@ import {Grid, Row, Col, Input, Image, ButtonGroup, Button} from "react-bootstrap
 import ImagesUpload from "./../../utils/ImagesUpload";
 import categoryHelpers from "../../utils/getDataHelper";
 import CategoryReplace from "./CategoryReplaceComponent";
+import ProductProperties from "./ProductProperties";
 
 export default class ProductsFormEdit extends React.Component{
 	constructor(props){
@@ -109,6 +110,7 @@ export default class ProductsFormEdit extends React.Component{
 						/>
 
 						<Input type="text" label="Сортировка"
+									 groupClassName="clearfix"
 									 labelClassName="col-md-2"
 									 wrapperClassName="col-md-2"
 									 name="dataFormProducts[sorting]"
@@ -125,6 +127,8 @@ export default class ProductsFormEdit extends React.Component{
 									 name="categoryId"
 									 value={this.state.categoryInfo.id}
 						/>
+						<h5><strong>Свойства</strong></h5>
+						<ProductProperties properties={this.props.data.properties} productId={this.props.data.id}/>
 					</Col>
 				</Row>
 			</Grid>

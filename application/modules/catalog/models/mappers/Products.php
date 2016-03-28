@@ -192,7 +192,7 @@ class Catalog_Model_Mapper_Products
      * @throws Zend_Db_Table_Exception
      * @throws Zend_Db_Table_Row_Exception
      */
-    public function findProductParams($id, Zend_Db_Table_Select $select = null){
+    public function findProductParams($id, Zend_Db_Table_Select $select = null, $isArray = false){
         $result = $this->getDbTable()->find($id);
 
         if (0 == count($result)) {
@@ -207,7 +207,9 @@ class Catalog_Model_Mapper_Products
         foreach ($resultSet as $row) {
             $entry = new Catalog_Model_ProductParams();
             $entry = $modelMapper->_setDbData($row, $entry);
-            $entries[] = $entry;
+            $entries[] = (!$isArray)
+                ?$entry
+                :$entry->getOptions();
         }
 
         return $entries;
