@@ -6,11 +6,17 @@ class ProductsController extends Zend_Controller_Action
     /**
      * @var Catalog_Model_Mapper_Products
      *
+     *
+     *
+     *
      */
     protected $_modelMapper = null;
 
     /**
      * @var Catalog_Model_Mapper_ProductParams
+     *
+     *
+     *
      *
      */
     protected $_paramsMapper = null;
@@ -18,11 +24,17 @@ class ProductsController extends Zend_Controller_Action
     /**
      * @var Zend_Controller_Request_Abstract
      *
+     *
+     *
+     *
      */
     protected $_request = null;
 
     /**
      * @var Zend_Controller_Action_Helper_Redirector
+     *
+     *
+     *
      *
      */
     protected $_redirector = null;
@@ -39,6 +51,8 @@ class ProductsController extends Zend_Controller_Action
             ->addActionContext('json', array('json'))
             ->addActionContext('category', array('json'))
             ->addActionContext('property', array('json'))
+            ->addActionContext('property-edit', array('json'))
+            ->addActionContext('property-del', array('json'))
             ->initContext();
     }
 
@@ -149,7 +163,58 @@ class ProductsController extends Zend_Controller_Action
         return $this->_helper->json->sendJson($properties);
         //Zend_Debug::dump($properties);
     }
+
+    public function propertyEditAction()
+    {
+        //Zend_Debug::dump($this->_request->getParams());
+        $paramsProperty = $this->_request->getParam('property');
+
+        if($paramsProperty){
+            $productParamsMapper = new Catalog_Model_Mapper_ProductParams();
+            $productParams = new Catalog_Model_ProductParams();
+
+            $productParamsOrder = ($paramsProperty['order'] && $paramsProperty['order'] != '')
+                ? $paramsProperty['order']
+                : 0;
+            
+            if($paramsProperty['id'] != 'new'){
+                $productParams->setOptions($paramsProperty);
+                $productParamsMapper->save($productParams);
+            }
+            else {
+                $productParams
+                    ->setName($paramsProperty['name'])
+                    ->setOrder($productParamsOrder)
+                    ->setProductId($paramsProperty['productId'])
+                    ->setValue($paramsProperty['value']);
+
+                $productParamsMapper->save($productParams);
+
+                $id = $productParamsMapper->getDbTable()->getAdapter()->lastInsertId();
+                $productParams->setId($id);
+            }
+
+            $this->_helper->json->sendJson($productParams->getOptions());
+        }
+    }
+    
+    public function propertyDelAction()
+    {
+        //Zend_Debug::dump($this->_request->getParams());
+        $response = '';
+        if($this->_request->getParam('id'))
+            $response = 'deleted';
+        $this->_helper->json->sendJson($response);
+    }
+
+
 }
+
+
+
+
+
+
 
 
 

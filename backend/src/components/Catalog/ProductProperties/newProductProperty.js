@@ -1,12 +1,13 @@
 import React from "react";
 import {Input, ButtonInput} from "react-bootstrap/lib";
+import propertyHelpers from "./../../../utils/productPropertyHelper"
 
 export default class NewProductProperty extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			id: 'new_' + new Date().getTime(),
-			productId: '',
+			id: 'new',
+			productId: props.productId,
 			order: '',
 			name: '',
 			value: ''
@@ -20,19 +21,23 @@ export default class NewProductProperty extends React.Component{
 			this.setState(data);
 		};
 	}
-	
+
 	addNewProperty(e){
-		this.props.newProperty(this.state);
-		this.setState({
-			order: '',
-			name: '',
-			value: ''
-		})
+		var data = this.state;
+		propertyHelpers.editProperty(data)
+			.then(function (response) {
+				this.props.newProperty(response);
+				this.setState({
+					order: '',
+					name: '',
+					value: ''
+				})
+			}.bind(this));
 	}
 	
 	render(){
 		return(
-			<tr className={this.props.show}>
+			<tr>
 				<td className="col-md-1"><Input
 					type="text"
 					value={this.state.order}

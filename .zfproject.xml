@@ -347,6 +347,9 @@
               <actionMethod actionName="disabled"/>
               <actionMethod actionName="enabled"/>
               <actionMethod actionName="property"/>
+              <actionMethod actionName="propertyAdd"/>
+              <actionMethod actionName="propertyEdit"/>
+              <actionMethod actionName="propertyDel"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -609,6 +612,15 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Products">
                 <viewScriptFile forActionName="property"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Products">
+                <viewScriptFile forActionName="propertyAdd"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Products">
+                <viewScriptFile forActionName="propertyEdit"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Products">
+                <viewScriptFile forActionName="propertyDel"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>

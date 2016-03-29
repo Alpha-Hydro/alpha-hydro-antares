@@ -7,8 +7,7 @@ export default class  ProductProperties extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			properties: props.properties,
-			newPropertyInputs: 'hidden',
+			properties: props.properties
 		};
 		this.dump = this.dump.bind(this);
 	}
@@ -17,35 +16,46 @@ export default class  ProductProperties extends React.Component{
 		return <pre>{JSON.stringify(obj, null, ' ')}</pre>
 	}
 
-	newPropertyInputs(){
-		this.setState({newPropertyInputs: ''})
+	onSave(data, index){
+		console.log('onSave: ', this.state.properties[index]);
+		var property = this.state.properties[index] = data;
+		this.setState(property);
 	}
 
-	newProperty(data){
-		console.log(data);
+	onDelete(index){
+		console.log('onDelete: ', this.state.properties[index]);
+		this.state.properties.splice(index, 1);
+		this.setState({
+			properties: this.state.properties
+		});
+	}
+
+	onAdd(data){
+		console.log('NEW PROPERTY', data);
 		var properties = this.state.properties.concat(data);
 		this.setState({
-			properties: properties,
-			newPropertyInputs: 'hidden'
+			properties: properties
 		});
 	}
 
 	render(){
 		const properties = this.state.properties;
 		const propertiesList = properties.map(
-			(property, i) => <ProductPropertyComponent key={i} property={property}/>
+			(property, i) => <ProductPropertyComponent
+				key={i}
+				index={i}
+				property={property}
+				onSave={this.onSave.bind(this)}
+				onDelete={this.onDelete.bind(this)}/>
 		);
 		return (
 			<div>
 				<Table>
 					<tbody>
 						{propertiesList}
-						<NewProductproperty show={this.state.newPropertyInputs} newProperty={this.newProperty.bind(this)} productId={this.props.productId}/>
+						<NewProductproperty newProperty={this.onAdd.bind(this)} productId={this.props.productId}/>
 					</tbody>
 				</Table>
-				<Button onClick={this.newPropertyInputs.bind(this)} bsStyle="primary" bsSize="large">
-					Добавить свойство
-				</Button>
 				{this.dump(this.state.properties)}
 			</div>
 

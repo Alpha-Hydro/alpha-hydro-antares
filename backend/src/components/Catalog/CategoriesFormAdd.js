@@ -3,7 +3,7 @@ import {Grid, Row, Col, Input, Image, ButtonGroup, Button} from "react-bootstrap
 
 import ImagesUpload from "./../../utils/ImagesUpload";
 import Slugify from "./../../utils/slugifyHelper";
-import categoryHelpers from "../../utils/getDataHelper";
+import categoryHelpers from "./../../utils/getDataHelper";
 
 import CategoryReplace from "./CategoryReplaceComponent";
 
