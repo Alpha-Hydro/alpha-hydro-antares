@@ -1,10 +1,9 @@
 import React from "react";
-import {Grid, Row, Col, Input, Image, ButtonGroup, Button} from "react-bootstrap/lib";
+import {Grid, Row, Col, Input} from "react-bootstrap/lib";
+import categoryHelpers from "../../utils/getDataHelper";
 
 import ImagesUpload from "./../../utils/ImagesUpload";
-import categoryHelpers from "../../utils/getDataHelper";
 import CategoryReplace from "./CategoryReplaceComponent";
-import ProductProperties from "./ProductProperties";
 
 export default class ProductsFormEdit extends React.Component{
 	constructor(props){
@@ -127,8 +126,6 @@ export default class ProductsFormEdit extends React.Component{
 									 name="categoryId"
 									 value={this.state.categoryInfo.id}
 						/>
-						<h5><strong>Свойства</strong></h5>
-						<ProductProperties properties={this.props.data.properties} productId={this.props.data.id}/>
 					</Col>
 				</Row>
 			</Grid>

@@ -4,6 +4,9 @@ import ReactDOM from "react-dom";
 import PanelNavComponent from "./components/PanelNavComponent";
 import ItemButtonsComponent from "./components/ItemButtonsComponent";
 import AddButtonComponent from "./components/AddButtonComponent";
+import ProductPropertyEditButton from "./components/ProductPropertyEditButton";
+import ProductModificationEditButton from "./components/ProductModificationEditButton";
+
 //import TitleEdit from "./edit-title/TitleEdit";
 
 const adminPanel = document.getElementById('admin-panel');
@@ -32,6 +35,22 @@ if (addButtton){
 		title: addButtton.getAttribute('data-title')
 	};
 	ReactDOM.render(<AddButtonComponent dataItem = {dataItem}/>, addButtton);
+}
+
+const productPropertyEdit = document.getElementById('product-property-edit');
+if (productPropertyEdit){
+	var productId = productPropertyEdit.getAttribute('data-id');
+	ReactDOM.render(<ProductPropertyEditButton
+		productId = {productId}
+	/>, productPropertyEdit);
+}
+
+const productModificationEdit = document.getElementById('product-modification-edit');
+if (productModificationEdit){
+	var productId = productModificationEdit.getAttribute('data-id');
+	ReactDOM.render(<ProductModificationEditButton
+		productId = {productId}
+	/>, productModificationEdit);
 }
 
 

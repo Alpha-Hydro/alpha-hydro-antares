@@ -69,6 +69,32 @@ class Catalog_Model_SubproductParams
     }
 
     /**
+     * @return array|null
+     */
+    public function getOptions()
+    {
+        $class = new ReflectionClass($this);
+        $properties = $class->getProperties(ReflectionProperty::IS_PROTECTED);
+
+        if(0 === count($properties))
+            return null;
+
+        $data = array();
+        foreach ($properties as $property) {
+            $name = preg_split("~_~", $property->getName());
+            $normaliseName = implode(array_map("ucwords", $name));
+            $option = lcfirst($normaliseName);
+
+            if ($property->isProtected()) {
+                $property->setAccessible(TRUE);
+                $data[$option] = $property->getValue($this);
+            }
+        }
+
+        return $data;
+    }
+
+    /**
      * Set value Id
      *
      * @return $this 

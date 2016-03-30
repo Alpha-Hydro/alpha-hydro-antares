@@ -21,6 +21,26 @@ var helpers = {
 			});
 	},
 
+	getCategoryProductProperties: function (id) {
+		return axios.get("/admin/products/property/?id=" + id)
+			.then(function (response) {
+				return response.data;
+			})
+			.catch(function (response) {
+				console.log(response);
+			});
+	},
+
+	getCategoryProductModification: function (id) {
+		return axios.get("/admin/products/modification/?id=" + id)
+			.then(function (response) {
+				return response.data;
+			})
+			.catch(function (response) {
+				console.log(response);
+			});
+	},
+
 	getGategoryList: function(id){
 		return axios.get("/admin/categories/list/?id=" + id)
 			.then(function (response) {

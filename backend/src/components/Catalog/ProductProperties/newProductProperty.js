@@ -24,15 +24,17 @@ export default class NewProductProperty extends React.Component{
 
 	addNewProperty(e){
 		var data = this.state;
-		propertyHelpers.editProperty(data)
-			.then(function (response) {
-				this.props.newProperty(response);
-				this.setState({
-					order: '',
-					name: '',
-					value: ''
-				})
-			}.bind(this));
+		if(data.order && data.name && data.value){
+			propertyHelpers.editProperty(data)
+				.then(function (response) {
+					this.props.newProperty(response);
+					this.setState({
+						order: '',
+						name: '',
+						value: ''
+					})
+				}.bind(this));
+		}
 	}
 	
 	render(){

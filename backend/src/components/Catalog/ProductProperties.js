@@ -17,7 +17,7 @@ export default class  ProductProperties extends React.Component{
 	}
 
 	onSave(data, index){
-		console.log('onSave: ', this.state.properties[index]);
+		console.log('onSave: ', data);
 		var property = this.state.properties[index] = data;
 		this.setState(property);
 	}
@@ -49,16 +49,20 @@ export default class  ProductProperties extends React.Component{
 				onDelete={this.onDelete.bind(this)}/>
 		);
 		return (
-			<div>
 				<Table>
+					<thead>
+						<tr>
+							<th>№№/пп</th>
+							<th>Наименование</th>
+							<th>Значение</th>
+							<th>Действия</th>
+						</tr>
+					</thead>
 					<tbody>
 						{propertiesList}
 						<NewProductproperty newProperty={this.onAdd.bind(this)} productId={this.props.productId}/>
 					</tbody>
 				</Table>
-				{this.dump(this.state.properties)}
-			</div>
-
 		)
 	}
 

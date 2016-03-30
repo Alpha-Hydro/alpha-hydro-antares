@@ -350,6 +350,7 @@
               <actionMethod actionName="propertyAdd"/>
               <actionMethod actionName="propertyEdit"/>
               <actionMethod actionName="propertyDel"/>
+              <actionMethod actionName="modification"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory>
@@ -621,6 +622,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Products">
                 <viewScriptFile forActionName="propertyDel"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Products">
+                <viewScriptFile forActionName="modification"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
