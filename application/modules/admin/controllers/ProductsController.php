@@ -240,6 +240,7 @@ class ProductsController extends Zend_Controller_Action
             foreach ($modifications as $modification) {
                 $modificationPropertyValues = $this->_subproductsModelMapper->findSubProductParamValue($modification['id']);
                 $values['item'] = $modification;
+                $values['values'] = array();
                 foreach ($modificationPropertyValues as $modificationPropertyValue) {
                     $values['values'][] = $modificationPropertyValue->getOptions();
                 }

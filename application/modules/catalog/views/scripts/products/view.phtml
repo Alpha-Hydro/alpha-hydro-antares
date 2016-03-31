@@ -51,16 +51,14 @@ $this->product_id = $this->product->id;
             <?php endforeach;?>
         </table>
     <?php endif;?>
+
+    <?php if($this->product->description != ''):?>
+        <h4>Описание</h4>
+        <?=$this->product->description?>
+    <?php endif;?>
 </div>
 
-<div class="col-md-12">
-    <div class="footnote">
-        <?php if($this->product->description != ''):?>
-            <h4>Примечание</h4>
-            <?=$this->product->description?>
-        <?php endif;?>
-    </div>
-</div>
+
 <?php if($this->modifications):?>
     <div class="col-md-12">
         <div class="row">
@@ -90,6 +88,15 @@ $this->product_id = $this->product->id;
         </table>
     </div>
 <?php endif;?>
+
+<div class="col-md-12">
+    <div class="footnote">
+        <?php if($this->product->note != ''):?>
+            <h4>Примечание</h4>
+            <?=$this->product->note?>
+        <?php endif;?>
+    </div>
+</div>
 
 <?php $this->headScript()
     ->appendFile('//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js');?>

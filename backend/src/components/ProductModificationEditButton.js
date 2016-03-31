@@ -39,11 +39,11 @@ export default class ProductModificationEditButton extends React.Component{
 					<Glyphicon glyph="pencil" />
 				</Button>
 				<Modal
-					dialogClassName="modal-lg"
+					dialogClassName="w100"
 					show={this.state.showModal}
 					onHide={this.close.bind(this)}>
 					<Modal.Header closeButton>
-						<Modal.Title>Свойства продукта</Modal.Title>
+						<Modal.Title>Модификации и размеры</Modal.Title>
 					</Modal.Header>
 
 					<Modal.Body>

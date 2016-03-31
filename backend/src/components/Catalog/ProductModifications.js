@@ -1,5 +1,8 @@
 import React from "react";
-import {Table, Input, ButtonInput, Button, Glyphicon} from "react-bootstrap/lib";
+import {Table, Input, Button, Glyphicon} from "react-bootstrap/lib";
+
+import ModificationTableColumn from "./ProductModificatons/ModificationTableColumn"
+import ModificationTableRows from "./ProductModificatons/ModificationTableRows"
 
 export default class ProductModifications extends React.Component{
 	constructor(props){
@@ -18,15 +21,13 @@ export default class ProductModifications extends React.Component{
 	render() {
 		const columns = this.state.columns;
 		const columnsTh = columns.map(
-			(column, i) => <th key={i}>{column.name}</th>
+			(column, i) => <ModificationTableColumn key={i} column={column}/>
 		);
 		const rows = this.state.rows;
 		const rowsTr = rows.map(
-			(row, i) => <tr key={i}>
-				<td>{row.item.order}</td>
-				<td>{row.item.sku}</td>
-			</tr>
+			(row, i) => <ModificationTableRows key={i} row={row}/>
 		);
+		
 		return (
 			<Table>
 				<thead>
@@ -34,7 +35,7 @@ export default class ProductModifications extends React.Component{
 						<th>№№/пп</th>
 						<th>Наименование</th>
 						{columnsTh}
-						<th>Действия</th>
+						<th><Button><Glyphicon glyph="plus"/></Button></th>
 					</tr>
 				</thead>
 				<tbody>
