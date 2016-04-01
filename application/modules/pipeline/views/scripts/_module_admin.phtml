@@ -26,9 +26,7 @@ $this->headScript()->appendFile('/js/catalog.min.js');
                 </div>
             </div>
         <?php endif; ?>
-        <div class="row">
-            <?=$this->layout()->content?>
-        </div>
+        <?=$this->layout()->content?>
     </div>
     <div class="col-md-3 col-md-pull-9">
         <?if($this->categories):?>

@@ -128,7 +128,9 @@ class Catalog_ProductsController extends Zend_Controller_Action
             $this->view->productProperty = $productProrerty;
 
         $subproducts = new Catalog_Model_Mapper_Subproducts();
-        $select = $subproducts->getDbTable()->select()->order('order ASC');
+        $select = $subproducts->getDbTable()->select()
+            ->where('deleted != ?', 1)
+            ->order('order ASC');
         $modifications = $products->findSubproductsRel($product->getId(), $select);
 
         if(!empty($modifications)){
@@ -191,7 +193,9 @@ class Catalog_ProductsController extends Zend_Controller_Action
         $product = $products->findByFulPath($fullPath, $product);
 
         $subproducts = new Catalog_Model_Mapper_Subproducts();
-        $select = $subproducts->getDbTable()->select()->order('order ASC');
+        $select = $subproducts->getDbTable()->select()
+            ->where('deleted != ?', 1)
+            ->order('order ASC');
         $modifications = $products->findSubproductsRel($product->getId(), $select);
 
         $tableModifications = array();

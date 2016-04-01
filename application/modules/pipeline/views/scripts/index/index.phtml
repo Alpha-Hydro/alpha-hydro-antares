@@ -4,21 +4,32 @@ $this->meta_title = $this->title;
 $this->sidebar_headers = false;
 ?>
 
-<?php foreach ($this->categories as $category): ?>
-    <div class="col-md-4 text-center">
-        <div class="row">
-            <div class="col-md-12 col-lg-9">
-                <a class="categories-list-item z-depth-1" href="<?=$this->url(
-                    array(
-                        'fullPath'=>$category->getFullPath()
-                    ), 'pipeline',true,false) ?>">
-                    <img src="<?=($category->getImage())
-                        ?$category->getImage()
-                        :'/files/images/product/2012-05-22_foto_nv.jpg';?>"
-                         alt="<?=$category->title?>"/>
-                    <p class="categories-list-item-name"><?=$category->title?></p>
-                </a>
+<?php if($this->page):?>
+    <div class="page-content">
+        <?php if(!is_null($this->page->getImage())):?>
+            <img src="<?= $this->page->getImage() ?>" alt="<?=$this->page->getTitle()?>" class="pull-right"/>
+        <?php endif;?>
+        <?=$this->page->getContentHtml();?>
+    </div>
+<?php else:?>
+    <div class="row">
+    <?php foreach ($this->categories as $category): ?>
+        <div class="col-md-4 text-center">
+            <div class="row">
+                <div class="col-md-12 col-lg-9">
+                    <a class="categories-list-item z-depth-1" href="<?=$this->url(
+                        array(
+                            'fullPath'=>$category->getFullPath()
+                        ), 'pipeline',true,false) ?>">
+                        <img src="<?=($category->getImage())
+                            ?$category->getImage()
+                            :'/files/images/product/2012-05-22_foto_nv.jpg';?>"
+                             alt="<?=$category->title?>"/>
+                        <p class="categories-list-item-name"><?=$category->title?></p>
+                    </a>
+                </div>
             </div>
         </div>
+    <?php endforeach; ?>
     </div>
-<?php endforeach; ?>
+<?php endif;?>

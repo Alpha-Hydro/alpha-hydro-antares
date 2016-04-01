@@ -11,7 +11,7 @@ class ProductsController extends Zend_Controller_Action
     /**
      * @var Catalog_Model_Mapper_Categories
      */
-    protected $_categoriesModelMapper;
+    protected $_categoriesModelMapper = null;
 
     /**
      * @var Catalog_Model_Mapper_ProductParams
@@ -21,7 +21,7 @@ class ProductsController extends Zend_Controller_Action
     /**
      * @var Catalog_Model_Mapper_Subproducts
      */
-    protected $_subproductsModelMapper;
+    protected $_subproductsModelMapper = null;
 
     /**
      * @var Catalog_Model_Mapper_SubproductParams
@@ -63,6 +63,8 @@ class ProductsController extends Zend_Controller_Action
             ->addActionContext('property-edit', array('json'))
             ->addActionContext('property-del', array('json'))
             ->addActionContext('modification', array('json'))
+            ->addActionContext('modification-edit', array('json'))
+            ->addActionContext('modification-del', array('json'))
             ->initContext();
     }
 
@@ -179,7 +181,6 @@ class ProductsController extends Zend_Controller_Action
         $paramsProperty = $this->_request->getParam('property');
 
         if($paramsProperty){
-            $this->_paramsMapper = new Catalog_Model_Mapper_ProductParams();
             $productParams = new Catalog_Model_ProductParams();
 
             $productParamsOrder = ($paramsProperty['order'] && $paramsProperty['order'] != '')
@@ -224,7 +225,9 @@ class ProductsController extends Zend_Controller_Action
     public function modificationAction()
     {
         $id = $this->_request->getParam('id');
-        $select = $this->_subproductsModelMapper->getDbTable()->select()->order('order ASC');
+        $select = $this->_subproductsModelMapper->getDbTable()->select()
+            ->where('deleted != ?', 1)
+            ->order('order ASC');
 
         $jsonData = array();
         $modifications = $this->_modelMapper->findSubproductsRel($id, $select, true);
@@ -253,8 +256,36 @@ class ProductsController extends Zend_Controller_Action
         }
     }
 
+    public function modificationEditAction()
+    {
+        $edit = false;
+        $paramsModification = $this->_request->getParam('modification');
+
+        if($paramsModification){
+            $modification = new Catalog_Model_Subproducts();
+
+            if($paramsModification['id'] != 'new'){
+                $modification->setOptions($paramsModification);
+                $this->_subproductsModelMapper->save($modification);
+                $edit = true;
+            }
+        }
+        //Zend_Debug::dump($this->_request->getParams());
+        $this->_helper->json->sendJson($edit);
+    }
+
+    public function modificationDelAction()
+    {
+        //Zend_Debug::dump($this->_request->getParams());
+        $this->_helper->json->sendJson($this->_request->getParams());
+    }
+
 
 }
+
+
+
+
 
 
 

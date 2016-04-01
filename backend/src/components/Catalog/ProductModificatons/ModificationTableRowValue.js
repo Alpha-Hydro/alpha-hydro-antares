@@ -22,6 +22,7 @@ export default class ModificationTableRowValue extends React.Component{
 					<Input
 						type="text"
 						groupClassName="mb0"
+						bsSize="small"
 						className="text-center"
 						value={this.state.value}
 						onChange={this.handleChange.bind(this)}/>

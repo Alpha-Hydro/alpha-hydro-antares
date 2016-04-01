@@ -16,9 +16,12 @@ class Pipeline_IndexController extends Zend_Controller_Action
             $this->view->meta_title = $page->getMetaTitle();
             $this->view->meta_description = $page->getMetaDescription();
             $this->view->meta_keywords = $page->getMetaKeywords();
+
+            $this->view->page = $page;
         }
 
         $this->view->title = $pageTitle;
+
 
         /*//Заглушка
         if(!Zend_Auth::getInstance()->hasIdentity()){

@@ -29,6 +29,11 @@ export default class ProductModificationEditButton extends React.Component{
 		this.setState({ showModal: true });
 	}
 
+	reload(e){
+		e.preventDefault();
+		return window.location.reload();
+	}
+
 	render(){
 		return(
 			<div className="pull-right">
@@ -51,7 +56,8 @@ export default class ProductModificationEditButton extends React.Component{
 					</Modal.Body>
 
 					<Modal.Footer>
-						<Button onClick={this.close.bind(this)}>Закрыть</Button>
+						<Button onClick={this.close.bind(this)}>Отмена</Button>
+						<Button bsStyle="success" onClick={this.reload.bind(this)}>Сохранить</Button>
 					</Modal.Footer>
 				</Modal>
 			</div>

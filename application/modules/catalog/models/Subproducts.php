@@ -16,6 +16,8 @@ class Catalog_Model_Subproducts
     protected $_mod_date = null;
 
     protected $_order = null;
+    
+    protected $_deleted = null;
 
     /**
      * @param $options
@@ -252,6 +254,24 @@ class Catalog_Model_Subproducts
     public function getOrder()
     {
         return $this->_order;
+    }
+
+    /**
+     * @param null $deleted
+     * @return Catalog_Model_Subproducts
+     */
+    public function setDeleted($deleted)
+    {
+        $this->_deleted = $deleted;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getDeleted()
+    {
+        return $this->_deleted;
     }
 
 

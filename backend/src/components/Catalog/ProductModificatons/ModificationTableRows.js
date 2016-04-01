@@ -1,5 +1,6 @@
 import React from "react";
 import {Input, Button, Glyphicon, ButtonGroup, Modal} from "react-bootstrap/lib";
+import modificationHelpers from "./../../../utils/productModificationHelper";
 
 import ModificationTableRowValue from "./ModificationTableRowValue";
 
@@ -7,8 +8,12 @@ export default class ModificationTableRows extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
+			id: props.row.item.id,
+			parentId: props.row.item.parentId,
 			sku: props.row.item.sku,
-			order: props.row.item.order
+			name: props.row.item.name,
+			order: props.row.item.order,
+			deleted: props.row.item.deleted
 		}
 	}
 
@@ -20,9 +25,11 @@ export default class ModificationTableRows extends React.Component{
 		};
 	}
 
-	handleSaveItem(e){
-		e.preventDefault();
-		console.log(e.target.value);
+	handleSave(e){
+		modificationHelpers.editModification(this.state)
+			.then(function (response) {
+				console.log('EDIT', response);
+			}.bind(this));
 	}
 
 	render(){
@@ -36,19 +43,21 @@ export default class ModificationTableRows extends React.Component{
 					<Input
 						type="text"
 						groupClassName="mb0"
+						bsSize="small"
 						value={this.state.order}
 						onChange={this.handleChange('order').bind(this)}
-						onBlur={this.handleSaveItem.bind(this)}
+						onBlur={this.handleSave.bind(this)}
 					/>
 				</td>
 				<td>
 					<Input
 						type="text"
 						groupClassName="mb0"
+						bsSize="small"
 						className="text-center"
 						value={this.state.sku}
 						onChange={this.handleChange('sku').bind(this)}
-						onBlur={this.handleSaveItem.bind(this)}
+						onBlur={this.handleSave.bind(this)}
 					/>
 				</td>
 				{valuesTd}

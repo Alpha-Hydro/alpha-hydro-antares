@@ -25,6 +25,7 @@ export default class ModificationTableRowItem extends React.Component{
 					<Input
 						type="text"
 						groupClassName="mb0"
+						bsSize="small"
 						value={this.state.order}
 						onChange={this.handleChange('order').bind(this)}/>
 				</td>
