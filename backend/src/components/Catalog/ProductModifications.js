@@ -11,21 +11,45 @@ export default class ProductModifications extends React.Component{
 			columns: props.dataTable.columns,
 			rows: props.dataTable.rows
 		};
-		this.dump = this.dump.bind(this);
+	}
+
+	handleChangeColumn(data, index){
+		this.state.columns[index] = data;
+		this.setState(this.state);
+		this.props.handleChange(this.state);
 	}
 	
-	dump (obj) {
-		return <pre>{JSON.stringify(obj, null, ' ')}</pre>
+	handleChangeRowItem(data, index){
+		this.state.rows[index].item = data;
+		this.setState(this.state);
+		this.props.handleChange(this.state);
 	}
-	
+
+	handleChangeRowValue(data, indexRow, indexValue){
+		this.state.rows[indexRow].values[indexValue] = data;
+		this.setState(this.state);
+		this.props.handleChange(this.state);
+	}
+
+
 	render() {
 		const columns = this.state.columns;
 		const columnsTh = columns.map(
-			(column, i) => <ModificationTableColumn key={i} column={column}/>
+			(column, i) => <ModificationTableColumn
+				key={i}
+				column={column}
+				index={i}
+				handleChange={this.handleChangeColumn.bind(this)}/>
 		);
 		const rows = this.state.rows;
 		const rowsTr = rows.map(
-			(row, i) => <ModificationTableRows key={i} row={row}/>
+			(row, i) => <ModificationTableRows
+				key={i}
+				row={row}
+				index={i}
+				handleChange={this.handleChangeRowItem.bind(this)}
+				handleChangeValue={this.handleChangeRowValue.bind(this)}
+			/>
 		);
 		
 		return (

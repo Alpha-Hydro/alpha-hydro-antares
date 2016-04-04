@@ -1,6 +1,5 @@
 import React from "react";
 import {Input, Button, Glyphicon, ButtonGroup, Modal} from "react-bootstrap/lib";
-import modificationHelpers from "./../../../utils/productModificationHelper";
 
 import ModificationTableRowValue from "./ModificationTableRowValue";
 
@@ -17,7 +16,7 @@ export default class ModificationTableRows extends React.Component{
 		}
 	}
 
-	handleChange(key){
+	onChange(key){
 		return (e) => {
 			var data = {};
 			data[key]	= e.target.value;
@@ -25,17 +24,23 @@ export default class ModificationTableRows extends React.Component{
 		};
 	}
 
-	handleSave(e){
-		modificationHelpers.editModification(this.state)
-			.then(function (response) {
-				console.log('EDIT', response);
-			}.bind(this));
+	onBlur(){
+		this.props.handleChange(this.state, this.props.index);
+	}
+
+	handleChangeValue(data, indexValue){
+		this.props.handleChangeValue(data, this.props.index, indexValue)
 	}
 
 	render(){
 		const values = this.props.row.values;
 		const valuesTd = values.map(
-			(value, i) => <ModificationTableRowValue key={i} value={value} />
+			(value, i) => <ModificationTableRowValue
+				key={i}
+				index={i}
+				value={value}
+				handleChange={this.handleChangeValue.bind(this)}
+			/>
 		);
 		return(
 			<tr>
@@ -45,8 +50,8 @@ export default class ModificationTableRows extends React.Component{
 						groupClassName="mb0"
 						bsSize="small"
 						value={this.state.order}
-						onChange={this.handleChange('order').bind(this)}
-						onBlur={this.handleSave.bind(this)}
+						onChange={this.onChange('order').bind(this)}
+						onBlur={this.onBlur.bind(this)}
 					/>
 				</td>
 				<td>
@@ -56,8 +61,8 @@ export default class ModificationTableRows extends React.Component{
 						bsSize="small"
 						className="text-center"
 						value={this.state.sku}
-						onChange={this.handleChange('sku').bind(this)}
-						onBlur={this.handleSave.bind(this)}
+						onChange={this.onChange('sku').bind(this)}
+						onBlur={this.onBlur.bind(this)}
 					/>
 				</td>
 				{valuesTd}

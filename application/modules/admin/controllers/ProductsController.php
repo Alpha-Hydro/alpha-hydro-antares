@@ -258,7 +258,37 @@ class ProductsController extends Zend_Controller_Action
 
     public function modificationEditAction()
     {
-        $edit = false;
+        $modificationTableData = $this->_request->getParam('modificationTableData');
+        $subproductProperties = array();
+        $modifications = array();
+        if($modificationTableData){
+
+            $subproductProperties = $modificationTableData['columns'];
+            if($subproductProperties){
+                foreach ($subproductProperties as $subproductProperty) {
+                    $subproductParams = $this->_subproductsParamsMapper->find($subproductProperty['id'], new Catalog_Model_SubproductParams());
+                    if($subproductParams){
+                        $subproductParams->setOptions($subproductProperty);
+                        $this->_subproductsParamsMapper->save($subproductParams);
+                    }
+                }
+            }
+
+            $modifications = $modificationTableData['rows'];
+            if($modifications){
+                foreach ($modifications as $modification) {
+                    $item = $modification['item'];
+                    $subProduct = $this->_subproductsModelMapper
+                        ->find($item['id'], new Catalog_Model_Subproducts());
+                    if($subProduct){
+                        $subProduct->setOptions($item);
+                        $this->_subproductsModelMapper->save($subProduct);
+                    }
+                }
+            }
+        }
+
+        /*$edit = false;
         $paramsModification = $this->_request->getParam('modification');
 
         if($paramsModification){
@@ -269,9 +299,10 @@ class ProductsController extends Zend_Controller_Action
                 $this->_subproductsModelMapper->save($modification);
                 $edit = true;
             }
-        }
+        }*/
         //Zend_Debug::dump($this->_request->getParams());
-        $this->_helper->json->sendJson($edit);
+        
+        $this->_helper->json->sendJson($modifications);
     }
 
     public function modificationDelAction()

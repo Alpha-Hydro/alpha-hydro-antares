@@ -1,6 +1,7 @@
 import React from "react";
 import {Button, Glyphicon, Modal} from "react-bootstrap/lib";
 import dataHelpers from "../utils/getDataHelper";
+import modificationHelpers from "../utils/productModificationHelper";
 
 import ProductModifications from "./Catalog/ProductModifications";
 
@@ -16,9 +17,12 @@ export default class ProductModificationEditButton extends React.Component{
 	componentDidMount(){
 		dataHelpers.getCategoryProductModification(this.props.productId)
 			.then(function (response) {
-				console.log(response);
 				this.setState({modification:response})
 			}.bind(this));
+	}
+
+	handleChange(data){
+		this.setState({modification:data})
 	}
 
 	close() {
@@ -29,9 +33,13 @@ export default class ProductModificationEditButton extends React.Component{
 		this.setState({ showModal: true });
 	}
 
-	reload(e){
+	save(e){
 		e.preventDefault();
-		return window.location.reload();
+		this.setState({ showModal: false });
+		modificationHelpers.editModification(this.state.modification)
+			.then(function (response) {
+				console.log('SAVE DATA: ',response);
+			});
 	}
 
 	render(){
@@ -52,12 +60,14 @@ export default class ProductModificationEditButton extends React.Component{
 					</Modal.Header>
 
 					<Modal.Body>
-						<ProductModifications dataTable={this.state.modification} />
+						<ProductModifications
+							dataTable={this.state.modification}
+							handleChange={this.handleChange.bind(this)}/>
 					</Modal.Body>
 
 					<Modal.Footer>
 						<Button onClick={this.close.bind(this)}>Отмена</Button>
-						<Button bsStyle="success" onClick={this.reload.bind(this)}>Сохранить</Button>
+						<Button bsStyle="success" onClick={this.save.bind(this)}>Сохранить</Button>
 					</Modal.Footer>
 				</Modal>
 			</div>

@@ -5,7 +5,10 @@ var helpers = {
 		return $.ajax({
 			url: '/admin/products/modification-edit',
 			type: 'POST',
-			data: {modification: data},
+			data: {
+				modificationTableData: data,
+				redirectPath: window.location.pathname
+			},
 			success: function(data){
 				return data;
 			},

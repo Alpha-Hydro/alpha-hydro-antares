@@ -6,14 +6,20 @@ export default class ModificationTableRowValue extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
+			paramId: props.value.paramId,
+			subproductId: props.value.subproductId,
 			value: props.value.value
 		}
 	}
 
-	handleChange(e){
+	onChange(e){
 		this.setState({
 			value: e.target.value
 		});
+	}
+
+	onBlur(){
+		this.props.handleChange(this.state, this.props.index);
 	}
 
 	render(){
@@ -25,7 +31,8 @@ export default class ModificationTableRowValue extends React.Component{
 						bsSize="small"
 						className="text-center"
 						value={this.state.value}
-						onChange={this.handleChange.bind(this)}/>
+						onChange={this.onChange.bind(this)}
+						onBlur={this.onBlur.bind(this)}/>
 				</td>
 		)
 	}
