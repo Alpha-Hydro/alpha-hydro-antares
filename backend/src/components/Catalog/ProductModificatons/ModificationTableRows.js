@@ -67,9 +67,9 @@ export default class ModificationTableRows extends React.Component{
 				</td>
 				{valuesTd}
 				<td className="col-sm-1">
-					<ButtonGroup>
-						<Button><Glyphicon glyph="pencil"/></Button>
-						<Button><Glyphicon glyph="trash"/></Button>
+					<ButtonGroup bsSize="small">
+						<Button bsStyle="success"><Glyphicon glyph="pencil"/></Button>
+						<Button bsStyle="danger"><Glyphicon glyph="trash"/></Button>
 					</ButtonGroup>
 				</td>
 			</tr>

@@ -230,6 +230,7 @@ class ProductsController extends Zend_Controller_Action
             ->order('order ASC');
 
         $jsonData = array();
+        $jsonData['parentId'] = $id;
         $modifications = $this->_modelMapper->findSubproductsRel($id, $select, true);
 
         if(!empty($modifications)){
@@ -241,7 +242,8 @@ class ProductsController extends Zend_Controller_Action
 
             $modificationsTableValues = array();
             foreach ($modifications as $modification) {
-                $modificationPropertyValues = $this->_subproductsModelMapper->findSubProductParamValue($modification['id']);
+                $modificationPropertyValues = $this->_subproductsModelMapper
+                    ->findSubProductParamValue($modification['id']);
                 $values['item'] = $modification;
                 $values['values'] = array();
                 foreach ($modificationPropertyValues as $modificationPropertyValue) {
@@ -283,26 +285,26 @@ class ProductsController extends Zend_Controller_Action
                     if($subProduct){
                         $subProduct->setOptions($item);
                         $this->_subproductsModelMapper->save($subProduct);
+                        $values = $modification['values'];
+                        if($values){
+                            foreach ($values as $value) {
+                                $subproductParamsValue = $this->_subproductParamsValuesMapper
+                                    ->find(
+                                        $subProduct->getId(),
+                                        $value['paramId'],
+                                        new Catalog_Model_SubproductParamsValues()
+                                    );
+                                $subproductParamsValue->setValue($value['value']);
+                                $this->_subproductParamsValuesMapper->save($subproductParamsValue);
+                            }
+                        }
                     }
+
                 }
             }
         }
-
-        /*$edit = false;
-        $paramsModification = $this->_request->getParam('modification');
-
-        if($paramsModification){
-            $modification = new Catalog_Model_Subproducts();
-
-            if($paramsModification['id'] != 'new'){
-                $modification->setOptions($paramsModification);
-                $this->_subproductsModelMapper->save($modification);
-                $edit = true;
-            }
-        }*/
-        //Zend_Debug::dump($this->_request->getParams());
         
-        $this->_helper->json->sendJson($modifications);
+        $this->_helper->json->sendJson($modificationTableData);
     }
 
     public function modificationDelAction()

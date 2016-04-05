@@ -6,8 +6,7 @@ var helpers = {
 			url: '/admin/products/modification-edit',
 			type: 'POST',
 			data: {
-				modificationTableData: data,
-				redirectPath: window.location.pathname
+				modificationTableData: data
 			},
 			success: function(data){
 				return data;

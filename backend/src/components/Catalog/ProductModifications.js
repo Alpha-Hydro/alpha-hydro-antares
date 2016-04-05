@@ -3,6 +3,7 @@ import {Table, Input, Button, Glyphicon} from "react-bootstrap/lib";
 
 import ModificationTableColumn from "./ProductModificatons/ModificationTableColumn"
 import ModificationTableRows from "./ProductModificatons/ModificationTableRows"
+import ModificationTableNewItem from "./ProductModificatons/ModificationTableNewItem"
 
 export default class ProductModifications extends React.Component{
 	constructor(props){
@@ -30,7 +31,8 @@ export default class ProductModifications extends React.Component{
 		this.setState(this.state);
 		this.props.handleChange(this.state);
 	}
-
+	
+	
 
 	render() {
 		const columns = this.state.columns;
@@ -53,7 +55,7 @@ export default class ProductModifications extends React.Component{
 		);
 		
 		return (
-			<Table>
+			<Table className="mb0">
 				<thead>
 					<tr>
 						<th>№№/пп</th>
@@ -64,6 +66,9 @@ export default class ProductModifications extends React.Component{
 				</thead>
 				<tbody>
 					{rowsTr}
+					<ModificationTableNewItem
+						parentId={this.props.dataTable.parentId}
+						columns={this.state.columns} />
 				</tbody>
 			</Table>
 		)

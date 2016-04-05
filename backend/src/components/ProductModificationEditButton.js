@@ -39,6 +39,8 @@ export default class ProductModificationEditButton extends React.Component{
 		modificationHelpers.editModification(this.state.modification)
 			.then(function (response) {
 				console.log('SAVE DATA: ',response);
+				window.location.reload(true);
+				return false;
 			});
 	}
 

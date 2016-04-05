@@ -1,6 +1,6 @@
 import React from "react";
 import {Input, ButtonInput} from "react-bootstrap/lib";
-import propertyHelpers from "./../../../utils/productPropertyHelper"
+import propertyHelpers from "./../../../utils/productPropertyHelper";
 
 export default class NewProductProperty extends React.Component{
 	constructor(props){
