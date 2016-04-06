@@ -70,7 +70,7 @@ class Catalog_BreadcrumbsController extends Zend_Controller_Action
         $breadcrumbs->addPage(
             new Zend_Navigation_Page_Uri(
                 array (
-                    'label' => 'Каталог продукции',
+                    'label' => 'Каталог',
                     'uri' => '/catalog/',
                     'order' => $i
                 )

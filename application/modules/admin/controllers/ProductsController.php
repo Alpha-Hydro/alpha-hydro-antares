@@ -261,8 +261,6 @@ class ProductsController extends Zend_Controller_Action
     public function modificationEditAction()
     {
         $modificationTableData = $this->_request->getParam('modificationTableData');
-        $subproductProperties = array();
-        $modifications = array();
         if($modificationTableData){
 
             $subproductProperties = $modificationTableData['columns'];
@@ -280,26 +278,39 @@ class ProductsController extends Zend_Controller_Action
             if($modifications){
                 foreach ($modifications as $modification) {
                     $item = $modification['item'];
-                    $subProduct = $this->_subproductsModelMapper
-                        ->find($item['id'], new Catalog_Model_Subproducts());
-                    if($subProduct){
-                        $subProduct->setOptions($item);
+                    $subProductId = $item['id'];
+
+                    if($subProductId != 'new'){
+                        $this->saveEditSubproduct($subProductId, $modification);
+                    }
+                    else {
+                        $subProduct = new Catalog_Model_Subproducts();
+                        $subProduct
+                            ->setParentId($item['parentId'])
+                            ->setSku($item['sku'])
+                            ->setName($item['sku'])
+                            ->setAddDate(date("Y-m-d H:i:s"))
+                            ->setModDate(date("Y-m-d H:i:s"))
+                            ->setOrder($item['order'])
+                            ->setDeleted(0);
+
                         $this->_subproductsModelMapper->save($subProduct);
+                        $id = $this->_subproductsModelMapper->getDbTable()->getAdapter()->lastInsertId();
+                        $subProduct->setId($id);
+
                         $values = $modification['values'];
                         if($values){
                             foreach ($values as $value) {
-                                $subproductParamsValue = $this->_subproductParamsValuesMapper
-                                    ->find(
-                                        $subProduct->getId(),
-                                        $value['paramId'],
-                                        new Catalog_Model_SubproductParamsValues()
-                                    );
-                                $subproductParamsValue->setValue($value['value']);
+                                $subproductParamsValue = new Catalog_Model_SubproductParamsValues();
+                                $subproductParamsValue
+                                    ->setSubproductId($id)
+                                    ->setParamId($value['paramId'])
+                                    ->setValue($value['value']);
                                 $this->_subproductParamsValuesMapper->save($subproductParamsValue);
                             }
                         }
+                        $modificationTableData['newItem'][] = $modification;
                     }
-
                 }
             }
         }
@@ -313,7 +324,41 @@ class ProductsController extends Zend_Controller_Action
         $this->_helper->json->sendJson($this->_request->getParams());
     }
 
+    public function saveEditSubproduct($id, &$data)
+    {
+        $subProduct = $this->_subproductsModelMapper
+            ->find($id, new Catalog_Model_Subproducts());
+        if($subProduct){
+            $subProduct->setOptions($data['item']);
+            $this->_subproductsModelMapper->save($subProduct);
+            $values = $data['values'];
+            if($values){
+                $this->saveEditSubproductParamsValues($subProduct->getId(), $values);
+            }
+        }
+    }
 
+    public function saveEditSubproductParamsValues($subProductId, &$values)
+    {
+        foreach ($values as $value) {
+            $subproductParamsValue = $this->_subproductParamsValuesMapper
+                ->find(
+                    $subProductId,
+                    $value['paramId'],
+                    new Catalog_Model_SubproductParamsValues()
+                );
+
+            if(is_null($subproductParamsValue)){
+                $subproductParamsValue = new Catalog_Model_SubproductParamsValues();
+                $subproductParamsValue
+                    ->setSubproductId($subProductId)
+                    ->setParamId($value['paramId']);
+            }
+
+            $subproductParamsValue->setValue($value['value']);
+            $this->_subproductParamsValuesMapper->save($subproductParamsValue);
+        }
+    }
 }
 
 

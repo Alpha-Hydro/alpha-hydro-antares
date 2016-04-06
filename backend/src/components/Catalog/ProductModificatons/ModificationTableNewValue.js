@@ -4,16 +4,10 @@ import Input from "react-bootstrap/lib/Input";
 export default class ModificationTableNewValue extends React.Component{
 	constructor(props){
 		super(props);
-		this.state = {
-			value: ''
-		}
 	}
 
 	onChange(e){
 		var value = e.target.value;
-		this.setState({
-			value: value
-		});
 		this.props.handleChange(value, this.props.index);
 	}
 
@@ -25,7 +19,7 @@ export default class ModificationTableNewValue extends React.Component{
 					groupClassName="mb0"
 					bsSize="small"
 					className="text-center"
-					value={this.state.value}
+					value={this.props.value}
 					onChange={this.onChange.bind(this)} />
 			</td>
 		)

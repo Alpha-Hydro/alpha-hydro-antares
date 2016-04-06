@@ -49,9 +49,16 @@ export default class ModificationTableNewItem extends React.Component{
 
 	addNewModification(e){
 		var newItem = this.state;
-		console.log(newItem);
-		this.state.values = this.newItemValues();
-		this.setState(this.state);
+		this.props.handleAdd(newItem);
+		this.setState({
+			item: {
+				id: 'new',
+				parentId: this.props.parentId,
+				sku: '',
+				order: ''
+			},
+			values: this.newItemValues()
+		});
 	}
 	
 	render(){
@@ -59,16 +66,17 @@ export default class ModificationTableNewItem extends React.Component{
 			(column, i) => <ModificationTableNewValue
 				key={i}
 				index={i}
+				value={column.value}
 				handleChange={this.handleChangeNewValue.bind(this)}/>
 		);
 		return(
-			<tr>
+			<tr className="active">
 				<td className="col-sm-1">
 					<Input
 						type="text"
 						groupClassName="mb0"
 						bsSize="small"
-						value={this.state.order}
+						value={this.state.item.order}
 						onChange={this.onChange('order').bind(this)}/>
 				</td>
 				<td>
@@ -77,7 +85,7 @@ export default class ModificationTableNewItem extends React.Component{
 						groupClassName="mb0"
 						bsSize="small"
 						className="text-center"
-						value={this.state.sku}
+						value={this.state.item.sku}
 						onChange={this.onChange('sku').bind(this)}/>
 				</td>
 				{newValuesTd}

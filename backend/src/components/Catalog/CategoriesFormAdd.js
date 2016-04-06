@@ -48,7 +48,6 @@ export default class CategoriesFormAdd extends React.Component{
 	}
 
 	titleChange(e){
-		console.log(e.target.value);
 		var title = e.target.value;
 		Slugify.getSlugify(title)
 			.then(function (path) {

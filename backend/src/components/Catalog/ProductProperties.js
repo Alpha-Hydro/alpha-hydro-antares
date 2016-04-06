@@ -60,7 +60,9 @@ export default class  ProductProperties extends React.Component{
 					</thead>
 					<tbody>
 						{propertiesList}
-						<NewProductproperty newProperty={this.onAdd.bind(this)} productId={this.props.productId}/>
+						<NewProductproperty
+							newProperty={this.onAdd.bind(this)}
+							productId={this.props.productId} />
 					</tbody>
 				</Table>
 		)

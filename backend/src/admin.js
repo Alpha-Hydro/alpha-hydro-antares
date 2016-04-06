@@ -21,7 +21,6 @@ if(document.querySelector('.itemButtonsComponent')){
 			id: item.getAttribute('data-id'),
 			active: item.getAttribute('data-active')
 		};
-		//console.log(dataItem);
 		ReactDOM.render(<ItemButtonsComponent dataItem = {dataItem}/>, item);
 	});
 }

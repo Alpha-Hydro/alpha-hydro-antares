@@ -22,7 +22,7 @@ export default class ProductModificationEditButton extends React.Component{
 	}
 
 	handleChange(data){
-		this.setState({modification:data})
+		this.setState({modification:data});
 	}
 
 	close() {
@@ -36,6 +36,7 @@ export default class ProductModificationEditButton extends React.Component{
 	save(e){
 		e.preventDefault();
 		this.setState({ showModal: false });
+		console.log('SEND DATA: ', this.state.modification);
 		modificationHelpers.editModification(this.state.modification)
 			.then(function (response) {
 				console.log('SAVE DATA: ',response);

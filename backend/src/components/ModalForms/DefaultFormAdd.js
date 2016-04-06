@@ -27,7 +27,6 @@ export default class DefaultFormAdd extends React.Component{
 	}
 
 	titleChange(e){
-		console.log(e.target.value);
 		var title = e.target.value;
 		Slugify.getSlugify(title)
 			.then(function (path) {

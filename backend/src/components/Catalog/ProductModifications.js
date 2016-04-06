@@ -31,8 +31,13 @@ export default class ProductModifications extends React.Component{
 		this.setState(this.state);
 		this.props.handleChange(this.state);
 	}
-	
-	
+
+	onAdd(data){
+		console.log('NEW MODIFICATION', data);
+		this.state.rows = this.state.rows.concat(data);
+		this.setState(this.state);
+		this.props.handleChange(this.state);
+	}
 
 	render() {
 		const columns = this.state.columns;
@@ -66,10 +71,13 @@ export default class ProductModifications extends React.Component{
 				</thead>
 				<tbody>
 					{rowsTr}
+				</tbody>
+				<tfoot>
 					<ModificationTableNewItem
 						parentId={this.props.dataTable.parentId}
-						columns={this.state.columns} />
-				</tbody>
+						columns={this.state.columns}
+						handleAdd={this.onAdd.bind(this)}/>
+				</tfoot>
 			</Table>
 		)
 	}

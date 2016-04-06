@@ -17,7 +17,7 @@ class Zend_View_Helper_sidebarHeading extends Zend_View_Helper_Abstract
                 $parent_id = $parentCategory->getId();
 
             $url = '/catalog/';
-            $textLink = 'Каталог продукции';
+            $textLink = 'Каталог';
 
 
             if($parent_id != 0){
@@ -28,7 +28,7 @@ class Zend_View_Helper_sidebarHeading extends Zend_View_Helper_Abstract
             $html .= '<a href="'.$url.'">'.$textLink.'</a>';
         }
         else{
-            $html .= 'Каталог продукции';
+            $html .= 'Каталог';
         }
         $html .= '</li>';
 
