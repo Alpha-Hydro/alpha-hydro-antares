@@ -321,7 +321,21 @@ class ProductsController extends Zend_Controller_Action
     public function modificationDelAction()
     {
         //Zend_Debug::dump($this->_request->getParams());
-        $this->_helper->json->sendJson($this->_request->getParams());
+        $response = '';
+        if($this->_request->getParam('id')){
+            $id = $this->_request->getParam('id');
+            $subProduct = $this->_subproductsModelMapper
+                ->find($id, new Catalog_Model_Subproducts());
+
+            if($subProduct){
+                $subProduct
+                    ->setDeleted(1)
+                    ->setModDate(date("Y-m-d H:i:s"));
+                $this->_subproductsModelMapper->save($subProduct);
+                $response = 'deleted';
+            }
+        }
+        $this->_helper->json->sendJson($response);
     }
 
     public function saveEditSubproduct($id, &$data)

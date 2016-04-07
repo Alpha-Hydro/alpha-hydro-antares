@@ -48,6 +48,7 @@ export default class ProductPropertyComponent extends React.Component{
 		propertyHelpers.deleteProperty(this.state.property.id)
 			.then(function (response) {
 				response === 'deleted' && this.props.onDelete(this.props.index);
+				this.setState({ showModal: false });
 			}.bind(this));
 	}
 

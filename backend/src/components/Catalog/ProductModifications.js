@@ -39,6 +39,16 @@ export default class ProductModifications extends React.Component{
 		this.props.handleChange(this.state);
 	}
 
+	onDelete(index){
+		// console.log('onDelete: ', this.state.rows[index]);
+		console.log(index);
+		var rows = this.state.rows;
+		rows.splice(index, 1);
+		console.log(rows);
+		this.setState({rows: rows});
+		this.props.handleChange(this.state);
+	}
+
 	render() {
 		const columns = this.state.columns;
 		const columnsTh = columns.map(
@@ -49,6 +59,7 @@ export default class ProductModifications extends React.Component{
 				handleChange={this.handleChangeColumn.bind(this)}/>
 		);
 		const rows = this.state.rows;
+		console.log(rows);
 		const rowsTr = rows.map(
 			(row, i) => <ModificationTableRows
 				key={i}
@@ -56,6 +67,7 @@ export default class ProductModifications extends React.Component{
 				index={i}
 				handleChange={this.handleChangeRowItem.bind(this)}
 				handleChangeValue={this.handleChangeRowValue.bind(this)}
+				handleDelete={this.onDelete.bind(this)}
 			/>
 		);
 		
@@ -66,7 +78,7 @@ export default class ProductModifications extends React.Component{
 						<th>№№/пп</th>
 						<th>Наименование</th>
 						{columnsTh}
-						<th><Button><Glyphicon glyph="plus"/></Button></th>
+						<th><Button bsStyle="success"><Glyphicon glyph="pencil"/></Button></th>
 					</tr>
 				</thead>
 				<tbody>
