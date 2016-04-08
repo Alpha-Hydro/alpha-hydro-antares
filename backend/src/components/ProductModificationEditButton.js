@@ -25,6 +25,10 @@ export default class ProductModificationEditButton extends React.Component{
 		this.setState({modification:data});
 	}
 
+	handleDeleteRow(rows){
+		console.log(rows);
+	}
+
 	close() {
 		this.setState({ showModal: false });
 	}
@@ -65,7 +69,9 @@ export default class ProductModificationEditButton extends React.Component{
 					<Modal.Body>
 						<ProductModifications
 							dataTable={this.state.modification}
-							handleChange={this.handleChange.bind(this)}/>
+							handleChange={this.handleChange.bind(this)}
+							handleDeleteRow={this.handleDeleteRow.bind(this)}
+						/>
 					</Modal.Body>
 
 					<Modal.Footer>

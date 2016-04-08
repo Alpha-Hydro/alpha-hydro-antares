@@ -9,6 +9,7 @@ export default class ModificationTableRows extends React.Component{
 		super(props);
 		this.state = {
 			showModal: false,
+			deleted: false,
 			modification:{
 				id: props.row.item.id,
 				parentId: props.row.item.parentId,
@@ -31,7 +32,7 @@ export default class ModificationTableRows extends React.Component{
 	onChange(key){
 		return (e) => {
 			this.state.modification[key]	= e.target.value;
-			this.setState(data);
+			this.setState(this.state);
 		};
 	}
 
@@ -44,7 +45,15 @@ export default class ModificationTableRows extends React.Component{
 	}
 
 	onDelete(){
+		/*this.state.modification.deleted = 1;
+		this.props.handleChange(this.state.modification, this.props.index);
+		this.setState({
+			deleted: true,
+			showModal: false
+		});*/
+
 		this.props.handleDelete(this.props.index);
+
 		// modificationHelpers.deleteModification(this.state.modification.id)
 		// 	.then(function (response) {
 		// 		response === 'deleted' && this.props.onDelete(this.props.index);
@@ -63,7 +72,7 @@ export default class ModificationTableRows extends React.Component{
 			/>
 		);
 		return(
-			<tr>
+			<tr className = {this.state.deleted && "hidden"}>
 				<td className="col-sm-1">
 					<Input
 						type="text"

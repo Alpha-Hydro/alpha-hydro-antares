@@ -1,9 +1,10 @@
 import React from "react";
 import {Table, Input, Button, Glyphicon} from "react-bootstrap/lib";
 
-import ModificationTableColumn from "./ProductModificatons/ModificationTableColumn"
-import ModificationTableRows from "./ProductModificatons/ModificationTableRows"
-import ModificationTableNewItem from "./ProductModificatons/ModificationTableNewItem"
+import ModificationTableRows from "./ProductModificatons/ModificationTableRows";
+import ModificationTableNewItem from "./ProductModificatons/ModificationTableNewItem";
+import ModificationHeadTable from "./ProductModificatons/ModificationHeadTable";
+import ModificationBodyTable from "./ProductModificatons/ModificationBodyTable";
 
 export default class ProductModifications extends React.Component{
 	constructor(props){
@@ -46,44 +47,36 @@ export default class ProductModifications extends React.Component{
 		rows.splice(index, 1);
 		console.log(rows);
 		this.setState({rows: rows});
-		this.props.handleChange(this.state);
+		this.props.handleDeleteRow(rows);
 	}
+	
 
-	render() {
-		const columns = this.state.columns;
-		const columnsTh = columns.map(
-			(column, i) => <ModificationTableColumn
-				key={i}
-				column={column}
-				index={i}
-				handleChange={this.handleChangeColumn.bind(this)}/>
-		);
-		const rows = this.state.rows;
-		console.log(rows);
-		const rowsTr = rows.map(
-			(row, i) => <ModificationTableRows
+	bodyTable(){
+		const self = this;
+		var rows = [];
+		this.state.rows.map(function(row, i){
+			rows.push(<ModificationTableRows
 				key={i}
 				row={row}
 				index={i}
-				handleChange={this.handleChangeRowItem.bind(this)}
-				handleChangeValue={this.handleChangeRowValue.bind(this)}
-				handleDelete={this.onDelete.bind(this)}
-			/>
-		);
-		
+				handleChange={self.handleChangeRowItem.bind(self)}
+				handleChangeValue={self.handleChangeRowValue.bind(self)}
+				handleDelete={self.onDelete.bind(self)}
+			/>);
+		});
+		return rows;
+	}
+
+	render() {
 		return (
 			<Table className="mb0">
 				<thead>
-					<tr>
-						<th>№№/пп</th>
-						<th>Наименование</th>
-						{columnsTh}
-						<th><Button bsStyle="success"><Glyphicon glyph="pencil"/></Button></th>
-					</tr>
+					<ModificationHeadTable
+						columns={this.state.columns}
+						handleChange={this.handleChangeColumn.bind(this)}
+					/>
 				</thead>
-				<tbody>
-					{rowsTr}
-				</tbody>
+				<ModificationBodyTable rows={this.state.rows}/>
 				<tfoot>
 					<ModificationTableNewItem
 						parentId={this.props.dataTable.parentId}
