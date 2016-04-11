@@ -45,20 +45,7 @@ export default class ModificationTableRows extends React.Component{
 	}
 
 	onDelete(){
-		/*this.state.modification.deleted = 1;
-		this.props.handleChange(this.state.modification, this.props.index);
-		this.setState({
-			deleted: true,
-			showModal: false
-		});*/
-
-		this.props.handleDelete(this.props.index);
-
-		// modificationHelpers.deleteModification(this.state.modification.id)
-		// 	.then(function (response) {
-		// 		response === 'deleted' && this.props.onDelete(this.props.index);
-		// 		this.setState({ showModal: false });
-		// 	}.bind(this));
+		this.props.handleDeleteRow();
 	}
 
 	render(){

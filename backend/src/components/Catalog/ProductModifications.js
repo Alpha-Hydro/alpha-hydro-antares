@@ -59,7 +59,9 @@ export default class ProductModifications extends React.Component{
 				</thead>
 				<ModificationBodyTable 
 					rows={this.state.rows} 
-					handleDeleteRow={this.handleDelete.bind(this)}/>
+					handleDeleteRow={this.handleDelete.bind(this)}
+					handleChangeRowItem={this.handleChangeRowItem.bind(this)}
+					handleChangeRowValue={this.handleChangeRowValue.bind(this)}/>
 				<tfoot>
 					<ModificationTableNewItem
 						parentId={this.props.dataTable.parentId}

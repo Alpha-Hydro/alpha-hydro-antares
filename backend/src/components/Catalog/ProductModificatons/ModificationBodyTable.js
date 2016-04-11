@@ -1,5 +1,7 @@
 import React from "react";
-import {ButtonGroup, Button, Glyphicon} from "react-bootstrap/lib";
+import {Input, ButtonGroup, Button, Glyphicon} from "react-bootstrap/lib";
+
+import ModificationBodyTableRow from "./ModificationBodyTableRow";
 
 
 export default class ModificationBodyTable extends React.Component{
@@ -16,8 +18,41 @@ export default class ModificationBodyTable extends React.Component{
 	bodyTable(){
 		const self = this;
 		return this.props.rows.map(function (row, i) {
+			return <ModificationBodyTableRow
+				key={i}
+				row={row}
+				index={i}
+				handleDelete={self.onDelete(i).bind(this)}/>
+		});
+	}
+
+	/*valuesTd(values){
+		return values.map(function (value, i)	{
+			return <td key={i}>{value.value}</td>
+		})
+	}
+
+	bodyTable(){
+		const self = this;
+		return this.props.rows.map(function (row, i) {
 			return <tr key={i}>
-				<td>{row.item.name}</td>
+				<td className="col-sm-1">
+					<Input
+						type="text"
+						groupClassName="mb0"
+						bsSize="small"
+						value={row.item.order}
+					/>
+				</td>
+				<td>
+					<Input
+						type="text"
+						groupClassName="mb0"
+						bsSize="small"
+						value={row.item.sku}
+					/>
+				</td>
+				{self.valuesTd(row.values)}
 				<td>
 					<ButtonGroup bsSize="small">
 						<Button bsStyle="success"><Glyphicon glyph="pencil"/></Button>
@@ -26,7 +61,7 @@ export default class ModificationBodyTable extends React.Component{
 				</td>
 			</tr>
 		});
-	}
+	}*/
 
 	render() {
 		return (
