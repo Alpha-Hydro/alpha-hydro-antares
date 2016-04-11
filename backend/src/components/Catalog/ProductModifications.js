@@ -33,38 +33,19 @@ export default class ProductModifications extends React.Component{
 		this.props.handleChange(this.state);
 	}
 
-	onAdd(data){
+	handleAdd(data){
 		console.log('NEW MODIFICATION', data);
 		this.state.rows = this.state.rows.concat(data);
 		this.setState(this.state);
 		this.props.handleChange(this.state);
 	}
 
-	onDelete(index){
-		// console.log('onDelete: ', this.state.rows[index]);
-		console.log(index);
+	handleDelete(index){
+		console.log('handleDelete: ', this.state.rows[index]);
 		var rows = this.state.rows;
 		rows.splice(index, 1);
-		console.log(rows);
 		this.setState({rows: rows});
-		this.props.handleDeleteRow(rows);
-	}
-	
-
-	bodyTable(){
-		const self = this;
-		var rows = [];
-		this.state.rows.map(function(row, i){
-			rows.push(<ModificationTableRows
-				key={i}
-				row={row}
-				index={i}
-				handleChange={self.handleChangeRowItem.bind(self)}
-				handleChangeValue={self.handleChangeRowValue.bind(self)}
-				handleDelete={self.onDelete.bind(self)}
-			/>);
-		});
-		return rows;
+		this.props.handleChange(this.state);
 	}
 
 	render() {
@@ -76,12 +57,14 @@ export default class ProductModifications extends React.Component{
 						handleChange={this.handleChangeColumn.bind(this)}
 					/>
 				</thead>
-				<ModificationBodyTable rows={this.state.rows}/>
+				<ModificationBodyTable 
+					rows={this.state.rows} 
+					handleDeleteRow={this.handleDelete.bind(this)}/>
 				<tfoot>
 					<ModificationTableNewItem
 						parentId={this.props.dataTable.parentId}
 						columns={this.state.columns}
-						handleAdd={this.onAdd.bind(this)}/>
+						handleAdd={this.handleAdd.bind(this)}/>
 				</tfoot>
 			</Table>
 		)

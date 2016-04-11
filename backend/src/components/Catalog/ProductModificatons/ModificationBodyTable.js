@@ -9,9 +9,8 @@ export default class ModificationBodyTable extends React.Component{
 
 	onDelete(index){
 		return (e) => {
-			console.log(this.props);
+			this.props.handleDeleteRow(index);
 		};
-		// this.props.handleDeleteRow(this.props.index);
 	}
 
 	bodyTable(){

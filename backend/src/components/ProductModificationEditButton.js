@@ -25,10 +25,6 @@ export default class ProductModificationEditButton extends React.Component{
 		this.setState({modification:data});
 	}
 
-	handleDeleteRow(rows){
-		console.log(rows);
-	}
-
 	close() {
 		this.setState({ showModal: false });
 	}
@@ -41,12 +37,12 @@ export default class ProductModificationEditButton extends React.Component{
 		e.preventDefault();
 		this.setState({ showModal: false });
 		console.log('SEND DATA: ', this.state.modification);
-		modificationHelpers.editModification(this.state.modification)
+		/*modificationHelpers.editModification(this.state.modification)
 			.then(function (response) {
 				console.log('SAVE DATA: ',response);
 				window.location.reload(true);
 				return false;
-			});
+			});*/
 	}
 
 	render(){
@@ -70,7 +66,6 @@ export default class ProductModificationEditButton extends React.Component{
 						<ProductModifications
 							dataTable={this.state.modification}
 							handleChange={this.handleChange.bind(this)}
-							handleDeleteRow={this.handleDeleteRow.bind(this)}
 						/>
 					</Modal.Body>
 
