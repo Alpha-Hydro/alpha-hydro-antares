@@ -37,12 +37,12 @@ export default class ProductModificationEditButton extends React.Component{
 		e.preventDefault();
 		this.setState({ showModal: false });
 		console.log('SEND DATA: ', this.state.modification);
-		/*modificationHelpers.editModification(this.state.modification)
+		modificationHelpers.editModification(this.state.modification)
 			.then(function (response) {
 				console.log('SAVE DATA: ',response);
 				window.location.reload(true);
 				return false;
-			});*/
+			});
 	}
 
 	render(){

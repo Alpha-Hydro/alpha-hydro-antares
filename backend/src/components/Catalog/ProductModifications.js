@@ -1,7 +1,7 @@
 import React from "react";
 import {Table, Input, Button, Glyphicon} from "react-bootstrap/lib";
+import modificationHelpers from "./../../utils/productModificationHelper"
 
-import ModificationTableRows from "./ProductModificatons/ModificationTableRows";
 import ModificationTableNewItem from "./ProductModificatons/ModificationTableNewItem";
 import ModificationHeadTable from "./ProductModificatons/ModificationHeadTable";
 import ModificationBodyTable from "./ProductModificatons/ModificationBodyTable";
@@ -17,35 +17,43 @@ export default class ProductModifications extends React.Component{
 
 	handleChangeColumn(data, index){
 		this.state.columns[index] = data;
-		this.setState(this.state);
-		this.props.handleChange(this.state);
+		this.setState(this.state, () => {
+			this.props.handleChange(this.state);
+		});
 	}
 	
 	handleChangeRowItem(data, index){
 		this.state.rows[index].item = data;
-		this.setState(this.state);
-		this.props.handleChange(this.state);
+		this.setState(this.state, () => {
+			this.props.handleChange(this.state);
+		});
 	}
 
 	handleChangeRowValue(data, indexRow, indexValue){
 		this.state.rows[indexRow].values[indexValue] = data;
-		this.setState(this.state);
-		this.props.handleChange(this.state);
+		this.setState(this.state, () => {
+			this.props.handleChange(this.state);
+		});
+
 	}
 
 	handleAdd(data){
 		console.log('NEW MODIFICATION', data);
 		this.state.rows = this.state.rows.concat(data);
-		this.setState(this.state);
-		this.props.handleChange(this.state);
+		this.setState(this.state, () => {
+			this.props.handleChange(this.state);
+		});
 	}
 
 	handleDelete(index){
 		console.log('handleDelete: ', this.state.rows[index]);
 		var rows = this.state.rows;
+		var item = rows[index].item;
+		if(item.id != 'new') modificationHelpers.deleteModification(item.id);
 		rows.splice(index, 1);
-		this.setState({rows: rows});
-		this.props.handleChange(this.state);
+		this.setState({rows: rows}, ()=>{
+			this.props.handleChange(this.state);
+		});
 	}
 
 	render() {
@@ -54,19 +62,18 @@ export default class ProductModifications extends React.Component{
 				<thead>
 					<ModificationHeadTable
 						columns={this.state.columns}
-						handleChange={this.handleChangeColumn.bind(this)}
-					/>
+						handleChange={this.handleChangeColumn.bind(this)}	/>
 				</thead>
 				<ModificationBodyTable 
 					rows={this.state.rows} 
 					handleDeleteRow={this.handleDelete.bind(this)}
 					handleChangeRowItem={this.handleChangeRowItem.bind(this)}
-					handleChangeRowValue={this.handleChangeRowValue.bind(this)}/>
+					handleChangeRowValue={this.handleChangeRowValue.bind(this)} />
 				<tfoot>
 					<ModificationTableNewItem
 						parentId={this.props.dataTable.parentId}
 						columns={this.state.columns}
-						handleAdd={this.handleAdd.bind(this)}/>
+						handleAdd={this.handleAdd.bind(this)} />
 				</tfoot>
 			</Table>
 		)

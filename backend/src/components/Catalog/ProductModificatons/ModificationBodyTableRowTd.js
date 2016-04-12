@@ -5,31 +5,36 @@ export default class ModificationBodyTableRowTd extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			value: this.props.value
+			showInput: false
 		}
 	}
-
-	onChange(e){
-		e.preventDefault();
-		this.setState({value:e.target.value});
-	}
 	
-	onBlur(e){
-		console.log('NEW VALUE: ',e.target.value);
-		console.log(this);
+	onBlur(){
+		this.setState({showInput: false})
+	}
+
+	onFocus(){
+		this.setState({showInput:true}, function() {
+			this.refs.input.focus();
+		});
 	}
 
 	render(){
-		const value = this.state.value;
 		return(
 			<td className={this.props.classTd}>
-				<Input type="text"
-							 groupClassName="mb0"
-							 bsSize="small"
-							 value={value}
-							 onChange={this.onChange.bind(this)}
-							 onBlur={this.onBlur.bind(this)}
-				/>
+				<div className="form-group form-group-sm mb0">
+					{this.state.showInput ?
+						<input
+							ref="input"
+							className="form-control"
+							type="text"
+							value={this.props.value}
+							onChange={this.props.onChange.bind(this)}
+							onBlur={this.onBlur.bind(this)}
+						/> :
+						<span onClick={this.onFocus.bind(this)}>{this.props.value}</span>
+					}
+				</div>
 			</td>
 		);
 	}

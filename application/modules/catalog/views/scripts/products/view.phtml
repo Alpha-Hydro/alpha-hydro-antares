@@ -53,8 +53,12 @@ $this->product_id = $this->product->id;
     <?php endif;?>
 
     <?php if($this->product->description != ''):?>
-        <h4>Описание</h4>
-        <?=$this->product->description?>
+        <div class="row mb2">
+            <div class="col-md-12">
+                <h4>Описание</h4>
+                <?=$this->product->description?>
+            </div>
+        </div>
     <?php endif;?>
 </div>
 
@@ -92,8 +96,7 @@ $this->product_id = $this->product->id;
 <div class="col-md-12">
     <div class="footnote">
         <?php if($this->product->note != ''):?>
-            <h4>Примечание</h4>
-            <?=$this->product->note?>
+            * <?=$this->product->note?>
         <?php endif;?>
     </div>
 </div>
