@@ -3,6 +3,7 @@ import {Button, Glyphicon, Modal} from "react-bootstrap/lib";
 import dataHelpers from "../utils/getDataHelper";
 import modificationHelpers from "../utils/productModificationHelper";
 
+import ProductModificationsTable from "./Catalog/ProductModificatons/ProductModificationsTable";
 import ProductModifications from "./Catalog/ProductModifications";
 
 export default class ProductModificationEditButton extends React.Component{
@@ -10,6 +11,7 @@ export default class ProductModificationEditButton extends React.Component{
 		super(props);
 		this.state = {
 			showModal: false,
+			showModificationTable: false,
 			modification: ''
 		}
 	}
@@ -33,6 +35,14 @@ export default class ProductModificationEditButton extends React.Component{
 		this.setState({ showModal: true });
 	}
 
+	openModificationTable() {
+		this.setState({ showModificationTable: true });
+	}
+
+	closeModificationTable() {
+		this.setState({ showModificationTable: false });
+	}
+
 	save(e){
 		e.preventDefault();
 		this.setState({ showModal: false });
@@ -49,11 +59,12 @@ export default class ProductModificationEditButton extends React.Component{
 		return(
 			<div className="pull-right">
 				<Button
-					onClick={this.open.bind(this)}
+					onClick={this.openModificationTable.bind(this)}
 					bsStyle="primary"
 					bsSize="small">
 					<Glyphicon glyph="pencil" />
 				</Button>
+				<ProductModifications showModal={this.state.showModificationTable} hideModal={this.closeModificationTable.bind(this)}/>
 				<Modal
 					dialogClassName="w100"
 					show={this.state.showModal}
@@ -63,7 +74,7 @@ export default class ProductModificationEditButton extends React.Component{
 					</Modal.Header>
 
 					<Modal.Body>
-						<ProductModifications
+						<ProductModificationsTable
 							dataTable={this.state.modification}
 							handleChange={this.handleChange.bind(this)}
 						/>

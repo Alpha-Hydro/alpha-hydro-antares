@@ -2,7 +2,8 @@ import React from "react";
 import {Modal, Button, Glyphicon, Table} from "react-bootstrap/lib";
 
 import ModificationTableColumn from "./ModificationTableColumn";
-import Modificationproperty from "./ModificationProperty";
+import ModificationProperty from "./ModificationProperty";
+import ModificationNewProperty from "./ModificationNewProperty";
 
 export default class ModificationHeadTable extends React.Component{
 	constructor(props){
@@ -20,15 +21,16 @@ export default class ModificationHeadTable extends React.Component{
 		});
 	}
 
-	properties() {
+	modificationProperties() {
+		const self = this;
 		return this.props.columns.map(function (property, i) {
-			return <Modificationproperty
+			return <ModificationProperty
 				key={i}
-				property={property} />
+				index={i}
+				property={property}
+				{...self.props}	/>
 		});
 	}
-
-
 
 	close() {
 		this.setState({ showModal: false });
@@ -56,16 +58,29 @@ export default class ModificationHeadTable extends React.Component{
 						</Modal.Header>
 
 						<Modal.Body>
-							<Table>
+							<Table className="mb0">
+								<thead>
+									<tr>
+										<th className="col-sm-2">№№/пп</th>
+										<th>Наименование</th>
+										<th className="col-sm-2">Действие</th>
+									</tr>
+								</thead>
 								<tbody>
-									{this.properties()}
+									{this.modificationProperties()}
 								</tbody>
+								<tfoot>
+									<ModificationNewProperty
+										productId={this.props.productId}
+										handleAdd={this.props.handleAdd}
+									/>
+								</tfoot>
 							</Table>
 						</Modal.Body>
 
 						<Modal.Footer>
 							<Button onClick={this.close.bind(this)}>Отмена</Button>
-							<Button bsStyle="primary" onClick={this.close.bind(this)}>Сохранить изменения</Button>
+							<Button bsStyle="success" onClick={this.close.bind(this)}>Сохранить изменения</Button>
 						</Modal.Footer>
 					</Modal>
 				</th>

@@ -1,81 +1,42 @@
 import React from "react";
-import {Table, Input, Button, Glyphicon} from "react-bootstrap/lib";
-import modificationHelpers from "./../../utils/productModificationHelper"
-
-import ModificationTableNewItem from "./ProductModificatons/ModificationTableNewItem";
-import ModificationHeadTable from "./ProductModificatons/ModificationHeadTable";
-import ModificationBodyTable from "./ProductModificatons/ModificationBodyTable";
+import {Button, Glyphicon, Modal} from "react-bootstrap/lib";
 
 export default class ProductModifications extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			columns: props.dataTable.columns,
-			rows: props.dataTable.rows
-		};
+			showModal: props.showModal,
+			modification: ''
+		}
 	}
 
-	handleChangeColumn(data, index){
-		this.state.columns[index] = data;
-		this.setState(this.state, () => {
-			this.props.handleChange(this.state);
-		});
-	}
-	
-	handleChangeRowItem(data, index){
-		this.state.rows[index].item = data;
-		this.setState(this.state, () => {
-			this.props.handleChange(this.state);
-		});
+	close() {
+		this.props.hideModal();
 	}
 
-	handleChangeRowValue(data, indexRow, indexValue){
-		this.state.rows[indexRow].values[indexValue] = data;
-		this.setState(this.state, () => {
-			this.props.handleChange(this.state);
-		});
-
+	open() {
+		this.setState({ showModal: true });
 	}
 
-	handleAdd(data){
-		console.log('NEW MODIFICATION', data);
-		this.state.rows = this.state.rows.concat(data);
-		this.setState(this.state, () => {
-			this.props.handleChange(this.state);
-		});
-	}
+	render(){
+		return(
+			<Modal
+				dialogClassName="w100"
+				show={this.props.showModal}
+				onHide={this.close.bind(this)}>
+				<Modal.Header closeButton>
+					<Modal.Title>Модификации и размеры</Modal.Title>
+				</Modal.Header>
 
-	handleDelete(index){
-		console.log('handleDelete: ', this.state.rows[index]);
-		var rows = this.state.rows;
-		var item = rows[index].item;
-		if(item.id != 'new') modificationHelpers.deleteModification(item.id);
-		rows.splice(index, 1);
-		this.setState({rows: rows}, ()=>{
-			this.props.handleChange(this.state);
-		});
-	}
+				<Modal.Body>
+					Modification table
+				</Modal.Body>
 
-	render() {
-		return (
-			<Table className="mb0">
-				<thead>
-					<ModificationHeadTable
-						columns={this.state.columns}
-						handleChange={this.handleChangeColumn.bind(this)}	/>
-				</thead>
-				<ModificationBodyTable 
-					rows={this.state.rows} 
-					handleDeleteRow={this.handleDelete.bind(this)}
-					handleChangeRowItem={this.handleChangeRowItem.bind(this)}
-					handleChangeRowValue={this.handleChangeRowValue.bind(this)} />
-				<tfoot>
-					<ModificationTableNewItem
-						parentId={this.props.dataTable.parentId}
-						columns={this.state.columns}
-						handleAdd={this.handleAdd.bind(this)} />
-				</tfoot>
-			</Table>
+				<Modal.Footer>
+					<Button onClick={this.close.bind(this)}>Отмена</Button>
+					<Button bsStyle="success" onClick={this.close.bind(this)}>Сохранить</Button>
+				</Modal.Footer>
+			</Modal>
 		)
 	}
 }
