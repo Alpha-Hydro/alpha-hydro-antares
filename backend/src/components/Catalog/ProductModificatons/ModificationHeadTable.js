@@ -2,7 +2,7 @@ import React from "react";
 import {Modal, Button, Glyphicon, Table} from "react-bootstrap/lib";
 
 import ModificationTableColumn from "./ModificationTableColumn";
-import ModificationProperty from "./ModificationProperty";
+import ModificationPropertyTableRow from "./ModificationPropertyTableRow";
 import ModificationNewProperty from "./ModificationNewProperty";
 
 export default class ModificationHeadTable extends React.Component{
@@ -24,7 +24,7 @@ export default class ModificationHeadTable extends React.Component{
 	modificationProperties() {
 		const self = this;
 		return this.props.columns.map(function (property, i) {
-			return <ModificationProperty
+			return <ModificationPropertyTableRow
 				key={i}
 				index={i}
 				property={property}

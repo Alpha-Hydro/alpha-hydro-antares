@@ -1,7 +1,7 @@
 import React from "react";
 import {Input, Button, Glyphicon} from "react-bootstrap/lib";
 
-export default class ModificationProperty extends  React.Component{
+export default class ModificationPropertyTableRow extends  React.Component{
 	constructor(props){
 		super(props);
 	}

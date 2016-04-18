@@ -1,38 +1,34 @@
 import React from "react";
-import {Button, Glyphicon, Modal} from "react-bootstrap/lib";
-import dataHelpers from "../utils/getDataHelper";
-import modificationHelpers from "../utils/productModificationHelper";
+import {ButtonGroup, Button, Glyphicon, Modal} from "react-bootstrap/lib";
 
-import ProductModificationsTable from "./Catalog/ProductModificatons/ProductModificationsTable";
+import dataHelpers from "../utils/getDataHelper";
+
 import ProductModifications from "./Catalog/ProductModifications";
+import ModificationProperties from "./Catalog/ModificationProperties";
 
 export default class ProductModificationEditButton extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			showModal: false,
+			showModificationPropertiesTable: false,
 			showModificationTable: false,
-			modification: ''
+			modifications: ''
 		}
 	}
 
-	componentDidMount(){
+	componentWillMount(){
 		dataHelpers.getCategoryProductModification(this.props.productId)
 			.then(function (response) {
-				this.setState({modification:response})
+				this.setState({modifications: response})
 			}.bind(this));
 	}
 
-	handleChange(data){
-		this.setState({modification:data});
+	closeModificationPropertiesTable() {
+		this.setState({ showModificationPropertiesTable: false });
 	}
 
-	close() {
-		this.setState({ showModal: false });
-	}
-
-	open() {
-		this.setState({ showModal: true });
+	openModificationPropertiesTable() {
+		this.setState({ showModificationPropertiesTable: true });
 	}
 
 	openModificationTable() {
@@ -43,48 +39,30 @@ export default class ProductModificationEditButton extends React.Component{
 		this.setState({ showModificationTable: false });
 	}
 
-	save(e){
-		e.preventDefault();
-		this.setState({ showModal: false });
-		console.log('SEND DATA: ', this.state.modification);
-		modificationHelpers.editModification(this.state.modification)
-			.then(function (response) {
-				console.log('SAVE DATA: ',response);
-				window.location.reload(true);
-				return false;
-			});
-	}
-
 	render(){
 		return(
 			<div className="pull-right">
-				<Button
-					onClick={this.openModificationTable.bind(this)}
-					bsStyle="primary"
-					bsSize="small">
-					<Glyphicon glyph="pencil" />
-				</Button>
-				<ProductModifications showModal={this.state.showModificationTable} hideModal={this.closeModificationTable.bind(this)}/>
-				<Modal
-					dialogClassName="w100"
-					show={this.state.showModal}
-					onHide={this.close.bind(this)}>
-					<Modal.Header closeButton>
-						<Modal.Title>Модификации и размеры</Modal.Title>
-					</Modal.Header>
-
-					<Modal.Body>
-						<ProductModificationsTable
-							dataTable={this.state.modification}
-							handleChange={this.handleChange.bind(this)}
-						/>
-					</Modal.Body>
-
-					<Modal.Footer>
-						<Button onClick={this.close.bind(this)}>Отмена</Button>
-						<Button bsStyle="success" onClick={this.save.bind(this)}>Сохранить</Button>
-					</Modal.Footer>
-				</Modal>
+				<ButtonGroup bsSize="small">
+					<Button
+						onClick={this.openModificationPropertiesTable.bind(this)}
+						bsStyle="primary"	>
+						<Glyphicon glyph="cog" />
+					</Button>
+					<Button
+						onClick={this.openModificationTable.bind(this)}
+						bsStyle="primary"	>
+						<Glyphicon glyph="pencil" />
+					</Button>
+				</ButtonGroup>
+				<ProductModifications
+					{...this.props}
+					dataTable={this.state.modifications}
+					showModal={this.state.showModificationTable}
+					hideModal={this.closeModificationTable.bind(this)}/>
+				<ModificationProperties
+					{...this.props}
+					showModal={this.state.showModificationPropertiesTable}
+					hideModal={this.closeModificationPropertiesTable.bind(this)}/>
 			</div>
 		)
 	};
