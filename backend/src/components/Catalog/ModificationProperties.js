@@ -2,6 +2,7 @@ import React from 'react';
 import {Button, Glyphicon, Modal} from "react-bootstrap/lib";
 
 import dataHelpers from "../../utils/getDataHelper";
+import modificationHelpers from "../../utils/productModificationHelper";
 
 import ModificationPropertiesTable from "./ProductModificatons/ModificationPropertiesTable"
 
@@ -59,6 +60,18 @@ export default class ModificationProperties extends React.Component{
 			}.bind(this));
 	}
 
+	onSave(e){
+		e.preventDefault();
+		this.props.hideModal();
+		console.log('SEND DATA: ', this.state);
+		modificationHelpers.editModificationProperty(this.state)
+			.then(function (response) {
+				console.log('SAVE DATA: ',response);
+				//window.location.reload(true);
+				return false;
+			});
+	}
+
 	render(){
 		return(
 			<Modal
@@ -80,7 +93,7 @@ export default class ModificationProperties extends React.Component{
 
 				<Modal.Footer>
 					<Button onClick={this.onCancel.bind(this)}>Отмена</Button>
-					<Button bsStyle="success" onClick={this.close.bind(this)}>Сохранить</Button>
+					<Button bsStyle="success" onClick={this.onSave.bind(this)}>Сохранить</Button>
 				</Modal.Footer>
 			</Modal>
 		)

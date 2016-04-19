@@ -16,6 +16,21 @@ var helpers = {
 			}
 		});
 	},
+	editModificationProperty: function (data) {
+		return $.ajax({
+			url: '/admin/products/modification-property-edit',
+			type: 'POST',
+			data: {
+				modificationPropertyData: data
+			},
+			success: function(data){
+				return data;
+			},
+			error:function(xhr, status){
+				console.log('error', status);
+			}
+		})
+	},
 	deleteModification: function (id) {
 		return axios.get("/admin/products/modification-del/?id=" + id)
 			.then(function (response) {

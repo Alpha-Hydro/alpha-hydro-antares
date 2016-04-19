@@ -5,41 +5,49 @@ class ProductsController extends Zend_Controller_Action
 
     /**
      * @var Catalog_Model_Mapper_Products
+     *
      */
     protected $_modelMapper = null;
 
     /**
      * @var Catalog_Model_Mapper_Categories
+     *
      */
     protected $_categoriesModelMapper = null;
 
     /**
      * @var Catalog_Model_Mapper_ProductParams
+     *
      */
     protected $_paramsMapper = null;
 
     /**
      * @var Catalog_Model_Mapper_Subproducts
+     *
      */
     protected $_subproductsModelMapper = null;
 
     /**
      * @var Catalog_Model_Mapper_SubproductParams
+     *
      */
     protected $_subproductsParamsMapper = null;
 
     /**
      * @var Catalog_Model_Mapper_SubproductParamsValues
+     *
      */
     protected $_subproductParamsValuesMapper = null;
 
     /**
      * @var Zend_Controller_Request_Abstract
+     *
      */
     protected $_request = null;
 
     /**
      * @var Zend_Controller_Action_Helper_Redirector
+     *
      */
     protected $_redirector = null;
 
@@ -65,6 +73,7 @@ class ProductsController extends Zend_Controller_Action
             ->addActionContext('modification', array('json'))
             ->addActionContext('modification-edit', array('json'))
             ->addActionContext('modification-del', array('json'))
+            ->addActionContext('modification-property-edit', array('json'))
             ->initContext();
     }
 
@@ -263,7 +272,7 @@ class ProductsController extends Zend_Controller_Action
         $modificationTableData = $this->_request->getParam('modificationTableData');
         if($modificationTableData){
 
-            $subproductProperties = $modificationTableData['columns'];
+            /*$subproductProperties = $modificationTableData['columns'];
             if($subproductProperties){
                 foreach ($subproductProperties as $subproductProperty) {
                     $subproductParams = $this->_subproductsParamsMapper->find($subproductProperty['id'], new Catalog_Model_SubproductParams());
@@ -272,7 +281,7 @@ class ProductsController extends Zend_Controller_Action
                         $this->_subproductsParamsMapper->save($subproductParams);
                     }
                 }
-            }
+            }*/
 
             $modifications = $modificationTableData['rows'];
             if($modifications){
@@ -310,6 +319,22 @@ class ProductsController extends Zend_Controller_Action
                             }
                         }
                         $modificationTableData['newItem'][] = $modification;
+                    }
+                }
+            }
+            
+            $deletedModifications = $modificationTableData['deleted'];
+            if($deletedModifications && !empty($deletedModifications)){
+                foreach ($deletedModifications as $deletedModification) {
+                    $item = $deletedModification['item'];
+                    $subProductId = $item['id'];
+                    if($subProductId != 'new'){
+                        $subProduct = $this->_subproductsModelMapper
+                            ->find($subProductId, new Catalog_Model_Subproducts());
+                        if($subProduct){
+                            $subProduct->setDeleted(1);
+                            $this->_subproductsModelMapper->save($subProduct);
+                        }
                     }
                 }
             }
@@ -373,7 +398,17 @@ class ProductsController extends Zend_Controller_Action
             $this->_subproductParamsValuesMapper->save($subproductParamsValue);
         }
     }
+
+    public function modificationPropertyEditAction()
+    {
+        //Zend_Debug::dump($this->_request->getParams());
+        return $this->_helper->json->sendJson($this->_request->getParams());
+    }
+
+
 }
+
+
 
 
 

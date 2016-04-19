@@ -84,7 +84,7 @@ export default class ModificationBodyTableRow extends React.Component{
 							<div className="text-center">
 								<p>Вы действительно хотите удалить товарную модификацию</p>
 								<p className="lead">{this.props.row.item.sku}</p>
-								<p>со всеми значениями свойств. Восстановление возможно будет через корзину, с правами администратора.</p>
+								<p>со всеми значениями свойств.</p>
 							</div>
 						</Modal.Body>
 

@@ -2,7 +2,6 @@ import React from "react";
 import {Input, ButtonGroup, Button} from "react-bootstrap/lib";
 
 import ModificationTableNewValue from "./ModificationTableNewValue";
-import propertyHelpers from "./../../../utils/productModificationHelper";
 
 export default class ModificationTableNewItem extends React.Component{
 	constructor(props){
@@ -10,7 +9,7 @@ export default class ModificationTableNewItem extends React.Component{
 		this.state = {
 			item: {
 				id: 'new',
-				parentId: props.parentId,
+				parentId: props.productId,
 				sku: '',
 				order: ''
 			},

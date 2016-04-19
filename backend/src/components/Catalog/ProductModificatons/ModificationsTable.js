@@ -11,14 +11,6 @@ export default class ModificationsTable extends React.Component{
 		super(props);
 	}
 
-	handleAdd(data){
-		console.log('NEW MODIFICATION', data);
-		this.state.rows = this.state.rows.concat(data);
-		this.setState(this.state, () => {
-			this.props.handleChange(this.state);
-		});
-	}
-
 	bodyTable(){
 		const self = this;
 		return this.props.rows.map(function (row, i) {
@@ -41,7 +33,7 @@ export default class ModificationsTable extends React.Component{
 					{this.bodyTable()}
 				</tbody>
 				<tfoot>
-					<ModificationTableNewItem {...this.props} />
+					<ModificationTableNewItem {...this.props}/>
 				</tfoot>
 			</Table>
 		)

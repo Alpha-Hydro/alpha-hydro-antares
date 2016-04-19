@@ -1,9 +1,12 @@
 import React from "react";
-import {Input, Button, Glyphicon} from "react-bootstrap/lib";
+import {Modal, Input, Button, Glyphicon} from "react-bootstrap/lib";
 
 export default class ModificationPropertyTableRow extends  React.Component{
 	constructor(props){
 		super(props);
+		this.state = {
+			showModal: false
+		}
 	}
 	
 	onChange(key){
@@ -15,6 +18,14 @@ export default class ModificationPropertyTableRow extends  React.Component{
 	
 	onDelete(){
 		this.props.handleDelete(this.props.index);
+	}
+
+	close() {
+		this.setState({ showModal: false });
+	}
+
+	open() {
+		this.setState({ showModal: true });
 	}
 
 	render(){
@@ -37,9 +48,30 @@ export default class ModificationPropertyTableRow extends  React.Component{
 					/>
 				</td>
 				<td>
-					<Button bsStyle="danger" onClick={this.onDelete.bind(this)}>
+					<Button bsStyle="danger" onClick={this.open.bind(this)}>
 						<Glyphicon glyph="trash"/>
 					</Button>
+
+					<Modal
+						show={this.state.showModal}
+						onHide={this.close.bind(this)}>
+						<Modal.Header closeButton>
+							<Modal.Title>Удаление свойства товарной модификации</Modal.Title>
+						</Modal.Header>
+
+						<Modal.Body>
+							<div className="text-center">
+								<p>Вы действительно хотите удалить совйство</p>
+								<p className="lead">"{this.props.property.name}"</p>
+								<p>Данное свойство будет удалено со всеми значениями во всех модификациях данного товара (т.е будет удален весь столбец в таблице модификаций со всеми значениями).</p>
+							</div>
+						</Modal.Body>
+
+						<Modal.Footer>
+							<Button onClick={this.close.bind(this)}>Отмена</Button>
+							<Button bsStyle="danger" onClick={this.onDelete.bind(this)}>Удалить</Button>
+						</Modal.Footer>
+					</Modal>
 				</td>
 			</tr>
 		)
