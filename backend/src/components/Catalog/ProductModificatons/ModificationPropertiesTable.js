@@ -2,6 +2,7 @@ import React from "react";
 import Table from "react-bootstrap/lib/Table";
 
 import ModificationPropertyTableRow from "./ModificationPropertyTableRow";
+import ModificationNewProperty from "./ModificationNewProperty";
 
 export default class ModificationPropertiesTable extends React.Component{
 	constructor(props){
@@ -23,17 +24,17 @@ export default class ModificationPropertiesTable extends React.Component{
 		return(
 			<Table className="mb0">
 				<thead>
-				<tr>
-					<th className="col-sm-2">№№/пп</th>
-					<th>Наименование</th>
-					<th className="col-sm-2">Действие</th>
-				</tr>
+					<tr>
+						<th className="col-sm-2">№№/пп</th>
+						<th>Наименование</th>
+						<th className="col-sm-2">Действие</th>
+					</tr>
 				</thead>
 				<tbody>
 					{this.modificationProperties()}
 				</tbody>
 				<tfoot>
-				
+					<ModificationNewProperty {...this.props}/>
 				</tfoot>
 			</Table>
 		)

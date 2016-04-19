@@ -9,7 +9,8 @@ export default class ModificationProperties extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			columns: []
+			columns: [],
+			deleted: []
 		}
 	}
 
@@ -32,15 +33,27 @@ export default class ModificationProperties extends React.Component{
 
 	handleDelete(index){
 		console.log('DELETE PROPERTY: ', this.state.columns[index]);
+		var deleted = (this.state.columns[index].id != 'new')
+			?	this.state.deleted.concat(this.state.columns[index])
+			: this.state.deleted;
 		var columns = this.state.columns;
 		columns.splice(index, 1);
+		this.setState({
+			columns: columns,
+			deleted: deleted
+		});
+	}
+
+	handleAdd(data){
+		console.log('NEW PROPERTY: ', data);
+		var columns = this.state.columns.concat(data);
 		this.setState({columns: columns});
 	}
 
-	handleCancel(){
+	onCancel(){
 		dataHelpers.getCategoryProductModification(this.props.productId)
 			.then(function (response) {
-				this.setState({columns: response.columns}, () => {
+				this.setState({columns: response.columns, deleted: []}, () => {
 					this.props.hideModal();
 				});
 			}.bind(this));
@@ -57,14 +70,16 @@ export default class ModificationProperties extends React.Component{
 
 				<Modal.Body>
 					<ModificationPropertiesTable
+						productId={this.props.productId}
 						dataTable={this.state.columns}
 						handleChange={this.handleChange.bind(this)}
 						handleDelete={this.handleDelete.bind(this)}
+						handleAdd={this.handleAdd.bind(this)}
 					/>
 				</Modal.Body>
 
 				<Modal.Footer>
-					<Button onClick={this.handleCancel.bind(this)}>Отмена</Button>
+					<Button onClick={this.onCancel.bind(this)}>Отмена</Button>
 					<Button bsStyle="success" onClick={this.close.bind(this)}>Сохранить</Button>
 				</Modal.Footer>
 			</Modal>

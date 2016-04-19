@@ -16,7 +16,7 @@ export default class ModificationHeadTable extends React.Component{
 						key={i}
 						column={column} />
 				})}
-				<th>Действия</th>
+				<th>Действие</th>
 			</tr>
 		);
 	}

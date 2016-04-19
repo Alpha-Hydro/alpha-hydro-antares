@@ -20,24 +20,24 @@ export default class ModificationBodyTableRow extends React.Component{
 	}
 
 	handleChangeItem(key){
-		var dataItem = this.props.row.item;
+		var data = this.props.rows[this.props.index];
 		return (e) => {
-			dataItem[key] = e.target.value;
-			this.props.handleChangeRowItem(dataItem, this.props.index);
+			data.item[key] = e.target.value;
+			this.props.handleChange(data, this.props.index);
 		}
 	}
 
 	handleChangeValue(index){
-		var dataValue = this.props.row.values[index];
+		var data = this.props.rows[this.props.index];
 		return (e) => {
-			dataValue.value = e.target.value;
-			this.props.handleChangeRowValue(dataValue, this.props.index, index);
+			data.values[index].value = e.target.value;
+			this.props.handleChange(data, this.props.index);
 		}
 	}
 
 	onDelete(){
 		this.setState({ showModal: false }, () => {
-			this.props.handleDeleteRow(this.props.index)
+			this.props.handleDelete(this.props.index)
 		});
 	}
 
@@ -63,7 +63,9 @@ export default class ModificationBodyTableRow extends React.Component{
 				<ModificationBodyTableRowTd
 					onChange={this.handleChangeItem('sku').bind(this)}
 					value={this.props.row.item.sku}/>
+
 				{this.itemProperty()}
+
 				<td>
 					<Button
 						bsSize="small"

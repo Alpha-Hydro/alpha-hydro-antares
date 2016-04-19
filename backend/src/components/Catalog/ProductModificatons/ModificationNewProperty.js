@@ -5,7 +5,7 @@ export default class ModificationNewProperty extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			id: 'new_subproduct_params',
+			id: 'new',
 			productId: this.props.productId,
 			order: '',
 			name: ''
@@ -23,7 +23,7 @@ export default class ModificationNewProperty extends React.Component{
 		var newProperty = this.state;
 		this.props.handleAdd(newProperty);
 		this.setState({
-			id: 'new_subproduct_params',
+			id: 'new',
 			productId: this.props.productId,
 			order: '',
 			name: ''

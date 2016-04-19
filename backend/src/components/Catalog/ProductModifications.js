@@ -4,23 +4,69 @@ import {Button, Glyphicon, Modal} from "react-bootstrap/lib";
 import dataHelpers from "../../utils/getDataHelper";
 import modificationHelpers from "../../utils/productModificationHelper";
 
-import ProductModificationsTable from "./ProductModificatons/ProductModificationsTable";
+import ProductModificationsTable from "./ProductModificatons/ModificationsTable";
 
 export default class ProductModifications extends React.Component{
 	constructor(props){
 		super(props);
-		this.state = {};
+		this.state = {
+			columns: [],
+			rows:[],
+			deleted: []
+		};
 	}
 	
 	componentWillMount(){
 		dataHelpers.getCategoryProductModification(this.props.productId)
 			.then(function (response) {
-				this.setState(response)
+				this.setState({
+					columns: response.columns,
+					rows: response.rows
+				})
 			}.bind(this));
 	}
 
-	handleChange(data){
-		this.setState(data);
+	close() {
+		this.props.hideModal();
+	}
+
+	handleChange(data, index){
+		var rows = this.state.rows;
+		rows[index] = data;
+		this.setState({rows: rows});
+	}
+
+	handleDelete(index){
+		console.log('handleDelete: ', this.state.rows[index]);
+		var deleted = (this.state.rows[index].item.id != 'new')
+			? this.state.deleted.concat(this.state.rows[index])
+			: this.state.deleted;
+		var rows = this.state.rows;
+		rows.splice(index, 1);
+		this.setState({
+			rows: rows,
+			deleted: deleted
+		})
+	}
+
+	handleAdd(data){
+		console.log('NEW MODIFICATION', data);
+		var rows = this.state.rows;
+		rows = this.state.rows.concat(data);
+		this.setState({rows: rows});
+	}
+
+	onCancel(){
+		dataHelpers.getCategoryProductModification(this.props.productId)
+			.then(function (response) {
+				this.setState({
+					columns: response.columns,
+					rows: response.rows,
+					deleted: []
+				}, () => {
+					this.props.hideModal();
+				});
+			}.bind(this));
 	}
 
 	onSave(e){
@@ -35,10 +81,6 @@ export default class ProductModifications extends React.Component{
 			});
 	}
 
-	close() {
-		this.props.hideModal();
-	}
-
 	render(){
 		return(
 			<Modal
@@ -51,13 +93,17 @@ export default class ProductModifications extends React.Component{
 
 				<Modal.Body>
 					<ProductModificationsTable
-						dataTable={this.state}
+						productId={this.props.productId}
+						columns={this.state.columns}
+						rows={this.state.rows}
 						handleChange={this.handleChange.bind(this)}
+						handleDelete={this.handleDelete.bind(this)}
+						handleAdd={this.handleAdd.bind(this)}
 					/>
 				</Modal.Body>
 
 				<Modal.Footer>
-					<Button onClick={this.close.bind(this)}>Отмена</Button>
+					<Button onClick={this.onCancel.bind(this)}>Отмена</Button>
 					<Button bsStyle="success" onClick={this.onSave.bind(this)}>Сохранить</Button>
 				</Modal.Footer>
 			</Modal>
