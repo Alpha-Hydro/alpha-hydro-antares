@@ -1,8 +1,6 @@
 import React from "react";
 import {ButtonGroup, Button, Glyphicon, Modal} from "react-bootstrap/lib";
 
-import dataHelpers from "../utils/getDataHelper";
-
 import ProductModifications from "./Catalog/ProductModifications";
 import ModificationProperties from "./Catalog/ModificationProperties";
 
@@ -11,27 +9,21 @@ export default class ProductModificationEditButton extends React.Component{
 		super(props);
 		this.state = {
 			showModificationPropertiesTable: false,
-			showModificationTable: false,
-			modifications: ''
+			showModificationTable: false
 		}
-	}
-
-	componentWillMount(){
-		dataHelpers.getCategoryProductModification(this.props.productId)
-			.then(function (response) {
-				this.setState({modifications: response})
-			}.bind(this));
 	}
 
 	closeModificationPropertiesTable() {
 		this.setState({ showModificationPropertiesTable: false });
 	}
 
-	openModificationPropertiesTable() {
+	openModificationPropertiesTable(e) {
+		e.preventDefault();
 		this.setState({ showModificationPropertiesTable: true });
 	}
 
-	openModificationTable() {
+	openModificationTable(e) {
+		e.preventDefault();
 		this.setState({ showModificationTable: true });
 	}
 
@@ -56,7 +48,6 @@ export default class ProductModificationEditButton extends React.Component{
 				</ButtonGroup>
 				<ProductModifications
 					{...this.props}
-					dataTable={this.state.modifications}
 					showModal={this.state.showModificationTable}
 					hideModal={this.closeModificationTable.bind(this)}/>
 				<ModificationProperties

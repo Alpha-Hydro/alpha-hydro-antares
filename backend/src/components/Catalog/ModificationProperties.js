@@ -1,15 +1,49 @@
 import React from 'react';
-
 import {Button, Glyphicon, Modal} from "react-bootstrap/lib";
+
+import dataHelpers from "../../utils/getDataHelper";
+
+import ModificationPropertiesTable from "./ProductModificatons/ModificationPropertiesTable"
 
 export default class ModificationProperties extends React.Component{
 	constructor(props){
 		super(props);
-		this.state = {}
+		this.state = {
+			columns: []
+		}
+	}
+
+	componentWillMount(){
+		dataHelpers.getCategoryProductModification(this.props.productId)
+			.then(function (response) {
+				this.setState({columns: response.columns});
+			}.bind(this));
 	}
 
 	close() {
 		this.props.hideModal();
+	}
+
+	handleChange(data, index){
+		var columns = this.state.columns;
+		columns[index] = data;
+		this.setState({columns: columns});
+	}
+
+	handleDelete(index){
+		console.log('DELETE PROPERTY: ', this.state.columns[index]);
+		var columns = this.state.columns;
+		columns.splice(index, 1);
+		this.setState({columns: columns});
+	}
+
+	handleCancel(){
+		dataHelpers.getCategoryProductModification(this.props.productId)
+			.then(function (response) {
+				this.setState({columns: response.columns}, () => {
+					this.props.hideModal();
+				});
+			}.bind(this));
 	}
 
 	render(){
@@ -22,11 +56,15 @@ export default class ModificationProperties extends React.Component{
 				</Modal.Header>
 
 				<Modal.Body>
-					Modification properties table
+					<ModificationPropertiesTable
+						dataTable={this.state.columns}
+						handleChange={this.handleChange.bind(this)}
+						handleDelete={this.handleDelete.bind(this)}
+					/>
 				</Modal.Body>
 
 				<Modal.Footer>
-					<Button onClick={this.close.bind(this)}>Отмена</Button>
+					<Button onClick={this.handleCancel.bind(this)}>Отмена</Button>
 					<Button bsStyle="success" onClick={this.close.bind(this)}>Сохранить</Button>
 				</Modal.Footer>
 			</Modal>

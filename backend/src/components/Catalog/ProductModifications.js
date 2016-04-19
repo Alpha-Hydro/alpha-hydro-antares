@@ -6,19 +6,18 @@ import modificationHelpers from "../../utils/productModificationHelper";
 
 import ProductModificationsTable from "./ProductModificatons/ProductModificationsTable";
 
-
 export default class ProductModifications extends React.Component{
 	constructor(props){
 		super(props);
-		this.state = {}
+		this.state = {};
 	}
-
-	/*componentDidMount(){
+	
+	componentWillMount(){
 		dataHelpers.getCategoryProductModification(this.props.productId)
 			.then(function (response) {
 				this.setState(response)
 			}.bind(this));
-	}*/
+	}
 
 	handleChange(data){
 		this.setState(data);
