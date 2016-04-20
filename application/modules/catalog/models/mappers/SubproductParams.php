@@ -54,6 +54,17 @@ class Catalog_Model_Mapper_SubproductParams
 
     /**
      * @param $id
+     * @return $this
+     */
+    public function delete($id)
+    {
+        $this->getDbTable()->delete(array($this->_getDbPrimary(). ' = ?' => $id));
+        return $this;
+    }
+
+
+    /**
+     * @param $id
      * @param Catalog_Model_SubproductParams $subproductparams
      * @return Catalog_Model_SubproductParams|null
      */

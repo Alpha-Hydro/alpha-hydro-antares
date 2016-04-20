@@ -17,7 +17,9 @@ export default class ModificationPropertyTableRow extends  React.Component{
 	}
 	
 	onDelete(){
-		this.props.handleDelete(this.props.index);
+		this.setState({ showModal: false }, () => {
+			this.props.handleDelete(this.props.index)
+		});
 	}
 
 	close() {
@@ -63,7 +65,7 @@ export default class ModificationPropertyTableRow extends  React.Component{
 							<div className="text-center">
 								<p>Вы действительно хотите удалить совйство</p>
 								<p className="lead">"{this.props.property.name}"</p>
-								<p>Данное свойство будет удалено со всеми значениями во всех модификациях данного товара (т.е будет удален весь столбец в таблице модификаций со всеми значениями).</p>
+								<p>Данное свойство будет удалено со всеми значениями во всех модификациях данного товара (т.е будет удален весь столбец в таблице модификаций со всеми значениями). Восстановление невозможно!</p>
 							</div>
 						</Modal.Body>
 

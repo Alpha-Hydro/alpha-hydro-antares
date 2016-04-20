@@ -67,7 +67,7 @@ export default class ModificationProperties extends React.Component{
 		modificationHelpers.editModificationProperty(this.state)
 			.then(function (response) {
 				console.log('SAVE DATA: ',response);
-				//window.location.reload(true);
+				window.location.reload(true);
 				return false;
 			});
 	}
