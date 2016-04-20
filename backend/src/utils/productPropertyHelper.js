@@ -1,11 +1,11 @@
 var axios = require('axios');
 
 var helpers = {
-	editProperty: function (data) {
+	editProperty: function (sendData) {
 		return $.ajax({
 			url: '/admin/products/property-edit',
 			type: 'POST',
-			data: {property: data},
+			data: sendData,
 			success: function(data){
 				return data;
 			},

@@ -187,34 +187,46 @@ class ProductsController extends Zend_Controller_Action
     public function propertyEditAction()
     {
         //Zend_Debug::dump($this->_request->getParams());
-        $paramsProperty = $this->_request->getParam('property');
 
-        if($paramsProperty){
-            $productParams = new Catalog_Model_ProductParams();
+        $properties = $this->_request->getParam('properties');
+        if($properties && !empty($properties)){
+            foreach ($properties as $property) {
+                if($property['id'] != 'new'){
+                    $productParams = $this->_paramsMapper->find($property['id'], new Catalog_Model_ProductParams());
+                    if($productParams){
+                        $productParams->setOptions($property);
+                        $this->_paramsMapper->save($productParams);
+                    }
+                }
+                else{
+                    $productParams = new Catalog_Model_ProductParams();
+                    $productParamsOrder = ($property['order'] && $property['order'] != '')
+                        ? $property['order']
+                        : 0;
 
-            $productParamsOrder = ($paramsProperty['order'] && $paramsProperty['order'] != '')
-                ? $paramsProperty['order']
-                : 0;
-            
-            if($paramsProperty['id'] != 'new'){
-                $productParams->setOptions($paramsProperty);
-                $this->_paramsMapper->save($productParams);
+                    $productParams
+                        ->setName($property['name'])
+                        ->setOrder($productParamsOrder)
+                        ->setProductId($property['productId'])
+                        ->setValue($property['value']);
+
+                    $this->_paramsMapper->save($productParams);
+
+                    $id = $this->_paramsMapper->getDbTable()->getAdapter()->lastInsertId();
+                    $productParams->setId($id);
+                }
             }
-            else {
-                $productParams
-                    ->setName($paramsProperty['name'])
-                    ->setOrder($productParamsOrder)
-                    ->setProductId($paramsProperty['productId'])
-                    ->setValue($paramsProperty['value']);
-
-                $this->_paramsMapper->save($productParams);
-
-                $id = $this->_paramsMapper->getDbTable()->getAdapter()->lastInsertId();
-                $productParams->setId($id);
-            }
-
-            $this->_helper->json->sendJson($productParams->getOptions());
         }
+
+        $deletedProperies = $this->_request->getParam('deleted');
+        if($deletedProperies && !empty($deletedProperies)){
+            foreach ($deletedProperies as $deletedPropery) {
+                $id = $deletedPropery['id'];
+                $this->_paramsMapper->delete($id);
+            }
+        }
+
+        $this->_helper->json->sendJson($properties);
     }
 
     public function propertyDelAction()
@@ -282,13 +294,16 @@ class ProductsController extends Zend_Controller_Action
                     }
                     else {
                         $subProduct = new Catalog_Model_Subproducts();
+                        $subProductOrder = ($item['order'] && $item['order'] != '')
+                            ? $item['order']
+                            : 0;
                         $subProduct
                             ->setParentId($item['parentId'])
                             ->setSku($item['sku'])
                             ->setName($item['sku'])
                             ->setAddDate(date("Y-m-d H:i:s"))
                             ->setModDate(date("Y-m-d H:i:s"))
-                            ->setOrder($item['order'])
+                            ->setOrder($subProductOrder)
                             ->setDeleted(0);
 
                         $this->_subproductsModelMapper->save($subProduct);
@@ -417,10 +432,13 @@ class ProductsController extends Zend_Controller_Action
     public function newSubproductProperty(&$subproductProperty)
     {
         $subproductParams = new Catalog_Model_SubproductParams();
+        $subproductParamsOrder = ($subproductProperty['order'] && $subproductProperty['order'] != '')
+            ? $subproductProperty['order']
+            : 0;
         $subproductParams
             ->setProductId($subproductProperty['productId'])
             ->setName($subproductProperty['name'])
-            ->setOrder($subproductProperty['order']);
+            ->setOrder($subproductParamsOrder);
 
         $this->_subproductsParamsMapper->save($subproductParams);
         $id = $this->_subproductsParamsMapper->getDbTable()->getAdapter()->lastInsertId();

@@ -1,6 +1,7 @@
 import React from "react";
 import {Button, Glyphicon, Modal} from "react-bootstrap/lib";
 import dataHelpers from "../utils/getDataHelper";
+import productPropertyHelpers from "../utils/productPropertyHelper";
 import ProductProperties from "./Catalog/ProductProperties"
 
 
@@ -54,6 +55,23 @@ export default class ProductPropertyEditButton extends React.Component{
 		this.setState({properties: properties});
 	}
 
+	onSave(e){
+		e.preventDefault();
+		var data = {
+			properties: this.state.properties,
+			deleted: this.state.deleted
+		};
+		this.setState({showModal: false});
+		console.log('SEND DATA: ', data);
+
+		productPropertyHelpers.editProperty(data)
+			.then(function (response) {
+				console.log('SAVE DATA: ',response);
+				window.location.reload(true);
+				return false;
+			});
+	}
+
 	onCancel(){
 		dataHelpers.getCategoryProductProperties(this.props.productId)
 			.then(function (response) {
@@ -94,7 +112,7 @@ export default class ProductPropertyEditButton extends React.Component{
 
 					<Modal.Footer>
 						<Button onClick={this.onCancel.bind(this)}>Отмена</Button>
-						<Button bsStyle="success" onClick={this.close.bind(this)}>Сохранить</Button>
+						<Button bsStyle="success" onClick={this.onSave.bind(this)}>Сохранить</Button>
 					</Modal.Footer>
 				</Modal>
 			</div>
