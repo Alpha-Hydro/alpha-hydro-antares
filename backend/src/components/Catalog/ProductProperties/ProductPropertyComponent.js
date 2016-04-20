@@ -6,15 +6,7 @@ export default class ProductPropertyComponent extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			showModal: false,
-			showSave: false,
-			property:{
-				id: props.property.id,
-				productId: props.property.productId,
-				order: props.property.order,
-				name: props.property.name,
-				value: props.property.value
-			}
+			showModal: false
 		}
 	}
 
@@ -26,30 +18,18 @@ export default class ProductPropertyComponent extends React.Component{
 		this.setState({ showModal: true });
 	}
 
-	handleChange(key){
+	onChange(key){
+		var data = this.props.properties[this.props.index]
 		return (e) => {
-			this.state.property[key]	= e.target.value;
-			this.setState({
-				showSave: true,
-				property: this.state.property
-			});
+			data[key]	= e.target.value;
+			this.props.handleChange(data, this.props.index);
 		};
 	}
 
-	handleSave(){
-		propertyHelpers.editProperty(this.state.property)
-			.then(function (response) {
-				this.props.onSave(response, this.props.index);
-				this.setState({showSave:false});
-			}.bind(this));
-	}
-
-	handleDelete(){
-		propertyHelpers.deleteProperty(this.state.property.id)
-			.then(function (response) {
-				response === 'deleted' && this.props.onDelete(this.props.index);
-				this.setState({ showModal: false });
-			}.bind(this));
+	onDelete(){
+		this.setState({ showModal: false }, () => {
+			this.props.handleDelete(this.props.index)
+		});
 	}
 
 	render(){
@@ -59,43 +39,39 @@ export default class ProductPropertyComponent extends React.Component{
 					<Input
 						type="text"
 						groupClassName="mb0" type="text"
-						value={this.state.property.order}
-						onChange={this.handleChange('order').bind(this)}/>
+						value={this.props.property.order}
+						onChange={this.onChange('order').bind(this)}/>
 				</td>
 				<td>
 					<Input
 						type="text"
 						groupClassName="mb0" type="text"
-						value={this.state.property.name}
-						onChange={this.handleChange('name').bind(this)}/>
+						value={this.props.property.name}
+						onChange={this.onChange('name').bind(this)}/>
 				</td>
 				<td>
 					<Input
 						type="text"
 						groupClassName="mb0"
-						value={this.state.property.value}
-						onChange={this.handleChange('value').bind(this)}/>
+						value={this.props.property.value}
+						onChange={this.onChange('value').bind(this)}/>
 				</td>
 				<td>
-					<input
-						type="hidden"
-						value={this.state.property.productId}/>
-
-					<ButtonGroup>
-						<Button onClick={this.open.bind(this)}><Glyphicon glyph="trash"/></Button>
-						{this.state.showSave && <Button bsStyle="success" onClick={this.handleSave.bind(this)}><Glyphicon glyph="floppy-save" /></Button>}
-					</ButtonGroup>
+					<Button bsStyle="danger" onClick={this.open.bind(this)}><Glyphicon glyph="trash"/></Button>
 
 					<Modal show={this.state.showModal} onHide={this.close.bind(this)}>
 						<Modal.Header closeButton>
 							<Modal.Title>Удалить свойство</Modal.Title>
 						</Modal.Header>
 						<Modal.Body>
-							Подтвердите удаление свойства товара...
+							<div className="text-center">
+								<p>Вы действительно хотите удалить свойство</p>
+								<p className="lead">"{this.props.property.name}"</p>
+							</div>
 						</Modal.Body>
 						<Modal.Footer>
 							<Button onClick={this.close.bind(this)}>Отмена</Button>
-							<Button onClick={this.handleDelete.bind(this)} bsStyle="danger">Удалить</Button>
+							<Button onClick={this.onDelete.bind(this)} bsStyle="danger">Удалить</Button>
 						</Modal.Footer>
 					</Modal>
 				</td>

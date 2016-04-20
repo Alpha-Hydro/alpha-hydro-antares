@@ -9,11 +9,12 @@ export default class ProductPropertyEditButton extends React.Component{
 		super(props);
 		this.state = {
 			showModal: false,
-			properties: ''
+			properties: [],
+			deleted: []
 		}
 	}
 
-	componentDidMount(){
+	componentWillMount(){
 		dataHelpers.getCategoryProductProperties(this.props.productId)
 			.then(function (response) {
 				this.setState({properties:response})
@@ -26,6 +27,42 @@ export default class ProductPropertyEditButton extends React.Component{
 
 	open() {
 		this.setState({ showModal: true });
+	}
+
+	handleChange(data, index){
+		var properties = this.state.properties;
+		properties[index] = data;
+		this.setState({properties: properties});
+	}
+
+	handleDelete(index){
+		console.log('DELETE PROPERTY: ', this.state.properties[index]);
+		var deleted = (this.state.properties[index].id != 'new')
+			?	this.state.deleted.concat(this.state.properties[index])
+			: this.state.deleted;
+		var properties = this.state.properties;
+		properties.splice(index, 1);
+		this.setState({
+			properties: properties,
+			deleted: deleted
+		});
+	}
+
+	handleAdd(data){
+		console.log('NEW PROPERTY: ', data);
+		var properties = this.state.properties.concat(data);
+		this.setState({properties: properties});
+	}
+
+	onCancel(){
+		dataHelpers.getCategoryProductProperties(this.props.productId)
+			.then(function (response) {
+				this.setState({
+					properties:response,
+					deleted: [],
+					showModal: false
+				})
+			}.bind(this));
 	}
 
 	render(){
@@ -46,11 +83,18 @@ export default class ProductPropertyEditButton extends React.Component{
 					</Modal.Header>
 
 					<Modal.Body>
-						<ProductProperties properties={this.state.properties} productId={this.props.productId}/>
+						<ProductProperties
+							{...this.props}
+							properties={this.state.properties}
+							handleChange={this.handleChange.bind(this)}
+							handleDelete={this.handleDelete.bind(this)}
+							handleAdd={this.handleAdd.bind(this)}
+						/>
 					</Modal.Body>
 
 					<Modal.Footer>
-						<Button onClick={this.close.bind(this)}>Закрыть</Button>
+						<Button onClick={this.onCancel.bind(this)}>Отмена</Button>
+						<Button bsStyle="success" onClick={this.close.bind(this)}>Сохранить</Button>
 					</Modal.Footer>
 				</Modal>
 			</div>

@@ -63,7 +63,7 @@ export default class ModificationPropertyTableRow extends  React.Component{
 
 						<Modal.Body>
 							<div className="text-center">
-								<p>Вы действительно хотите удалить совйство</p>
+								<p>Вы действительно хотите удалить свойство</p>
 								<p className="lead">"{this.props.property.name}"</p>
 								<p>Данное свойство будет удалено со всеми значениями во всех модификациях данного товара (т.е будет удален весь столбец в таблице модификаций со всеми значениями). Восстановление невозможно!</p>
 							</div>

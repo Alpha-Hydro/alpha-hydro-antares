@@ -341,7 +341,8 @@ class ProductsController extends Zend_Controller_Action
             foreach ($subproductProperties as $subproductProperty) {
                 $propertyId = $subproductProperty['id'];
                 if($propertyId != 'new'){
-                    $subproductParams = $this->_subproductsParamsMapper->find($propertyId, new Catalog_Model_SubproductParams());
+                    $subproductParams = $this->_subproductsParamsMapper
+                        ->find($propertyId, new Catalog_Model_SubproductParams());
                     if($subproductParams){
                         $subproductParams->setOptions($subproductProperty);
                         $this->_subproductsParamsMapper->save($subproductParams);

@@ -1,6 +1,5 @@
 import React from "react";
-import {Input, ButtonInput} from "react-bootstrap/lib";
-import propertyHelpers from "./../../../utils/productPropertyHelper";
+import {Input, Button} from "react-bootstrap/lib";
 
 export default class NewProductProperty extends React.Component{
 	constructor(props){
@@ -23,40 +22,40 @@ export default class NewProductProperty extends React.Component{
 	}
 
 	addNewProperty(e){
+		e.preventDefault();
 		var data = this.state;
 		if(data.order && data.name && data.value){
-			propertyHelpers.editProperty(data)
-				.then(function (response) {
-					this.props.newProperty(response);
-					this.setState({
-						order: '',
-						name: '',
-						value: ''
-					})
-				}.bind(this));
+			this.setState({
+				order: '',
+				name: '',
+				value: ''
+			}, () => {this.props.handleAdd(data)});
 		}
 	}
 	
 	render(){
 		return(
-			<tr>
-				<td className="col-md-1"><Input
+			<tr className="active">
+				<td className="col-sm-1"><Input
 					type="text"
+					groupClassName="mb0"
 					value={this.state.order}
 					onChange={this.handleChange('order').bind(this)}/>
 				</td>
 				<td><Input
 					type="text"
+					groupClassName="mb0"
 					value={this.state.name}
 					onChange={this.handleChange('name').bind(this)}/>
 				</td>
 				<td><Input
 					type="text"
+					groupClassName="mb0"
 					value={this.state.value}
 					onChange={this.handleChange('value').bind(this)}/>
 				</td>
 				<td>
-					<ButtonInput onClick={this.addNewProperty.bind(this)}>Добавить</ButtonInput>
+					<Button bsStyle="primary" onClick={this.addNewProperty.bind(this)}>Добавить</Button>
 				</td>
 			</tr>
 		)

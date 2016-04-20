@@ -9,6 +9,8 @@ import ProductModificationEditButton from "./components/ProductModificationEditB
 
 //import TitleEdit from "./edit-title/TitleEdit";
 
+var productId;
+
 const adminPanel = document.getElementById('admin-panel');
 if(adminPanel)
 	ReactDOM.render(<PanelNavComponent />, adminPanel);
@@ -38,7 +40,7 @@ if (addButtton){
 
 const productPropertyEdit = document.getElementById('product-property-edit');
 if (productPropertyEdit){
-	var productId = productPropertyEdit.getAttribute('data-id');
+	productId = productPropertyEdit.getAttribute('data-id');
 	ReactDOM.render(<ProductPropertyEditButton
 		productId = {productId}
 	/>, productPropertyEdit);
@@ -46,7 +48,7 @@ if (productPropertyEdit){
 
 const productModificationEdit = document.getElementById('product-modification-edit');
 if (productModificationEdit){
-	var productId = productModificationEdit.getAttribute('data-id');
+	productId = productModificationEdit.getAttribute('data-id');
 	ReactDOM.render(<ProductModificationEditButton
 		productId = {productId}
 	/>, productModificationEdit);

@@ -1,5 +1,5 @@
 import React from "react";
-import {Input, ButtonGroup, Button} from "react-bootstrap/lib";
+import {Input, Button} from "react-bootstrap/lib";
 
 import ModificationTableNewValue from "./ModificationTableNewValue";
 
@@ -89,9 +89,7 @@ export default class ModificationTableNewItem extends React.Component{
 				</td>
 				{newValuesTd}
 				<td>
-					<ButtonGroup bsSize="small">
-						<Button bsStyle="primary" onClick={this.addNewModification.bind(this)}>Добавить</Button>
-					</ButtonGroup>
+					<Button bsSize="small" bsStyle="primary" onClick={this.addNewModification.bind(this)}>Добавить</Button>
 				</td>
 			</tr>
 		)
