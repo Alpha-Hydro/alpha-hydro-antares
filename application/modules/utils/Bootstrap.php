@@ -47,6 +47,7 @@ class Utils_Bootstrap extends Zend_Application_Module_Bootstrap
         $acl->addResource(new Zend_Acl_Resource('csv-catalog-generator'));
         $acl->addResource(new Zend_Acl_Resource('cache-manager'));
         $acl->addResource(new Zend_Acl_Resource('update-image-catalog'));
+        $acl->addResource(new Zend_Acl_Resource('products-draft'));
 
         // далее переходим к созданию ролей, которых у нас 2:
         // гость (неавторизированный пользователь)

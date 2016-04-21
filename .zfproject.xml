@@ -983,6 +983,9 @@
             <controllerFile controllerName="UpdateImageCatalog">
               <actionMethod actionName="index"/>
             </controllerFile>
+            <controllerFile controllerName="ProductsDraft">
+              <actionMethod actionName="index"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory enabled="false"/>
           <layoutsDirectory enabled="false">
@@ -1049,6 +1052,9 @@
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="UpdateImageCatalog">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="ProductsDraft">
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>

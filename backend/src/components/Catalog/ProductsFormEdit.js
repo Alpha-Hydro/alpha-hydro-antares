@@ -25,7 +25,7 @@ export default class ProductsFormEdit extends React.Component{
 		}
 	}
 
-	componentDidMount(){
+	componentWillMount(){
 		var id = this.props.data.id;
 
 		categoryHelpers.getCategoryProduct(id)

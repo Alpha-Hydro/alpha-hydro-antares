@@ -221,7 +221,7 @@ class ManufactureCategoriesController extends Zend_Controller_Action
 
     /**
      * @param null $count_item_on_page
-     * @return Admin_ManufactureCategoriesController
+     * @return ManufactureCategoriesController
      */
     public function setCountItemOnPage($count_item_on_page)
     {

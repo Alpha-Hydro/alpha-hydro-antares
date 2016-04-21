@@ -12,6 +12,8 @@ class Catalog_Model_Products
     protected $_upload_path = null;
 
     protected $_a_images = null;
+    
+    protected $_draft = null;
 
     protected $_sku = null;
 
@@ -584,6 +586,24 @@ class Catalog_Model_Products
     public function getUploadPath()
     {
         return $this->_upload_path;
+    }
+
+    /**
+     * @param null $draft
+     * @return Catalog_Model_Products
+     */
+    public function setDraft($draft)
+    {
+        $this->_draft = $draft;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getDraft()
+    {
+        return $this->_draft;
     }
 
 
