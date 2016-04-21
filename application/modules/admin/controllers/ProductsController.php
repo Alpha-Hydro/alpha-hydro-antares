@@ -147,6 +147,31 @@ class ProductsController extends Zend_Controller_Action
     public function editAction()
     {
         Zend_Debug::dump($this->_request->getParams());
+
+        $productId = $this->_request->getParam('id');
+
+        if(is_null($productId))
+            $this->_redirector->gotoSimpleAndExit('index');
+
+        $product = $this->_modelMapper->find($productId, new Catalog_Model_Products());
+
+        if($this->_request->isPost()){
+            Zend_Debug::dump($this->_request->getParams());
+            $url = $this->_request->getParam('currentUrl');
+
+            if($this->_request->getParam('dataFormProducts')){
+                $dataProducts = $this->_request->getParam('dataFormProducts');
+                $product->setOptions($dataProducts);
+                $product->setModDate(date("Y-m-d H:i:s"));
+            }
+
+            $upload = new Zend_File_Transfer();
+            if($upload->isUploaded('fileLoadImage'))
+                Zend_Debug::dump($upload->getFileInfo('fileLoadImage'));
+
+            if($upload->isUploaded('fileLoadDraft'))
+                Zend_Debug::dump($upload->getFileInfo('fileLoadDraft'));
+        }
     }
 
     public function addAction()
@@ -415,6 +440,10 @@ class ProductsController extends Zend_Controller_Action
         $this->_helper->json->sendJson($response);
     }
 
+    /**
+     * @param $id
+     * @param $data
+     */
     public function saveEditSubproduct($id, &$data)
     {
         $subProduct = $this->_subproductsModelMapper
@@ -429,6 +458,10 @@ class ProductsController extends Zend_Controller_Action
         }
     }
 
+    /**
+     * @param $subproductProperty
+     * @return Catalog_Model_SubproductParams
+     */
     public function newSubproductProperty(&$subproductProperty)
     {
         $subproductParams = new Catalog_Model_SubproductParams();
@@ -464,6 +497,10 @@ class ProductsController extends Zend_Controller_Action
         return $subproductParams;
     }
 
+    /**
+     * @param $subProductId
+     * @param $values
+     */
     public function saveEditSubproductParamsValues($subProductId, &$values)
     {
         foreach ($values as $value) {
@@ -485,6 +522,34 @@ class ProductsController extends Zend_Controller_Action
             $this->_subproductParamsValuesMapper->save($subproductParamsValue);
         }
     }
+
+    /**
+     * @param $id
+     * @param Zend_File_Transfer $upload
+     * @param string $uploadName
+     * @return mixed
+     */
+    protected function _uploadFiles($id, Zend_File_Transfer $upload, $uploadName = 'fileLoad')
+    {
+        $moduleFolder = UPLOAD_DIR . '/products';
+        if (!file_exists($moduleFolder))
+            mkdir($moduleFolder, 0755);
+
+        $destinationPath = $moduleFolder . '/' . $id;
+        if (!file_exists($destinationPath))
+            mkdir($destinationPath, 0755);
+
+
+        $upload->setDestination($destinationPath)
+            ->addValidator('Size', false, 1024000)
+            ->addValidator('Extension', false, 'jpg,png,gif,svg');
+        $upload->receive();
+
+        $uploadFile = $upload->getFileInfo($uploadName);
+
+        return $uploadFile;
+    }
+
 
 }
 

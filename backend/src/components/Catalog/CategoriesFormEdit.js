@@ -10,27 +10,14 @@ export default class CategoriesFormEdit extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			title : (!props.data.title)
-				?props.data.name
-				:props.data.title,
-			path: props.data.path,
-			description: props.data.description,
-			contentMarkdown: props.data.contentMarkdown,
-			contentHtml: props.data.contentHtml,
-			sorting: props.data.sorting,
-			uploadPath: (!props.data.uploadPath)?'':props.data.uploadPath,
-			breadcrumbs: props.data.breadcrumbs,
-			image: (!props.data.image)
-				?"/files/images/product/2012-05-22_foto_nv.jpg"
-				:props.data.image,
+			data: props.data,
 			parentId: props.data.parentId,
 			categoryInfo: ''
 		}
 	}
 
-	componentDidMount(){
+	componentWillMount(){
 		var id = this.props.data.parentId;
-
 		categoryHelpers.getCategoryInfo(id)
 			.then(function(categoryInfo){
 				this.setState({
@@ -41,9 +28,9 @@ export default class CategoriesFormEdit extends React.Component{
 
 	handleChange(key){
 		return (e) => {
-			var data = {};
+			var data = this.state.data;
 			data[key]	= e.target.value;
-			this.setState(data);
+			this.setState({data:data});
 		};
 	}
 
@@ -51,14 +38,24 @@ export default class CategoriesFormEdit extends React.Component{
 		console.log('SELECTED CATEGORY',id);
 		categoryHelpers.getCategoryInfo(id)
 			.then(function(categoryInfo){
+				var data = this.state.data;
+				data['breadcrumbs'] = (categoryInfo.breadcrumbs)
+					? categoryInfo.breadcrumbs + ' > ' + categoryInfo.name
+					: categoryInfo.name;
 				this.setState({
+					data: data,
+					parentId: categoryInfo.id,
 					categoryInfo: categoryInfo
 				});
 			}.bind(this));
 	}
 
 	imgSrc(){
-		return this.state.uploadPath + this.state.image
+		var uploadPath = (!this.state.data.uploadPath)?'':this.state.data.uploadPath;
+		var image = (!this.state.data.image)
+			?"/files/images/product/2012-05-22_foto_nv.jpg"
+			:this.state.data.image;
+		return uploadPath + image;
 	}
 
 	innerButton(){
@@ -78,17 +75,17 @@ export default class CategoriesFormEdit extends React.Component{
 					<Col md={9}>
 						<Input type="text" label="Заголовок" placeholder="Заголовок"
 									 name="dataFormCategory[name]"
-									 value={this.state.title}
+									 value={(!this.state.data.title)?this.state.data.name:this.state.data.title}
 									 onChange={this.handleChange('title').bind(this)}
 									 required
 						/>
 						<Input type="text" label="Родительская категория"
-									 value={this.state.breadcrumbs}
+									 value={this.state.data.breadcrumbs}
 									 buttonAfter={this.innerButton()}
 						/>
 						<Input type="textarea" label="Описание категории" placeholder="Описание категории"
 									 name="dataFormCategory[description]"
-									 value={this.state.description}
+									 value={this.state.data.description}
 									 onChange={this.handleChange('description').bind(this)}
 									 rows="8"
 						/>
@@ -96,7 +93,7 @@ export default class CategoriesFormEdit extends React.Component{
 									 labelClassName="col-md-2"
 									 wrapperClassName="col-md-2"
 									 name="dataFormCategory[sorting]"
-									 value={this.state.sorting}
+									 value={this.state.data.sorting}
 									 onChange={this.handleChange('sorting').bind(this)}
 									 required
 						/>

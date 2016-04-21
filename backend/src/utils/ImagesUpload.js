@@ -12,7 +12,7 @@ export default class ImagesUpload extends React.Component {
 
 	fileSelect(e){
 		e.preventDefault();
-		var fileElem = document.getElementById("fileElem");
+		var fileElem = document.getElementById((!this.props.inputName)?"fileElem":this.props.inputName);
 		fileElem.click();
 	}
 
@@ -37,15 +37,15 @@ export default class ImagesUpload extends React.Component {
 
 	render() {
 		return (
-			<div className="text-center">
+			<div className="text-center mb2">
 				<Image src={this.state.image} thumbnail />
 				<Input
 					type="file"
 					className="hidden"
-					id="fileElem"
+					id={(!this.props.inputName)?"fileElem":this.props.inputName}
 					multiple
 					accept="image/*"
-					name="fileLoad"
+					name={(!this.props.inputName)?"fileLoad":this.props.inputName}
 					onChange={this.handleFiles.bind(this)}/>
 				<ButtonGroup>
 					<Button bsStyle="primary" onClick={this.fileSelect.bind(this)}>

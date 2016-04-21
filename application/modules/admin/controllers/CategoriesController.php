@@ -102,6 +102,7 @@ class CategoriesController extends Zend_Controller_Action
         $parentCategoryId = $category->getParentId();
 
         if($this->_request->isPost()){
+            //Zend_Debug::dump($this->_request->getParams());
             $url = $this->_request->getParam('currentUrl');
 
             if ($this->_request->getParam('dataFormCategory')) {
@@ -116,6 +117,15 @@ class CategoriesController extends Zend_Controller_Action
                         : $category->getPath();
                     $category->setFullPath($fullPath);
                     $url = '/catalog/'.$parentFullPath;
+                    $productsRel = $this->_modelMapper->fetchProductsRel($categoryId);
+                    if($productsRel){
+                        $productsMapper = new Catalog_Model_Mapper_Products();
+                        /** @var Catalog_Model_Products $product */
+                        foreach ($productsRel as $product) {
+                            $product->setFullPath($fullPath.'/'.$product->getPath());
+                            $productsMapper->save($product);
+                        }
+                    }
                 }
 
                 $upload = new Zend_File_Transfer();
@@ -324,7 +334,13 @@ class CategoriesController extends Zend_Controller_Action
         return count($entries);
     }
 
-    protected function _uploadFiles($id, Zend_File_Transfer $upload)
+    /**
+     * @param $id
+     * @param Zend_File_Transfer $upload
+     * @param string $inputName
+     * @return mixed
+     */
+    protected function _uploadFiles($id, Zend_File_Transfer $upload, $inputName = 'fileLoad')
     {
         $moduleFolder = UPLOAD_DIR . '/categories';
         if (!file_exists($moduleFolder))
@@ -340,7 +356,7 @@ class CategoriesController extends Zend_Controller_Action
             ->addValidator('Extension', false, 'jpg,png,gif,svg');
         $upload->receive();
 
-        $uploadFile = $upload->getFileInfo('fileLoad');
+        $uploadFile = $upload->getFileInfo($inputName);
 
         return $uploadFile;
     }
