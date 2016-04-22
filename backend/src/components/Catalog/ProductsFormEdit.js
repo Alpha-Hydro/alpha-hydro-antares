@@ -1,5 +1,5 @@
 import React from "react";
-import {Grid, Row, Col, Input} from "react-bootstrap/lib";
+import {Grid, Row, Col, Input} from "react-bootstrap";
 import categoryHelpers from "../../utils/getDataHelper";
 import Slugify from "./../../utils/slugifyHelper";
 
@@ -10,8 +10,11 @@ export default class ProductsFormEdit extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			data: props.data,
-			categoryInfo: ''
+			data: this.props.data,
+			sku: this.props.data.sku,
+			categoryInfo: '',
+			error: false,
+			errorHelp: 'error'
 		}
 	}
 
@@ -27,21 +30,35 @@ export default class ProductsFormEdit extends React.Component{
 
 	handleChange(key){
 		return (e) => {
-			var data = this.state.data;
-			data[key]	= e.target.value;
-			this.setState({data:data});
+			this.state.data[key]	= e.target.value;
+			this.setState({data:this.state.data});
 		};
 	}
 
-	titleChange(e){
-		var title = e.target.value;
+	skuChange(e){
+		var sku = e.target.value;
 		var data = this.state.data;
-		Slugify.getSlugify(title)
-			.then(function (path) {
-				data['path'] = path;
-				data['sku'] = title;
-				this.setState({data: data});
-			}.bind(this));
+		var input = e.target;
+		if(sku !=  this.state.sku){
+			Slugify.getProductSlugify(sku)
+				.then(function (result) {
+					if(!result.error){
+						data['path'] = result.path;
+						this.setState({
+							data: data,
+							error: false,
+							errorHelp: 'error'
+						});
+					}
+					else{
+						input.setCustomValidity('Нужно исправить!!!');
+						this.setState({
+							error: true,
+							errorHelp: result.error
+						}, input.focus());
+					}
+				}.bind(this));
+		}
 	}
 
 	selectCategory(id){
@@ -93,9 +110,13 @@ export default class ProductsFormEdit extends React.Component{
 					</Col>
 					<Col md={9}>
 						<Input type="text" label="Код товара" placeholder="Код товара"
+									 id="sku"
+									 groupClassName={(!this.state.error)?'':'has-error'}
+									 help={this.state.error && this.state.errorHelp}
 									 name="dataFormProducts[sku]"
 									 value={this.state.data.sku}
-									 onChange={this.titleChange.bind(this)}
+									 onChange={this.handleChange('sku').bind(this)}
+									 onBlur={this.skuChange.bind(this)}
 									 required
 						/>
 						<Input type="text" label="Наименование товара" placeholder="Наименование товара"
