@@ -1,10 +1,13 @@
 import React from "react";
-import {Grid, Row, Col, Input} from "react-bootstrap";
+import {Grid, Row, Col, Input, Button} from "react-bootstrap";
 import categoryHelpers from "../../utils/getDataHelper";
 import Slugify from "./../../utils/slugifyHelper";
 
 import ImagesUpload from "./../../utils/ImagesUpload";
 import CategoryReplace from "./CategoryReplaceComponent";
+import ProductPropertyEditButton from "./../ProductPropertyEditButton";
+import ProductModificationEditButton from "./../ProductModificationEditButton";
+import ProductModificationPropertyEditButton from "./../ProductModificationPropertyEditButton";
 
 export default class ProductsFormEdit extends React.Component{
 	constructor(props){
@@ -14,7 +17,7 @@ export default class ProductsFormEdit extends React.Component{
 			sku: this.props.data.sku,
 			categoryInfo: '',
 			error: false,
-			errorHelp: 'error'
+			errorHelp: 'Error.'
 		}
 	}
 
@@ -28,37 +31,40 @@ export default class ProductsFormEdit extends React.Component{
 			}.bind(this));
 	}
 
-	handleChange(key){
+	onChange(key){
 		return (e) => {
 			this.state.data[key]	= e.target.value;
 			this.setState({data:this.state.data});
 		};
 	}
 
-	skuChange(e){
-		var sku = e.target.value;
-		var data = this.state.data;
+	skuOnChange(e){
 		var input = e.target;
-		if(sku !=  this.state.sku){
-			Slugify.getProductSlugify(sku)
-				.then(function (result) {
-					if(!result.error){
-						data['path'] = result.path;
-						this.setState({
-							data: data,
-							error: false,
-							errorHelp: 'error'
-						});
-					}
-					else{
-						input.setCustomValidity('Нужно исправить!!!');
-						this.setState({
-							error: true,
-							errorHelp: result.error
-						}, input.focus());
-					}
-				}.bind(this));
-		}
+		var data = this.state.data;
+		data['sku'] = e.target.value;
+		this.setState({
+			data: data
+		},() => {this.validateInput(input)});
+	}
+
+	validateInput(input){
+		Slugify.getProductSlugify(input.value)
+			.then(function (result) {
+				if(!result.error){
+					this.state.data['path'] = result.path;
+					this.setState({
+						data: this.state.data,
+						error: false,
+						errorHelp: 'Error.'
+					}, input.setCustomValidity(''));
+				}
+				else{
+					this.setState({
+						error: true,
+						errorHelp: result.error
+					}, input.setCustomValidity(result.error + ' Надо исправить!'));
+				}
+			}.bind(this));
 	}
 
 	selectCategory(id){
@@ -115,42 +121,68 @@ export default class ProductsFormEdit extends React.Component{
 									 help={this.state.error && this.state.errorHelp}
 									 name="dataFormProducts[sku]"
 									 value={this.state.data.sku}
-									 onChange={this.handleChange('sku').bind(this)}
-									 onBlur={this.skuChange.bind(this)}
+									 onChange={this.skuOnChange.bind(this)}
 									 required
 						/>
 						<Input type="text" label="Наименование товара" placeholder="Наименование товара"
-									 name="dataFormProducts[title]"
-									 value={(!this.state.data.title)?this.state.data.name:this.state.data.title}
-									 onChange={this.handleChange('title').bind(this)}
+									 name="dataFormProducts[name]"
+									 value={this.state.data.name}
+									 onChange={this.onChange('name').bind(this)}
 									 required
 						/>
 						<Input type="text" label="Категория"
 									 value={this.breadcrumbs()}
 									 buttonAfter={this.innerButton()}
 						/>
-						<Input type="textarea" label="Примечание" placeholder="Примечание"
-									 name="dataFormProducts[note]"
-									 value={this.state.data.note}
-									 onChange={this.handleChange('note').bind(this)}
-									 rows="2"
-						/>
 						<Input type="textarea" label="Описание" placeholder="Описание"
 									 name="dataFormProducts[description]"
 									 value={this.state.data.description}
-									 onChange={this.handleChange('description').bind(this)}
+									 onChange={this.onChange('description').bind(this)}
 									 rows="8"
 						/>
-
-						<Input type="text" label="Сортировка"
-									 groupClassName="clearfix"
-									 labelClassName="col-md-2"
-									 wrapperClassName="col-md-2"
-									 name="dataFormProducts[sorting]"
-									 value={this.state.data.sorting}
-									 onChange={this.handleChange('sorting').bind(this)}
-									 required
+						<Input type="textarea" label="Примечание" placeholder="Примечание"
+									 name="dataFormProducts[note]"
+									 value={this.state.data.note}
+									 onChange={this.onChange('note').bind(this)}
+									 rows="2"
 						/>
+						<Row>
+							<Col md={3} >
+								<Input type="text" label="Сортировка"
+											 labelClassName="col-md-6"
+											 wrapperClassName="col-md-6"
+											 name="dataFormProducts[sorting]"
+											 value={this.state.data.sorting}
+											 onChange={this.onChange('sorting').bind(this)}
+											 required
+								/>
+							</Col>
+							<Col md={3}>
+								<ProductPropertyEditButton
+									productId={this.props.data.id}
+									buttonText="Ствойства товара"
+									bsStyle="primary"
+									className="pull-right"
+								/>
+							</Col>
+							<Col md={3}>
+								<ProductModificationEditButton
+									productId={this.props.data.id}
+									buttonText="Модификации товара"
+									bsStyle="primary"
+									className="pull-right"
+
+								/>
+							</Col>
+							<Col md={3}>
+								<ProductModificationPropertyEditButton
+									productId={this.props.data.id}
+									buttonText="Свойства модификаций"
+									bsStyle="primary"
+									className="pull-right"
+								/>
+							</Col>
+						</Row>
 						
 						<input type="hidden"
 									 name="dataFormProducts[path]"

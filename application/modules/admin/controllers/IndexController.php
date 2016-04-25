@@ -61,8 +61,6 @@ class IndexController extends Zend_Controller_Action
      * @param $table
      * @param $field string
      * @return bool
-     *
-     *
      */
     private function _validateColumn($value, $table, $field)
     {

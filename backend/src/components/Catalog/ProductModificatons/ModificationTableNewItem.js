@@ -48,16 +48,17 @@ export default class ModificationTableNewItem extends React.Component{
 
 	addNewModification(e){
 		var newItem = this.state;
-		this.props.handleAdd(newItem);
-		this.setState({
-			item: {
-				id: 'new',
-				parentId: this.props.parentId,
-				sku: '',
-				order: ''
-			},
-			values: this.newItemValues()
-		});
+		if(newItem.item.sku && newItem.item.order){
+			this.setState({
+				item: {
+					id: 'new',
+					parentId: this.props.parentId,
+					sku: '',
+					order: ''
+				},
+				values: this.newItemValues()
+			}, () => {this.props.handleAdd(newItem)});
+		}
 	}
 	
 	render(){

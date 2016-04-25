@@ -9,12 +9,12 @@ $this->product_id = $this->product->id;
 <div class="col-xs-6 col-md-3">
     <div class="product-images">
         <div class="thumbnail">
-            <img src="/files/images/product/<?=$this->product->image;?>" alt="<?=$this->product->name?>"/>
+            <img src="<?=$this->product->uploadPath . $this->product->image;?>" alt="<?=$this->product->name?>"/>
         </div>
         <?php if($this->draftImage):?>
             <div class="thumbnail">
                 <a href="#" data-toggle="modal" data-target="#draftImageProduct">
-                    <img src="<?=$this->product->uploadPath . $this->product->draft?>" alt="<?=$this->product->name?>"/>
+                    <img src="<?=$this->product->uploadPathDraft . $this->product->draft?>" alt="<?=$this->product->name?>"/>
                 </a>
             </div>
             <!-- Modal -->
@@ -27,7 +27,7 @@ $this->product_id = $this->product->id;
                         </div>
                         <div class="modal-body">
                             <div class="modal-draft-images text-center">
-                                <img src="<?=$this->product->uploadPath . $this->product->draft?>" alt="<?=$this->product->name?>"/>
+                                <img src="<?=$this->product->uploadPathDraft . $this->product->draft?>" alt="<?=$this->product->name?>"/>
                             </div>
                         </div>
                     </div>

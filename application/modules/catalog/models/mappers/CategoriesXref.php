@@ -52,14 +52,17 @@ class Catalog_Model_Mapper_CategoriesXref
         return $this;
     }
 
+
     /**
-     * @param $id
+     * @param $product_id
+     * @param $category_id
      * @param Catalog_Model_CategoriesXref $categoriesxref
      * @return Catalog_Model_CategoriesXref|null
+     * @throws Zend_Db_Table_Exception
      */
-    public function find($id, Catalog_Model_CategoriesXref $categoriesxref)
+    public function find($product_id, $category_id, Catalog_Model_CategoriesXref $categoriesxref)
     {
-        $result = $this->getDbTable()->find($id);
+        $result = $this->getDbTable()->find($product_id, $category_id);
         
         if (0 == count($result)) {
         	return null;

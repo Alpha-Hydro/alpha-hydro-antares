@@ -85,12 +85,11 @@ export default class ProductPropertyEditButton extends React.Component{
 
 	render(){
 		return(
-			<div className="pull-right">
+			<div>
 				<Button
-					onClick={this.open.bind(this)}
-					bsStyle="primary"
-					bsSize="small">
-					<Glyphicon glyph="pencil" />
+					{...this.props}
+					onClick={this.open.bind(this)} >
+					{(!this.props.buttonText)?<Glyphicon glyph="pencil" />:this.props.buttonText}
 				</Button>
 				<Modal
 					dialogClassName="modal-lg"

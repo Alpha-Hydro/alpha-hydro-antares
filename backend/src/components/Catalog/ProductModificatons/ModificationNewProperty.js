@@ -20,14 +20,16 @@ export default class ModificationNewProperty extends React.Component{
 	}
 
 	addNewPropertyModification(e){
+		e.preventDefault();
 		var newProperty = this.state;
-		this.props.handleAdd(newProperty);
-		this.setState({
-			id: 'new',
-			productId: this.props.productId,
-			order: '',
-			name: ''
-		});
+		if(newProperty.order && newProperty.name){
+			this.setState({
+				id: 'new',
+				productId: this.props.productId,
+				order: '',
+				name: ''
+			}, () => {this.props.handleAdd(newProperty)});
+		}
 	}
 
 	render(){

@@ -41,7 +41,7 @@ export default class PanelModalComponent extends React.Component{
 				</Modal.Body>
 				<Modal.Footer>
 					<Button onClick={this.hideModal.bind(this)}>Отмена</Button>
-					<Button form="formModal" bsStyle="primary" type="submit">Сохранить изменения</Button>
+					<Button form="formModal" bsStyle="success" type="submit">Сохранить изменения</Button>
 				</Modal.Footer>
 			</Modal>
 		);

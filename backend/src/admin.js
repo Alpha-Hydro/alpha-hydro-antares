@@ -1,11 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
-
+import {ButtonGroup} from "react-bootstrap";
 import PanelNavComponent from "./components/PanelNavComponent";
 import ItemButtonsComponent from "./components/ItemButtonsComponent";
 import AddButtonComponent from "./components/AddButtonComponent";
 import ProductPropertyEditButton from "./components/ProductPropertyEditButton";
 import ProductModificationEditButton from "./components/ProductModificationEditButton";
+import ProductModificationPropertyEditButton from "./components/ProductModificationPropertyEditButton";
 
 //import TitleEdit from "./edit-title/TitleEdit";
 
@@ -43,15 +44,21 @@ if (productPropertyEdit){
 	productId = productPropertyEdit.getAttribute('data-id');
 	ReactDOM.render(<ProductPropertyEditButton
 		productId = {productId}
+		bsStyle="primary"
+		bsSize="small"
+		className="pull-right"
 	/>, productPropertyEdit);
 }
 
 const productModificationEdit = document.getElementById('product-modification-edit');
 if (productModificationEdit){
 	productId = productModificationEdit.getAttribute('data-id');
-	ReactDOM.render(<ProductModificationEditButton
-		productId = {productId}
-	/>, productModificationEdit);
+	ReactDOM.render(
+		<ButtonGroup className="pull-right"	bsSize="small">
+			<ProductModificationEditButton productId = {productId} bsStyle="primary"/>
+			<ProductModificationPropertyEditButton productId = {productId} bsStyle="primary"/>
+		</ButtonGroup>
+		, productModificationEdit);
 }
 
 
