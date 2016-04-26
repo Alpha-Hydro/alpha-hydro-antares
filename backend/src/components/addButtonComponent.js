@@ -21,25 +21,30 @@ export default class AddButtonComponent extends React.Component{
 		this.setState({show: false});
 	}
 
-	handlerClickButton(){
-		var controller = this.props.dataItem.controller,
-			id = this.props.dataItem.id;
+	componentDidMount(){
+		let controller = this.props.dataItem.controller;
+		let	id = this.props.dataItem.id;
 		dataHelpers.getDataInfo(controller, id)
 			.then(function(dataInfo){
 				this.setState({
 					data: dataInfo,
 					action: this.props.dataItem.action,
-					title: this.props.dataItem.title,
-					show: true
+					title: this.props.dataItem.title
 				});
 			}.bind(this));
+	}
+
+	handlerClickButton(){
+		this.setState({
+			show: true
+		});
 	}
 	
 	render() {
 		return (
 			<div className="categories-list-item z-depth-1" onClick={this.handlerClickButton.bind(this)}>
 				<img src="/files/images/category/icons/add-category.png" />
-				<p className="categories-list-item-name">Добавить категорию</p>
+				<p className="categories-list-item-name">{this.props.dataItem.title}</p>
 				<ModalComponent
 					show={this.state.show}
 					hide={this.hideModal.bind(this)}

@@ -5,7 +5,7 @@ import Button from "react-bootstrap/lib/Button";
 
 import ModalForms from "./ModalFormsComponent"
 
-export default class PanelModalComponent extends React.Component{
+export default class ModalComponent extends React.Component{
 
 	hideModal() {
 		this.props.hide()
