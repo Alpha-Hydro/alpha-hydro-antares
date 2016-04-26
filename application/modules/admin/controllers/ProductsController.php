@@ -146,7 +146,7 @@ class ProductsController extends Zend_Controller_Action
 
     public function editAction()
     {
-        Zend_Debug::dump($this->_request->getParams());
+        //Zend_Debug::dump($this->_request->getParams());
 
         $productId = $this->_request->getParam('id');
 
@@ -166,7 +166,7 @@ class ProductsController extends Zend_Controller_Action
                 $product->setModDate(date("Y-m-d H:i:s"));
                 $product->setOrder($dataProducts['sorting']);
 
-                //fullPath
+                //fullPath, categoryId в category_xref
                 $categoryId = $this->_request->getParam('categoryId');
                 $category = $this->_categoriesModelMapper->find($categoryId, new Catalog_Model_Categories());
                 if($category){
@@ -177,7 +177,7 @@ class ProductsController extends Zend_Controller_Action
                     $oldCategory = $this->_modelMapper->findCategoryRel($productId, new Catalog_Model_Categories());
                     $categoriesXref = $categoriesXrefMapper->find($productId, $oldCategory->getId(), new Catalog_Model_CategoriesXref());
                     $categoriesXref->setCategoryId($categoryId);
-                    Zend_Debug::dump($categoriesXrefMapper->_getDbData($categoriesXref));
+                    $categoriesXrefMapper->updateByProductId($categoriesXref);
 
                     $url = '/catalog/'.$fullPath;
                 }
@@ -200,11 +200,11 @@ class ProductsController extends Zend_Controller_Action
                         ->setDraft($imageFile['fileLoadDraft']['name']);
                 }
 
-                //$this->_modelMapper->save($product);
+                $this->_modelMapper->save($product);
             }
 
-            Zend_Debug::dump($product);
-            //$this->_redirector->gotoUrlAndExit($url);
+            //Zend_Debug::dump($product);
+            $this->_redirector->gotoUrlAndExit($url);
         }
     }
 

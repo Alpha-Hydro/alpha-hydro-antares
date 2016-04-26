@@ -41,17 +41,61 @@ class Catalog_Model_Mapper_CategoriesXref
     public function save(Catalog_Model_CategoriesXref $categoriesxref)
     {
         $data = $this->_getDbData($categoriesxref);
+
+        $product_id = $categoriesxref->getProductId();
+        $category_Id = $categoriesxref->getCategoryId();
+
+        $result = $this->getDbTable()->find($product_id, $category_Id);
         
-        if (null == ($id = $categoriesxref->getId())) {
-        	unset($data[$this->_getDbPrimary()]);
-        	$this->getDbTable()->insert($data);
+        if (0 == count($result)) {
+        	$data_insert = array(
+                'product_id' => $product_id,
+                'category_id' => $category_Id
+            );
+        	$this->getDbTable()->getAdapter()->insert('categories_xref', $data_insert);
         } else {
-        	$this->getDbTable()->update($data, array($this->_getDbPrimary(). ' = ?' => $id));
+        	$this->getDbTable()->update($data, array(
+                'product_id = ?' => $product_id,
+                'category_id = ?' => $category_Id
+            ));
         }
         
         return $this;
     }
 
+    /**
+     * @param $id
+     * @param Catalog_Model_CategoriesXref $categoriesxref
+     * @return Catalog_Model_CategoriesXref|null
+     */
+    public function fetchByProductId($id, Catalog_Model_CategoriesXref $categoriesxref)
+    {
+        $select = $this->getDbTable()->select()->where('product_id = ?', $id);
+        $row = $this->getDbTable()->fetchRow($select);
+
+        if(null == $row)
+            return null;
+
+        $entry = $this->_setDbData($row, $categoriesxref);
+
+        return $entry;
+    }
+
+    /**
+     * @param Catalog_Model_CategoriesXref $categoriesxref
+     * @return $this
+     */
+    public function updateByProductId(Catalog_Model_CategoriesXref $categoriesxref)
+    {
+        $data = $this->_getDbData($categoriesxref);
+        $product_id = $categoriesxref->getProductId();
+
+        $this->getDbTable()->update($data, array(
+            'product_id = ?' => $product_id
+        ));
+
+        return $this;
+    }
 
     /**
      * @param $product_id
@@ -99,7 +143,7 @@ class Catalog_Model_Mapper_CategoriesXref
     {
         $primaryKey = $this->getDbTable()->info('primary');
         
-        return $primaryKey[1];
+        return $primaryKey;
     }
 
     /**

@@ -73,6 +73,7 @@ export default class PanelButtonsComponent extends React.Component{
 					data={this.state.data}
 					title={this.state.title}
 					action={this.state.action}
+					keyboard={false}
 				/>
 			</div>
 		);
