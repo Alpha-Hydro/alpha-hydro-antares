@@ -1,9 +1,9 @@
 import React from "react";
 import {Grid, Row, Col, Input, Image, ButtonGroup, Button} from "react-bootstrap/lib";
 
-import ImagesUpload from "./../../utils/ImagesUpload";
-import Slugify from "./../../utils/slugifyHelper";
-import categoryHelpers from "./../../utils/getDataHelper";
+import ImagesUpload from "./../../../utils/ImagesUpload";
+import Slugify from "./../../../utils/slugifyHelper";
+import categoryHelpers from "./../../../utils/getDataHelper";
 
 import CategoryReplace from "./CategoryReplaceComponent";
 
@@ -19,19 +19,13 @@ export default class CategoriesFormAdd extends React.Component{
 			sorting: 0,
 			image: "/files/images/product/2012-05-22_foto_nv.jpg",
 			parentId: props.data.id,
-			parentCategoryInfo: '',
+			parentCategoryInfo: props.data,
 			categoryList: ''
 		}
 	}
 
-	componentDidMount(){
+	componentWillMount(){
 		var parentId = this.props.data.id;
-
-		categoryHelpers.getCategoryInfo(parentId)
-			.then(function(categoryInfo){
-				this.setState({parentCategoryInfo: categoryInfo});
-			}.bind(this));
-
 
 		categoryHelpers.getGategoryList(parentId)
 			.then(function(categoryList){
@@ -67,7 +61,6 @@ export default class CategoriesFormAdd extends React.Component{
 	}
 
 	render(){
-		const parentCategoryName = this.state.parentCategoryInfo && this.state.parentCategoryInfo.name;
 		const innerButton = <CategoryReplace
 			currentCategory={this.props.data}
 			categoryList={this.state.categoryList}
@@ -93,9 +86,9 @@ export default class CategoriesFormAdd extends React.Component{
 									 value={this.state.path}
 									 required
 						/>
-						<Input type="text" label="Категория"
+						<Input type="text" label="Родительская категория"
 									 disabled
-									 value={parentCategoryName}
+									 value={this.state.parentCategoryInfo.name}
 									 buttonBefore={innerButton}
 						/>
 						<Input type="textarea" label="Краткое описание" placeholder="Описание категории"

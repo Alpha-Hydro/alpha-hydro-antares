@@ -5,9 +5,6 @@ import ModalFormSeo from "./ModalForms/ModalFormSeo";
 import ModalFormsAdd from "./ModalForms/ModalFormsAdd";
 
 export default class ModalFormsComponent extends React.Component{
-	constructor(props){
-		super(props);
-	}
 
 	selectInputs(){
 		switch (this.props.action) {

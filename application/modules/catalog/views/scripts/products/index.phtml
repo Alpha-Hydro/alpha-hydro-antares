@@ -52,11 +52,11 @@ $this->sidebar_headers = true;
     <?php endif; ?>
     <?php if($this->auth):?>
         <div class="col-md-3 text-center">
-            <div id="addButtonComponent"
-                 data-id="<?=$this->current_category?>"
-                 data-controller = "categories"
+            <div id="itemAddButtton"
+                 data-categoryId="<?=$this->current_category?>"
+                 data-controller = "products"
                  data-action="add"
-                 data-title="Добавить категорию"
+                 data-title="Добавить новый продукт"
             ></div>
         </div>
     <?php endif;?>

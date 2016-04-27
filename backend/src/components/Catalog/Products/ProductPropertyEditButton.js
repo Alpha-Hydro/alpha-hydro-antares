@@ -1,8 +1,8 @@
 import React from "react";
 import {Button, Glyphicon, Modal} from "react-bootstrap/lib";
-import dataHelpers from "../utils/getDataHelper";
-import productPropertyHelpers from "../utils/productPropertyHelper";
-import ProductProperties from "./Catalog/ProductProperties"
+import dataHelpers from "../../../utils/getDataHelper";
+import productPropertyHelpers from "../../../utils/productPropertyHelper";
+import ProductProperties from "./ProductProperties"
 
 
 export default class ProductPropertyEditButton extends React.Component{

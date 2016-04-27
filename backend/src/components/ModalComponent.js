@@ -3,7 +3,7 @@ import React from "react";
 import Modal from "react-bootstrap/lib/Modal";
 import Button from "react-bootstrap/lib/Button";
 
-import ModalForms from "./ModalFormsComponent"
+import ModalFormsComponent from "./ModalFormsComponent"
 
 export default class ModalComponent extends React.Component{
 
@@ -12,8 +12,6 @@ export default class ModalComponent extends React.Component{
 	}
 
 	render() {
-		const title = (!this.props.data.title)?this.props.data.name:this.props.data.title;
-
 		return (
 			<Modal
 				{...this.props}
@@ -32,12 +30,12 @@ export default class ModalComponent extends React.Component{
 			>
 				<Modal.Header closeButton>
 					<Modal.Title id="contained-modal-title-lg" className="h3">
-						{title}
+						{(!this.props.data.title)?this.props.data.name:this.props.data.title}
 						<small>{this.props.title}</small>
 					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<ModalForms {...this.props}/>
+					<ModalFormsComponent {...this.props}/>
 				</Modal.Body>
 				<Modal.Footer>
 					<Button onClick={this.hideModal.bind(this)}>Отмена</Button>

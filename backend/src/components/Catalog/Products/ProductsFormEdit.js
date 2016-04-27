@@ -1,13 +1,13 @@
 import React from "react";
 import {Grid, Row, Col, Input, Button} from "react-bootstrap";
-import categoryHelpers from "../../utils/getDataHelper";
-import Slugify from "./../../utils/slugifyHelper";
+import categoryHelpers from "../../../utils/getDataHelper";
+import Slugify from "./../../../utils/slugifyHelper";
 
-import ImagesUpload from "./../../utils/ImagesUpload";
-import CategoryReplace from "./CategoryReplaceComponent";
-import ProductPropertyEditButton from "./../ProductPropertyEditButton";
-import ProductModificationEditButton from "./../ProductModificationEditButton";
-import ProductModificationPropertyEditButton from "./../ProductModificationPropertyEditButton";
+import ImagesUpload from "./../../../utils/ImagesUpload";
+import CategoryReplace from "./../Categories/CategoryReplaceComponent";
+import ProductPropertyEditButton from "./ProductPropertyEditButton";
+import ProductModificationEditButton from "./ProductModificationEditButton";
+import ProductModificationPropertyEditButton from "./ProductModificationPropertyEditButton";
 
 export default class ProductsFormEdit extends React.Component{
 	constructor(props){

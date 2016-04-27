@@ -1,8 +1,8 @@
 import React from "react";
 import DefaultFormEdit from "./DefaultFormEdit";
 import PagesFormEdit from "./../Pages/PagesFormEdit";
-import CategoriesFormEdit from "./../Catalog/CategoriesFormEdit";
-import ProductsFormEdit from "./../Catalog/ProductsFormEdit";
+import CategoriesFormEdit from "./../Catalog/Categories/CategoriesFormEdit";
+import ProductsFormEdit from "./../Catalog/Products/ProductsFormEdit";
 
 export default class ModalFormsEdit extends React.Component{
 	constructor(props){

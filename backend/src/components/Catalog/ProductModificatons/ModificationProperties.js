@@ -1,10 +1,10 @@
 import React from 'react';
 import {Button, Glyphicon, Modal} from "react-bootstrap/lib";
 
-import dataHelpers from "../../utils/getDataHelper";
-import modificationHelpers from "../../utils/productModificationHelper";
+import dataHelpers from "../../../utils/getDataHelper";
+import modificationHelpers from "../../../utils/productModificationHelper";
 
-import ModificationPropertiesTable from "./ProductModificatons/ModificationPropertiesTable"
+import ModificationPropertiesTable from "./ModificationPropertiesTable"
 
 export default class ModificationProperties extends React.Component{
 	constructor(props){

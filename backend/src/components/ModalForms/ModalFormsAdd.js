@@ -1,6 +1,7 @@
 import React from "react";
 import DefaultFormAdd from "./DefaultFormAdd";
-import CategoriesFormAdd from "../Catalog/CategoriesFormAdd";
+import CategoriesFormAdd from "../Catalog/Categories/CategoriesFormAdd";
+import ProductFormAdd from "../Catalog/Products/ProductFormAdd";
 
 export default class ModalFormsAdd extends React.Component{
 	constructor(props){
@@ -10,6 +11,7 @@ export default class ModalFormsAdd extends React.Component{
 	selectEditInputs(){
 		switch (this.props.data.controller){
 			case "categories": return <CategoriesFormAdd {...this.props}/>;
+			case "products": return <ProductFormAdd {...this.props}/>;
 			default: return <DefaultFormAdd {...this.props}/>;
 		}
 	}

@@ -1,16 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {ButtonGroup} from "react-bootstrap";
+
 import PanelNavComponent from "./components/PanelNavComponent";
 import ItemButtonsComponent from "./components/ItemButtonsComponent";
-import AddButtonComponent from "./components/AddButtonComponent";
-import ProductPropertyEditButton from "./components/ProductPropertyEditButton";
-import ProductModificationEditButton from "./components/ProductModificationEditButton";
-import ProductModificationPropertyEditButton from "./components/ProductModificationPropertyEditButton";
+import CategoriesAddButton from "./components/Catalog/Categories/CategoriesAddButton";
+import ItemAddButton from "./components/Catalog/Products/ProductAddButton";
+import ProductPropertyEditButton from "./components/Catalog/Products/ProductPropertyEditButton";
+import ProductModificationEditButton from "./components/Catalog/Products/ProductModificationEditButton";
+import ProductModificationPropertyEditButton from "./components/Catalog/Products/ProductModificationPropertyEditButton";
 
 //import TitleEdit from "./edit-title/TitleEdit";
-
-var productId;
 
 const adminPanel = document.getElementById('admin-panel');
 if(adminPanel)
@@ -28,17 +28,30 @@ if(document.querySelector('.itemButtonsComponent')){
 	});
 }
 
-const addButtton = document.getElementById('addButtonComponent');
-if (addButtton){
-	var dataItem = {
-		controller: addButtton.getAttribute('data-controller'),
-		id: addButtton.getAttribute('data-id'),
-		action: addButtton.getAttribute('data-action'),
-		title: addButtton.getAttribute('data-title')
+var dataItem;
+const categoriesAddButtton = document.getElementById('categoriesAddButtton');
+if (categoriesAddButtton){
+	dataItem = {
+		controller: categoriesAddButtton.getAttribute('data-controller'),
+		id: categoriesAddButtton.getAttribute('data-id'),
+		action: categoriesAddButtton.getAttribute('data-action'),
+		title: categoriesAddButtton.getAttribute('data-title')
 	};
-	ReactDOM.render(<AddButtonComponent dataItem = {dataItem}/>, addButtton);
+	ReactDOM.render(<CategoriesAddButton dataItem = {dataItem}/>, categoriesAddButtton);
 }
 
+const itemAddButtton = document.getElementById('itemAddButtton');
+if (itemAddButtton){
+	dataItem = {
+		controller: itemAddButtton.getAttribute('data-controller'),
+		categoryId: itemAddButtton.getAttribute('data-categoryId'),
+		action: itemAddButtton.getAttribute('data-action'),
+		title: itemAddButtton.getAttribute('data-title')
+	};
+	ReactDOM.render(<ItemAddButton dataItem = {dataItem}/>, itemAddButtton);
+}
+
+var productId;
 const productPropertyEdit = document.getElementById('product-property-edit');
 if (productPropertyEdit){
 	productId = productPropertyEdit.getAttribute('data-id');

@@ -1,7 +1,7 @@
 import React from "react";
 import {ButtonGroup, Button, Glyphicon, Modal} from "react-bootstrap/lib";
 
-import ProductModifications from "./Catalog/ProductModifications";
+import ProductModifications from "./ProductModifications";
 
 export default class ProductModificationEditButton extends React.Component{
 	constructor(props){
