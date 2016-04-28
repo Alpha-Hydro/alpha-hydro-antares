@@ -30,6 +30,7 @@ class Manufacture_IndexController extends Zend_Controller_Action
     public function init()
     {
         $this->_count_item_on_page = 6;
+        //$this->view->adminPath = 'manufacture';
 
         $this->_pagesMapper = new Pages_Model_Mapper_Pages();
         $this->_redirector = $this->_helper->getHelper('Redirector');
@@ -44,7 +45,6 @@ class Manufacture_IndexController extends Zend_Controller_Action
         $this->setCategories($manufactureCategories);
 
         $this->view->categories = $this->getCategories();
-        //$this->view->adminPath = 'manufacture';
 
         $this->_authUser = Zend_Auth::getInstance()->getIdentity();
         if(!is_null($this->_authUser))

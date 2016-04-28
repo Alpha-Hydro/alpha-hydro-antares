@@ -22,3 +22,5 @@ CREATE TABLE `pipeline` (
 
 ALTER TABLE pipeline ADD image_draft VARCHAR(255) NULL;
 ALTER TABLE pipeline ADD image_table VARCHAR(255) NULL;
+
+ALTER TABLE pipeline ADD gost_name VARCHAR(255) NULL;

@@ -54,17 +54,21 @@ $this->sidebar_headers = true;
         </table>
     <?php endif;?>
 
+    <?php if($this->pipeline->getImageTable()):?>
+        <div class="row mb2">
+            <div class="col-xs-4">
+                <h4>Стандарты и ГОСТы</h4>
+            </div>
+            <div class="col-xs-8">
+                <a href="<?=$this->pipeline->getImageTable()?>" class="btn btn-info" target="_blank"><span class="fa fa-file-pdf-o"></span></a>
+            </div>
+        </div>
+    <?php endif;?>
+
     <?php if($this->pipeline->getDescription()):?>
         <div class="mb2">
             <h4>Описание</h4>
             <?=$this->pipeline->getDescription()?>
-        </div>
-    <?php endif;?>
-
-    <?php if($this->pipeline->getImageTable()):?>
-        <div class="btn-group btn-group-lg mb2" role="group">
-            <a href="<?=$this->pipeline->getImageTable()?>" class="btn btn-default" target="_blank">Модификации и размеры</a>
-            <button class="btn btn-info" disabled="disabled"><span class="fa fa-external-link"></span></button>
         </div>
     <?php endif;?>
 

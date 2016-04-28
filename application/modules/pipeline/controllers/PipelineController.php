@@ -20,6 +20,8 @@ class Pipeline_PipelineController extends Zend_Controller_Action
 
         if(is_null($category))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+        
+        $this->view->category = $category;
 
         $this->view->title = $category->getTitle();
         $current_category_id = $category->getId();

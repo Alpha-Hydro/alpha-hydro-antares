@@ -47,7 +47,7 @@ class Pipeline_BreadcrumbsController extends Zend_Controller_Action
         $breadcrumbs->addPage(
             new Zend_Navigation_Page_Uri(
                 array (
-                    'label' => 'Трубопроводная арматура',
+                    'label' => 'Детали трубопроводов',
                     'uri' => '/pipeline/',
                     'order' => $i
                 )

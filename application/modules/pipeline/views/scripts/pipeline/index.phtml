@@ -4,36 +4,39 @@ $this->meta_title = $this->title;
 $this->breadcrumbs = true;
 $this->sidebar_headers = true;
 ?>
-
+<div class="row mb2">
+    <div class="col-md-12">
+        <?php if($this->category->getImage()):?>
+            <div class="col-md-3 pull-right">
+                <div class="thumbnail">
+                    <img src="<?=$this->category->getImage()?>" alt="<?=$this->category->getTitle()?>">
+                </div>
+            </div>
+        <?php endif;?>
+        <?=$this->category->getContentHtml();?>
+    </div>
+</div>
 <div class="container-fluid product-list">
     <?php if($this->listItems): ?>
         <?php foreach ($this->listItems as $item): ?>
             <div class="row product-item">
-                <div class="col-md-3">
-                    <div class="thumbnail product-images">
-                        <a href="<?=$this->url(
-                            array(
-                                'controller' => 'pipeline',
-                                'action' => 'view',
-                                'fullPath' => $item->getFullPath()
-                            ),'pipeline',true,false);?>">
-                            <img src="<?=($item->getImage())
-                                ?$item->getImage()
-                                :'/files/images/product/2012-05-22_foto_nv.jpg';?>"
-                                 alt="<?=$this->escape($item->getTitle());?>">
-                        </a>
-                    </div>
-                </div>
                 <div class="col-md-9">
                     <h2 class="h4 mb2">
-                        <a href="<?=$this->url(
-                            array(
-                                'controller' => 'pipeline',
-                                'action' => 'view',
-                                'fullPath' => $item->getFullPath()
-                            ),'pipeline',true,false
-                        )?>"><?=$this->escape($item->getTitle());?></a>
-                        <!--<small><?/*=$this->escape($item->getTitle());*/?></small>-->
+                        <a href="<?=
+                            ($item->getImageTable())
+                                ? $item->getImageTable()
+                                : $this->url(
+                                    array(
+                                        'controller' => 'pipeline',
+                                        'action' => 'view',
+                                        'fullPath' => $item->getFullPath()
+                                    ),'pipeline',true,false
+                                )?>" target="<?=$item->getImageTable() && '_blank'?>">
+                            <?=$this->escape($item->getTitle());?>
+                            <?php if($item->getImageTable()):?>
+                                <img src="/images/pdf-file.png" alt="<?=$item->getTitle()?>" class="mlr1"/>
+                            <?php endif;?>
+                        </a>
                     </h2>
                     <div class="product-property">
                         <?php $properties = $this->getPipelineProperties($item->getId())?>

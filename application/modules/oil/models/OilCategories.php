@@ -1,17 +1,17 @@
 <?php
 
-class Pipeline_Model_Pipeline
+class Oil_Model_OilCategories
 {
 
     protected $_id = null;
 
-    protected $_category_id = null;
+    protected $_parent_id = null;
+
+    protected $_title = null;
 
     protected $_path = null;
 
     protected $_full_path = null;
-
-    protected $_title = null;
 
     protected $_description = null;
 
@@ -34,12 +34,6 @@ class Pipeline_Model_Pipeline
     protected $_sorting = null;
 
     protected $_deleted = null;
-
-    protected $_image_draft = null;
-
-    protected $_image_table = null;
-    
-    protected $_gost_name = null;
 
     /**
      * @param $options
@@ -147,25 +141,47 @@ class Pipeline_Model_Pipeline
     }
 
     /**
-     * Set value CategoryId
+     * Set value ParentId
      *
      * @return $this 
-     * @param $category_id
+     * @param $parent_id
      */
-    public function setCategoryId($category_id)
+    public function setParentId($parent_id)
     {
-        $this->_category_id = $category_id;
+        $this->_parent_id = $parent_id;
         return $this;
     }
 
     /**
-     * Get value CategoryId
+     * Get value ParentId
      *
      * @return mixed
      */
-    public function getCategoryId()
+    public function getParentId()
     {
-        return $this->_category_id;
+        return $this->_parent_id;
+    }
+
+    /**
+     * Set value Title
+     *
+     * @return $this 
+     * @param $title
+     */
+    public function setTitle($title)
+    {
+        $this->_title = $title;
+        return $this;
+    }
+
+    /**
+     * Get value Title
+     *
+     * @return mixed
+     */
+    public function getTitle()
+    {
+        return $this->_title;
     }
 
     /**
@@ -210,28 +226,6 @@ class Pipeline_Model_Pipeline
     public function getFullPath()
     {
         return $this->_full_path;
-    }
-
-    /**
-     * Set value Title
-     *
-     * @return $this 
-     * @param $title
-     */
-    public function setTitle($title)
-    {
-        $this->_title = $title;
-        return $this;
-    }
-
-    /**
-     * Get value Title
-     *
-     * @return mixed
-     */
-    public function getTitle()
-    {
-        return $this->_title;
     }
 
     /**
@@ -474,68 +468,6 @@ class Pipeline_Model_Pipeline
     public function getDeleted()
     {
         return $this->_deleted;
-    }
-
-    /**
-     * Set value ImageDraft
-     *
-     * @return $this 
-     * @param $image_draft
-     */
-    public function setImageDraft($image_draft)
-    {
-        $this->_image_draft = $image_draft;
-        return $this;
-    }
-
-    /**
-     * Get value ImageDraft
-     *
-     * @return mixed
-     */
-    public function getImageDraft()
-    {
-        return $this->_image_draft;
-    }
-
-    /**
-     * Set value ImageTable
-     *
-     * @return $this 
-     * @param $image_table
-     */
-    public function setImageTable($image_table)
-    {
-        $this->_image_table = $image_table;
-        return $this;
-    }
-
-    /**
-     * Get value ImageTable
-     *
-     * @return mixed
-     */
-    public function getImageTable()
-    {
-        return $this->_image_table;
-    }
-
-    /**
-     * @param null $gost_name
-     * @return Pipeline_Model_Pipeline
-     */
-    public function setGostName($gost_name)
-    {
-        $this->_gost_name = $gost_name;
-        return $this;
-    }
-
-    /**
-     * @return null
-     */
-    public function getGostName()
-    {
-        return $this->_gost_name;
     }
 
 

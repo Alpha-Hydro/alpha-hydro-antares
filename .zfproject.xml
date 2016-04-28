@@ -749,6 +749,9 @@
             <controllerFile controllerName="Breadcrumbs">
               <actionMethod actionName="index"/>
             </controllerFile>
+            <controllerFile controllerName="Categories">
+              <actionMethod actionName="index"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory enabled="false"/>
           <layoutsDirectory enabled="false">
@@ -757,11 +760,14 @@
           <modelsDirectory>
             <dbTableDirectory>
               <dbTableFile dbTableName="Oil"/>
+              <dbTableFile dbTableName="OilCategories"/>
             </dbTableDirectory>
             <modelMapperDirectory>
               <modelMapperFile modelName="Oil"/>
+              <modelMapperFile modelName="OilCategories"/>
             </modelMapperDirectory>
             <modelColFile modelName="Oil"/>
+            <modelColFile modelName="OilCategories"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>
@@ -774,6 +780,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Index">
                 <viewScriptFile forActionName="view"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Categories">
+                <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>

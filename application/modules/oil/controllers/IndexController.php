@@ -2,17 +2,70 @@
 
 class Oil_IndexController extends Zend_Controller_Action
 {
+    protected $_page_id = null;
+
+    /**
+     * @var Pages_Model_Mapper_Pages
+     *
+     */
+    protected $_pagesMapper = null;
+
+    /**
+     * @var Pages_Model_Pages
+     *
+     */
+    protected $_page = null;
+
+    /**
+     * @var Zend_Controller_Action_Helper_Redirector
+     *
+     */
+    protected $_redirector = null;
+
+    /**
+     * @var Oil_Model_Mapper_OilCategories
+     *
+     */
+    protected $_oilCategoriesMapper = null;
+
+    /**
+     * @var Oil_Model_Mapper_Oil
+     *
+     */
+    protected $_oilMapper = null;
 
     protected $_count_item_on_page = null;
+    protected $_categories = array();
+    protected $_authUser = null;
 
     public function init()
     {
         $this->_count_item_on_page = 5;
         $this->view->adminPath = 'oil';
+
+        $this->_pagesMapper = new Pages_Model_Mapper_Pages();
+        $this->_redirector = $this->_helper->getHelper('Redirector');
+
+        $this->_oilCategoriesMapper = new Oil_Model_Mapper_OilCategories();
+        $select = $this->_oilCategoriesMapper->getDbTable()->select();
+        $select->where('deleted != ?', 1)
+            ->where('active != ?', 0)
+            ->order('sorting ASC');
+
+        $oilCategories = $this->_oilCategoriesMapper->fetchAll($select);
+        $this->setCategories($oilCategories);
+
+        $this->view->categories = $this->getCategories();
+
+        $this->_authUser = Zend_Auth::getInstance()->getIdentity();
+        if(!is_null($this->_authUser))
+            $this->view->authUser = $this->_authUser;
     }
 
     public function indexAction()
     {
+        $page = $this->pageModule();
+
         $this->view->title = 'Масла гидравлические';
         $request = $this->getRequest();
 
@@ -28,7 +81,24 @@ class Oil_IndexController extends Zend_Controller_Action
             return;
         }
 
-        $oilMapper = new Oil_Model_Mapper_Oil();
+        $this->view->page = $page;
+
+        $meta_title = (!$page->getMetaTitle())
+            ? $page->getTitle()
+            : $page->getMetaTitle();
+        $this->view->meta_title = $meta_title;
+
+        $meta_description = (!$page->getMetaDescription())
+            ? 'Альфа-Гидро - Масла и очистители.'
+            : $page->getMetaDescription();
+        $this->view->meta_description = $meta_description;
+
+        $meta_keywords = (!$page->getMetaKeywords())
+            ? ''
+            : $page->getMetaKeywords();
+        $this->view->meta_keywords = $meta_keywords;
+
+        /*$oilMapper = new Oil_Model_Mapper_Oil();
         $select = $oilMapper->getDbTable()->select();
         $select
             ->where('deleted != ?', 1)
@@ -58,7 +128,7 @@ class Oil_IndexController extends Zend_Controller_Action
             $this->view->pageItems = $oilItems;
             $this->view->meta_description = 'Альфа-Гидро - Масла гидравлические. Высокоэффективные гидравлические масла стандартов HLP / HVLP глубокой селективной очистки с многофункциональным пакетом присадок для систем гидроприводов и гидроуправления строительной, дорожной, лесозаготовительной, подъемно-транспортной техники и других машин и агрегатов.';
             $this->view->meta_keywords = 'масло гидравлическое, HLP, HVLP, Зима 22, ZF 48 68, МГЕ-46В, присадки, глубокой очистки';
-        }
+        }*/
 
     }
 
@@ -90,13 +160,12 @@ class Oil_IndexController extends Zend_Controller_Action
 
     public function pageModule()
     {
-        $pagesMapper = new Pages_Model_Mapper_Pages();
-        $pageCatalogPath = $this->getRequest()->getModuleName();
+        $pageModulePath = $this->getRequest()->getModuleName();
 
-        $page = $pagesMapper->findByPath($pageCatalogPath, new Pages_Model_Pages());
+        $page = $this->_pagesMapper->findByPath($pageModulePath, new Pages_Model_Pages());
 
         if(is_null($page))
-            throw new Zend_Controller_Action_Exception("Раздел '".$pageCatalogPath."' не добален в таблицу 'Pages'", 404);
+            throw new Zend_Controller_Action_Exception("Раздел '".$pageModulePath."' не добален в таблицу 'Pages'", 404);
 
         return $page;
     }
@@ -119,6 +188,24 @@ class Oil_IndexController extends Zend_Controller_Action
     public function getCountItemOnPage()
     {
         return $this->_count_item_on_page;
+    }
+
+    /**
+     * @param array $categories
+     * @return Oil_IndexController
+     */
+    public function setCategories($categories)
+    {
+        $this->_categories = $categories;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCategories()
+    {
+        return $this->_categories;
     }
 }
 
