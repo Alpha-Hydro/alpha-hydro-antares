@@ -355,6 +355,14 @@
               <actionMethod actionName="modificationDel"/>
               <actionMethod actionName="modificationPropertyEdit"/>
             </controllerFile>
+            <controllerFile controllerName="OilCategories">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="add"/>
+              <actionMethod actionName="edit"/>
+              <actionMethod actionName="delete"/>
+              <actionMethod actionName="list"/>
+              <actionMethod actionName="json"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="PageEdit"/>
@@ -370,6 +378,7 @@
             <formFile formName="BaseItemEdit"/>
             <formFile formName="MediaEdit"/>
             <formFile formName="MediaCategoriesEdit"/>
+            <formFile formName="OilCategoriesEdit"/>
           </formsDirectory>
           <layoutsDirectory enabled="false">
             <layoutScriptsDirectory enabled="false"/>
@@ -637,6 +646,24 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Products">
                 <viewScriptFile forActionName="modificationPropertyEdit"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="OilCategories">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="OilCategories">
+                <viewScriptFile forActionName="add"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="OilCategories">
+                <viewScriptFile forActionName="edit"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="OilCategories">
+                <viewScriptFile forActionName="delete"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="OilCategories">
+                <viewScriptFile forActionName="list"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="OilCategories">
+                <viewScriptFile forActionName="json"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>

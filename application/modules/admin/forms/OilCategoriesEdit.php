@@ -1,14 +1,18 @@
 <?php
 
-class Admin_Form_PipelineCategoriesEdit extends Twitter_Bootstrap_Form_Vertical
+class Admin_Form_OilCategoriesEdit extends Twitter_Bootstrap_Form_Vertical
 {
 
     public function init()
     {
         $this->addElement('hidden', 'id');
+        
+        $uploadDir = UPLOAD_DIR .'/oil/categories';
+        if(!file_exists($uploadDir))
+            mkdir($uploadDir, 0755, true);
 
         $image = new Zend_Form_Element_File('imageLoadFile');
-        $image->setDestination(APPLICATION_ROOT.'/upload/pipeline/category/')
+        $image->setDestination($uploadDir)
             ->addValidator('Size', false, 1024000)
             ->addValidator('Extension', false, 'jpg,png,gif')
             ->setAttrib('class', 'hidden');
@@ -160,15 +164,6 @@ class Admin_Form_PipelineCategoriesEdit extends Twitter_Bootstrap_Form_Vertical
         ));
 
         $this->getElement('submit')->removeDecorator('label');
-
-        /*$this->addElement('hash', 'csrf', array(
-            'ignore' => true,
-        ));*/
-
-        /*$classForm = $this->getAttrib('class');
-        $this->addAttribs(array(
-            'class' => 'tab-content '.$classForm,
-        ));*/
     }
 
     /**
@@ -176,18 +171,18 @@ class Admin_Form_PipelineCategoriesEdit extends Twitter_Bootstrap_Form_Vertical
      */
     public function getCategoryArray()
     {
-        $pipelineCategoryMapper = new Pipeline_Model_Mapper_PipelineCategories();
-        $select = $pipelineCategoryMapper->getDbTable()->select();
+        $categoryMapper = new Oil_Model_Mapper_OilCategories();
+        $select = $categoryMapper->getDbTable()->select();
         $select->where('deleted != ?', 1)
             ->order('sorting ASC');
 
         $categoryArray = array();
         $categoryArray[0] = 'нет';
 
-        $pipelineCategories = $pipelineCategoryMapper->fetchAll();
+        $pipelineCategories = $categoryMapper->fetchAll();
 
         if(!empty($pipelineCategories)){
-            /** @var Pipeline_Model_PipelineCategories $category */
+            /** @var Oil_Model_OilCategories $category */
             foreach ($pipelineCategories as $category) {
                 $categoryArray[$category->getId()] = $category->getTitle();
             }
@@ -195,7 +190,5 @@ class Admin_Form_PipelineCategoriesEdit extends Twitter_Bootstrap_Form_Vertical
 
         return $categoryArray;
     }
-
-
 }
 

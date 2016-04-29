@@ -22,8 +22,8 @@ class Oil_Bootstrap extends Zend_Application_Module_Bootstrap
             'oil/([\w\-\/]+)',
             array(
                 'module' => 'oil',
-                'controller' => 'index',
-                'action'     => 'view',
+                'controller' => 'categories',
+                'action'     => 'index',
                 1 => null,
             ),
             array(
