@@ -148,6 +148,29 @@ class Oil_Model_Mapper_OilCategories
         return $normaliseName;
     }
 
+    /**
+     * @param $value
+     * @param Oil_Model_OilCategories $categories
+     * @return null|Oil_Model_OilCategories
+     */
+    public function findByFulPath($value, Oil_Model_OilCategories $categories)
+    {
+        $table = $this->getDbTable();
+
+        $select = $table->select()
+            ->where("full_path = ?", $value);
+
+        $result = $table->fetchAll($select);
+
+        if (0 == count($result)) {
+            return null;
+        }
+
+        $row = $result->current();
+        $entry = $this->_setDbData($row, $categories);
+
+        return $entry;
+    }
 
 }
 

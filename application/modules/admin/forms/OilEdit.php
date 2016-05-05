@@ -6,7 +6,7 @@ class Admin_Form_OilEdit extends Twitter_Bootstrap_Form_Vertical
     public function init()
     {
         $this->addElement('hidden', 'id');
-        $this->addElement('hidden', 'categoryId');
+        $this->addElement('hidden', 'fullPath');
 
         $this->addElement('text', 'title', array(
             'label'         => 'Заголовок страницы',
@@ -22,19 +22,31 @@ class Admin_Form_OilEdit extends Twitter_Bootstrap_Form_Vertical
             'required'      => true,
         ));
 
+        $this->addElement('select', 'categoryId', array(
+            'label'     => 'Категория',
+            'required'  => true,
+            'data-controller'  => 'oil-categories',
+            'multiOptions' => $this->getCategoryArray(),
+        ));
+
         $this->addDisplayGroup(
             array(
                 'title',
                 'categoryId',
                 'path',
+                'fullPath',
                 'id',
             ),
             'basic',
             array()
         );
 
+        $uploadDir = UPLOAD_DIR .'/oil/items';
+        if(!file_exists($uploadDir))
+            mkdir($uploadDir, 0755, true);
+
         $image = new Zend_Form_Element_File('imageLoadFile');
-        $image->setDestination(APPLICATION_ROOT.'/upload/pipeline/items/')
+        $image->setDestination($uploadDir)
             ->addValidator('Size', false, 1024000)
             ->addValidator('Extension', false, 'jpg,png')
             ->setAttribs(
@@ -155,6 +167,28 @@ class Admin_Form_OilEdit extends Twitter_Bootstrap_Form_Vertical
         $this->addAttribs(array(
             'class' => 'tab-content '.$classForm,
         ));*/
+    }
+
+    public function getCategoryArray()
+    {
+        $categoryMapper = new Oil_Model_Mapper_OilCategories();
+        $select = $categoryMapper->getDbTable()->select();
+        $select->where('deleted != ?', 1)
+            ->where('active != ?', 0)
+            ->order('sorting ASC');
+
+        $categoryArray = array();
+        $categoryArray[] = 'нет';
+
+        $categories = $categoryMapper->fetchAll();
+
+        if(!empty($categories)){
+            foreach ($categories as $category) {
+                $categoryArray[$category->getId()] = $category->getTitle();
+            }
+        }
+
+        return $categoryArray;
     }
 
 }

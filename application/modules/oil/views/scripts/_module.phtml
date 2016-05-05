@@ -16,6 +16,7 @@
                         "breadcrumbs",
                         "oil",
                         array(
+                            'page_category' => $this->category,
                             'page_item' => $this->pageItem,
                         )
                     );?>
@@ -25,6 +26,11 @@
         <?=$this->layout()->content?>
     </div>
     <div class="col-md-3 col-md-pull-9">
-        <?=$this->partial('_sidebar_image.phtml')?>
+        <?php if($this->categories):?>
+            <?=$this->render('_sidebar.phtml')?>
+        <?php else: ?>
+            <?=$this->partial('_sidebar_image.phtml')?>
+        <?php endif;?>
     </div>
 </div>
+<?php /*Zend_Debug::dump($this->pageItems)*/?>

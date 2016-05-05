@@ -1,14 +1,14 @@
 <?php
-$this->title = 'Масла';
-$this->secondary_text = 'Список товара';
+$this->title = 'Масла и очистители';
+$this->secondary_text = $this->categoryName.'Список товара';
 ?>
 <?php if(!empty($this->pages)):?>
 <table class="table table-striped table-bordered">
     <thead>
     <tr>
         <th>ID</th>
-        <th>Заголовок</th>
-        <th>Url</th>
+        <th>Категория</th>
+        <th>Наименование</th>
         <th>Сортировка</th>
         <th>Активность</th>
         <th></th>
@@ -17,8 +17,8 @@ $this->secondary_text = 'Список товара';
     <?php foreach ($this->pages as $page):?>
         <tr class="<?=$this->contextualClassTr($page);?>">
             <td><?=$page->getId()?></td>
+            <td><?=$this->getCategory($page->getCategoryId(),'oil')->getTitle()?></td>
             <td><?=$page->getTitle()?></td>
-            <td><?=$page->getPath()?></td>
             <td><?=$page->getSorting()?></td>
             <td><input type="checkbox" value="<?=$page->getActive()?>" <?=($page->getActive() != 0)?'checked':'';?>></td>
             <td width="150px">

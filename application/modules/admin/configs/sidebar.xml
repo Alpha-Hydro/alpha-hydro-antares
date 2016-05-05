@@ -153,11 +153,18 @@
                     </pages>
                 </pipeline>
                 <oil>
-                    <label>Масла</label>
+                    <label>Масла и очистители</label>
                     <module>admin</module>
-                    <controller>oil</controller>
-                    <resource>oil</resource>
+                    <controller>oil-categories</controller>
+                    <resource>oil-categories</resource>
                     <pages>
+                        <index>
+                            <label>Список товаров</label>
+                            <module>admin</module>
+                            <controller>oil</controller>
+                            <action>index</action>
+                            <resourse>oil</resourse>
+                        </index>
                         <add>
                             <label>Добавить товар</label>
                             <module>admin</module>
@@ -172,6 +179,33 @@
                             <action>edit</action>
                             <resourse>oil</resourse>
                         </edit>
+                        <categories>
+                            <label>Категории</label>
+                            <module>admin</module>
+                            <controller>oil-categories</controller>
+                            <resourse>oil-categories</resourse>
+                        </categories>
+                        <category_list>
+                            <label>Список товаров в категории</label>
+                            <module>admin</module>
+                            <controller>oil-categories</controller>
+                            <action>list</action>
+                            <resourse>oil-categories</resourse>
+                        </category_list>
+                        <category_add>
+                            <label>Добавить категорию</label>
+                            <module>admin</module>
+                            <controller>oil-categories</controller>
+                            <action>add</action>
+                            <resourse>oil-categories</resourse>
+                        </category_add>
+                        <category_edit>
+                            <label>Редактировать категорию</label>
+                            <module>admin</module>
+                            <controller>oil-categories</controller>
+                            <action>edit</action>
+                            <resourse>oil-categories</resourse>
+                        </category_edit>
                     </pages>
                 </oil>
                 <forum>

@@ -1,0 +1,52 @@
+<?php
+    /**
+     * @var $pageItem Oil_Model_Oil
+     */
+    $this->headTitle($this->title);
+    $this->breadcrumbs = true;
+    $this->sidebar_headers = true;
+?>
+<?php if(trim($this->category->getContentHtml()) != ''):?>
+    <div class="row mb2">
+        <div class="col-md-12">
+            <?php if($this->category->getImage()):?>
+                <div class="col-md-3 pull-right">
+                    <div class="thumbnail">
+                        <img src="<?=$this->category->getImage()?>" alt="<?=$this->category->getTitle()?>">
+                    </div>
+                </div>
+            <?php endif;?>
+            <?=$this->category->getContentHtml();?>
+        </div>
+    </div>
+<?php endif; ?>
+<?php if($this->pageItems):?>
+    <div class="row">
+        <div class="col-md-12">
+                <?php foreach ($this->pageItems as $pageItem):?>
+                    <div class="media media-item line line-dotted">
+                        <?php if($pageItem->getImage()):?>
+                            <div class="media-left col-md-3">
+                                <div class="thumbnail col-md-10 hover-shadow">
+                                    <a href="<?=$this->url(array(
+                                        'fullPath' => $pageItem->getFullPath()
+                                    ),  'oil', true, false)?>">
+                                        <img src="<?=$this->escape($pageItem->getImage())?>" alt="<?=$this->escape($pageItem->getTitle())?>" class="media-object"/>
+                                    </a>
+                                </div>
+                            </div>
+                        <?php endif;?>
+                        <div class="media-body">
+                            <h4 class="media-heading">
+                                <a href="<?=$this->url(array(
+                                    'fullPath' => $pageItem->getFullPath()
+                                ),  'oil', true, false)?>"><?=$this->escape($pageItem->getTitle())?></a>
+                            </h4>
+                            <?=$pageItem->getDescription()?>
+                        </div>
+                    </div>
+                <?php endforeach;?>
+                <?= $this->render('components/_paginator.phtml')?>
+        </div>
+    </div>
+<?php endif;?>

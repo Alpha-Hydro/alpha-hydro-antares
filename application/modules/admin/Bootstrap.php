@@ -66,6 +66,9 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         $acl->addResource(new Zend_Acl_Resource('update-image-catalog'));
         $acl->addResource(new Zend_Acl_Resource('products-draft'));
 
+        $acl->addResource(new Zend_Acl_Resource('api'));
+        $acl->addResource(new Zend_Acl_Resource('get'));
+
         // далее переходим к созданию ролей, которых у нас 2:
         // гость (неавторизированный пользователь)
         $acl->addRole('guest');

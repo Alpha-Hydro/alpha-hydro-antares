@@ -48,27 +48,27 @@ class PipelineController extends Zend_Controller_Action
             }
         }
 
-        $pipelineItems = $pipelineMapper->fetchAll($select);
+        $pagesItems = $pipelineMapper->fetchAll($select);
 
-        if(!empty($pipelineItems)){
-            if(count($pipelineItems)> $this->getCountItemOnPage()){
-                $pipelinePages = array_chunk($pipelineItems, $this->getCountItemOnPage());
+        if(!empty($pagesItems)){
+            if(count($pagesItems)> $this->getCountItemOnPage()){
+                $pageItems = array_chunk($pagesItems, $this->getCountItemOnPage());
 
                 $currentPage = 0;
 
                 if($request->getParam('page') && $request->getParam('page')>0)
                     $currentPage = $request->getParam('page')-1;
 
-                if($request->getParam('page') && $request->getParam('page')>count($pipelinePages))
-                    $currentPage = count($pipelinePages)-1;
+                if($request->getParam('page') && $request->getParam('page')>count($pageItems))
+                    $currentPage = count($pageItems)-1;
 
-                $pipelineItems = $pipelinePages[$currentPage];
-                $this->view->countPage = count($pipelinePages);
+                $pagesItems = $pageItems[$currentPage];
+                $this->view->countPage = count($pageItems);
                 $this->view->currentPage = $currentPage+1;
             }
         }
 
-        $this->view->pages = $pipelineItems;
+        $this->view->pages = $pagesItems;
 
         $config = array(
             Zend_Navigation_Page_Mvc::factory(array(

@@ -10,6 +10,8 @@ class Oil_Model_Oil
     protected $_title = null;
 
     protected $_path = null;
+    
+    protected $_full_path = null;
 
     protected $_description = null;
 
@@ -444,6 +446,24 @@ class Oil_Model_Oil
     public function getDeleted()
     {
         return $this->_deleted;
+    }
+
+    /**
+     * @param null $full_path
+     * @return Oil_Model_Oil
+     */
+    public function setFullPath($full_path)
+    {
+        $this->_full_path = $full_path;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getFullPath()
+    {
+        return $this->_full_path;
     }
 
 

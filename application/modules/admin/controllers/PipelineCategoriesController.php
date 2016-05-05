@@ -10,6 +10,11 @@ class PipelineCategoriesController extends Zend_Controller_Action
      */
     protected $_modelMapper = null;
 
+    /**
+     * @var Zend_Controller_Action_Helper_Redirector
+     */
+    protected $_redirector = null;
+
     protected $_count_item_on_page = null;
 
     public function init()
@@ -17,6 +22,7 @@ class PipelineCategoriesController extends Zend_Controller_Action
         $this->_count_item_on_page = 10;
 
         $this->_modelMapper = new Pipeline_Model_Mapper_PipelineCategories();
+        $this->_redirector = $this->_helper->getHelper('Redirector');
 
         $contextSwitch = $this->_helper->getHelper('contextSwitch');
         $contextSwitch
@@ -31,8 +37,7 @@ class PipelineCategoriesController extends Zend_Controller_Action
         $pageMapper = new Pipeline_Model_Mapper_PipelineCategories();
 
         $select = $pageMapper->getDbTable()->select();
-        $select->where('deleted != ?', 1)
-            ->order('sorting ASC');
+        $select->order('sorting ASC');
 
         $pageItems = $pageMapper->fetchAll($select);
 
@@ -203,10 +208,29 @@ class PipelineCategoriesController extends Zend_Controller_Action
         if(is_null($pipelineCategory))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
-        $pipelineCategory->setDeleted(1);
+        $deleted = ($pipelineCategory->getDeleted() != 0)?0:1;
+        
+        $pipelineCategory->setDeleted($deleted);
         $pipelineCategoryMapper->save($pipelineCategory);
 
         return $this->_helper->redirector('index');
+    }
+
+    public function enableAction()
+    {
+        $itemId = $this->_request->getParam('id');
+
+        if(is_null($itemId))
+            $this->_redirector->gotoSimpleAndExit('index');
+
+        $item = $this->_modelMapper->find($itemId, new Pipeline_Model_PipelineCategories());
+
+        $active = ($item->getActive() != 0)?0:1;
+        $item->setActive($active);
+
+        $this->_modelMapper->save($item);
+
+        $this->_redirector->gotoSimpleAndExit('index');
     }
 
     public function jsonAction()

@@ -20,6 +20,16 @@ class Oil_BreadcrumbsController extends Zend_Controller_Action
 
         $i = 0;
 
+        $pageCategory = $this->getPageCategory();
+        if(!is_null($pageCategory)){
+            $breadcrumbs->addPage(array(
+                'type' => 'uri',
+                'label' => $pageCategory->getTitle(),
+                'active' => true,
+            ));
+            $i--;
+        }
+
         $pageItem = $this->getPageItem();
         if(!is_null($pageItem)){
             $breadcrumbs->addPage(array(
@@ -33,7 +43,7 @@ class Oil_BreadcrumbsController extends Zend_Controller_Action
         $breadcrumbs->addPage(
             new Zend_Navigation_Page_Uri(
                 array (
-                    'label' => 'Масла',
+                    'label' => 'Масла и очистители',
                     'uri' => '/oil/',
                     'order' => $i
                 )

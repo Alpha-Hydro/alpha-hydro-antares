@@ -76,4 +76,31 @@ var getSlugify = function (url, value, ajaxContent) {
         }, false);
     })(jQuery);
 };
+var selectCategory = document.getElementById('categoryId');
+var pathInput = document.getElementById('path');
+var fullPathInput = document.getElementById('fullPath');
+selectCategory.addEventListener('change', function (e) {
+    console.log(pathInput.getAttribute('value'));
+    var value = e.target.value;
+    var controller = e.target.dataset.controller;
+    if (value != 0) {
+        (function ($) {
+            return $.ajax({
+                url: '/api/' + controller + '/get/' + value + '/',
+                dataType: 'json',
+                cache: false,
+                error: function (jqXHR, textStatus) {
+                    return console.log("AJAX Error: " + textStatus);
+                },
+                success: function (data) {
+                    if (data.fullPath) {
+                        var fullPath = data.fullPath + '/' + pathInput.getAttribute('value');
+                        console.log(fullPath);
+                        return fullPathInput.setAttribute('value', fullPath);
+                    }
+                }
+            }, false);
+        })(jQuery);
+    }
+});
 //# sourceMappingURL=adminPublic.js.map

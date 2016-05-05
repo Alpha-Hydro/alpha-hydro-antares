@@ -152,7 +152,7 @@ class Oil_Model_Mapper_Oil
     {
         $table = $this->getDbTable();
         $select = $table->select()
-            ->where('path = ?', $path);
+            ->where('full_path = ?', $path);
 
         $result = $table->fetchAll($select);
 

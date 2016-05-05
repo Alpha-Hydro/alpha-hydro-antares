@@ -9,8 +9,12 @@ class OilController extends Zend_Controller_Action
      */
     protected $_modelMapper = null;
 
+    protected $_count_item_on_page = null;
+
     public function init()
     {
+        $this->_count_item_on_page = 10;
+
         $this->_modelMapper = new Oil_Model_Mapper_Oil();
 
         $contextSwitch = $this->_helper->getHelper('contextSwitch');
@@ -21,9 +25,46 @@ class OilController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $this->view->pages = $this->_modelMapper->fetchAll();
+        $select = $this->_modelMapper->getDbTable()->select();
+
+        $categoryId = $this->_request->getParam('id');
+        if ($categoryId){
+            $select->where('category_id = ?', $categoryId);
+
+            $categoryMapper = new Oil_Model_Mapper_OilCategories();
+            $category = $categoryMapper->find($categoryId, new Oil_Model_OilCategories());
+            $this->view->categoryName = $category->getTitle(). ' - ';
+        }
+
+        $pagesItems = $this->_modelMapper->fetchAll($select);
+
+        if(!empty($pagesItems)){
+            if(count($pagesItems)> $this->getCountItemOnPage()){
+                $pageItems = array_chunk($pagesItems, $this->getCountItemOnPage());
+
+                $currentPage = 0;
+
+                if($this->_request->getParam('page') && $this->_request->getParam('page')>0)
+                    $currentPage = $this->_request->getParam('page')-1;
+
+                if($this->_request->getParam('page') && $this->_request->getParam('page')>count($pageItems))
+                    $currentPage = count($pageItems)-1;
+
+                $pagesItems = $pageItems[$currentPage];
+                $this->view->countPage = count($pageItems);
+                $this->view->currentPage = $currentPage+1;
+            }
+        }
+
+        $this->view->pages = $pagesItems;
 
         $config = array(
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Категории',
+                'module' => 'admin',
+                'controller' => 'oil-categories',
+                'resource' => 'oil-categories',
+            )),
             Zend_Navigation_Page_Mvc::factory(array(
                 'label' => 'Добавить товар',
                 'module' => 'admin',
@@ -93,7 +134,7 @@ class OilController extends Zend_Controller_Action
             )),
             Zend_Navigation_Page_Uri::factory(array(
                 'label' => 'Посмотреть на сайте',
-                'uri' => '/oil/'.$page->getPath(),
+                'uri' => '/oil/'.$page->getFullPath(),
             )),
             Zend_Navigation_Page_Mvc::factory(array(
                 'label' => 'Отменить',
@@ -218,6 +259,24 @@ class OilController extends Zend_Controller_Action
         $this->_modelMapper->save($oilItem);
 
         return $this->_helper->redirector('index');
+    }
+
+    /**
+     * @param null $count_item_on_page
+     * @return OilController
+     */
+    public function setCountItemOnPage($count_item_on_page)
+    {
+        $this->_count_item_on_page = $count_item_on_page;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getCountItemOnPage()
+    {
+        return $this->_count_item_on_page;
     }
 
 }

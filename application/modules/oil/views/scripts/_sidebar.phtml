@@ -1,0 +1,11 @@
+<nav>
+    <ul class="list-group sidebar crop-bottom-shadow">
+        <?php foreach($this->categories as $category):?>
+            <li class="list-group-item sidebar-item <?=(is_null($this->category) || $this->category->getId() != $category->getId())?'':'sidebar-item-current';?>">
+                <a href="<?=$this->url(array(
+                        'fullPath'=>$category->getFullPath()
+                    ), 'oil',true,false)?>"><?=$this->escape($category->getTitle())?></a>
+            </li>
+        <?php endforeach;?>
+    </ul>
+</nav>

@@ -18,3 +18,8 @@ CREATE TABLE oil
 );
 ALTER TABLE oil ADD CONSTRAINT unique_id UNIQUE (id);
 ALTER TABLE oil ADD CONSTRAINT unique_path UNIQUE (path);
+
+ALTER TABLE oil ADD full_path VARCHAR(255) DEFAULT '' NOT NULL;
+UPDATE oil SET full_path = path;
+DROP INDEX unique_path ON oil;
+CREATE UNIQUE INDEX oil_full_path_uindex ON oil (full_path);

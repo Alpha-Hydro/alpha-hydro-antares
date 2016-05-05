@@ -79,3 +79,32 @@ var getSlugify = (url:string, value:string, ajaxContent:any):any => {
         }, false)
     })(jQuery);
 };
+
+var selectCategory:Element = document.getElementById('categoryId');
+var pathInput:Element = document.getElementById('path');
+var fullPathInput:Element = document.getElementById('fullPath');
+
+selectCategory.addEventListener('change', (e:any) => {
+    console.log(pathInput.getAttribute('value'));
+    var value:any = e.target.value;
+    var controller:string = e.target.dataset.controller;
+    if(value != 0){
+        (($) => {
+            return $.ajax({
+                url: '/api/'+controller+'/get/'+value+'/',
+                dataType: 'json',
+                cache: false,
+                error: (jqXHR, textStatus) => {
+                    return console.log("AJAX Error: " + textStatus);
+                },
+                success: (data) => {
+                    if(data.fullPath){
+                        var fullPath:string = data.fullPath+'/'+pathInput.getAttribute('value');
+                        console.log(fullPath);
+                        return fullPathInput.setAttribute('value', fullPath);
+                    }
+                }
+            }, false)
+        })(jQuery);
+    }
+});

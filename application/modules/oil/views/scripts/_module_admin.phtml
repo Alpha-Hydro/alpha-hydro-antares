@@ -16,17 +16,20 @@
                         "breadcrumbs",
                         "oil",
                         array(
+                            'page_category' => $this->category,
                             'page_item' => $this->pageItem,
                         )
                     );?>
                 </div>
             </div>
         <?php endif; ?>
-        <div class="row">
-            <?=$this->layout()->content?>
-        </div>
+        <?=$this->layout()->content?>
     </div>
     <div class="col-md-3 col-md-pull-9">
-        <?=$this->partial('_sidebar_image.phtml')?>
+        <?php if($this->categories):?>
+            <?=$this->render('_sidebar.phtml')?>
+        <?php else: ?>
+            <?=$this->partial('_sidebar_image.phtml')?>
+        <?endif;?>
     </div>
 </div>
