@@ -1,4 +1,10 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Oil</b> and script/action name <b>view</b></p>
+<?php
+    $this->headTitle($this->title);
+    $this->breadcrumbs = true;
+    $this->sidebar_headers = true;
+?>
+<div class="row">
+    <div class="col-md-12">
+        <?=$this->pageItem->getContentHtml();?>
+    </div>
 </div>

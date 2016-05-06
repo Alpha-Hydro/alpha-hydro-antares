@@ -1,4 +1,7 @@
 <?php
+    /**
+    * @var $page Oil_Model_Oil
+    */
 $this->title = 'Масла и очистители';
 $this->secondary_text = $this->categoryName.'Список товара';
 ?>
@@ -25,7 +28,7 @@ $this->secondary_text = $this->categoryName.'Список товара';
                 <?=$this->partial('_button_group_table.phtml', array(
                     'item_controller' => 'oil',
                     'item_id' => $page->getId(),
-                    'item_path' => '/oil/'.$page->getPath(),
+                    'item_path' => '/oil/'.$page->getFullPath(),
                     'deleted' => ($page->getDeleted() != 0)? true : false,
                 ))?>
             </td>

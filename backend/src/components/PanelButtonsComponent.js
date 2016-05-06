@@ -46,7 +46,7 @@ export default class PanelButtonsComponent extends React.Component{
 	}
 
 	handlerClickList(){
-		var path = this.state.data.path;
+		var path = this.state.data.controller;
 		window.location = '/admin/'+path;
 	}
 
@@ -71,8 +71,8 @@ export default class PanelButtonsComponent extends React.Component{
 
 		return (
 			<div className="btn-group-vertical btn-group-lg">
-				<ButtonComponent bsStyle="primary" icon="list" title="Cписок категорий" eventClick={this.handlerClickList.bind(this)}/>
 				{Buttons}
+				<ButtonComponent bsStyle="primary" icon="list" title="Cписок категорий" eventClick={this.handlerClickList.bind(this)}/>
 				<ModalComponent
 					show={this.state.show}
 					hide={this.hideModal.bind(this)}

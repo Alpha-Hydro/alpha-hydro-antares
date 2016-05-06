@@ -2,7 +2,13 @@
 
 class Oil_BreadcrumbsController extends Zend_Controller_Action
 {
+    /**
+     * @var Oil_Model_OilCategories
+     */
     protected $_page_category = null;
+    /**
+     * @var Oil_Model_Oil
+     */
     protected $_page_item = null;
 
     public function init()
@@ -21,16 +27,20 @@ class Oil_BreadcrumbsController extends Zend_Controller_Action
         $i = 0;
 
         $pageCategory = $this->getPageCategory();
+        $pageItem = $this->getPageItem();
+
         if(!is_null($pageCategory)){
             $breadcrumbs->addPage(array(
                 'type' => 'uri',
                 'label' => $pageCategory->getTitle(),
-                'active' => true,
+                'uri' => (!is_null($pageItem))
+                    ? '/oil/'.$pageCategory->getPath().'/'
+                    : null,
+                'active' => (!is_null($pageItem))?false:true,
             ));
             $i--;
         }
 
-        $pageItem = $this->getPageItem();
         if(!is_null($pageItem)){
             $breadcrumbs->addPage(array(
                 'type' => 'uri',
@@ -64,7 +74,7 @@ class Oil_BreadcrumbsController extends Zend_Controller_Action
     }
 
     /**
-     * @param null $page_category
+     * @param Oil_Model_OilCategories $page_category
      * @return Oil_BreadcrumbsController
      */
     public function setPageCategory($page_category)
@@ -74,7 +84,7 @@ class Oil_BreadcrumbsController extends Zend_Controller_Action
     }
 
     /**
-     * @return null
+     * @return Oil_Model_OilCategories
      */
     public function getPageCategory()
     {
@@ -82,7 +92,7 @@ class Oil_BreadcrumbsController extends Zend_Controller_Action
     }
 
     /**
-     * @param null $page_item
+     * @param Oil_Model_Oil $page_item
      * @return Oil_BreadcrumbsController
      */
     public function setPageItem($page_item)
@@ -92,7 +102,7 @@ class Oil_BreadcrumbsController extends Zend_Controller_Action
     }
 
     /**
-     * @return null
+     * @return Oil_Model_Oil
      */
     public function getPageItem()
     {

@@ -239,7 +239,7 @@ class PagesController extends Zend_Controller_Action
                 $pagesMapper = new Default_Model_Mapper_Pages();
                 $pagesMapper->save($page);
 
-                return $this->_helper->redirector('index');
+                $this->_redirector->gotoSimpleAndExit('index', 'admin');
             }
 
             $form->setDefaults($request->getPost());
