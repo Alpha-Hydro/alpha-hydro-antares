@@ -6,6 +6,7 @@ $this->title = 'Масла и очистители';
 $this->secondary_text = $this->categoryName.'Список товара';
 ?>
 <?php if(!empty($this->pages)):?>
+    <?php /*Zend_Debug::dump($this->pages)*/?>
 <table class="table table-striped table-bordered">
     <thead>
     <tr>
@@ -20,7 +21,10 @@ $this->secondary_text = $this->categoryName.'Список товара';
     <?php foreach ($this->pages as $page):?>
         <tr class="<?=$this->contextualClassTr($page);?>">
             <td><?=$page->getId()?></td>
-            <td><?=$this->getCategory($page->getCategoryId(),'oil')->getTitle()?></td>
+            <td><?=($this->getCategory($page->getCategoryId(),'oil'))
+                    ?$this->getCategory($page->getCategoryId(),'oil')->getTitle()
+                    :'нет';
+                ?></td>
             <td><?=$page->getTitle()?></td>
             <td><?=$page->getSorting()?></td>
             <td><input type="checkbox" value="<?=$page->getActive()?>" <?=($page->getActive() != 0)?'checked':'';?>></td>
