@@ -78,7 +78,7 @@ var getSlugify = function (url, value, ajaxContent) {
 var selectCategory = document.getElementById('categoryId');
 var pathInput = document.getElementById('path');
 var fullPathInput = document.getElementById('fullPath');
-if (typeof selectCategory !== 'undefined') {
+if (selectCategory && typeof selectCategory !== 'undefined') {
     selectCategory.addEventListener('change', function (e) {
         var value = e.target.value;
         var controller = e.target.dataset.controller;

@@ -1,4 +1,3 @@
-/// <reference path="../../public/typescript/jquery.d.ts" />
 var DataPage = (function () {
     function DataPage() {
         this.pageData = {};
@@ -28,6 +27,6 @@ var DataPage = (function () {
         return this.pageData;
     };
     return DataPage;
-})();
+}());
 var dataPage = new DataPage();
 //# sourceMappingURL=DataPage.js.map

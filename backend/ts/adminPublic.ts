@@ -83,7 +83,8 @@ var getSlugify = (url:string, value:string, ajaxContent:any):any => {
 var selectCategory:any = document.getElementById('categoryId');
 var pathInput:any = document.getElementById('path');
 var fullPathInput:any = document.getElementById('fullPath');
-if(typeof selectCategory !== 'undefined'){
+
+if(selectCategory && typeof selectCategory !== 'undefined'){
     selectCategory.addEventListener('change', (e:any) => {
         var value:any = e.target.value;
         var controller:string = e.target.dataset.controller;
