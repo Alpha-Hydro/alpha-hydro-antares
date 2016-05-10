@@ -1,3 +1,4 @@
+/// <reference path="../../public/typescript/jquery.d.ts" />
 ;
 (function ($) {
     var _this = this;

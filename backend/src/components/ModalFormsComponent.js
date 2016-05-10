@@ -5,7 +5,6 @@ import ModalFormSeo from "./ModalForms/ModalFormSeo";
 import ModalFormsAdd from "./ModalForms/ModalFormsAdd";
 
 export default class ModalFormsComponent extends React.Component{
-
 	selectInputs(){
 		switch (this.props.action) {
 			case "edit":  return <ModalFormsEdit data = {this.props.data}/>;
@@ -30,5 +29,4 @@ export default class ModalFormsComponent extends React.Component{
 			</form>
 		);
 	}
-
 }

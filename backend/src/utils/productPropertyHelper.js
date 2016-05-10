@@ -1,3 +1,4 @@
+var $ = require('jquery');
 var axios = require('axios');
 
 var helpers = {

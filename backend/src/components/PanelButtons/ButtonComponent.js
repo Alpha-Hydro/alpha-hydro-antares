@@ -1,8 +1,5 @@
 import React from "react";
-import Btn from "react-bootstrap/lib/Button";
-import {Glyphicon} from "react-bootstrap/lib";
-
-import FaIcon from "./../FaIconComponent";
+import {Button, Glyphicon} from "react-bootstrap";
 
 export default class ButtonComponent extends React.Component{
 
@@ -12,9 +9,9 @@ export default class ButtonComponent extends React.Component{
 
   render(){
     return (
-				<Btn {...this.props} onClick={this.handlerClick.bind(this)}>
+				<Button {...this.props} onClick={this.handlerClick.bind(this)}>
 					<Glyphicon glyph={this.props.icon} />
-				</Btn>
+				</Button>
     )
   }
 }

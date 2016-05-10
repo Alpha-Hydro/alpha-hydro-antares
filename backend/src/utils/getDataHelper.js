@@ -2,7 +2,7 @@ var axios = require('axios');
 
 var helpers = {
 	getCategoryInfo: function(id){
-		return axios.get("/admin/categories/json/?id=" + id)
+		return axios.get("/api/categories/get/" + id + "/")
 			.then(function (response) {
 				return response.data;
 			})
@@ -42,7 +42,7 @@ var helpers = {
 	},
 
 	getGategoryList: function(id){
-		return axios.get("/admin/categories/list/?id=" + id)
+		return axios.get("/api/categories/list/" + id + "/")
 			.then(function (response) {
 				return response.data;
 			})
@@ -52,7 +52,7 @@ var helpers = {
 	},
 
 	getSubGategoryList: function(id){
-		return axios.get("/admin/categories/list/?id=" + id + "&children=true")
+		return axios.get("/api/categories/list/" + id + "/?children=true")
 			.then(function (response) {
 				return response.data;
 			})

@@ -1,5 +1,14 @@
 import React from "react";
-import {Grid, Row, Col, Input, Button, Glyphicon} from "react-bootstrap/lib";
+import {
+	Grid,
+	Row,
+	Col,
+	ButtonGroup,
+	Button,
+	FormGroup,
+	FormControl,
+	ControlLabel,
+	InputGroup} from "react-bootstrap";
 
 import ImagesUpload from "./../../../utils/ImagesUpload";
 import categoryHelpers from "../../../utils/getDataHelper";
@@ -58,13 +67,6 @@ export default class CategoriesFormEdit extends React.Component{
 		return uploadPath + image;
 	}
 
-	innerButton(){
-		return <CategoryReplace
-			currentCategory={this.state.categoryInfo}
-			selectCategory={this.selectCategory.bind(this)}
-		/>
-	}
-
 	render(){
 		return (
 			<Grid fluid={true}>
@@ -73,30 +75,61 @@ export default class CategoriesFormEdit extends React.Component{
 						<ImagesUpload image={this.imgSrc()}/>
 					</Col>
 					<Col md={9}>
-						<Input type="text" label="Заголовок" placeholder="Заголовок"
-									 name="dataFormCategory[name]"
-									 value={(!this.state.data.title)?this.state.data.name:this.state.data.title}
-									 onChange={this.handleChange('title').bind(this)}
-									 required
-						/>
-						<Input type="text" label="Родительская категория"
-									 value={this.state.data.breadcrumbs}
-									 buttonAfter={this.innerButton()}
-						/>
-						<Input type="textarea" label="Описание категории" placeholder="Описание категории"
-									 name="dataFormCategory[description]"
-									 value={this.state.data.description}
-									 onChange={this.handleChange('description').bind(this)}
-									 rows="8"
-						/>
-						<Input type="text" label="Сортировка"
-									 labelClassName="col-md-2"
-									 wrapperClassName="col-md-2"
-									 name="dataFormCategory[sorting]"
-									 value={this.state.data.sorting}
-									 onChange={this.handleChange('sorting').bind(this)}
-									 required
-						/>
+						<FormGroup>
+							<ControlLabel>Заголовок</ControlLabel>
+							<FormControl
+								type="text"
+								value={this.state.data.name}
+								placeholder="Заголовок"
+								name="dataFormCategory[name]"
+								onChange={this.handleChange('name').bind(this)}
+								required
+							/>
+						</FormGroup>
+
+						<FormGroup>
+							<ControlLabel>Родительская категория</ControlLabel>
+							<InputGroup>
+								<InputGroup.Button>
+									<CategoryReplace
+										currentCategory={this.state.categoryInfo}
+										selectCategory={this.selectCategory.bind(this)}
+									/>
+								</InputGroup.Button>
+								<FormControl
+									type="text"
+									value={this.state.data.breadcrumbs}
+									readOnly
+								/>
+							</InputGroup>
+						</FormGroup>
+						<FormGroup>
+							<ControlLabel>Описание категории</ControlLabel>
+							<FormControl
+								componentClass="textarea"
+								value={(this.state.data.description)?this.state.data.description:''}
+								placeholder="Описание категории"
+								name="dataFormCategory[description]"
+								onChange={this.handleChange('description').bind(this)}
+								rows="8"
+							/>
+						</FormGroup>
+						<div className="form-horizontal">
+							<FormGroup>
+								<Col componentClass={ControlLabel} md={2}>
+									Сортировка
+								</Col>
+								<Col md={2}>
+									<FormControl
+										type="text"
+										value={this.state.data.sorting}
+										name="dataFormCategory[sorting]"
+										onChange={this.handleChange('sorting').bind(this)}
+										required
+									/>
+								</Col>
+							</FormGroup>
+						</div>
 						<input type="hidden"
 									 name="dataFormCategory[parentId]"
 									 value={this.state.parentId}

@@ -119,7 +119,9 @@ class Catalog_Model_Categories
         
         	if ($property->isProtected()) {
         		$property->setAccessible(TRUE);
-        		$data[$option] = $property->getValue($this);
+        		$data[$option] = (!is_null($property->getValue($this)))
+                    ?$property->getValue($this)
+                    :'';
         	}
         }
         

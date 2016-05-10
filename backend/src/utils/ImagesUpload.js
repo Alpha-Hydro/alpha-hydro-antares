@@ -1,5 +1,5 @@
 import React from "react";
-import {Image, ButtonGroup, Button, Glyphicon, Input} from "react-bootstrap/lib";
+import {Image, ButtonGroup, Button, Glyphicon} from "react-bootstrap";
 
 export default class ImagesUpload extends React.Component {
 	constructor(props) {
@@ -37,9 +37,9 @@ export default class ImagesUpload extends React.Component {
 
 	render() {
 		return (
-			<div className="text-center mb2">
+			<div className="text-center mb2 image-edit">
 				<Image src={this.state.image} thumbnail />
-				<Input
+				<input
 					type="file"
 					className="hidden"
 					id={(!this.props.inputName)?"fileElem":this.props.inputName}
@@ -47,7 +47,8 @@ export default class ImagesUpload extends React.Component {
 					accept="image/*"
 					name={(!this.props.inputName)?"fileLoad":this.props.inputName}
 					onChange={this.handleFiles.bind(this)}/>
-				<ButtonGroup>
+
+				<ButtonGroup bsSize="small">
 					<Button bsStyle="primary" onClick={this.fileSelect.bind(this)}>
 						<Glyphicon glyph="download-alt" />
 					</Button>

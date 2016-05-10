@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import {ButtonGroup} from "react-bootstrap";
+import ButtonGroup from "react-bootstrap/lib/ButtonGroup";
 
 import PanelNavComponent from "./components/PanelNavComponent";
 import ItemButtonsComponent from "./components/ItemButtonsComponent";

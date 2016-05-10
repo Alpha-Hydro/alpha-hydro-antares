@@ -14,7 +14,6 @@ export default class ModalComponent extends React.Component{
 	render() {
 		return (
 			<Modal
-				{...this.props}
 				show={this.props.show}
 				onHide={this.hideModal.bind(this)}
 				dialogClassName={

@@ -1,5 +1,5 @@
 import React from "react";
-import {Grid, Row, Col, Input, Image, ButtonGroup, Button} from "react-bootstrap/lib";
+import {Grid, Row, Col, ButtonGroup, Button, FormGroup, FormControl, ControlLabel} from "react-bootstrap";
 
 import ImagesUpload from "./../../utils/ImagesUpload";
 
@@ -38,42 +38,67 @@ export default class DefaultFormEdit extends React.Component{
 						<ImagesUpload image={imgSrc}/>
 					</Col>
 					<Col md={9}>
-						<Input type="text" label="Заголовок" placeholder="Заголовок"
-									 name="dataPage[title]"
-									 value={this.state.title}
-									 onChange={this.handleChange('title').bind(this)}
-									 required
-						/>
-						<Input type="text" label="Url страницы" placeholder="Url страницы"
-									 name="dataPage[path]"
-									 value={this.state.path}
-									 onChange={this.handleChange('path').bind(this)}
-									 required
-						/>
-						<Input type="textarea" label="Краткое описание" placeholder="Краткое описание"
-									 name="dataPage[description]"
-									 value={this.state.description}
-									 onChange={this.handleChange('description').bind(this)}
-									 rows="4"
-						/>
-						<Input type="textarea" label="Текст на странице (markdown)" placeholder="Текст на странице"
-									 name="dataPage[contentMarkdown]"
-									 value={this.state.contentMarkdown}
-									 onChange={this.handleChange('contentMarkdown').bind(this)}
-									 rows="8"
-						/>
-						<div className="form-horizontal">
-							<Input type="text" label="Сортировка"
-										 labelClassName="col-md-2"
-										 wrapperClassName="col-md-1"
-										 name="dataPage[sorting]"
-										 value={this.state.sorting}
-										 onChange={this.handleChange('sorting').bind(this)}
-										 required
+						<FormGroup>
+							<ControlLabel>Заголовок</ControlLabel>
+							<FormControl
+								type="text"
+								value={this.state.title}
+								placeholder="Заголовок"
+								name="dataPage[title]"
+								onChange={this.handleChange('title').bind(this)}
+								required
 							/>
+						</FormGroup>
+						<FormGroup>
+							<ControlLabel>Url страницы</ControlLabel>
+							<FormControl
+								type="text"
+								value={this.state.path}
+								placeholder="Url страницы"
+								name="dataPage[path]"
+								onChange={this.handleChange('path').bind(this)}
+								required
+							/>
+						</FormGroup>
+						<FormGroup>
+							<ControlLabel>Краткое описание</ControlLabel>
+							<FormControl
+								componentClass="textarea"
+								value={this.state.description}
+								placeholder="Краткое описание"
+								name="dataPage[description]"
+								onChange={this.handleChange('description').bind(this)}
+								rows="4"
+							/>
+						</FormGroup>
+						<FormGroup>
+							<ControlLabel>Текст на странице (markdown)</ControlLabel>
+							<FormControl
+								componentClass="textarea"
+								value={this.state.contentMarkdown}
+								placeholder="Текст на странице (markdown)"
+								name="dataPage[contentMarkdown]"
+								onChange={this.handleChange('contentMarkdown').bind(this)}
+								rows="8"
+							/>
+						</FormGroup>
+						<div className="form-horizontal">
+							<FormGroup>
+								<Col componentClass={ControlLabel} md={2}>
+									Сортировка
+								</Col>
+								<Col md={1}>
+									<FormControl
+										type="text"
+										value={this.state.sorting}
+										name="dataPage[sorting]"
+										onChange={this.handleChange('sorting').bind(this)}
+										required
+									/>
+								</Col>
+							</FormGroup>
 						</div>
-
-						<Input type="hidden"
+						<input type="hidden"
 									 name="dataPage[contentHtml]"
 									 value={this.state.contentHTML}
 						/>
