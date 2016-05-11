@@ -8,5 +8,5 @@ var PageData = (function () {
         };
     }
     return PageData;
-})();
+}());
 //# sourceMappingURL=pageData.js.map

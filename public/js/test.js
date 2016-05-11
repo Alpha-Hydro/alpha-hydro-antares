@@ -1,5 +1,3 @@
-/// <reference path="jquery.d.ts" />
-/// <reference path="classie.d.ts" />
 var Table = (function () {
     function Table(className) {
         this.className = className;
@@ -27,7 +25,7 @@ var Table = (function () {
         return [].slice.call(this.selectTr().querySelectorAll('td'));
     };
     return Table;
-})();
+}());
 var Button = (function () {
     function Button(className) {
         this.className = className;
@@ -40,7 +38,7 @@ var Button = (function () {
         return [].slice.call(this.buttonGroup().querySelectorAll(tagName));
     };
     return Button;
-})();
+}());
 function btnGroupDisabled(isDisable) {
     if (isDisable === void 0) { isDisable = false; }
     var btnGroup = new Button('.btn-group');

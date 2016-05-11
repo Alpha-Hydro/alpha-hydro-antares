@@ -1,17 +1,15 @@
 import React from "react";
-import {
-	Grid,
-	Row,
-	Col,
-	ButtonGroup,
-	Button,
-	FormGroup,
-	FormControl,
-	ControlLabel,
-	InputGroup} from "react-bootstrap";
+
+import Grid from "react-bootstrap/lib/Grid";
+import Row from "react-bootstrap/lib/Row";
+import Col from "react-bootstrap/lib/Col";
+import FormGroup from "react-bootstrap/lib/FormGroup";
+import FormControl from "react-bootstrap/lib/FormControl";
+import ControlLabel from "react-bootstrap/lib/ControlLabel";
+import InputGroup from "react-bootstrap/lib/InputGroup";
 
 import ImagesUpload from "./../../../utils/ImagesUpload";
-import categoryHelpers from "../../../utils/getDataHelper";
+import categoryHelpers from "./../../../utils/getDataHelper";
 
 import CategoryReplace from "./CategoryReplaceComponent";
 
@@ -114,20 +112,17 @@ export default class CategoriesFormEdit extends React.Component{
 								rows="8"
 							/>
 						</FormGroup>
-						<div className="form-horizontal">
+						<div className="form-inline">
 							<FormGroup>
-								<Col componentClass={ControlLabel} md={2}>
-									Сортировка
-								</Col>
-								<Col md={2}>
-									<FormControl
-										type="text"
-										value={this.state.data.sorting}
-										name="dataFormCategory[sorting]"
-										onChange={this.handleChange('sorting').bind(this)}
-										required
-									/>
-								</Col>
+								<ControlLabel className="mr2">Сортировка</ControlLabel>
+								<FormControl
+									type="number"
+									min="0"
+									value={this.state.data.sorting}
+									name="dataFormCategory[sorting]"
+									onChange={this.handleChange('sorting').bind(this)}
+									required
+								/>
 							</FormGroup>
 						</div>
 						<input type="hidden"

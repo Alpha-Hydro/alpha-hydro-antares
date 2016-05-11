@@ -1,5 +1,11 @@
 import React from "react";
-import {Grid, Row, Col, ButtonGroup, Button, FormGroup, FormControl, ControlLabel} from "react-bootstrap";
+
+import Grid from "react-bootstrap/lib/Grid";
+import Row from "react-bootstrap/lib/Row";
+import Col from "react-bootstrap/lib/Col";
+import FormGroup from "react-bootstrap/lib/FormGroup";
+import FormControl from "react-bootstrap/lib/FormControl";
+import ControlLabel from "react-bootstrap/lib/ControlLabel";
 
 import ImagesUpload from "./../../utils/ImagesUpload";
 
@@ -82,20 +88,17 @@ export default class DefaultFormEdit extends React.Component{
 								rows="8"
 							/>
 						</FormGroup>
-						<div className="form-horizontal">
+						<div className="form-inline">
 							<FormGroup>
-								<Col componentClass={ControlLabel} md={2}>
-									Сортировка
-								</Col>
-								<Col md={1}>
-									<FormControl
-										type="text"
-										value={this.state.sorting}
-										name="dataPage[sorting]"
-										onChange={this.handleChange('sorting').bind(this)}
-										required
-									/>
-								</Col>
+								<ControlLabel className="mr2">Сортировка</ControlLabel>
+								<FormControl
+									type="number"
+									min="0"
+									value={this.state.sorting}
+									name="dataPage[sorting]"
+									onChange={this.handleChange('sorting').bind(this)}
+									required
+								/>
 							</FormGroup>
 						</div>
 						<input type="hidden"

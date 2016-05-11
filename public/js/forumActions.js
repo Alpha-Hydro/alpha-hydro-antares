@@ -90,6 +90,6 @@ var ForumActions = (function () {
         this.modalShow(title, body, button);
     };
     return ForumActions;
-})();
+}());
 var forum = new ForumActions();
 //# sourceMappingURL=forumActions.js.map

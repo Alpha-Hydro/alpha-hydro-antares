@@ -1,5 +1,12 @@
 import React from "react";
-import {Grid, Row, Col, Input, Image, ButtonGroup, Button} from "react-bootstrap/lib";
+
+import Grid from "react-bootstrap/lib/Grid";
+import Row from "react-bootstrap/lib/Row";
+import Col from "react-bootstrap/lib/Col";
+import FormGroup from "react-bootstrap/lib/FormGroup";
+import FormControl from "react-bootstrap/lib/FormControl";
+import ControlLabel from "react-bootstrap/lib/ControlLabel";
+import InputGroup from "react-bootstrap/lib/InputGroup";
 
 import ImagesUpload from "./../../../utils/ImagesUpload";
 import Slugify from "./../../../utils/slugifyHelper";
@@ -11,7 +18,7 @@ export default class CategoriesFormAdd extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			title : '',
+			name : '',
 			path: '',
 			description: '',
 			contentMarkdown: '',
@@ -61,12 +68,6 @@ export default class CategoriesFormAdd extends React.Component{
 	}
 
 	render(){
-		const innerButton = <CategoryReplace
-			currentCategory={this.props.data}
-			categoryList={this.state.categoryList}
-			selectCategory={this.selectCategory.bind(this)}
-		/>;
-
 		return (
 			<Grid fluid={true}>
 				<Row className="show-grid">
@@ -74,37 +75,64 @@ export default class CategoriesFormAdd extends React.Component{
 						<ImagesUpload image={this.state.image} delete="hidden"/>
 					</Col>
 					<Col md={9}>
-						<Input type="text" label="Заголовок" placeholder="Заголовок"
-									 name="dataFormCategory[name]"
-									 value={this.state.title}
-									 onChange={this.handleChange('title').bind(this)}
-									 onBlur={this.titleChange.bind(this)}
-									 required
-						/>
+						<FormGroup>
+							<ControlLabel>Заголовок</ControlLabel>
+							<FormControl
+								type="text"
+								value={this.state.name}
+								placeholder="Заголовок"
+								name="dataFormCategory[name]"
+								onChange={this.handleChange('name').bind(this)}
+								onBlur={this.titleChange.bind(this)}
+								required
+							/>
+						</FormGroup>
 						<input type="hidden"
 									 name="dataFormCategory[path]"
 									 value={this.state.path}
 									 required
 						/>
-						<Input type="text" label="Родительская категория"
-									 disabled
-									 value={this.state.parentCategoryInfo.name}
-									 buttonBefore={innerButton}
-						/>
-						<Input type="textarea" label="Краткое описание" placeholder="Описание категории"
-									 name="dataFormCategory[description]"
-									 value={this.state.description}
-									 onChange={this.handleChange('description').bind(this)}
-									 rows="8"
-						/>
-						<Input type="text" label="Сортировка"
-									 labelClassName="col-md-2"
-									 wrapperClassName="col-md-2"
-									 name="dataFormCategory[sorting]"
-									 value={this.state.sorting}
-									 onChange={this.handleChange('sorting').bind(this)}
-									 required
-						/>
+						<FormGroup>
+							<ControlLabel>Родительская категория</ControlLabel>
+							<InputGroup>
+								<InputGroup.Button>
+									<CategoryReplace
+										currentCategory={this.props.data}
+										categoryList={this.state.categoryList}
+										selectCategory={this.selectCategory.bind(this)}
+									/>
+								</InputGroup.Button>
+								<FormControl
+									type="text"
+									value={this.state.parentCategoryInfo.name}
+									readOnly
+								/>
+							</InputGroup>
+						</FormGroup>
+						<FormGroup>
+							<ControlLabel>Описание категории</ControlLabel>
+							<FormControl
+								componentClass="textarea"
+								value={this.state.description}
+								placeholder="Описание категории"
+								name="dataFormCategory[description]"
+								onChange={this.handleChange('description').bind(this)}
+								rows="8"
+							/>
+						</FormGroup>
+						<div className="form-inline">
+							<FormGroup>
+								<ControlLabel className="mr2">Сортировка</ControlLabel>
+								<FormControl
+									type="number"
+									min="0"
+									value={this.state.sorting}
+									name="dataFormCategory[sorting]"
+									onChange={this.handleChange('sorting').bind(this)}
+									required
+								/>
+							</FormGroup>
+						</div>
 						<input type="hidden"
 									 name="dataFormCategory[parentId]"
 									 value={this.state.parentId}

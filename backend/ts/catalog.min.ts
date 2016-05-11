@@ -1,17 +1,22 @@
-/// <reference path="../../public/typescript/jquery.d.ts" />
+class categoryHeight {
+    item: any;
+    height: any;
+    constructor(classItem: string){
+        this.item = [].slice.call(document.querySelectorAll(classItem));
+        this.height = 200;
 
-;(function($){
-    var height;
-    height = 200;
-    $('.categories-list-item, .categories-item').each(function() {
-        var e;
-        e = $(this);
-        if (e.height() > height) {
-            height = e.height();
-        }
-        return e.height(height);
-    });
-    $('.add-item').height(function (i,val) {
-        return val = $(this).width();
-    })
-})(jQuery);
+        this._init();
+    }
+
+    _init(){
+        this.item.forEach((element:HTMLElement)=>{
+            if(element.offsetHeight > this.height){
+                this.height = element.offsetHeight;
+            }
+            element.style.height = this.height + 'px';
+        })
+    }
+}
+
+var categoriesList = new categoryHeight('.categories-list-item');
+var categories = new categoryHeight('.categories-item');

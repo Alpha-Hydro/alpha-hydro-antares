@@ -10,8 +10,6 @@ import ProductPropertyEditButton from "./components/Catalog/Products/ProductProp
 import ProductModificationEditButton from "./components/Catalog/Products/ProductModificationEditButton";
 import ProductModificationPropertyEditButton from "./components/Catalog/Products/ProductModificationPropertyEditButton";
 
-//import TitleEdit from "./edit-title/TitleEdit";
-
 const adminPanel = document.getElementById('admin-panel');
 if(adminPanel)
 	ReactDOM.render(<PanelNavComponent />, adminPanel);

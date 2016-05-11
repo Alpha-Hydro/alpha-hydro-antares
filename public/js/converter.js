@@ -1,5 +1,3 @@
-/// <reference path="jquery.d.ts" />
-/// <reference path="classie.d.ts" />
 var NumberFormat = Intl.NumberFormat;
 var Converter = (function () {
     function Converter(formId, units) {
@@ -107,9 +105,7 @@ var Converter = (function () {
         });
     };
     Converter.prototype._convert = function () {
-        var a = this.select_value.value, b = this.select_result.value, c = this.input_value.value, 
-        //res = Math.round(((c*a)/b)*100)/100;
-        res = (c * a) / b;
+        var a = this.select_value.value, b = this.select_result.value, c = this.input_value.value, res = (c * a) / b;
         this.input_result.value = this.numberFormat(res);
     };
     Converter.prototype._convertTemp = function () {
@@ -131,7 +127,7 @@ var Converter = (function () {
         this.input_result.value = this.numberFormat(res);
     };
     return Converter;
-})();
+}());
 var units = {
     'pressure': {
         'title': 'Давление',

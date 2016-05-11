@@ -317,7 +317,9 @@ class CategoriesController extends Zend_Controller_Action
             array_shift($breadcrumbs);
 
         $treeCategories = array(
-            'breadcrumbs' =>  implode(" > ", array_reverse($breadcrumbs))
+            'breadcrumbs' =>  (!empty($breadcrumbs))
+                ?implode(" > ", array_reverse($breadcrumbs))
+                :'Каталог'
         );
 
         return $treeCategories;

@@ -1,5 +1,3 @@
-/// <reference path="jquery.d.ts" />
-/// <reference path="classie.d.ts" />
 ;
 (function (window) {
     'use strict';
@@ -20,6 +18,6 @@
             this.row = [].slice.call(this.table.querySelector('tbody').querySelectorAll('tr'));
         }
         return TabEdit;
-    })();
+    }());
 })(Window);
 //# sourceMappingURL=adminTableEdit.js.map

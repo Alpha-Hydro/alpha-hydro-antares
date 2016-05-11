@@ -18,7 +18,7 @@ var helpers = {
 			.catch(function (response) {
 				console.log(response);
 			});
-	},
+	}
 };
 
 module.exports = helpers;

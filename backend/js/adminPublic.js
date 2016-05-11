@@ -1,16 +1,16 @@
-/// <reference path="../../public/typescript/jquery.d.ts" />
-;
+var imageLoad = document.getElementById('imageLoad');
+var imageLoadFile = document.getElementById('imageLoadFile');
+imageLoad.addEventListener('click', function (ev) {
+    ev.preventDefault();
+    imageLoadFile.addEventListener('change', function (e) {
+        return loadFile(e, 'imageLoad');
+    });
+    imageLoadFile.click();
+    return false;
+});
 (function ($) {
-    var _this = this;
     $('form#itemEdit').change(function () {
         $('#saveItemEdit').removeClass('hidden').addClass('show');
-    });
-    $('#imageLoad').click(function () {
-        $('#imageLoadFile').trigger('click');
-        return false;
-    });
-    $('#imageLoadFile').change(function (event) {
-        return loadFile(event, 'imageLoad');
     });
     $('#imageDraftLoad').click(function () {
         $('#imageDraftLoadFile').trigger('click');
@@ -25,16 +25,6 @@
     });
     $('#imageTableLoadFile').change(function (event) {
         return loadFile(event, 'imageTable');
-    });
-    var height;
-    height = 200;
-    $('.categories-list-item').each(function () {
-        var e;
-        e = $(_this);
-        if (e.height() > height) {
-            height = e.height();
-        }
-        return e.height(height);
     });
     $('.slugify').change(function (event) {
         var dataSlug, slug, value;

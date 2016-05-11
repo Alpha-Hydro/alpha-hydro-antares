@@ -1,5 +1,7 @@
 import React from "react";
-import {Modal, Button} from "react-bootstrap/lib";
+
+import Modal from "react-bootstrap/lib/Modal";
+import Button from "react-bootstrap/lib/Button";
 
 import CategoriesFormAdd from "./CategoriesFormAdd";
 import dataHelpers from "../../../utils/getDataHelper";

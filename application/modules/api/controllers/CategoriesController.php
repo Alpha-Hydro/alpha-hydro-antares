@@ -38,13 +38,6 @@ class Api_CategoriesController extends Api_BaseController
                 $jsonData = array_merge($jsonData, $entry->getOptions());
                 $jsonData = array_merge($jsonData, $this->breadcrumbs($id));
             }
-            else{
-                $jsonData = array_merge($jsonData, array(
-                    'paramId' => $this->_request->getParam('id'),
-                    $this->_request->getActionKey() => $this->_request->getActionName(),
-                    'error' => 'item not found'
-                ));
-            }
         }
 
 
@@ -58,11 +51,16 @@ class Api_CategoriesController extends Api_BaseController
         $jsonData = array();
 
         if(isset($id)){
-            $category = $this->_modelMapper->find($id, new Catalog_Model_Categories());
-            $parent_id = $category->getParentId();
+            if($id != 0){
+                $category = $this->_modelMapper->find($id, new Catalog_Model_Categories());
+                $parent_id = $category->getParentId();
 
-            if($this->_request->getParam('children'))
-                $parent_id = $category->getId();
+                if($this->_request->getParam('children'))
+                    $parent_id = $category->getId();
+            }
+            else{
+                $parent_id = 0;
+            }
 
             $select = $this->_modelMapper->getDbTable()->select();
             $select->where('parent_id = ?', $parent_id)
@@ -109,7 +107,9 @@ class Api_CategoriesController extends Api_BaseController
             array_shift($breadcrumbs);
 
         $treeCategories = array(
-            'breadcrumbs' =>  implode(" > ", array_reverse($breadcrumbs))
+            'breadcrumbs' =>  (!empty($breadcrumbs))
+                ?implode(" > ", array_reverse($breadcrumbs))
+                :'Каталог'
         );
 
         return $treeCategories;

@@ -1,16 +1,29 @@
 /// <reference path="../../public/typescript/jquery.d.ts" />
 
+var imageLoad = document.getElementById('imageLoad');
+var imageLoadFile = document.getElementById('imageLoadFile');
+
+imageLoad.addEventListener('click', (ev) => {
+    ev.preventDefault();
+    imageLoadFile.addEventListener('change', (e) => {
+        return loadFile(e, 'imageLoad');
+    });
+    imageLoadFile.click();
+    return false;
+})
+
 ;(function($){
     $('form#itemEdit').change(() => {
         $('#saveItemEdit').removeClass('hidden').addClass('show');
     });
-    $('#imageLoad').click(() => {
+    /*$('#imageLoad').click(() => {
         $('#imageLoadFile').trigger('click');
         return false;
     });
     $('#imageLoadFile').change((event) => {
         return loadFile(event, 'imageLoad');
-    });
+    });*/
+    
     $('#imageDraftLoad').click(() => {
         $('#imageDraftLoadFile').trigger('click');
         return false;
@@ -18,6 +31,7 @@
     $('#imageDraftLoadFile').change((event) => {
         return loadFile(event, 'imageDraftLoad');
     });
+    
     $('#imageTableLoadBtn').click(() => {
         $('#imageTableLoadFile').trigger('click');
         return false;
@@ -26,16 +40,6 @@
         return loadFile(event, 'imageTable');
     });
 
-    var height;
-    height = 200;
-    $('.categories-list-item').each(() => {
-        var e;
-        e = $(this);
-        if (e.height() > height) {
-            height = e.height();
-        }
-        return e.height(height);
-    });
 
     $('.slugify').change((event) => {
         var dataSlug:string, slug:any, value:string;

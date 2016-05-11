@@ -1,5 +1,11 @@
 import React from "react";
-import {ListGroupItem, Row, Col, Input, Badge, Button, Glyphicon} from "react-bootstrap/lib";
+
+import ListGroupItem from "react-bootstrap/lib/ListGroupItem";
+import Row from "react-bootstrap/lib/Row";
+import Col from "react-bootstrap/lib/Col";
+import Badge from "react-bootstrap/lib/Badge";
+import Glyphicon from "react-bootstrap/lib/Glyphicon";
+
 
 export default class CategoryList extends React.Component {
 	constructor(props){
@@ -17,12 +23,6 @@ export default class CategoryList extends React.Component {
 
 	render(){
 		const category = this.props.category;
-		const badgeInstance = <Badge
-				pullRight={true}
-				className={(category.countSubCategories != 0)?"":"hidden"}>
-				{category.countSubCategories}
-			</Badge>;
-
 		const labelInstance = (category.countSubCategories != 0)
 			? <a href=""
 					 className={(category.active != 0)?"":"text-muted"}
@@ -51,7 +51,11 @@ export default class CategoryList extends React.Component {
 							{labelInstance}
 						</Col>
 						<Col xs={1}>
-							{badgeInstance}
+							<Badge
+								pullRight={true}
+								className={(category.countSubCategories != 0)?"":"hidden"}>
+								{category.countSubCategories}
+							</Badge>
 						</Col>
 					</Row>
 				</ListGroupItem>
