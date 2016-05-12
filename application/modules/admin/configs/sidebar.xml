@@ -37,9 +37,16 @@
                 <manufacture>
                     <label>Производство</label>
                     <module>admin</module>
-                    <controller>manufacture</controller>
-                    <resource>manufacture</resource>
+                    <controller>manufacture-categories</controller>
+                    <resource>manufacture-categories</resource>
                     <pages>
+                        <index>
+                            <label>Список товаров</label>
+                            <module>admin</module>
+                            <controller>manufacture</controller>
+                            <action>index</action>
+                            <resourse>manufacture</resourse>
+                        </index>
                         <add>
                             <label>Добавить товар</label>
                             <module>admin</module>

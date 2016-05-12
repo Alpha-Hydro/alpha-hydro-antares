@@ -6,6 +6,7 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
     public function init()
     {
         $this->addElement('hidden', 'id');
+        $this->addElement('hidden', 'fullPath');
 
         $image = new Zend_Form_Element_File('imageLoadFile');
         $image->setDestination(APPLICATION_ROOT.'/upload/pipeline/items/')
@@ -79,6 +80,7 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
         $this->addElement('select', 'categoryId', array(
             'label'     => 'Категория',
             'required'  => true,
+            'data-controller'  => 'pipeline-categories',
             'multiOptions' => $this->getCategoryArray(),
         ));
 
@@ -141,6 +143,7 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
                 'title',
                 'categoryId',
                 'path',
+                'fullPath',
                 'id',
             ),
             'basic',

@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
+    "module": "commonjs",
+    "declaration": false,
+    "noImplicitAny": false,
     "removeComments": true,
+    "noLib": false,
     "outDir": "../js",
     "sourceMap": true
   }
