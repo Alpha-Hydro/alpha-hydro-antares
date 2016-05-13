@@ -1,0 +1,21 @@
+{
+  "name": "alpha-hydro-admin",
+  "description": "admin panel",
+  "main": "index.js",
+  "authors": [
+    "VladMeh <vladmeh@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/Alpha-Hydro/alpha-hydro-antares",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^2.2.3"
+  }
+}

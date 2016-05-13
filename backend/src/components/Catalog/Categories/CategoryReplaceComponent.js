@@ -1,5 +1,9 @@
 import React from "react";
-import {Button, Glyphicon, Modal, ListGroup, ListGroupItem, Row, Col, Badge} from "react-bootstrap/lib";
+
+import Button from "react-bootstrap/lib/Button";
+import Glyphicon from "react-bootstrap/lib/Glyphicon";
+import Modal from "react-bootstrap/lib/Modal";
+import ListGroup from "react-bootstrap/lib/ListGroup";
 
 import categoryHelpers from "../../../utils/getDataHelper"
 import CatalogParentCategoryReplaceItemList from "./CatalogParentCategoryReplaceItemList"

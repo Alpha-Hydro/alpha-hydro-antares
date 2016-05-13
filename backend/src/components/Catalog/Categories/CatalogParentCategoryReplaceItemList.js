@@ -1,7 +1,10 @@
 var React = require("react");
 var PropTypes = React.PropTypes;
 
-var {Glyphicon, ListGroupItem, Row, Col} = require("react-bootstrap/lib");
+var Glyphicon = require('react-bootstrap/lib/Glyphicon');
+var ListGroupItem = require('react-bootstrap/lib/ListGroupItem');
+var Row = require('react-bootstrap/lib/Row');
+var Col = require('react-bootstrap/lib/Col');
 
 function CatalogParentCategoryReplaceItemList(props) {
     return props.parentId != 0
