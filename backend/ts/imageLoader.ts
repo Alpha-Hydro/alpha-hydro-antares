@@ -7,7 +7,8 @@ class ImageLoader {
         this.elementEvent = document.getElementById(elementEventId);
         this.inputFile = document.getElementById(inputFileId);
         this.inputImageId = inputImageId;
-        console.log('ok');
+
+        this.init();
     }
 
     init(){
@@ -16,6 +17,8 @@ class ImageLoader {
             this.inputFile.addEventListener('change', (e) => {
                 return this._loadFile(e, this.inputImageId);
             });
+            this.inputFile.click();
+            return false;
         });
     }
 
@@ -31,5 +34,4 @@ class ImageLoader {
         return reader.readAsDataURL(event.target.files[0]);
     }
 }
-
 export = ImageLoader;

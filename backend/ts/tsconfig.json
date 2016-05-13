@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "declaration": false,
-    "noImplicitAny": false,
+    "module": "amd",
     "removeComments": true,
-    "noLib": false,
     "outDir": "../js",
     "sourceMap": true
-  }
+  },
+  "files": [
+    "adminPublic.ts"
+  ]
 }

@@ -18,8 +18,11 @@
             $this->headScript()
                 ->prependFile('//code.jquery.com/jquery-1.11.3.min.js')
                 ->appendFile('//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js')
-                ->appendFile('/js/adminPublic.js');
-//                ->appendFile('/js/adminSlugify.min.js');
+                ->setAllowArbitraryAttributes(true)
+                ->appendFile('//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.1/require.min.js', 'text/javascript', array('data-main' => '/js/adminPublic'))
+//                ->appendFile('/js/adminPublic.js')
+//                ->appendFile('/js/adminSlugify.min.js')
+                ;
         ?>
     </head>
     <body>
