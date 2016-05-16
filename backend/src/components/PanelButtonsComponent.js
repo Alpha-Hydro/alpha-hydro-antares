@@ -60,13 +60,14 @@ export default class PanelButtonsComponent extends React.Component{
 			{icon: "eye-close", enable: this.state.data.active !=0, action: "disabled", role: "admin", title:"Скрыть"},
 			{icon: "eye-open", enable: this.state.data.active !=1, action: "enabled", role: "admin", title:"Показать"}
 		].map((button, i) =>
-			button.enable && <ButtonComponent key={i} bsStyle={bsStyle} eventClick={this.handlerClickButton.bind(this)} action={button.action} icon={button.icon} title={button.title}/>
-		/*{
-			if(this.precedence(this.state.data.role) >= this.precedence(button.role)){
-				return <Button key={i} bsStyle={bsStyle} eventClick={button.click} action={button.action} icon={button.icon} title={button.title}/>
-			}
-		}*/
-
+			button.enable && <ButtonComponent
+				key={i}
+				bsStyle={bsStyle}
+				eventClick={this.handlerClickButton.bind(this)}
+				action={button.action}
+				icon={button.icon}
+				title={button.title}
+			/>
 		);
 
 		return (

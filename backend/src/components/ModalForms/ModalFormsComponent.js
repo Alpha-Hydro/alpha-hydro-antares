@@ -1,8 +1,8 @@
 import React from "react";
 
-import ModalFormsEdit from "./ModalForms/ModalFormsEdit";
-import ModalFormSeo from "./ModalForms/ModalFormSeo";
-import ModalFormsAdd from "./ModalForms/ModalFormsAdd";
+import ModalFormsEdit from "./ModalFormsEdit";
+import ModalFormSeo from "./ModalFormSeo";
+import ModalFormsAdd from "./ModalFormsAdd";
 
 export default class ModalFormsComponent extends React.Component{
 	selectInputs(){

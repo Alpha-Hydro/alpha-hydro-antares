@@ -3,7 +3,7 @@ import React from "react";
 import Modal from "react-bootstrap/lib/Modal";
 import Button from "react-bootstrap/lib/Button";
 
-import ModalFormsComponent from "./ModalFormsComponent"
+import ModalFormsComponent from "./ModalForms/ModalFormsComponent"
 
 export default class ModalComponent extends React.Component{
 

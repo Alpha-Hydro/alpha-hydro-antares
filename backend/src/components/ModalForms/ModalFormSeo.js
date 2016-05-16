@@ -1,4 +1,9 @@
 import React from "react";
+
+import FormGroup from "react-bootstrap/lib/FormGroup";
+import FormControl from "react-bootstrap/lib/FormControl";
+import ControlLabel from "react-bootstrap/lib/ControlLabel";
+
 import {Input} from "react-bootstrap/lib";
 
 export default class ModalFormSeo extends React.Component{
@@ -22,22 +27,38 @@ export default class ModalFormSeo extends React.Component{
 	render(){
 		return (
 			<div>
-				<Input type="text" label="meta Title" placeholder="Enter meta Title"
-							 name="dataFormSeo[metaTitle]"
-							 value={this.state.metaTitle}
-							 onChange={this.handleChange('metaTitle').bind(this)}
-				/>
-				<Input type="textarea" label="meta Description" placeholder="Enter meta Description"
-							 name="dataFormSeo[metaDescription]"
-							 value={this.state.metaDescription}
-							 onChange={this.handleChange('metaDescription').bind(this)}
-
-				/>
-				<Input type="text" label="meta Keywords" placeholder="Enter meta Keywords"
-							 name="dataFormSeo[metaKeywords]"
-							 value={this.state.metaKeywords}
-							 onChange={this.handleChange('metaKeywords').bind(this)}
-				/>
+				<FormGroup>
+					<ControlLabel>meta Title</ControlLabel>
+					<FormControl
+						type="text"
+						placeholder="Enter meta Title"
+						name="dataFormSeo[metaTitle]"
+						value={this.state.metaTitle}
+						onChange={this.handleChange('metaTitle').bind(this)}
+					/>
+				</FormGroup>
+				<FormGroup>
+					<ControlLabel>meta Description</ControlLabel>
+					<FormControl
+						componentClass="textarea"
+						placeholder="Enter meta Description"
+						name="dataFormSeo[metaDescription]"
+						value={this.state.metaDescription}
+						onChange={this.handleChange('metaDescription').bind(this)}
+						rows="4"
+					/>
+				</FormGroup>
+				<FormGroup>
+					<ControlLabel>meta Keywords</ControlLabel>
+					<FormControl
+						componentClass="textarea"
+						placeholder="Enter meta Keywords"
+						name="dataFormSeo[metaKeywords]"
+						value={this.state.metaKeywords}
+						onChange={this.handleChange('metaKeywords').bind(this)}
+						rows="4"
+					/>
+				</FormGroup>
 			</div>
 		);
 	}

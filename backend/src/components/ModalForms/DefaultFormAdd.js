@@ -1,5 +1,11 @@
 import React from "react";
-import {Grid, Row, Col, Input, Image, ButtonGroup, Button} from "react-bootstrap/lib";
+
+import Grid from "react-bootstrap/lib/Grid";
+import Row from "react-bootstrap/lib/Row";
+import Col from "react-bootstrap/lib/Col";
+import FormGroup from "react-bootstrap/lib/FormGroup";
+import FormControl from "react-bootstrap/lib/FormControl";
+import ControlLabel from "react-bootstrap/lib/ControlLabel";
 
 import ImagesUpload from "./../../utils/ImagesUpload";
 import Slugify from "./../../utils/slugifyHelper";
@@ -42,39 +48,58 @@ export default class DefaultFormAdd extends React.Component{
 						<ImagesUpload image={this.state.image} delete="hidden"/>
 					</Col>
 					<Col md={9}>
-						<Input type="text" label="Заголовок" placeholder="Заголовок"
-									 name="dataPage[title]"
-									 value={this.state.title}
-									 onChange={this.handleChange('title').bind(this)}
-									 onBlur={this.titleChange.bind(this)}
-									 required
-						/>
-						<Input type="hidden"
+						<FormGroup>
+							<ControlLabel>Заголовок</ControlLabel>
+							<FormControl
+								type="text"
+								placeholder="Заголовок"
+								name="dataPage[title]"
+								value={this.state.title}
+								onChange={this.handleChange('title').bind(this)}
+								onBlur={this.titleChange.bind(this)}
+								required
+							/>
+						</FormGroup>
+
+						<input type="hidden"
 									 name="dataPage[path]"
 									 value={this.state.path}
 									 required
 						/>
-						<Input type="textarea" label="Краткое описание" placeholder="Краткое описание"
-									 name="dataPage[description]"
-									 value={this.state.description}
-									 onChange={this.handleChange('description').bind(this)}
-									 rows="4"
-						/>
-						<Input type="textarea" label="Текст на странице (markdown)" placeholder="Текст на странице"
-									 name="dataPage[contentMarkdown]"
-									 value={this.state.contentMarkdown}
-									 onChange={this.handleChange('contentMarkdown').bind(this)}
-									 rows="8"
-						/>
-						<div className="form-horizontal">
-							<Input type="text" label="Сортировка"
-										 labelClassName="col-md-2"
-										 wrapperClassName="col-md-1"
-										 name="dataPage[sorting]"
-										 value={this.state.sorting}
-										 onChange={this.handleChange('sorting').bind(this)}
-										 required
+						<FormGroup>
+							<ControlLabel>Краткое описание</ControlLabel>
+							<FormControl
+								componentClass="textarea"
+								placeholder="Краткое описание"
+								name="dataPage[description]"
+								value={this.state.description}
+								onChange={this.handleChange('description').bind(this)}
+								rows="4"
 							/>
+						</FormGroup>
+						<FormGroup>
+							<ControlLabel>Текст на странице (markdown)</ControlLabel>
+							<FormControl
+								componentClass="textarea"
+								placeholder="Текст на странице"
+								name="dataPage[contentMarkdown]"
+								value={this.state.contentMarkdown}
+								onChange={this.handleChange('contentMarkdown').bind(this)}
+								rows="8"
+							/>
+						</FormGroup>
+						<div className="form-inline">
+							<FormGroup>
+								<ControlLabel className="mr2">Сортировка</ControlLabel>
+								<FormControl
+									type="number"
+									min="0"
+									name="dataPage[sorting]"
+									value={this.state.sorting}
+									onChange={this.handleChange('sorting').bind(this)}
+									required
+								/>
+							</FormGroup>
 						</div>
 
 						<Input type="hidden"
