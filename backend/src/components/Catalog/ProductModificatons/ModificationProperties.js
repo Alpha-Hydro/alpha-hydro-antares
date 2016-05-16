@@ -1,5 +1,7 @@
 import React from 'react';
-import {Button, Glyphicon, Modal} from "react-bootstrap/lib";
+
+import Button from "react-bootstrap/lib/Button";
+import Modal from "react-bootstrap/lib/Modal";
 
 import dataHelpers from "../../../utils/getDataHelper";
 import modificationHelpers from "../../../utils/productModificationHelper";

@@ -1,10 +1,12 @@
 import React from "react";
-import {Button, Glyphicon, Modal} from "react-bootstrap/lib";
+
+import Button from "react-bootstrap/lib/Button";
+import Modal from "react-bootstrap/lib/Modal";
 
 import dataHelpers from "../../../utils/getDataHelper";
 import modificationHelpers from "../../../utils/productModificationHelper";
 
-import ProductModificationsTable from "./../ProductModificatons/ModificationsTable";
+import ProductModificationsTable from "./ModificationsTable";
 
 export default class ProductModifications extends React.Component{
 	constructor(props){
@@ -86,7 +88,8 @@ export default class ProductModifications extends React.Component{
 			<Modal
 				dialogClassName="w100"
 				show={this.props.showModal}
-				onHide={this.close.bind(this)}>
+				onHide={this.close.bind(this)}
+			>
 				<Modal.Header closeButton>
 					<Modal.Title>Модификации и размеры</Modal.Title>
 				</Modal.Header>

@@ -1,5 +1,8 @@
 import React from "react";
-import {Input, Button} from "react-bootstrap/lib";
+
+import FormGroup from "react-bootstrap/lib/FormGroup";
+import FormControl from "react-bootstrap/lib/FormControl";
+import Button from "react-bootstrap/lib/Button";
 
 export default class NewProductProperty extends React.Component{
 	constructor(props){
@@ -36,23 +39,32 @@ export default class NewProductProperty extends React.Component{
 	render(){
 		return(
 			<tr className="active">
-				<td className="col-sm-1"><Input
-					type="text"
-					groupClassName="mb0"
-					value={this.state.order}
-					onChange={this.handleChange('order').bind(this)}/>
+				<td className="col-sm-1">
+					<FormGroup className="mb0">
+						<FormControl
+							type="text"
+							value={this.state.order}
+							onChange={this.handleChange('order').bind(this)}
+						/>
+					</FormGroup>
 				</td>
-				<td><Input
-					type="text"
-					groupClassName="mb0"
-					value={this.state.name}
-					onChange={this.handleChange('name').bind(this)}/>
+				<td>
+					<FormGroup className="mb0">
+						<FormControl
+							type="text"
+							value={this.state.name}
+							onChange={this.handleChange('name').bind(this)}
+						/>
+					</FormGroup>
 				</td>
-				<td><Input
-					type="text"
-					groupClassName="mb0"
-					value={this.state.value}
-					onChange={this.handleChange('value').bind(this)}/>
+				<td>
+					<FormGroup className="mb0">
+						<FormControl
+							type="text"
+							value={this.state.value}
+							onChange={this.handleChange('value').bind(this)}
+						/>
+					</FormGroup>
 				</td>
 				<td>
 					<Button bsStyle="primary" onClick={this.addNewProperty.bind(this)}>Добавить</Button>

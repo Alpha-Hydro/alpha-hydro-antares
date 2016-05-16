@@ -1,5 +1,6 @@
 import React from "react";
-import Input from "react-bootstrap/lib/Input";
+import FormGroup from "react-bootstrap/lib/FormGroup";
+import FormControl from "react-bootstrap/lib/FormControl";
 
 export default class ModificationTableNewValue extends React.Component{
 	constructor(props){
@@ -14,13 +15,14 @@ export default class ModificationTableNewValue extends React.Component{
 	render(){
 		return(
 			<td>
-				<Input
-					type="text"
-					groupClassName="mb0"
-					bsSize="small"
-					className="text-center"
-					value={this.props.value}
-					onChange={this.onChange.bind(this)} />
+				<FormGroup className="mb0" bsSize="small">
+					<FormControl
+						type="text"
+						className="text-center"
+						value={this.props.value}
+						onChange={this.onChange.bind(this)}
+					/>
+				</FormGroup>
 			</td>
 		)
 	}

@@ -1,5 +1,8 @@
 import React from "react";
-import {Input, Button} from "react-bootstrap/lib";
+
+import FormGroup from "react-bootstrap/lib/FormGroup";
+import FormControl from "react-bootstrap/lib/FormControl";
+import Button from "react-bootstrap/lib/Button";
 
 export default class ModificationNewProperty extends React.Component{
 	constructor(props){
@@ -36,18 +39,22 @@ export default class ModificationNewProperty extends React.Component{
 		return(
 			<tr className="active">
 				<td>
-					<Input
-						type="text"
-						groupClassName="mb0"
-						value={this.state.order}
-						onChange={this.onChange('order').bind(this)} />
+					<FormGroup className="mb0">
+						<FormControl
+							type="text"
+							value={this.state.order}
+							onChange={this.onChange('order').bind(this)}
+						/>
+					</FormGroup>
 				</td>
 				<td>
-					<Input
-						type="text" 
-						groupClassName="mb0" 
-						value={this.state.name}
-						onChange={this.onChange('name').bind(this)} />
+					<FormGroup className="mb0">
+						<FormControl
+							type="text"
+							value={this.state.name}
+							onChange={this.onChange('name').bind(this)}
+						/>
+					</FormGroup>
 				</td>
 				<td>
 					<Button bsStyle="primary" onClick={this.addNewPropertyModification.bind(this)}>Добавить</Button>

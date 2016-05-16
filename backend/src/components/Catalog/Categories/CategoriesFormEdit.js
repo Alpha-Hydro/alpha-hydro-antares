@@ -58,9 +58,9 @@ export default class CategoriesFormEdit extends React.Component{
 	}
 
 	imgSrc(){
-		var uploadPath = (!this.state.data.uploadPath)?'':this.state.data.uploadPath;
+		var uploadPath = (!this.state.data.uploadPath)?'/files/images/product/':this.state.data.uploadPath;
 		var image = (!this.state.data.image)
-			?"/files/images/product/2012-05-22_foto_nv.jpg"
+			?"2012-05-22_foto_nv.jpg"
 			:this.state.data.image;
 		return uploadPath + image;
 	}

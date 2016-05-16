@@ -1,5 +1,8 @@
 import React from "react";
-import {Input, Button} from "react-bootstrap/lib";
+
+import FormGroup from "react-bootstrap/lib/FormGroup";
+import FormControl from "react-bootstrap/lib/FormControl";
+import Button from "react-bootstrap/lib/Button";
 
 import ModificationTableNewValue from "./ModificationTableNewValue";
 
@@ -72,21 +75,23 @@ export default class ModificationTableNewItem extends React.Component{
 		return(
 			<tr className="active">
 				<td className="col-sm-1">
-					<Input
-						type="text"
-						groupClassName="mb0"
-						bsSize="small"
-						value={this.state.item.order}
-						onChange={this.onChange('order').bind(this)}/>
+					<FormGroup className="mb0" bsSize="small">
+						<FormControl
+							type="text"
+							value={this.state.item.order}
+							onChange={this.onChange('order').bind(this)}
+						/>
+					</FormGroup>
 				</td>
 				<td>
-					<Input
-						type="text"
-						groupClassName="mb0"
-						bsSize="small"
-						className="text-center"
-						value={this.state.item.sku}
-						onChange={this.onChange('sku').bind(this)}/>
+					<FormGroup className="mb0" bsSize="small">
+						<FormControl
+							type="text"
+							className="text-center"
+							value={this.state.item.sku}
+							onChange={this.onChange('sku').bind(this)}
+						/>
+					</FormGroup>
 				</td>
 				{newValuesTd}
 				<td>

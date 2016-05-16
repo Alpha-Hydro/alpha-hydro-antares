@@ -1,6 +1,10 @@
 import React from "react";
-import {Glyphicon, Input, Button, ButtonGroup, Modal} from "react-bootstrap/lib";
-import propertyHelpers from "./../../../utils/productPropertyHelper"
+
+import Modal from "react-bootstrap/lib/Modal";
+import FormGroup from "react-bootstrap/lib/FormGroup";
+import FormControl from "react-bootstrap/lib/FormControl";
+import Button from "react-bootstrap/lib/Button";
+import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 export default class ProductPropertyComponent extends React.Component{
 	constructor(props){
@@ -36,28 +40,36 @@ export default class ProductPropertyComponent extends React.Component{
 		return (
 			<tr>
 				<td className="col-md-1">
-					<Input
-						type="text"
-						groupClassName="mb0" type="text"
-						value={this.props.property.order}
-						onChange={this.onChange('order').bind(this)}/>
+					<FormGroup className="mb0">
+						<FormControl
+							type="text"
+							value={this.props.property.order}
+							onChange={this.onChange('order').bind(this)}
+						/>
+					</FormGroup>
 				</td>
 				<td>
-					<Input
-						type="text"
-						groupClassName="mb0" type="text"
-						value={this.props.property.name}
-						onChange={this.onChange('name').bind(this)}/>
+					<FormGroup className="mb0">
+						<FormControl
+							type="text"
+							value={this.props.property.name}
+							onChange={this.onChange('name').bind(this)}
+						/>
+					</FormGroup>
 				</td>
 				<td>
-					<Input
-						type="text"
-						groupClassName="mb0"
-						value={this.props.property.value}
-						onChange={this.onChange('value').bind(this)}/>
+					<FormGroup className="mb0">
+						<FormControl
+							type="text"
+							value={this.props.property.value}
+							onChange={this.onChange('value').bind(this)}
+						/>
+					</FormGroup>
 				</td>
 				<td>
-					<Button bsStyle="danger" onClick={this.open.bind(this)}><Glyphicon glyph="trash"/></Button>
+					<Button bsStyle="danger" onClick={this.open.bind(this)}>
+						<Glyphicon glyph="trash"/>
+					</Button>
 
 					<Modal show={this.state.showModal} onHide={this.close.bind(this)}>
 						<Modal.Header closeButton>

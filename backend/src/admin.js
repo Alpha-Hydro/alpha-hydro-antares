@@ -6,9 +6,9 @@ import PanelNavComponent from "./components/PanelNavComponent";
 import ItemButtonsComponent from "./components/ItemButtonsComponent";
 import CategoriesAddButton from "./components/Catalog/Categories/CategoriesAddButton";
 import ItemAddButton from "./components/Catalog/Products/ProductAddButton";
-import ProductPropertyEditButton from "./components/Catalog/Products/ProductPropertyEditButton";
-import ProductModificationEditButton from "./components/Catalog/Products/ProductModificationEditButton";
-import ProductModificationPropertyEditButton from "./components/Catalog/Products/ProductModificationPropertyEditButton";
+import ProductPropertyEditButton from "./components/Catalog/ProductProperties/ProductPropertyEditButton";
+import ProductModificationEditButton from "./components/Catalog/ProductModificatons/ProductModificationEditButton";
+import ProductModificationPropertyEditButton from "./components/Catalog/ProductModificatons/ProductModificationPropertyEditButton";
 
 const adminPanel = document.getElementById('admin-panel');
 if(adminPanel)
@@ -71,11 +71,3 @@ if (productModificationEdit){
 		</ButtonGroup>
 		, productModificationEdit);
 }
-
-
-//const pageTitle = document.querySelector('h1');
-//const title = pageTitle.textContent;
-//const pageHeader = document.querySelector('.page-header');
-//
-//if(pageHeader)
-//	ReactDOM.render(<TitleEdit title={title}/>, pageHeader);

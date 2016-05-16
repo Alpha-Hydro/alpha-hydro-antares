@@ -96,6 +96,14 @@ class ProductsController extends Zend_Controller_Action
             if(!is_null($entry)){
                 $jsonData = array_merge($jsonData, $entry->getOptions());
 
+                $category = $this->_modelMapper->findCategoryRel($id, new Catalog_Model_Categories());
+                if(!is_null($category)){
+                    $jsonData['categoryId'] = $category->getId();
+
+                    $breadcrumbs = $this->breadcrumbs($category->getId(), true);
+                    $jsonData = array_merge($jsonData, $breadcrumbs);
+                }
+
                 $select = $this->_paramsMapper->getDbTable()->select()->order('order ASC');
                 $properties = $this->_modelMapper->findProductParams($id, $select, true);
 
@@ -117,7 +125,7 @@ class ProductsController extends Zend_Controller_Action
             if(!is_null($category)){
                 $jsonData = $category->getOptions();
 
-                $breadcrumbs = $this->breadcrumbs($category->getId());
+                $breadcrumbs = $this->breadcrumbs($category->getId(), true);
                 $jsonData = array_merge($jsonData, $breadcrumbs);
             }
         }
@@ -126,7 +134,7 @@ class ProductsController extends Zend_Controller_Action
         //Zend_Debug::dump($jsonData);
     }
 
-    public function breadcrumbs($id)
+    public function breadcrumbs($id, $full = false)
     {
         $entries = $this->_categoriesModelMapper->fetchTreeParentCategories($id);
         $breadcrumbs = array();
@@ -134,7 +142,7 @@ class ProductsController extends Zend_Controller_Action
             $breadcrumbs[] = $entry->name;
         }
 
-        if(!empty($breadcrumbs))
+        if(!empty($breadcrumbs) && !$full)
             array_shift($breadcrumbs);
 
         $treeCategories = array(

@@ -6,7 +6,6 @@ $this->meta_description = $this->escape($this->page->metaDescription);
 $this->meta_keywords = $this->escape($this->page->metaKeywords);
 
 $this->headScript()
-    ->appendFile('//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js')
     ->appendFile("/js/map.min.js")
     ->appendFile("https://maps.googleapis.com/maps/api/js?key=AIzaSyCkiy0E8MMuIQP9Ud8jM4oOzMajjHXRSW0&signed_in=true&libraries=places&callback=initMap");
 ?>

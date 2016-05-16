@@ -1,5 +1,8 @@
 import React from "react";
-import {ButtonGroup, Button, Glyphicon, Modal} from "react-bootstrap/lib";
+
+import Button from "react-bootstrap/lib/Button";
+import Glyphicon from "react-bootstrap/lib/Glyphicon";
+
 
 import ProductModifications from "./ProductModifications";
 

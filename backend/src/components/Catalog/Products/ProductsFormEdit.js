@@ -1,21 +1,31 @@
 import React from "react";
-import {Grid, Row, Col, Input, Button} from "react-bootstrap";
+
+import Grid from "react-bootstrap/lib/Grid";
+import Row from "react-bootstrap/lib/Row";
+import Col from "react-bootstrap/lib/Col";
+import FormGroup from "react-bootstrap/lib/FormGroup";
+import FormControl from "react-bootstrap/lib/FormControl";
+import ControlLabel from "react-bootstrap/lib/ControlLabel";
+import InputGroup from "react-bootstrap/lib/InputGroup";
+import HelpBlock from "react-bootstrap/lib/HelpBlock";
+
 import categoryHelpers from "../../../utils/getDataHelper";
 import Slugify from "./../../../utils/slugifyHelper";
 
 import ImagesUpload from "./../../../utils/ImagesUpload";
 import CategoryReplace from "./../Categories/CategoryReplaceComponent";
-import ProductPropertyEditButton from "./ProductPropertyEditButton";
-import ProductModificationEditButton from "./ProductModificationEditButton";
-import ProductModificationPropertyEditButton from "./ProductModificationPropertyEditButton";
+import ProductPropertyEditButton from "../ProductProperties/ProductPropertyEditButton";
+import ProductModificationEditButton from "../ProductModificatons/ProductModificationEditButton";
+import ProductModificationPropertyEditButton from "../ProductModificatons/ProductModificationPropertyEditButton";
 
 export default class ProductsFormEdit extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			data: this.props.data,
-			sku: this.props.data.sku,
+			data: props.data,
 			categoryInfo: '',
+			categoryId: props.data.categoryId,
+			breadcrumbs: props.data.breadcrumbs,
 			error: false,
 			errorHelp: 'Error.'
 		}
@@ -72,38 +82,27 @@ export default class ProductsFormEdit extends React.Component{
 		categoryHelpers.getCategoryInfo(id)
 			.then(function(categoryInfo){
 				this.setState({
-					categoryInfo: categoryInfo
+					categoryInfo: categoryInfo,
+					breadcrumbs: categoryInfo.breadcrumbs + ' > ' + categoryInfo.name,
+					categoryId: categoryInfo.id
 				});
 			}.bind(this));
 	}
 
 	imgSrc(){
-		var uploadPath = (!this.state.data.uploadPath)?'':this.state.data.uploadPath;
+		var uploadPath = (!this.state.data.uploadPath)?'/files/images/product/':this.state.data.uploadPath;
 		var image = (!this.state.data.image)
-			?"/files/images/product/2012-05-22_foto_nv.jpg"
+			?"2012-05-22_foto_nv.jpg"
 			:this.state.data.image;
 		return uploadPath + image;
 	}
 
 	imgDraft(){
-		var uploadPath = (!this.state.data.uploadPath)?'':this.state.data.uploadPath;
+		var uploadPath = (!this.state.data.uploadPathDraft)?'/files/images/product/':this.state.data.uploadPathDraft;
 		var draft = (!this.state.data.draft)
-			?"/files/images/product/2012-05-22_foto_nv.jpg"
+			?"2012-05-22_foto_nv.jpg"
 			:this.state.data.draft;
 		return uploadPath + draft;
-	}
-
-	breadcrumbs(){
-		return (this.state.categoryInfo.breadcrumbs)
-			? this.state.categoryInfo.breadcrumbs + ' > ' + this.state.categoryInfo.name
-			: this.state.categoryInfo.name
-	}
-
-	innerButton(){
-		return <CategoryReplace
-			currentCategory={this.state.categoryInfo}
-			selectCategory={this.selectCategory.bind(this)}
-		/>
 	}
 
 	render(){
@@ -115,47 +114,86 @@ export default class ProductsFormEdit extends React.Component{
 						<ImagesUpload image={this.imgDraft()} inputName="fileLoadDraft"/>
 					</Col>
 					<Col md={9}>
-						<Input type="text" label="Код товара" placeholder="Код товара"
-									 id="sku"
-									 groupClassName={(!this.state.error)?'':'has-error'}
-									 help={this.state.error && this.state.errorHelp}
-									 name="dataFormProducts[sku]"
-									 value={this.state.data.sku}
-									 onChange={this.skuOnChange.bind(this)}
-									 required
-						/>
-						<Input type="text" label="Наименование товара" placeholder="Наименование товара"
-									 name="dataFormProducts[name]"
-									 value={this.state.data.name}
-									 onChange={this.onChange('name').bind(this)}
-									 required
-						/>
-						<Input type="text" label="Категория"
-									 value={this.breadcrumbs()}
-									 buttonAfter={this.innerButton()}
-						/>
-						<Input type="textarea" label="Описание" placeholder="Описание"
-									 name="dataFormProducts[description]"
-									 value={this.state.data.description}
-									 onChange={this.onChange('description').bind(this)}
-									 rows="8"
-						/>
-						<Input type="textarea" label="Примечание" placeholder="Примечание"
-									 name="dataFormProducts[note]"
-									 value={this.state.data.note}
-									 onChange={this.onChange('note').bind(this)}
-									 rows="2"
-						/>
+						<FormGroup className={(!this.state.error)?'':'has-error'}>
+							<ControlLabel>Код товара</ControlLabel>
+							<FormControl
+								type="text"
+								placeholder="Код товара"
+								id="sku"
+								name="dataFormProducts[sku]"
+								value={this.state.data.sku}
+								onChange={this.skuOnChange.bind(this)}
+								required
+							/>
+							<HelpBlock>{this.state.error && this.state.errorHelp}</HelpBlock>
+						</FormGroup>
+						<FormGroup>
+							<ControlLabel>Наименование товара</ControlLabel>
+							<FormControl
+								type="text"
+								placeholder="Наименование товара"
+								name="dataFormProducts[name]"
+								value={this.state.data.name}
+								onChange={this.onChange('name').bind(this)}
+								required
+							/>
+						</FormGroup>
+						<FormGroup>
+							<ControlLabel>Категория</ControlLabel>
+							<InputGroup>
+								<InputGroup.Button>
+									<CategoryReplace
+										currentCategory={this.state.categoryInfo}
+										selectCategory={this.selectCategory.bind(this)}
+									/>
+								</InputGroup.Button>
+								<FormControl
+									type="text"
+									value={this.state.breadcrumbs}
+									readOnly
+								/>
+							</InputGroup>
+						</FormGroup>
+						<FormGroup>
+							<ControlLabel>Описание</ControlLabel>
+							<FormControl
+								componentClass="textarea"
+								value={(this.state.data.description)?this.state.data.description:''}
+								placeholder="Описание"
+								name="dataFormProducts[description]"
+								onChange={this.onChange('description').bind(this)}
+								rows="8"
+							/>
+						</FormGroup>
+						<FormGroup>
+							<ControlLabel>Примечание</ControlLabel>
+							<FormControl
+								componentClass="textarea"
+								value={(this.state.data.note)?this.state.data.note:''}
+								placeholder="Примечание"
+								name="dataFormProducts[note]"
+								onChange={this.onChange('note').bind(this)}
+								rows="2"
+							/>
+						</FormGroup>
+
 						<Row>
 							<Col md={3} >
-								<Input type="text" label="Сортировка"
-											 labelClassName="col-md-6"
-											 wrapperClassName="col-md-6"
-											 name="dataFormProducts[sorting]"
-											 value={this.state.data.sorting}
-											 onChange={this.onChange('sorting').bind(this)}
-											 required
-								/>
+									<FormGroup>
+										<Col componentClass={ControlLabel} md={6} className="pl0">
+											Сортировка
+										</Col>
+										<Col md={6}>
+											<FormControl
+												type="number"
+												min="0"
+												name="dataFormProducts[sorting]"
+												value={this.state.data.sorting}
+												onChange={this.onChange('sorting').bind(this)}
+												required
+											/>
+										</Col>
+									</FormGroup>
 							</Col>
 							<Col md={3}>
 								<ProductPropertyEditButton
@@ -183,14 +221,13 @@ export default class ProductsFormEdit extends React.Component{
 								/>
 							</Col>
 						</Row>
-						
 						<input type="hidden"
 									 name="dataFormProducts[path]"
 									 value={this.state.data.path}
 						/>
 						<input type="hidden"
 									 name="categoryId"
-									 value={this.state.categoryInfo.id}
+									 value={this.state.categoryId}
 						/>
 					</Col>
 				</Row>

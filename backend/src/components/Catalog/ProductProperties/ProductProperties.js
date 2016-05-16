@@ -1,7 +1,8 @@
 import React from "react";
-import {Table, Input, ButtonInput, Button, Glyphicon} from "react-bootstrap/lib";
-import ProductPropertyComponent from "./../ProductProperties/ProductPropertyComponent";
-import NewProductProperty from "./../ProductProperties/NewProductProperty";
+import Table from "react-bootstrap/lib/Table";
+
+import ProductPropertyComponent from "./ProductPropertyComponent";
+import NewProductProperty from "./NewProductProperty";
 
 export default class  ProductProperties extends React.Component{
 	constructor(props){

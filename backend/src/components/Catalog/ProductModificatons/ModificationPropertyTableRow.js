@@ -1,5 +1,10 @@
 import React from "react";
-import {Modal, Input, Button, Glyphicon} from "react-bootstrap/lib";
+
+import Modal from "react-bootstrap/lib/Modal";
+import Button from "react-bootstrap/lib/Button";
+import Glyphicon from "react-bootstrap/lib/Glyphicon";
+import FormGroup from "react-bootstrap/lib/FormGroup";
+import FormControl from "react-bootstrap/lib/FormControl";
 
 export default class ModificationPropertyTableRow extends  React.Component{
 	constructor(props){
@@ -34,20 +39,22 @@ export default class ModificationPropertyTableRow extends  React.Component{
 		return (
 			<tr>
 				<td className="col-sm-2">
-					<Input
-						type="text"
-						groupClassName="mb0"
-						value={this.props.property.order}
-						onChange={this.onChange('order').bind(this)}
+					<FormGroup className="mb0">
+						<FormControl
+							type="text"
+							value={this.props.property.order}
+							onChange={this.onChange('order').bind(this)}
 						/>
+					</FormGroup>
 				</td>
 				<td>
-					<Input
-						type="text"
-						groupClassName="mb0"
-						value={this.props.property.name}
-						onChange={this.onChange('name').bind(this)}
-					/>
+					<FormGroup className="mb0">
+						<FormControl
+							type="text"
+							value={this.props.property.name}
+							onChange={this.onChange('name').bind(this)}
+						/>
+					</FormGroup>
 				</td>
 				<td>
 					<Button bsStyle="danger" onClick={this.open.bind(this)}>

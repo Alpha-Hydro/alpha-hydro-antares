@@ -1,5 +1,13 @@
 import React from "react";
-import {Grid, Row, Col, Input, Image, ButtonGroup, Button, Radio} from "react-bootstrap/lib";
+
+import Grid from "react-bootstrap/lib/Grid";
+import Row from "react-bootstrap/lib/Row";
+import Col from "react-bootstrap/lib/Col";
+import FormGroup from "react-bootstrap/lib/FormGroup";
+import FormControl from "react-bootstrap/lib/FormControl";
+import ControlLabel from "react-bootstrap/lib/ControlLabel";
+import HelpBlock from "react-bootstrap/lib/HelpBlock";
+
 
 import ImagesUpload from "./../../../utils/ImagesUpload";
 import Slugify from "./../../../utils/slugifyHelper";
@@ -68,46 +76,54 @@ export default class ProductFormAdd extends React.Component{
 						<ImagesUpload image={this.state.draft} delete="hidden" inputName="fileLoadDraft"/>
 					</Col>
 					<Col md={9}>
-						<Input type="text" label="Код товара" placeholder="Код товара"
-									 id="sku"
-									 groupClassName={(!this.state.error)?'':'has-error'}
-									 help={this.state.error && this.state.errorHelp}
-									 name="dataFormProducts[sku]"
-									 value={this.state.sku}
-									 onChange={this.skuOnChange.bind(this)}
-									 required
-						/>
-						<Input type="text" label="Наименование товара" placeholder="Наименование товара"
-									 name="dataFormProducts[name]"
-									 value={this.state.name}
-									 onChange={this.onChange('name').bind(this)}
-									 required
-						/>
-						<Input type="textarea" label="Oписание" placeholder="Описание"
-									 name="dataFormProducts[description]"
-									 value={this.state.description}
-									 onChange={this.onChange('description').bind(this)}
-									 rows="8"
-						/>
-						<Row>
-							<Col md={4} >
-								<Input type="text" label="Сортировка"
-											 labelClassName="col-md-6"
-											 wrapperClassName="col-md-6"
-											 name="dataFormProducts[sorting]"
-											 value={this.state.sorting}
-											 onChange={this.onChange('sorting').bind(this)}
-											 required
+						<FormGroup className={(!this.state.error)?'':'has-error'}>
+							<ControlLabel>Код товара</ControlLabel>
+							<FormControl
+								type="text"
+								placeholder="Код товара"
+								id="sku"
+								name="dataFormProducts[sku]"
+								value={this.state.sku}
+								onChange={this.skuOnChange.bind(this)}
+								required
+							/>
+							<HelpBlock>{this.state.error && this.state.errorHelp}</HelpBlock>
+						</FormGroup>
+						<FormGroup>
+							<ControlLabel>Наименование товара</ControlLabel>
+							<FormControl
+								type="text"
+								placeholder="Наименование товара"
+								name="dataFormProducts[name]"
+								value={this.state.name}
+								onChange={this.onChange('name').bind(this)}
+								required
+							/>
+						</FormGroup>
+						<FormGroup>
+							<ControlLabel>Oписание</ControlLabel>
+							<FormControl
+								componentClass="textarea"
+								placeholder="Описание"
+								value={this.state.description}
+								name="dataFormProducts[description]"
+								onChange={this.onChange('description').bind(this)}
+								rows="8"
+							/>
+						</FormGroup>
+						<div className="form-inline">
+							<FormGroup>
+								<ControlLabel className="mr2">Сортировка</ControlLabel>
+								<FormControl
+									type="number"
+									min="0"
+									value={this.state.sorting}
+									name="dataFormProducts[sorting]"
+									onChange={this.onChange('sorting').bind(this)}
+									required
 								/>
-							</Col>
-							<Col md={4} >
-								<Radio inline checked name="dataFormProducts[active]">Активность</Radio>
-							</Col>
-							<Col md={4} >
-								<Radio inline name="dataFormProducts[deleted]">Удален</Radio>
-							</Col>
-						</Row>
-
+							</FormGroup>
+						</div>
 						<input type="hidden"
 									 name="dataFormProducts[path]"
 									 value={this.state.path}
