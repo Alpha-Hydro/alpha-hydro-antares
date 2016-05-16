@@ -8,7 +8,7 @@ class ImageLoader {
         this.inputFile = document.getElementById(inputFileId);
         this.inputImageId = inputImageId;
 
-        this.init();
+        this.elementEvent && this.init();
     }
 
     init(){

@@ -23,6 +23,14 @@ export default class CategoryReplaceComponent extends React.Component {
 		this.selectCategory = this.selectCategory.bind(this);
 	}
 
+	componentWillMount(){
+		var parentId = (this.props.currentCategory.parentId)?this.props.currentCategory.parentId:'0';
+		this.setState({
+			currentCategory: this.props.currentCategory,
+			parentId: parentId
+		});
+	}
+
 	close() {
 		this.setState({ showModal: false });
 	}
@@ -34,9 +42,7 @@ export default class CategoryReplaceComponent extends React.Component {
 			.then(function(categoryList){
 				this.setState({
 					categoryList: categoryList,
-					showModal: true,
-					currentCategory: this.props.currentCategory,
-					parentId: this.props.currentCategory.parentId
+					showModal: true
 				});
 			}.bind(this));
 	}

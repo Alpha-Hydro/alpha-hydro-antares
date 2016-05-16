@@ -5,7 +5,7 @@ define(["require", "exports"], function (require, exports) {
             this.elementEvent = document.getElementById(elementEventId);
             this.inputFile = document.getElementById(inputFileId);
             this.inputImageId = inputImageId;
-            this.init();
+            this.elementEvent && this.init();
         }
         ImageLoader.prototype.init = function () {
             var _this = this;
