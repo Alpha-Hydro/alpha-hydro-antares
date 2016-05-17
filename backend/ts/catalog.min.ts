@@ -1,15 +1,15 @@
 class categoryHeight {
-    item: any;
+    items: any;
     height: any;
     constructor(classItem: string){
-        this.item = [].slice.call(document.querySelectorAll(classItem));
+        this.items = [].slice.call(document.querySelectorAll(classItem));
         this.height = 200;
 
         this._init();
     }
 
     _init(){
-        this.item.forEach((element:HTMLElement)=>{
+        this.items.forEach((element:HTMLElement)=>{
             if(element.offsetHeight > this.height){
                 this.height = element.offsetHeight;
             }
@@ -18,5 +18,5 @@ class categoryHeight {
     }
 }
 
-var categoriesList = new categoryHeight('.categories-list-item');
-var categories = new categoryHeight('.categories-item');
+new categoryHeight('.categories-list-item');
+new categoryHeight('.categories-item');

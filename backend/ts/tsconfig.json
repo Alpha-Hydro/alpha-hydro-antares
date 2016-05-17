@@ -6,6 +6,8 @@
     "sourceMap": true
   },
   "files": [
-    "adminPublic.ts"
+    "adminPublic.ts",
+    "catalog.min.ts",
+    "pipelinePropertyEdit.ts"
   ]
 }

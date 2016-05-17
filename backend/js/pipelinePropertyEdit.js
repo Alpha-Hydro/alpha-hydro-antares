@@ -1,7 +1,9 @@
-class PipelineEdit {
-    constructor(tableId) {
+var PipelineEdit = (function () {
+    function PipelineEdit(tableId) {
+        var _this = this;
         this.tableId = tableId;
-        this._sendAjax = (url, data, callback = this._callbackData) => {
+        this._sendAjax = function (url, data, callback) {
+            if (callback === void 0) { callback = _this._callbackData; }
             $.ajax({
                 url: url,
                 type: 'POST',
@@ -11,20 +13,20 @@ class PipelineEdit {
                 error: function (jqXHR, textStatus, errorThrown) {
                     return console.log("AJAX Error: " + textStatus);
                 },
-                success: callback,
+                success: callback
             });
         };
-        this._callbackData = (data) => {
+        this._callbackData = function (data) {
             console.log(data);
         };
-        this._selectOptions = () => {
+        this._selectOptions = function () {
             $.ajax({
                 url: '/admin/pipeline/select-property-item-array',
                 type: 'POST',
                 dataType: 'html',
                 cache: false,
                 data: {
-                    pipelineId: this.itemId
+                    pipelineId: _this.itemId
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log("AJAX Error: " + textStatus);
@@ -42,15 +44,15 @@ class PipelineEdit {
         this.response = null;
         this._init();
     }
-    _init() {
+    PipelineEdit.prototype._init = function () {
         var self = this;
         this.row.forEach(function (tr) {
             self._initRow(tr);
         });
         this._initSelect();
         this._modalFormEvent();
-    }
-    _initRow(tr) {
+    };
+    PipelineEdit.prototype._initRow = function (tr) {
         var self = this, btn = [].slice.call(tr.querySelectorAll('button'));
         btn.forEach(function (btn) {
             btn.addEventListener('click', function (ev) {
@@ -59,8 +61,8 @@ class PipelineEdit {
                 self.current = self.row.indexOf(tr);
             });
         });
-    }
-    _initSelect() {
+    };
+    PipelineEdit.prototype._initSelect = function () {
         var self = this, tr = this.rowFooter, selectProp = tr.querySelector('select'), selectVal = selectProp.value, aInput = [].slice.call(tr.querySelectorAll('input')), modal = document.getElementById('propertyNewModal'), btn = tr.querySelector('button[data-event="add"]');
         this._addInputRead(selectVal, aInput, btn);
         selectProp.addEventListener('change', function (ev) {
@@ -92,8 +94,8 @@ class PipelineEdit {
             ev.preventDefault();
             self._initEvent(tr, this);
         });
-    }
-    _resetSelect() {
+    };
+    PipelineEdit.prototype._resetSelect = function () {
         var row = this.rowFooter, select = row.querySelector('select'), inputs = [].slice.call(row.querySelectorAll('input')), btn = row.querySelector('button[data-event="add"]');
         select.value = '0';
         inputs.forEach(function (input) {
@@ -101,13 +103,16 @@ class PipelineEdit {
             input.readOnly = true;
         });
         btn.classList.add('hidden');
-    }
-    _newRow(propertyId = 'new', propertyName = 'test', propertyValue = 'test') {
+    };
+    PipelineEdit.prototype._newRow = function (propertyId, propertyName, propertyValue) {
+        if (propertyId === void 0) { propertyId = 'new'; }
+        if (propertyName === void 0) { propertyName = 'test'; }
+        if (propertyValue === void 0) { propertyValue = 'test'; }
         var tbody = this.table.tBodies.item('tbody'), newRow = document.createElement('tr'), input = document.createElement('input'), cellsTable = this.table.tHead.rows[0].cells, cellValue = this.table.tHead.querySelector('th[data-name="value"]'), buttons = {
             classBtnGroup: 'btn-group btn-group-sm mr1',
             edit: '<button class="btn btn-default" data-event="edit"><span class="glyphicon glyphicon-pencil"></span></button>',
             deleted: '<button class="btn btn-default" data-event="delete"><span class="glyphicon glyphicon-trash"></span></button>',
-            saved: '<button type="button" class="btn btn-sm btn-success hidden" data-event="save">Сохранить</button>',
+            saved: '<button type="button" class="btn btn-sm btn-success hidden" data-event="save">Сохранить</button>'
         }, btnGroup = document.createElement('div');
         newRow.id = propertyId;
         for (var i = 0; i < cellsTable.length; i++) {
@@ -128,13 +133,13 @@ class PipelineEdit {
         tbody.appendChild(newRow);
         this.row.push(newRow);
         this._initRow(newRow);
-    }
-    _rowDelete(rowId) {
+    };
+    PipelineEdit.prototype._rowDelete = function (rowId) {
         var row = document.getElementById(rowId);
         row.remove();
         return this;
-    }
-    _modalFormEvent() {
+    };
+    PipelineEdit.prototype._modalFormEvent = function () {
         var self = this, form = document.getElementById('newPipelineProperty'), propertyName = form.elements.newPropertyName, propertyValue = form.elements.newPropertyValue, formBtnSubmit = form.elements.formBtnSubmit;
         propertyValue.readOnly = true;
         formBtnSubmit.disabled = true;
@@ -156,8 +161,8 @@ class PipelineEdit {
             serialize.push({ name: 'pipelineId', value: self.itemId });
             self._sendAjax('/admin/pipeline-property-value/add-new-property', serialize, callbackNew);
         });
-    }
-    _addInputRead(selectVal, aInput, btn) {
+    };
+    PipelineEdit.prototype._addInputRead = function (selectVal, aInput, btn) {
         if (selectVal == 0 || selectVal == 'new') {
             aInput.forEach(function (el) {
                 el.blur();
@@ -173,8 +178,8 @@ class PipelineEdit {
                     classie.remove(btn, 'hidden');
             });
         }
-    }
-    _initEvent(tr, btn) {
+    };
+    PipelineEdit.prototype._initEvent = function (tr, btn) {
         var btnEvent = btn.dataset.event;
         console.log(btnEvent);
         if (btnEvent == 'edit') {
@@ -197,8 +202,8 @@ class PipelineEdit {
             console.log(this.row[this.current]);
             this._save(tr);
         }
-    }
-    _edit(tr, btn) {
+    };
+    PipelineEdit.prototype._edit = function (tr, btn) {
         var aInput = [].slice.call(tr.querySelectorAll('input')), btnSave = tr.querySelector('button[data-event="save"]');
         classie.add(btn, 'active');
         classie.remove(btnSave, 'hidden');
@@ -213,27 +218,27 @@ class PipelineEdit {
             });
         });
         aInput[0].focus();
-    }
-    _add(tr) {
+    };
+    PipelineEdit.prototype._add = function (tr) {
         var selectProperty = tr.querySelector('select#propertyId'), inputValue = tr.querySelector('input#value'), data = {
             propertyId: selectProperty.value,
             pipelineId: this.itemId,
             propertyValue: inputValue.value
         };
         this._sendAjax('/admin/pipeline-property-value/add', data, callbackAdd);
-    }
-    _delete(tr) {
+    };
+    PipelineEdit.prototype._delete = function (tr) {
         var data = { valueId: tr.id };
         this._sendAjax('/admin/pipeline-property-value/delete', data, callbackDel);
-    }
-    _save(tr) {
+    };
+    PipelineEdit.prototype._save = function (tr) {
         var valueId = tr.id, inputValue = tr.querySelector('input'), data = {
             valueId: valueId,
-            value: inputValue.value,
+            value: inputValue.value
         };
         this._sendAjax('/admin/pipeline-property-value/save', data, callbackSave);
-    }
-    _reset(tr) {
+    };
+    PipelineEdit.prototype._reset = function (tr) {
         var aInput = [].slice.call(tr.querySelectorAll('input')), btn = tr.querySelector('button.active'), btnSave = tr.querySelector('button[data-event="save"]');
         if (btn) {
             classie.add(btnSave, 'hidden');
@@ -246,10 +251,11 @@ class PipelineEdit {
             });
             btn.blur();
         }
-    }
-}
+    };
+    return PipelineEdit;
+}());
 var tableProperty = new PipelineEdit('pipelineProperty');
-var callbackNew = (data) => {
+var callbackNew = function (data) {
     if (data && typeof data.errorMessage != "undefined") {
         $('#propertyNewModal').find('#errorMessage').html(data.errorMessage);
     }
@@ -258,7 +264,7 @@ var callbackNew = (data) => {
         $('#propertyNewModal').modal('hide');
     }
 };
-var callbackAdd = (data) => {
+var callbackAdd = function (data) {
     if (data && typeof data.errorMessage != "undefined") {
         console.log(data.errorMessage);
     }
@@ -268,14 +274,14 @@ var callbackAdd = (data) => {
         tableProperty._resetSelect();
     }
 };
-var callbackDel = (data) => {
+var callbackDel = function (data) {
     if (data && typeof data.rowDeleted != 'undefined') {
         tableProperty._rowDelete(data.rowDeleted.rowId);
         tableProperty._selectOptions();
         tableProperty._resetSelect();
     }
 };
-var callbackSave = (data) => {
+var callbackSave = function (data) {
     console.log(data);
     if (data && typeof data.rowSaved != 'undefined') {
         console.log(data.rowSaved.message);

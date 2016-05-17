@@ -36,6 +36,8 @@ class Media_Model_Media
     protected $_deleted = null;
 
     protected $_full_path = null;
+    
+    protected $_section_site_id = null;
 
     /**
      * @param $options
@@ -492,6 +494,24 @@ class Media_Model_Media
     public function getFullPath()
     {
         return $this->_full_path;
+    }
+
+    /**
+     * @param null $section_site_id
+     * @return Media_Model_Media
+     */
+    public function setSectionSiteId($section_site_id)
+    {
+        $this->_section_site_id = $section_site_id;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getSectionSiteId()
+    {
+        return $this->_section_site_id;
     }
 
 

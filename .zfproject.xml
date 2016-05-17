@@ -23,6 +23,9 @@
         <controllerFile controllerName="Sections">
           <actionMethod actionName="index"/>
         </controllerFile>
+        <controllerFile controllerName="Base">
+          <actionMethod actionName="index"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory>
         <formFile formName="PipelineCategoriesEdit"/>
@@ -363,6 +366,9 @@
               <actionMethod actionName="list"/>
               <actionMethod actionName="json"/>
             </controllerFile>
+            <controllerFile controllerName="Base">
+              <actionMethod actionName="index"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="PageEdit"/>
@@ -664,6 +670,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="OilCategories">
                 <viewScriptFile forActionName="json"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Base">
+                <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -1248,6 +1257,9 @@
             <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Sections">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Base">
             <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>

@@ -255,6 +255,7 @@ class MediaController extends Zend_Controller_Action
 
     private function _saveFormData(Admin_Form_MediaEdit $form)
     {
+        //Zend_Debug::dump($form->getValues());
         $request = $this->getRequest();
         $media = new Media_Model_Media($form->getValues());
 

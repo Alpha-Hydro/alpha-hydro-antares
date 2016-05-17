@@ -1,4 +1,9 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>MediaCategories</b> and script/action name <b>edit</b></p>
+<?php
+$this->title = $this->item->getName();
+$this->secondary_text = "Редактирование категории";
+?>
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <?= $this->render('_form_item_edit.phtml');?>
+    </div>
 </div>

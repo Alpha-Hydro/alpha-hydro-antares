@@ -21,7 +21,7 @@ h1, h2, h3, h4, h5, h6{
     position: relative;
     margin-bottom: 50px;
     padding: 10px;
-    //min-height: 230px;
+    //min-height: 200px;
     @include transition(all .2s ease-in-out);
     &:hover{
       text-decoration: none;

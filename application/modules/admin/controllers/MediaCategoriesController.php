@@ -1,6 +1,8 @@
 <?php
 
-class MediaCategoriesController extends Zend_Controller_Action
+include_once 'BaseController.php';
+
+class MediaCategoriesController extends Admin_BaseController
 {
 
     /**
@@ -12,15 +14,18 @@ class MediaCategoriesController extends Zend_Controller_Action
     {
         $this->_modelMapper = new Media_Model_Mapper_MediaCategories();
 
-        $contextSwitch = $this->_helper->getHelper('contextSwitch');
-        $contextSwitch
-            ->addActionContext('json', array('json'))
-            ->initContext();
     }
 
     public function indexAction()
     {
-        // action body
+        parent::indexAction();
+        $this->setNavigation('Добавить категорию', 'add');
+    }
+
+    public function editAction()
+    {
+        parent::editAction();
+        $this->setNavigation('Добавить категорию', 'add');
     }
 
     public function addAction()
@@ -28,33 +33,10 @@ class MediaCategoriesController extends Zend_Controller_Action
         // action body
     }
 
-    public function editAction()
-    {
-        // action body
-    }
 
     public function deleteAction()
     {
         // action body
-    }
-
-    public function jsonAction()
-    {
-        $request = $this->getRequest();
-        $id = $request->getParam('id');
-
-        $jsonData = array(
-            $request->getControllerKey() => $request->getControllerName(),
-            'role' => Zend_Auth::getInstance()->getIdentity()->role
-        );
-
-        if($id){
-            $entry = $this->_modelMapper->find($id, new Media_Model_MediaCategories());
-            if(!is_null($entry))
-                $jsonData = array_merge($jsonData, $entry->getOptions());
-        }
-
-        return $this->_helper->json->sendJson($jsonData);
     }
 
 }

@@ -138,11 +138,17 @@ class Admin_Form_MediaEdit extends Twitter_Bootstrap_Form_Vertical
             'label'         => 'Cтраница удалена',
         ));
 
+        $this->addElement('select', 'sectionSiteId', array(
+            'label'     => 'Привязать к разделу сайта',
+            'multiOptions' => $this->getSectionSiteArray(),
+        ));
+
         $this->addDisplayGroup(
             array(
                 'sorting',
                 'active',
-                'deleted'
+                'deleted',
+                'sectionSiteId'
             ),
             'additionally',
             array(
@@ -155,12 +161,41 @@ class Admin_Form_MediaEdit extends Twitter_Bootstrap_Form_Vertical
     /**
      * @return array
      */
+    public function getSectionSiteArray()
+
+    {
+        $pagesMapper = new Pages_Model_Mapper_Pages();
+        $select = $pagesMapper->getDbTable()->select();
+        
+        $select
+            ->where('active != ?', 0)
+            ->where('deleted != ?', 1)
+            ->order('sorting ASC');
+        
+        $sectionSiteArray = array();
+        $sectionSiteArray[] = 'нет';
+        /**
+         * @var $page Pages_Model_Pages;
+         */
+        foreach ($pagesMapper->fetchAll($select) as $page) {
+            $sectionSiteArray[$page->getId()] = $page->getTitle();
+        }
+        
+        return $sectionSiteArray;
+    }
+
+    /**
+     * @return array
+     */
     public function getCategoryArray()
     {
         $mediaCategoryMapper = new Media_Model_Mapper_MediaCategories();
 
         $categoryArray = array();
         $categoryArray[] = 'нет';
+        /**
+         * @var $category Media_Model_MediaCategories;
+         */
         foreach ($mediaCategoryMapper->fetchAll() as $category) {
             $categoryArray[$category->getId()] = $category->getName();
         }
