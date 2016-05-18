@@ -26,9 +26,9 @@ class Admin_Form_MediaCategoriesEdit extends Twitter_Bootstrap_Form_Vertical
             'title'         => 'Загрузить изображение',
         ));
 
-        $this->addElement('hidden', 'thumb');
-        $imageValue = ($this->getValue('thumb') != '')
-            ?$this->getValue('thumb')
+        $this->addElement('hidden', 'image');
+        $imageValue = ($this->getValue('image') != '')
+            ?$this->getValue('image')
             :'/files/images/product/2012-05-22_foto_nv.jpg';
         $this->setDefault('imageLoad', $imageValue);
 
@@ -103,7 +103,7 @@ class Admin_Form_MediaCategoriesEdit extends Twitter_Bootstrap_Form_Vertical
             array(
                 'imageLoad',
                 'imageLoadFile',
-                'thumb',
+                'image',
             ),
             'imageGroup',
             array()

@@ -145,8 +145,8 @@ class MediaController extends Zend_Controller_Action
         foreach ($dataPage as $key => $value) {
             $form->setDefault($key, $value);
         }
-        $imageValue = ($form->getValue('thumb') != '')
-            ?$form->getValue('thumb')
+        $imageValue = ($form->getValue('image') != '')
+            ?$form->getValue('image')
             :'/files/images/product/2012-05-22_foto_nv.jpg';
         $form->setDefault('imageLoad', $imageValue);
 
@@ -271,7 +271,7 @@ class MediaController extends Zend_Controller_Action
         $file = $form->imageLoadFile->getFileInfo();
         if(!empty($file) && $file['imageLoadFile']['name'] != ''){
             $form->imageLoadFile->receive();
-            $media->setThumb('/upload/media/items/'.$file['imageLoadFile']['name']);
+            $media->setImage('/upload/media/items/'.$file['imageLoadFile']['name']);
         }
 
         $markdown = $request->getParam('contentMarkdown');

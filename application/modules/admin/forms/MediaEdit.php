@@ -59,13 +59,13 @@ class Admin_Form_MediaEdit extends Twitter_Bootstrap_Form_Vertical
             'title'         => 'Загрузить изображение',
         ));
 
-        $this->addElement('hidden', 'thumb');
+        $this->addElement('hidden', 'image');
 
         $this->addDisplayGroup(
             array(
                 'imageLoad',
                 'imageLoadFile',
-                'thumb',
+                'image',
             ),
             'imageGroup',
             array()

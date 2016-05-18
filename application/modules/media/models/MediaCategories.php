@@ -12,6 +12,7 @@ class Media_Model_MediaCategories
     protected $_description = null;
 
     protected $_thumb = null;
+    protected $_image = null;
 
     protected $_timestamp = null;
 
@@ -199,29 +200,7 @@ class Media_Model_MediaCategories
     {
         return $this->_description;
     }
-
-    /**
-     * Set value Thumb
-     *
-     * @return $this 
-     * @param $thumb
-     */
-    public function setThumb($thumb)
-    {
-        $this->_thumb = $thumb;
-        return $this;
-    }
-
-    /**
-     * Get value Thumb
-     *
-     * @return mixed
-     */
-    public function getThumb()
-    {
-        return $this->_thumb;
-    }
-
+    
     /**
      * Set value Timestamp
      *
@@ -396,6 +375,42 @@ class Media_Model_MediaCategories
     public function getDeleted()
     {
         return $this->_deleted;
+    }
+
+    /**
+     * @param null $image
+     * @return Media_Model_MediaCategories
+     */
+    public function setImage($image)
+    {
+        $this->_image = $image;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getImage()
+    {
+        return $this->_image;
+    }
+
+    /**
+     * @param null $thumb
+     * @return Media_Model_MediaCategories
+     */
+    public function setThumb($thumb)
+    {
+        $this->_thumb = $thumb;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getThumb()
+    {
+        return $this->_thumb;
     }
 
 

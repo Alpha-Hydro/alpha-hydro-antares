@@ -6,9 +6,9 @@ $this->sidebar_headers = false;
 $this->breadcrumbs = true;
 ?>
 <div class="col-md-12">
-    <?php if(null !== $this->mediaItem->getThumb()):?>
+    <?php if(null !== $this->mediaItem->getImage()):?>
     <div class="col-md-4 pull-right">
-        <div class="thumbnail"><img src="<?=$this->mediaItem->getThumb()?>" alt="<?=$this->mediaItem->getName()?>"></div>
+        <div class="thumbnail"><img src="<?=$this->mediaItem->getImage()?>" alt="<?=$this->mediaItem->getName()?>"></div>
     </div>
     <?php endif;?>
     <div class="media-content">

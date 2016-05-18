@@ -1,4 +1,7 @@
 <?php
+/**
+ * @var $mediaItems Media_Model_Media
+ */
 $this->headTitle($this->title);
 $this->meta_title = $this->title;
 $this->sidebar_headers = false;
@@ -8,13 +11,13 @@ $this->breadcrumbs = true;
     <?php if($this->mediaItems):?>
         <?php foreach ($this->mediaItems as $mediaItems):?>
             <div class="media media-item line line-dotted">
-                <?php if(!is_null($mediaItems->getThumb())):?>
+                <?php if(!is_null($mediaItems->getImage())):?>
                     <div class="media-left col-md-3">
                         <div class="thumbnail col-md-10 hover-shadow">
                             <a href="<?=$this->url(array(
                                 'fullPath' => $this->escape($mediaItems->getFullPath())
                             ),  'media', false, false)?>">
-                                <img src="<?=$this->escape($mediaItems->getThumb())?>" alt="<?=$this->escape($mediaItems->getName())?>" class="media-object"/>
+                                <img src="<?=$this->escape($mediaItems->getImage())?>" alt="<?=$this->escape($mediaItems->getName())?>" class="media-object"/>
                             </a>
                         </div>
                     </div>

@@ -16,6 +16,7 @@ class Media_Model_Media
     protected $_author = null;
 
     protected $_thumb = null;
+    protected $_image = null;
 
     protected $_timestamp = null;
 
@@ -255,28 +256,6 @@ class Media_Model_Media
     }
 
     /**
-     * Set value Thumb
-     *
-     * @return $this 
-     * @param $thumb
-     */
-    public function setThumb($thumb)
-    {
-        $this->_thumb = $thumb;
-        return $this;
-    }
-
-    /**
-     * Get value Thumb
-     *
-     * @return mixed
-     */
-    public function getThumb()
-    {
-        return $this->_thumb;
-    }
-
-    /**
      * Set value Timestamp
      *
      * @return $this 
@@ -512,6 +491,42 @@ class Media_Model_Media
     public function getSectionSiteId()
     {
         return $this->_section_site_id;
+    }
+
+    /**
+     * @param null $image
+     * @return Media_Model_Media
+     */
+    public function setImage($image)
+    {
+        $this->_image = $image;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getImage()
+    {
+        return $this->_image;
+    }
+
+    /**
+     * @param null $thumb
+     * @return Media_Model_Media
+     */
+    public function setThumb($thumb)
+    {
+        $this->_thumb = $thumb;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getThumb()
+    {
+        return $this->_thumb;
     }
 
 
