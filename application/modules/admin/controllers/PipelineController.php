@@ -9,16 +9,17 @@ class PipelineController extends Zend_Controller_Action
      */
     protected $_modelMapper = null;
 
+    /**
+     * @var Zend_Controller_Action_Helper_Redirector
+     */
+    protected $_redirector = null;
+
     protected $_count_item_on_page = null;
 
     public function init()
     {
         $this->_modelMapper = new Pipeline_Model_Mapper_Pipeline();
-
-        $contextSwitch = $this->_helper->getHelper('contextSwitch');
-        $contextSwitch
-            ->addActionContext('json', array('json'))
-            ->initContext();
+        $this->_redirector = $this->_helper->getHelper('Redirector');
 
         $ajaxContext = $this->_helper->getHelper('AjaxContext');
         $ajaxContext
@@ -35,8 +36,7 @@ class PipelineController extends Zend_Controller_Action
 
         $pipelineMapper = new Pipeline_Model_Mapper_Pipeline();
         $select = $pipelineMapper->getDbTable()->select();
-        $select->where('deleted != ?', 1)
-            ->order('sorting ASC');
+        $select->order('sorting ASC');
 
         if($request->getParam('category_id')){
             $pipelineCategoryMapper = new Pipeline_Model_Mapper_PipelineCategories();
@@ -159,7 +159,7 @@ class PipelineController extends Zend_Controller_Action
         $itemId = $request->getParam('id');
 
         if(is_null($itemId))
-            return $this->_helper->redirector('index');
+            $this->_redirector->gotoSimpleAndExit('index');
 
         $pipelineMapper = new Pipeline_Model_Mapper_Pipeline();
         $pipeline = $pipelineMapper->find($itemId, new Pipeline_Model_Pipeline());
@@ -284,8 +284,49 @@ class PipelineController extends Zend_Controller_Action
 
     public function deleteAction()
     {
-        // action body
+        $itemId = $this->_request->getParam('id');
+        if(is_null($itemId))
+            $this->_redirector->gotoSimpleAndExit('index');
+
+        $item = $this->_modelMapper->find($itemId, new Pipeline_Model_Pipeline());
+        if(is_null($item))
+            throw new Zend_Controller_Action_Exception('Страница не найдена', 404);
+
+        $deleted = ($item->getDeleted() != 0)?0:1;
+
+        $item->setDeleted($deleted);
+        $this->_modelMapper->save($item);
+
+        $this->_redirector->gotoRouteAndExit(array(
+            'module' => 'admin',
+            'controller' => 'pipeline-categories',
+            'action' => 'list',
+            'id'=>$item->getCategoryId()
+        ), 'adminEdit', true);
     }
+
+    public function enableAction()
+    {
+        $itemId = $this->_request->getParam('id');
+
+        if(is_null($itemId))
+            $this->_redirector->gotoSimpleAndExit('index');
+
+        $item = $this->_modelMapper->find($itemId, new Pipeline_Model_Pipeline());
+
+        $active = ($item->getActive() != 0)?0:1;
+        $item->setActive($active);
+
+        $this->_modelMapper->save($item);
+
+        $this->_redirector->gotoRouteAndExit(array(
+            'module' => 'admin',
+            'controller' => 'pipeline-categories',
+            'action' => 'list',
+            'id'=>$item->getCategoryId()
+        ), 'adminEdit', true);
+    }
+
 
     public function jsonAction()
     {

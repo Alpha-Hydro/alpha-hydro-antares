@@ -27,7 +27,16 @@ $this->secondary_text = $this->categoryName.'Список товара';
                 ?></td>
             <td><?=$page->getTitle()?></td>
             <td><?=$page->getSorting()?></td>
-            <td><input type="checkbox" value="<?=$page->getActive()?>" <?=($page->getActive() != 0)?'checked':'';?>></td>
+            <td>
+                <a href="<?= $this->url(array(
+                    'module' => 'admin',
+                    'controller' => 'oil',
+                    'action' => 'enable',
+                    'id'=>$page->getId()
+                ), 'adminEdit', true, false); ?>" title="<?=($page->getActive() != 0)?'скрыть':'показать'?>">
+                    <span class="glyphicon <?=($page->getActive() != 0)?'glyphicon-eye-open':'glyphicon-eye-close'?>"></span>
+                </a>
+            </td>
             <td width="150px">
                 <?=$this->partial('_button_group_table.phtml', array(
                     'item_controller' => 'oil',

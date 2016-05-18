@@ -9,26 +9,42 @@ class ManufactureController extends Zend_Controller_Action
      */
     protected $_modelMapper = null;
 
+    /**
+     * @var Manufacture_Model_Mapper_ManufactureCategories
+     */
+    protected $_modelCategoriesMapper = null;
+
+    /**
+     * @var Zend_Controller_Action_Helper_Redirector
+     */
+    protected $_redirector = null;
+
     protected $_count_item_on_page = null;
 
     public function init()
     {
         $this->_modelMapper = new Manufacture_Model_Mapper_Manufacture();
+        $this->_modelCategoriesMapper = new Manufacture_Model_Mapper_ManufactureCategories();
+        $this->_redirector = $this->_helper->getHelper('Redirector');
 
         $this->_count_item_on_page = 10;
 
-        $contextSwitch = $this->_helper->getHelper('contextSwitch');
-        $contextSwitch
-            ->addActionContext('json', array('json'))
-            ->initContext();
     }
 
     public function indexAction()
     {
         $request = $this->getRequest();
 
-        $manufactureMapper = new Manufacture_Model_Mapper_Manufacture();
-        $manufactureItems = $manufactureMapper->fetchAll();
+        $select = $this->_modelMapper->getDbTable()->select();
+        if($request->getParam('category_id')){
+            $select->where('category_id = ?', $request->getParam('category_id'));
+            $this->view->categoryName = $this->_modelCategoriesMapper
+                ->find($request->getParam('category_id'), new Manufacture_Model_ManufactureCategories())
+                ->getTitle() . ' - ';
+        }
+
+
+        $manufactureItems = $this->_modelMapper->fetchAll($select);
 
         if(!empty($manufactureItems)){
             if(count($manufactureItems) > $this->getCountItemOnPage()){
@@ -127,7 +143,7 @@ class ManufactureController extends Zend_Controller_Action
         $itemId = $request->getParam('id');
 
         if(is_null($itemId))
-            return $this->_helper->redirector('index');
+            $this->_redirector->gotoSimpleAndExit('index');
 
         $manufactureMapper = new Manufacture_Model_Mapper_Manufacture();
         $manufacture = $manufactureMapper->find($itemId, new Manufacture_Model_Manufacture());
@@ -203,7 +219,7 @@ class ManufactureController extends Zend_Controller_Action
         $itemId = $request->getParam('id');
 
         if(is_null($itemId))
-            return $this->_helper->redirector('index');
+            $this->_redirector->gotoSimpleAndExit('index');
 
         $manufactureMapper = new Manufacture_Model_Mapper_Manufacture();
         $manufacture = $manufactureMapper->find($itemId, new Manufacture_Model_Manufacture());
@@ -211,11 +227,34 @@ class ManufactureController extends Zend_Controller_Action
         if(is_null($manufacture))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
-        $manufacture->setDeleted(1);
+        $deleted = ($manufacture->getDeleted() != 0)?0:1;
+
+        $manufacture->setDeleted($deleted);
         $manufactureMapper->save($manufacture);
 
-        return $this->_helper->redirector('index');
+        $this->_redirector->gotoUrlAndExit('/admin/manufacture-categories/list/'.$manufacture->getCategoryId().'/');
+
     }
+
+    public function enableAction()
+    {
+        $itemId = $this->_request->getParam('id');
+
+        if(is_null($itemId))
+            $this->_redirector->gotoSimpleAndExit('index');
+
+        $item = $this->_modelMapper->find($itemId, new Manufacture_Model_Manufacture());
+        if(is_null($item))
+            throw new Zend_Controller_Action_Exception('Страница не найдена', 404);
+
+        $active = ($item->getActive() != 0)?0:1;
+        $item->setActive($active);
+
+        $this->_modelMapper->save($item);
+
+        $this->_redirector->gotoUrlAndExit('/admin/manufacture-categories/list/'.$item->getCategoryId().'/');
+    }
+
 
     public function jsonAction()
     {

@@ -34,7 +34,20 @@ class Admin_BaseController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $pageItems = $this->getModelMapper()->fetchAll();
+        /**
+         * @var $select Zend_Db_Table_Select;
+         */
+        $select = $this->_modelMapper->getDbTable()->select();
+
+        if($this->_request->getParam('category_id')){
+            $select->where('category_id = ?', $this->request->getParam('category_id'));
+
+            /*$this->view->categoryName = $this->_modelCategoriesMapper
+                    ->find($this->_request->getParam('category_id'), new Manufacture_Model_ManufactureCategories())
+                    ->getTitle() . ' - ';*/
+        }
+
+        $pageItems = $this->getModelMapper()->fetchAll($select);
 
         if(!empty($pageItems)){
             $pageItems = $this->setPaginationPage($pageItems);
@@ -42,6 +55,12 @@ class Admin_BaseController extends Zend_Controller_Action
 
         $this->view->pages = $pageItems;
 
+    }
+
+    public function listAction()
+    {
+        $this->forward('index', strtolower($this->_getNameModule()), 'admin', array('category_id' => $this->_getParam('id')));
+        return;
     }
 
     public function editAction()
@@ -72,6 +91,44 @@ class Admin_BaseController extends Zend_Controller_Action
         }
 
         $this->view->form = $form;
+    }
+
+    public function deleteAction()
+    {
+        $itemId = $this->_request->getParam('id');
+
+        if(is_null($itemId))
+            $this->_redirector->gotoSimpleAndExit('index');
+
+        $item = $this->_modelMapper->find($itemId, $this->getModel());
+        if(is_null($item))
+            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+        $deleted = ($item->getDeleted() != 0)?0:1;
+
+        $item->setDeleted($deleted);
+        $this->_modelMapper->save($item);
+
+        $this->getRedirector()->gotoSimpleAndExit('index');
+    }
+
+    public function enableAction()
+    {
+        $itemId = $this->_request->getParam('id');
+
+        if(is_null($itemId))
+            $this->_redirector->gotoSimpleAndExit('index');
+
+        $item = $this->_modelMapper->find($itemId, $this->getModel());
+        if(is_null($item))
+            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+        $enabled = ($item->getActive() != 0)?0:1;
+
+        $item->setActive($enabled);
+        $this->_modelMapper->save($item);
+
+        $this->getRedirector()->gotoSimpleAndExit('index');
     }
 
     public function jsonAction()
@@ -116,26 +173,6 @@ class Admin_BaseController extends Zend_Controller_Action
         }
         
         return $pagesItems;
-    }
-
-    /**
-     * @param $label string
-     * @param $action string
-     * @throws Zend_Navigation_Exception
-     */
-    public function setNavigation($label, $action){
-        $config = array(
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => $label,
-                'module' => 'admin',
-                'controller' => $this->_request->getControllerName(),
-                'action' => $action,
-                'resource' => $this->_request->getControllerName(),
-            )),
-        );
-        $containerNav = new Zend_Navigation($config);
-
-        $this->view->container_nav = $containerNav;
     }
 
     /**
@@ -231,7 +268,14 @@ class Admin_BaseController extends Zend_Controller_Action
 
     private function _saveFormData(Zend_Form $form)
     {
-        Zend_Debug::dump($form->imageLoadFile->isUploaded());
+        $item = $this->getModel();
+        $item->setOptions($form->getValues());
+
+        foreach ($form->getElements() as $key => $element) {
+            if($element instanceof Zend_Form_Element_File)
+                Zend_Debug::dump($element);
+        }
+
         /*$request = $this->getRequest();
         $manufactureCategory = new Manufacture_Model_ManufactureCategories($form->getValues());
 

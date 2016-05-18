@@ -24,10 +24,6 @@ class PipelineCategoriesController extends Zend_Controller_Action
         $this->_modelMapper = new Pipeline_Model_Mapper_PipelineCategories();
         $this->_redirector = $this->_helper->getHelper('Redirector');
 
-        $contextSwitch = $this->_helper->getHelper('contextSwitch');
-        $contextSwitch
-            ->addActionContext('json', array('json'))
-            ->initContext();
     }
 
     public function indexAction()
@@ -200,7 +196,7 @@ class PipelineCategoriesController extends Zend_Controller_Action
         $categoryId = $request->getParam('id');
 
         if(is_null($categoryId))
-            return $this->_helper->redirector('index');
+            $this->_redirector->gotoSimpleAndExit('index');
 
         $pipelineCategoryMapper = new Pipeline_Model_Mapper_PipelineCategories();
         $pipelineCategory = $pipelineCategoryMapper->find($categoryId, new Pipeline_Model_PipelineCategories());
@@ -213,7 +209,7 @@ class PipelineCategoriesController extends Zend_Controller_Action
         $pipelineCategory->setDeleted($deleted);
         $pipelineCategoryMapper->save($pipelineCategory);
 
-        return $this->_helper->redirector('index');
+        $this->_redirector->gotoSimpleAndExit('index');
     }
 
     public function enableAction()

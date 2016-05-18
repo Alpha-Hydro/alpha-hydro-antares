@@ -30,10 +30,6 @@ class OilCategoriesController extends Zend_Controller_Action
         $this->_form = new Admin_Form_OilCategoriesEdit();
         $this->_redirector = $this->_helper->getHelper('Redirector');
 
-        $contextSwitch = $this->_helper->getHelper('contextSwitch');
-        $contextSwitch
-            ->addActionContext('json', array('json'))
-            ->initContext();
     }
 
     public function indexAction()
@@ -193,8 +189,6 @@ class OilCategoriesController extends Zend_Controller_Action
 
     public function deleteAction()
     {
-        Zend_Debug::dump($this->_request->getParams());
-
         $itemId = $this->_request->getParam('id');
 
         if(is_null($itemId))
@@ -208,6 +202,23 @@ class OilCategoriesController extends Zend_Controller_Action
 
         $category->setDeleted($deleted);
         $this->_modelMapper->save($category);
+
+        $this->_redirector->gotoSimpleAndExit('index');
+    }
+
+    public function enableAction()
+    {
+        $itemId = $this->_request->getParam('id');
+
+        if(is_null($itemId))
+            $this->_redirector->gotoSimpleAndExit('index');
+
+        $item = $this->_modelMapper->find($itemId, new Oil_Model_OilCategories());
+
+        $active = ($item->getActive() != 0)?0:1;
+        $item->setActive($active);
+
+        $this->_modelMapper->save($item);
 
         $this->_redirector->gotoSimpleAndExit('index');
     }

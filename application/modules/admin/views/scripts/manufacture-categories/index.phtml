@@ -1,4 +1,7 @@
 <?php
+/**
+ * @var $page Manufacture_Model_ManufactureCategories
+ */
 $this->title = 'Производство';
 $this->secondary_text = 'Список категорий';
 ?>
@@ -17,10 +20,25 @@ $this->secondary_text = 'Список категорий';
     <?php foreach ($this->pages as $page):?>
         <tr class="<?=$this->contextualClassTr($page);?>">
             <td><?=$page->getId()?></td>
-            <td><?=$page->getTitle()?></td>
+            <td><a href="<?=$this->url(array(
+                    'module'=>'admin',
+                    'controller'=>'manufacture-categories',
+                    'action'=>'list',
+                    'id'=>$page->getId(),
+                ), null, true)?>"><?=$page->getTitle()?></a>
+               </td>
             <td><?=$page->getPath()?></td>
             <td><?=$page->getSorting()?></td>
-            <td><input type="checkbox" value="<?=$page->getActive()?>" <?=($page->getActive() != 0)?'checked':'';?>></td>
+            <td>
+                <a href="<?= $this->url(array(
+                    'module' => 'admin',
+                    'controller' => 'manufacture-categories',
+                    'action' => 'enable',
+                    'id'=>$page->getId()
+                ), 'adminEdit', true, false); ?>" title="<?=($page->getActive() != 0)?'скрыть':'показать'?>">
+                    <span class="glyphicon <?=($page->getActive() != 0)?'glyphicon-eye-open':'glyphicon-eye-close'?>"></span>
+                </a>
+            </td>
             <td width="150px">
                 <?=$this->partial('_button_group_table.phtml', array(
                     'item_controller' => 'manufacture-categories',

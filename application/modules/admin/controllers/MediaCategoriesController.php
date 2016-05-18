@@ -16,29 +16,11 @@ class MediaCategoriesController extends Admin_BaseController
 
     }
 
-    public function indexAction()
-    {
-        parent::indexAction();
-        $this->setNavigation('Добавить категорию', 'add');
-    }
-
-    public function editAction()
-    {
-        parent::editAction();
-        $this->setNavigation('Добавить категорию', 'add');
-    }
-
     public function addAction()
     {
         // action body
     }
-
-
-    public function deleteAction()
-    {
-        // action body
-    }
-
+    
 }
 
 
