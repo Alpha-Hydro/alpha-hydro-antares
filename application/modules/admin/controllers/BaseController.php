@@ -40,11 +40,7 @@ class Admin_BaseController extends Zend_Controller_Action
         $select = $this->_modelMapper->getDbTable()->select();
 
         if($this->_request->getParam('category_id')){
-            $select->where('category_id = ?', $this->request->getParam('category_id'));
-
-            /*$this->view->categoryName = $this->_modelCategoriesMapper
-                    ->find($this->_request->getParam('category_id'), new Manufacture_Model_ManufactureCategories())
-                    ->getTitle() . ' - ';*/
+            $select->where('category_id = ?', $this->_request->getParam('category_id'));
         }
 
         $pageItems = $this->getModelMapper()->fetchAll($select);
@@ -61,6 +57,34 @@ class Admin_BaseController extends Zend_Controller_Action
     {
         $this->forward('index', strtolower($this->_getNameModule()), 'admin', array('category_id' => $this->_getParam('id')));
         return;
+    }
+
+    public function addAction()
+    {
+        $form = $this->getForm('edit');
+
+        $form->setDefaults(array(
+            'sorting'       => 0,
+            'active'        => 1,
+            'deleted'       => 0,
+        ));
+
+        foreach ($form->getElements() as $key => $element) {
+            if($element instanceof Zend_Form_Element_Image){
+                $form->setDefault($element->getName(), '/files/images/product/2012-05-22_foto_nv.jpg');
+            }
+        }
+
+        if ($this->getRequest()->isPost()){
+            if ($form->isValid($this->_request->getPost())){
+                Zend_Debug::dump($form->getValues());
+                //$this->_saveFormData($form);
+            }
+
+            $form->setDefaults($this->_request->getPost());
+        }
+
+        $this->view->form = $form;
     }
 
     public function editAction()
@@ -81,6 +105,15 @@ class Admin_BaseController extends Zend_Controller_Action
         $dataPage = $page->getOptions();
         foreach ($dataPage as $key => $value) {
             $form->setDefault($key, $value);
+        }
+
+        foreach ($form->getElements() as $key => $element) {
+            if($element instanceof Zend_Form_Element_Image){
+                $imageValue = ($form->getValue($element->getAttrib('data-input')) != '')
+                    ?$form->getValue($element->getAttrib('data-input'))
+                    :'/files/images/product/2012-05-22_foto_nv.jpg';
+                $form->setDefault($element->getName(), $imageValue);
+            }
         }
 
         if ($this->getRequest()->isPost()){
@@ -271,37 +304,85 @@ class Admin_BaseController extends Zend_Controller_Action
         $item = $this->getModel();
         $item->setOptions($form->getValues());
 
-        foreach ($form->getElements() as $key => $element) {
-            if($element instanceof Zend_Form_Element_File)
-                Zend_Debug::dump($element);
+        if($this->_request->getParam('contentMarkdown')){
+            $context_html = Michelf\Markdown::defaultTransform($this->_request->getParam('contentMarkdown'));
+            $item->setContentHtml($context_html);
         }
 
-        /*$request = $this->getRequest();
-        $manufactureCategory = new Manufacture_Model_ManufactureCategories($form->getValues());
+        $metaTitle = $this->_request->getParam('metaTitle');
+        if(empty($metaTitle))
+            $item->setMetaTitle($this->_request->getParam('title'));
 
-        $file = $form->imageLoadFile->getFileInfo();
+        $description = $this->_request->getParam('description');
+        $metaDescription = $this->_request->getParam('metaDescription');
+        if(empty($metaDescription) && !empty($description))
+            $item->setMetaDescription($description);
+
+        //$this->_modelMapper->save($item);
+        $id = $form->getValue('id');
+
+        
+        foreach ($form->getElements() as $key => $element) {
+            if($element instanceof Zend_Form_Element_File && $element->isUploaded()){
+
+                /*$upload = new Zend_File_Transfer();
+                $uploadFile = $this->_uploadFiles($id, $upload, $element);
+
+                Zend_Debug::dump($uploadFile);*/
+                
+                $destination = UPLOAD_DIR. $element->getAttrib('data-upload').'/'.$id;
+                if(!file_exists($destination))
+                    mkdir($destination, 0755, true);
+
+//                $element
+//                    ->setDestination($destination);
+
+                $fileInfo = $element->getFileInfo();
+                $fileName = $element->getFileName();
+
+                $upload = new Zend_File_Transfer_Adapter_Http();
+                $upload->addFilter('Rename', array('target' => $element->getFileName(), 'overwrite' => true));
+
+                //$element->addFilter('Rename', $destination);
+
+                //Zend_Debug::dump($element->getFileInfo());
+                $element->receive();
+
+                $item->setOptions(array(
+                    $element->getAttrib('data-input') => '/upload'. $element->getAttrib('data-upload').'/'.$fileInfo[$key]['name']
+                ));
+            }
+        }
+
+        //Zend_Debug::dump($item);
+
+        $this->_modelMapper->save($item);
+        //$this->getRedirector()->gotoSimpleAndExit('index');
+
+        /*$file = $form->imageLoadFile->getFileInfo();
         if(!empty($file) && $file['imageLoadFile']['name'] !== ''){
             $form->imageLoadFile->receive();
             $manufactureCategory->setImage('/upload/manufacture/category/'.$file['imageLoadFile']['name']);
         }
 
-        $markdown = $request->getParam('contentMarkdown');
-        $context_html = Markdown::defaultTransform($markdown);
-        $manufactureCategory->setContentHtml($context_html);
-
-        $metaTitle = $request->getParam('metaTitle');
-        if(empty($metaTitle))
-            $manufactureCategory->setMetaTitle($request->getParam('title'));
-
-        $description = $request->getParam('description');
-        $metaDescription = $request->getParam('metaDescription');
-        if(empty($metaDescription) && !empty($description))
-            $manufactureCategory->setMetaDescription($description);
-
-        $manufactureCategoryMapper = new Manufacture_Model_Mapper_ManufactureCategories();
-        $manufactureCategoryMapper->save($manufactureCategory);
-
         return $this->_helper->redirector('index');*/
+    }
+
+    protected function _uploadFiles($id, Zend_File_Transfer $upload, Zend_Form_Element $element)
+    {
+        $destinationPath = UPLOAD_DIR. $element->getAttrib('data-upload') . '/' . $id;
+        if (!file_exists($destinationPath))
+            mkdir($destinationPath, 0755, true);
+
+
+        $upload->setDestination($destinationPath)
+            ->addValidator('Size', false, 1024000)
+            ->addValidator('Extension', false, 'jpg,png,gif,svg');
+        $upload->receive($element->getId());
+
+        $uploadFile = $upload->getFileInfo($element->getId());
+
+        return $uploadFile;
     }
 
 

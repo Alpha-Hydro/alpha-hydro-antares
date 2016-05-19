@@ -10,15 +10,39 @@ class MediaCategoriesController extends Admin_BaseController
      */
     protected $_modelMapper = null;
 
+    /**
+     * @var Media_Model_MediaCategories
+     */
+    protected $_model = null;
+
     public function init()
     {
         $this->_modelMapper = new Media_Model_Mapper_MediaCategories();
+        $this->_model = new Media_Model_MediaCategories();
 
+    }
+
+    public function indexAction()
+    {
+        parent::indexAction();
+        $config = array(
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Добавить категорию',
+                'module' => 'admin',
+                'controller' => 'media-categories',
+                'action' => 'add',
+                'resource' => 'media-categories',
+            ))
+        );
+
+        $containerNav = new Zend_Navigation($config);
+
+        $this->view->container_nav = $containerNav;
     }
 
     public function addAction()
     {
-        // action body
+        parent::addAction();
     }
     
 }

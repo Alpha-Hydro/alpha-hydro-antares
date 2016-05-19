@@ -7,31 +7,40 @@ class Admin_Form_MediaCategoriesEdit extends Twitter_Bootstrap_Form_Vertical
     {
         $this->addElement('hidden', 'id');
 
-        $uploadDir = UPLOAD_DIR .'/media/categories';
+        $uploadPath = '/upload/media/categories';
+        $uploadDir = APPLICATION_ROOT . $uploadPath;
         if(!file_exists($uploadDir))
             mkdir($uploadDir, 0755, true);
 
         $image = new Zend_Form_Element_File('imageLoadFile');
-        $image->setDestination($uploadDir)
+        $image
+            ->setDestination($uploadDir)
             ->addValidator('Size', false, 1024000)
             ->addValidator('Extension', false, 'jpg,png,gif')
-            ->setAttrib('class', 'hidden');
+            ->setAttribs(array(
+                'class' => 'hidden',
+                'data-input' => 'image',
+                'data-upload' => '/media/categories'
+            ));
         $this->addElement($image);
 
+        /*$this->addElement('file', 'imageLoadFile', array(
+            'class' => 'hidden',
+            'data-input' => 'image',
+            'data-upload' => '/media/categories',
+        ));*/
+        
+        $this->addElement('hidden', 'image');
+        
         $this->addElement('image', 'imageLoad', array(
             'label'         => null,//'Изображение',
             'class'         => 'img-thumbnail',
             'data-toggle'   => 'tooltip',
             'data-placement'=> 'bottom',
+            'data-input' => 'image',
             'title'         => 'Загрузить изображение',
         ));
-
-        $this->addElement('hidden', 'image');
-        $imageValue = ($this->getValue('image') != '')
-            ?$this->getValue('image')
-            :'/files/images/product/2012-05-22_foto_nv.jpg';
-        $this->setDefault('imageLoad', $imageValue);
-
+        
         $this->addElement('select', 'parentId', array(
             'label'     => 'Родительская категория',
             'required'  => true,

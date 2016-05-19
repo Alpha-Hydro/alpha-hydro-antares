@@ -1,53 +1,44 @@
 <?php
-use \Michelf\Markdown;
+use Michelf\Markdown;
 include_once 'Michelf/Markdown.php';
+include_once 'BaseController.php';
 
-class MediaController extends Zend_Controller_Action
+class MediaController extends Admin_BaseController
 {
     /**
      * @var Media_Model_Mapper_Media
      */
     protected $_modelMapper = null;
 
-    protected $_count_item_on_page = null;
+    /**
+     * @var Media_Model_Mapper_MediaCategories
+     */
+    protected $_modelCategoriesMapper = null;
+
+    /**
+     * @var Media_Model_Media
+     */
+    protected $_model = null;
+
 
     public function init()
     {
         $this->_count_item_on_page = 10;
 
         $this->_modelMapper = new Media_Model_Mapper_Media();
+        $this->_model = new Media_Model_Media();
+        $this->_modelCategoriesMapper = new Media_Model_Mapper_MediaCategories();
 
-        $contextSwitch = $this->_helper->getHelper('contextSwitch');
-        $contextSwitch
-            ->addActionContext('json', array('json'))
-            ->initContext();
     }
 
     public function indexAction()
     {
-        $request = $this->getRequest();
-        $mediaMapper = new Media_Model_Mapper_Media();
-        $mediaItems = $mediaMapper->fetchAll();
 
-        if(!empty($mediaItems)){
-            if(count($mediaItems) > $this->getCountItemOnPage()){
-                $mediaPages = array_chunk($mediaItems, $this->getCountItemOnPage());
+        parent::indexAction();
 
-                $currentPage = 0;
-
-                if($request->getParam('page') && $request->getParam('page') > 0)
-                    $currentPage = $request->getParam('page')-1;
-
-                If($request->getParam('page') && $request->getParam('page') > count($mediaPages))
-                    $currentPage = count($mediaPages)-1;
-
-                $mediaItems = $mediaPages[$currentPage];
-                $this->view->countPage = count($mediaPages);
-                $this->view->currentPage = $currentPage+1;
-            }
-        }
-
-        $this->view->pages = $mediaItems;
+        $this->view->categoryName = $this->_modelCategoriesMapper
+                    ->find($this->_request->getParam('category_id'), new Media_Model_MediaCategories())
+                    ->getName() . ' - ';
 
         $config = array(
             Zend_Navigation_Page_Mvc::factory(array(
