@@ -28,6 +28,11 @@ class Admin_BaseController extends Zend_Controller_Action
      */
     protected $_redirector = null;
 
+    /**
+     * @var Zend_Auth
+     */
+    protected $_userAuth;
+
     public function init()
     {
     }
@@ -37,7 +42,7 @@ class Admin_BaseController extends Zend_Controller_Action
         /**
          * @var $select Zend_Db_Table_Select;
          */
-        $select = $this->_modelMapper->getDbTable()->select();
+        $select = $this->getModelMapper()->getDbTable()->select();
 
         if($this->_request->getParam('category_id')){
             $select->where('category_id = ?', $this->_request->getParam('category_id'));
@@ -77,8 +82,8 @@ class Admin_BaseController extends Zend_Controller_Action
 
         if ($this->getRequest()->isPost()){
             if ($form->isValid($this->_request->getPost())){
-                Zend_Debug::dump($form->getValues());
-                //$this->_saveFormData($form);
+                //Zend_Debug::dump($form->getValues());
+                $this->_saveFormData($form);
             }
 
             $form->setDefaults($this->_request->getPost());
@@ -112,6 +117,7 @@ class Admin_BaseController extends Zend_Controller_Action
                 $imageValue = ($form->getValue($element->getAttrib('data-input')) != '')
                     ?$form->getValue($element->getAttrib('data-input'))
                     :'/files/images/product/2012-05-22_foto_nv.jpg';
+
                 $form->setDefault($element->getName(), $imageValue);
             }
         }
@@ -133,14 +139,14 @@ class Admin_BaseController extends Zend_Controller_Action
         if(is_null($itemId))
             $this->_redirector->gotoSimpleAndExit('index');
 
-        $item = $this->_modelMapper->find($itemId, $this->getModel());
+        $item = $this->getModelMapper()->find($itemId, $this->getModel());
         if(is_null($item))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
         $deleted = ($item->getDeleted() != 0)?0:1;
 
         $item->setDeleted($deleted);
-        $this->_modelMapper->save($item);
+        $this->getModelMapper()->save($item);
 
         $this->getRedirector()->gotoSimpleAndExit('index');
     }
@@ -149,19 +155,25 @@ class Admin_BaseController extends Zend_Controller_Action
     {
         $itemId = $this->_request->getParam('id');
 
-        if(is_null($itemId))
+        if(empty($itemId))
             $this->_redirector->gotoSimpleAndExit('index');
 
-        $item = $this->_modelMapper->find($itemId, $this->getModel());
+        $item = $this->getModelMapper()->find($itemId, $this->getModel());
         if(is_null($item))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
         $enabled = ($item->getActive() != 0)?0:1;
 
         $item->setActive($enabled);
-        $this->_modelMapper->save($item);
+        $this->getModelMapper()->save($item);
 
-        $this->getRedirector()->gotoSimpleAndExit('index');
+        if($this->_request->getControllerName() != strtolower($this->_getNameModule())){
+            $this->getRedirector()->gotoSimpleAndExit('index');
+        }
+        else{
+            $this->getRedirector()->gotoUrlAndExit('/admin/'.strtolower($this->_getNameModule()).'-categories/list/'.$item->getCategoryId().'/');
+        }
+
     }
 
     public function jsonAction()
@@ -306,83 +318,75 @@ class Admin_BaseController extends Zend_Controller_Action
 
         if($this->_request->getParam('contentMarkdown')){
             $context_html = Michelf\Markdown::defaultTransform($this->_request->getParam('contentMarkdown'));
+            Zend_Debug::dump($context_html);
             $item->setContentHtml($context_html);
         }
 
-        $metaTitle = $this->_request->getParam('metaTitle');
-        if(empty($metaTitle))
-            $item->setMetaTitle($this->_request->getParam('title'));
+        $this->_setMetaData($item);
 
-        $description = $this->_request->getParam('description');
-        $metaDescription = $this->_request->getParam('metaDescription');
-        if(empty($metaDescription) && !empty($description))
-            $item->setMetaDescription($description);
+        $author = $this->_request->getParam('author');
+        if($author && empty($author))
+            $item->setAuthor($this->getUserAuth()->name);
 
-        //$this->_modelMapper->save($item);
-        $id = $form->getValue('id');
+        $this->getModelMapper()->save($item);
+
+        if($item->getId() && $item->getId() != ''){
+            $id = $item->getId();
+        }
+        else{
+            $id = $this->getModelMapper()->getDbTable()->getAdapter()->lastInsertId();
+            $item = $this->getModelMapper()->find($id, $this->getModel());
+        }
 
         
         foreach ($form->getElements() as $key => $element) {
             if($element instanceof Zend_Form_Element_File && $element->isUploaded()){
 
-                /*$upload = new Zend_File_Transfer();
-                $uploadFile = $this->_uploadFiles($id, $upload, $element);
+                $uploadPath = $element->getAttrib('data-upload') . '/' . $id;
 
-                Zend_Debug::dump($uploadFile);*/
-                
-                $destination = UPLOAD_DIR. $element->getAttrib('data-upload').'/'.$id;
-                if(!file_exists($destination))
-                    mkdir($destination, 0755, true);
+                if(!file_exists(APPLICATION_ROOT.$uploadPath))
+                    mkdir(APPLICATION_ROOT.$uploadPath, 0755, true);
 
-//                $element
-//                    ->setDestination($destination);
+                $element->setDestination(APPLICATION_ROOT.$uploadPath);
 
-                $fileInfo = $element->getFileInfo();
-                $fileName = $element->getFileName();
-
-                $upload = new Zend_File_Transfer_Adapter_Http();
-                $upload->addFilter('Rename', array('target' => $element->getFileName(), 'overwrite' => true));
-
-                //$element->addFilter('Rename', $destination);
-
-                //Zend_Debug::dump($element->getFileInfo());
-                $element->receive();
-
-                $item->setOptions(array(
-                    $element->getAttrib('data-input') => '/upload'. $element->getAttrib('data-upload').'/'.$fileInfo[$key]['name']
-                ));
+                try {
+                    $element->receive();
+                    $item->setOptions(array(
+                        $element->getAttrib('data-input') => $uploadPath. '/' .$element->getFileName(null, false)
+                    ));
+                    $this->getModelMapper()->save($item);
+                }
+                catch (Zend_File_Transfer_Exception $e)
+                {
+                    throw new Exception('Bad image data: '.$e->getMessage());
+                }
             }
         }
-
-        //Zend_Debug::dump($item);
-
-        $this->_modelMapper->save($item);
-        //$this->getRedirector()->gotoSimpleAndExit('index');
-
-        /*$file = $form->imageLoadFile->getFileInfo();
-        if(!empty($file) && $file['imageLoadFile']['name'] !== ''){
-            $form->imageLoadFile->receive();
-            $manufactureCategory->setImage('/upload/manufacture/category/'.$file['imageLoadFile']['name']);
-        }
-
-        return $this->_helper->redirector('index');*/
+        
+        //$this->getRedirector()->gotoSimpleAndExit('index', $this->_request->getControllerName());
     }
 
-    protected function _uploadFiles($id, Zend_File_Transfer $upload, Zend_Form_Element $element)
+    private function _setMetaData($item)
     {
-        $destinationPath = UPLOAD_DIR. $element->getAttrib('data-upload') . '/' . $id;
-        if (!file_exists($destinationPath))
-            mkdir($destinationPath, 0755, true);
+        $metaTitle = $this->_request->getParam('metaTitle');
+        if($metaTitle && empty($metaTitle))
+            $item->setMetaTitle($this->_request->getParam('title'));
 
+        $description = $this->_request->getParam('description');
+        $metaDescription = $this->_request->getParam('metaDescription');
+        if($description && empty($metaDescription) && !empty($description))
+            $item->setMetaDescription($description);
+        
+        return $item;
+    }
 
-        $upload->setDestination($destinationPath)
-            ->addValidator('Size', false, 1024000)
-            ->addValidator('Extension', false, 'jpg,png,gif,svg');
-        $upload->receive($element->getId());
-
-        $uploadFile = $upload->getFileInfo($element->getId());
-
-        return $uploadFile;
+    /**
+     * @return Zend_Auth
+     */
+    public function getUserAuth()
+    {
+        $this->_userAuth = Zend_Auth::getInstance()->getIdentity();
+        return $this->_userAuth;
     }
 
 

@@ -8,11 +8,52 @@ class Admin_Form_MediaEdit extends Twitter_Bootstrap_Form_Vertical
         $this->addElement('hidden', 'id');
         $this->addElement('hidden', 'path');
 
+        $image = new Zend_Form_Element_File('imageLoadFile');
+        $image
+            ->setValueDisabled(true)
+            ->addValidator('Size', false, 1024000)
+            ->addValidator('Extension', false, 'jpg,png,gif')
+            ->setAttribs(
+                array(
+                    'class' => 'hidden',
+                    'data-input' => 'image',
+                    'data-upload' => '/upload/media/items'
+                )
+            );
+        $this->addElement($image);
+
+        $this->addElement('hidden', 'image');
+
+        $this->addElement('image', 'imageLoad', array(
+            'label'         => null,//'Изображение',
+            'class'         => 'img-thumbnail',
+            'data-toggle'   => 'tooltip',
+            'data-placement'=> 'bottom',
+            'data-input' => 'image',
+            'title'         => 'Загрузить изображение',
+        ));
+
+        $this->addDisplayGroup(
+            array(
+                'imageLoad',
+                'imageLoadFile',
+                'image',
+            ),
+            'imageGroup',
+            array()
+        );
+
         $this->addElement('select', 'categoryId', array(
             'label'     => 'Категория',
             'required'  => true,
             'multiOptions' => $this->getCategoryArray(),
         ));
+
+        $this->addElement('select', 'sectionSiteId', array(
+            'label'     => 'Привязать к разделу сайта',
+            'multiOptions' => $this->getSectionSiteArray(),
+        ));
+
 
         $this->addElement('text', 'name', array(
             'label'         => 'Заголовок',
@@ -22,52 +63,15 @@ class Admin_Form_MediaEdit extends Twitter_Bootstrap_Form_Vertical
             'data-slugify'  => 'path',
         ));
 
-        $this->addElement('text', 'author', array(
-            'label'         => 'Автор',
-            'placeholder'   => 'Автор статьи',
-            'required'      => true,
-        ));
-
         $this->addDisplayGroup(
             array(
                 'categoryId',
                 'name',
-                'author',
+                'sectionSiteId',
                 'path',
                 'id',
             ),
             'basic',
-            array()
-        );
-
-        $image = new Zend_Form_Element_File('imageLoadFile');
-        $image->setDestination(APPLICATION_ROOT.'/upload/media/items/')
-            ->addValidator('Size', false, 1024000)
-            ->addValidator('Extension', false, 'jpg,png')
-            ->setAttribs(
-                array(
-                    'class' => 'hidden',
-                )
-            );
-        $this->addElement($image);
-
-        $this->addElement('image', 'imageLoad', array(
-            'label'         => null,//'Изображение',
-            'class'         => 'img-thumbnail',
-            'data-toggle'   => 'tooltip',
-            'data-placement'=> 'bottom',
-            'title'         => 'Загрузить изображение',
-        ));
-
-        $this->addElement('hidden', 'image');
-
-        $this->addDisplayGroup(
-            array(
-                'imageLoad',
-                'imageLoadFile',
-                'image',
-            ),
-            'imageGroup',
             array()
         );
 
@@ -138,9 +142,9 @@ class Admin_Form_MediaEdit extends Twitter_Bootstrap_Form_Vertical
             'label'         => 'Cтраница удалена',
         ));
 
-        $this->addElement('select', 'sectionSiteId', array(
-            'label'     => 'Привязать к разделу сайта',
-            'multiOptions' => $this->getSectionSiteArray(),
+        $this->addElement('text', 'author', array(
+            'label'         => 'Автор',
+            'placeholder'   => 'Автор статьи',
         ));
 
         $this->addDisplayGroup(
@@ -148,7 +152,7 @@ class Admin_Form_MediaEdit extends Twitter_Bootstrap_Form_Vertical
                 'sorting',
                 'active',
                 'deleted',
-                'sectionSiteId'
+                'author'
             ),
             'additionally',
             array(

@@ -5,27 +5,45 @@
 
 $this->title = 'Пресса';
 $this->secondary_text = $this->categoryName.'Список публикаций';
+
 ?>
 
     <table class="table table-striped table-bordered">
         <thead>
         <tr>
             <th>ID</th>
-            <th>Категория</th>
+            <?php if(!$this->categoryName):?>
+                <th>Категория</th>
+            <?php endif;?>
             <th>Заголовок</th>
             <th>Сортировка</th>
             <th>Активность</th>
-            <th></th>
+            <th>Действия</th>
         </tr>
         </thead>
         <?php if($this->pages):?>
             <?php foreach ($this->pages as $page):?>
                 <tr class="<?=$this->contextualClassTr($page);?>">
                     <td><?=$page->getId()?></td>
-                    <td><?=$this->getCategory($page->getCategoryId(), 'media')->getName()?></td>
+                    <?php if(!$this->categoryName):?>
+                        <td><?=($this->getCategory($page->getCategoryId(), 'media'))
+                                ?$this->getCategory($page->getCategoryId(), 'media')->getName()
+                                :'нет';
+                            ?></td>
+                    <?php endif;?>
                     <td><?=$page->getName()?></td>
                     <td><?=$page->getSorting()?></td>
-                    <td><input type="checkbox" value="<?=$page->getActive()?>" <?=($page->getActive() != 0)?'checked':'';?>></td>
+                    <td>
+                        <a href="<?= $this->url(array(
+                            'module' => 'admin',
+                            'controller' => 'media',
+                            'action' => 'enable',
+                            'id'=>$page->getId(),
+                            'page'=>$this->currentPage
+                        ), 'adminEdit', true, false); ?>" title="<?=($page->getActive() != 0)?'скрыть':'показать'?>">
+                            <span class="glyphicon <?=($page->getActive() != 0)?'glyphicon-eye-open':'glyphicon-eye-close'?>"></span>
+                        </a>
+                    </td>
                     <td width="150px">
                         <?=$this->partial('_button_group_table.phtml', array(
                             'item_controller' => 'media',

@@ -12,6 +12,7 @@ class Media_Model_Media
     protected $_s_content = null;
 
     protected $_content = null;
+    protected $_content_html = null;
 
     protected $_author = null;
 
@@ -527,6 +528,24 @@ class Media_Model_Media
     public function getThumb()
     {
         return $this->_thumb;
+    }
+
+    /**
+     * @param null $content_html
+     * @return Media_Model_Media
+     */
+    public function setContentHtml($content_html)
+    {
+        $this->_content_html = $content_html;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getContentHtml()
+    {
+        return $this->_content_html;
     }
 
 

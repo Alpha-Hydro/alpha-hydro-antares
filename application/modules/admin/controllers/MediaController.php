@@ -20,6 +20,11 @@ class MediaController extends Admin_BaseController
      */
     protected $_model = null;
 
+    /**
+     * @var Zend_Form[]
+     */
+    protected $_form = array();
+
 
     public function init()
     {
@@ -28,6 +33,7 @@ class MediaController extends Admin_BaseController
         $this->_modelMapper = new Media_Model_Mapper_Media();
         $this->_model = new Media_Model_Media();
         $this->_modelCategoriesMapper = new Media_Model_Mapper_MediaCategories();
+        $this->_form['edit'] = new Admin_Form_MediaEdit();
 
     }
 
@@ -35,8 +41,8 @@ class MediaController extends Admin_BaseController
     {
 
         parent::indexAction();
-
-        $this->view->categoryName = $this->_modelCategoriesMapper
+        if($this->_request->getParam('category_id'))
+            $this->view->categoryName = $this->_modelCategoriesMapper
                     ->find($this->_request->getParam('category_id'), new Media_Model_MediaCategories())
                     ->getName() . ' - ';
 
@@ -112,7 +118,8 @@ class MediaController extends Admin_BaseController
 
     public function editAction()
     {
-        $request = $this->getRequest();
+        parent::editAction();
+        /*$request = $this->getRequest();
         $itemId = $request->getParam('id');
 
         if(is_null($itemId))
@@ -150,7 +157,7 @@ class MediaController extends Admin_BaseController
             $this->view->formData = $form->getValues();
         }
 
-        $this->view->form = $form;
+        $this->view->form = $form;*/
 
         $config = array(
             Zend_Navigation_Page_Mvc::factory(array(
@@ -167,12 +174,16 @@ class MediaController extends Admin_BaseController
                 'action' => 'delete',
                 'resource' => 'media',
                 'params' => array(
-                    'id' => $itemId,
+                    'id' => $this->_request->getParam('id'),
                 ),
             )),
             Zend_Navigation_Page_Uri::factory(array(
                 'label' => 'Посмотреть на сайте',
-                'uri' => '/media/'.$media->getFullPath().'/',
+                'uri' => '/media/'.$this->_modelMapper
+                        ->find(
+                            $this->_request->getParam('id'),
+                            $this->_model)
+                        ->getFullPath().'/',
             )),
             Zend_Navigation_Page_Mvc::factory(array(
                 'label' => 'Отмена',

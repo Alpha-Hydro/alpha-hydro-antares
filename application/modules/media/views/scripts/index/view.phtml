@@ -12,7 +12,7 @@ $this->breadcrumbs = true;
     </div>
     <?php endif;?>
     <div class="media-content">
-        <?=$this->mediaItem->getContent();?>
+        <?=($this->mediaItem->getContentHtml())?$this->mediaItem->getContentHtml():$this->mediaItem->getContent();?>
         <p class="text-muted"><small><em><?=date("d.m.Y", strtotime($this->mediaItem->getTimestamp()));?> г.</em></small></p>
     </div>
 </div>
