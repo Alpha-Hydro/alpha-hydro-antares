@@ -5,26 +5,30 @@ include_once 'BaseController.php';
 
 class MediaController extends Admin_BaseController
 {
+
     /**
      * @var Media_Model_Mapper_Media
+     *
      */
     protected $_modelMapper = null;
 
     /**
      * @var Media_Model_Mapper_MediaCategories
+     *
      */
     protected $_modelCategoriesMapper = null;
 
     /**
      * @var Media_Model_Media
+     *
      */
     protected $_model = null;
 
     /**
      * @var Zend_Form[]
+     *
      */
     protected $_form = array();
-
 
     public function init()
     {
@@ -69,26 +73,7 @@ class MediaController extends Admin_BaseController
 
     public function addAction()
     {
-        $request = $this->getRequest();
-        $form = new Admin_Form_MediaEdit();
-
-        $form->setDefaults(array(
-            'sorting'       => 0,
-            'active'        => 1,
-            'deleted'       => 0,
-            'imageLoad'     => '/files/images/product/2012-05-22_foto_nv.jpg',
-        ));
-
-        if ($this->getRequest()->isPost()){
-            if ($form->isValid($request->getPost())){
-                $this->_saveFormData($form);
-            }
-
-            $form->setDefaults($request->getPost());
-            $this->view->formData = $form->getValues();
-        }
-
-        $this->view->form = $form;
+        parent::addAction();
 
         $config = array(
             Zend_Navigation_Page_Mvc::factory(array(
@@ -119,45 +104,6 @@ class MediaController extends Admin_BaseController
     public function editAction()
     {
         parent::editAction();
-        /*$request = $this->getRequest();
-        $itemId = $request->getParam('id');
-
-        if(is_null($itemId))
-            return $this->_helper->redirector('index');
-
-        $mediaMapper = new Media_Model_Mapper_Media();
-        $media = $mediaMapper->find($itemId, new Media_Model_Media());
-
-        if(is_null($media))
-            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
-
-        $mediaMapperCategory = new Media_Model_Mapper_MediaCategories();
-        $mediaCategory = $mediaMapperCategory->find($media->getCategoryId(),
-            new Media_Model_MediaCategories());
-
-        $this->view->category = $mediaCategory;
-        $this->view->item = $media;
-
-        $form = new Admin_Form_MediaEdit();
-        $dataPage = $media->getOptions();
-        foreach ($dataPage as $key => $value) {
-            $form->setDefault($key, $value);
-        }
-        $imageValue = ($form->getValue('image') != '')
-            ?$form->getValue('image')
-            :'/files/images/product/2012-05-22_foto_nv.jpg';
-        $form->setDefault('imageLoad', $imageValue);
-
-        if ($this->getRequest()->isPost()){
-            if ($form->isValid($request->getPost())){
-                $this->_saveFormData($form);
-            }
-
-            $form->setDefaults($request->getPost());
-            $this->view->formData = $form->getValues();
-        }
-
-        $this->view->form = $form;*/
 
         $config = array(
             Zend_Navigation_Page_Mvc::factory(array(
@@ -198,103 +144,32 @@ class MediaController extends Admin_BaseController
         $this->view->container_nav = $containerNav;
     }
 
-    public function deleteAction()
+    public function sectionAction()
     {
-        $request = $this->getRequest();
-        $itemId = $request->getParam('id');
+        $jsonData = $this->_request->getParams();
 
-        if(is_null($itemId))
-            return $this->_helper->redirector('index');
+        if($this->_request->getParam('itemId')){
 
-        $mediaMapper = new Media_Model_Mapper_Media();
-        $media = $mediaMapper->find($itemId, new Media_Model_Media());
+            $item = $this->_modelMapper->find($this->_request->getParam('itemId'), $this->_model);
+            if($item){
+                $pagesMapper = new Pages_Model_Mapper_Pages();
+                $page = $pagesMapper->find($this->_request->getParam('sectionId'), new Pages_Model_Pages());
+                $sectionId = ($page)?$page->getId():0;
 
-        if(is_null($media))
-            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+                $item->setSectionSiteId($sectionId);
 
-        $media->setDeleted(1);
-        $mediaMapper->save($media);
+                $this->_modelMapper->save($item);
 
-        return $this->_helper->redirector('index');
-    }
-
-    public function jsonAction()
-    {
-        $request = $this->getRequest();
-        $id = $request->getParam('id');
-
-        $jsonData = array(
-            $request->getControllerKey() => $request->getControllerName(),
-            'role' => Zend_Auth::getInstance()->getIdentity()->role
-        );
-
-        if($id){
-            $entry = $this->_modelMapper->find($id, new Media_Model_Media());
-            if(!is_null($entry))
-                $jsonData = array_merge($jsonData, $entry->getOptions());
+                $jsonData['message'] = 'Ok';
+            }
         }
 
         return $this->_helper->json->sendJson($jsonData);
     }
 
-    /**
-     * @param null $count_item_on_page
-     * @return MediaController
-     */
-    public function setCountItemOnPage($count_item_on_page)
-    {
-        $this->_count_item_on_page = $count_item_on_page;
-        return $this;
-    }
-
-    /**
-     * @return null
-     */
-    public function getCountItemOnPage()
-    {
-        return $this->_count_item_on_page;
-    }
-
-    private function _saveFormData(Admin_Form_MediaEdit $form)
-    {
-        //Zend_Debug::dump($form->getValues());
-        $request = $this->getRequest();
-        $media = new Media_Model_Media($form->getValues());
-
-        $mediaCategoryMapper = new Media_Model_Mapper_MediaCategories();
-        $mediaCategory = $mediaCategoryMapper->find($request->getParam('categoryId'),
-            new Media_Model_MediaCategories());
-
-        $fullPath = (!is_null($mediaCategory))
-            ? $mediaCategory->getPath().'/'.$request->getParam('path')
-            : $request->getParam('path');
-        $media->setFullPath($fullPath);
-
-        $file = $form->imageLoadFile->getFileInfo();
-        if(!empty($file) && $file['imageLoadFile']['name'] != ''){
-            $form->imageLoadFile->receive();
-            $media->setImage('/upload/media/items/'.$file['imageLoadFile']['name']);
-        }
-
-        $markdown = $request->getParam('contentMarkdown');
-        $context_html = Markdown::defaultTransform($markdown);
-        $media->setContent($context_html);
-
-        $metaTitle = $request->getParam('metaTitle');
-        if(empty($metaTitle))
-            $media->setMetaTitle($request->getParam('name'));
-
-        $description = $request->getParam('sContent');
-        $metaDescription = $request->getParam('metaDescription');
-        if(empty($metaDescription) && !empty($description))
-            $media->setMetaDescription($description);
-
-        $mediaMapper = new Media_Model_Mapper_Media();
-        $mediaMapper->save($media);
-
-        return $this->_helper->redirector('index');
-    }
 }
+
+
 
 
 

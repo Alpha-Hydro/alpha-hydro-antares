@@ -32,5 +32,6 @@ $this->headScript()->appendFile('/js/catalog.min.js');
         <?if($this->categories):?>
             <?=$this->render('_sidebar.phtml')?>
         <?endif;?>
+        <?=$this->partial('/components/_articles.phtml',array('controller' => 'name'))?>
     </div>
 </div>

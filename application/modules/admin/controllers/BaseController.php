@@ -33,6 +33,11 @@ class Admin_BaseController extends Zend_Controller_Action
      */
     protected $_userAuth;
 
+    /**
+     * @var null
+     */
+    protected $_nameModule = null;
+
     public function init()
     {
     }
@@ -60,7 +65,7 @@ class Admin_BaseController extends Zend_Controller_Action
 
     public function listAction()
     {
-        $this->forward('index', strtolower($this->_getNameModule()), 'admin', array('category_id' => $this->_getParam('id')));
+        $this->forward('index', strtolower($this->getNameModule()), 'admin', array('category_id' => $this->_getParam('id')));
         return;
     }
 
@@ -148,7 +153,12 @@ class Admin_BaseController extends Zend_Controller_Action
         $item->setDeleted($deleted);
         $this->getModelMapper()->save($item);
 
-        $this->getRedirector()->gotoSimpleAndExit('index');
+        if($this->_request->getControllerName() != strtolower($this->getNameModule())){
+            $this->getRedirector()->gotoSimpleAndExit('index');
+        }
+        else{
+            $this->getRedirector()->gotoUrlAndExit('/admin/'.strtolower($this->getNameModule()).'-categories/list/'.$item->getCategoryId().'/');
+        }
     }
 
     public function enableAction()
@@ -167,11 +177,11 @@ class Admin_BaseController extends Zend_Controller_Action
         $item->setActive($enabled);
         $this->getModelMapper()->save($item);
 
-        if($this->_request->getControllerName() != strtolower($this->_getNameModule())){
+        if($this->_request->getControllerName() != strtolower($this->getNameModule())){
             $this->getRedirector()->gotoSimpleAndExit('index');
         }
         else{
-            $this->getRedirector()->gotoUrlAndExit('/admin/'.strtolower($this->_getNameModule()).'-categories/list/'.$item->getCategoryId().'/');
+            $this->getRedirector()->gotoUrlAndExit('/admin/'.strtolower($this->getNameModule()).'-categories/list/'.$item->getCategoryId().'/');
         }
 
     }
@@ -246,7 +256,7 @@ class Admin_BaseController extends Zend_Controller_Action
     {
         if(is_null($this->_modelMapper)){
             $class = join('_', array(
-                $this->_getNameModule(),
+                $this->getNameModule(),
                 'Model_Mapper',
                 $this->_getNamespace()
             ));
@@ -255,6 +265,7 @@ class Admin_BaseController extends Zend_Controller_Action
         return $this->_modelMapper;
     }
 
+
     /**
      * @return null
      */
@@ -262,7 +273,7 @@ class Admin_BaseController extends Zend_Controller_Action
     {
         if(is_null($this->_model)){
             $class = join('_', array(
-                $this->_getNameModule(),
+                $this->getNameModule(),
                 'Model',
                 $this->_getNamespace()
             ));
@@ -294,12 +305,16 @@ class Admin_BaseController extends Zend_Controller_Action
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    private function _getNameModule()
+    public function getNameModule()
     {
-        $nm = explode('-', $this->_request->getControllerName());
-        return ucfirst($nm[0]);
+        if(is_null($this->_nameModule)){
+            $nm = explode('-', $this->_request->getControllerName());
+            $this->_nameModule = ucfirst($nm[0]);
+        }
+
+        return $this->_nameModule;
     }
 
     /**
@@ -318,7 +333,7 @@ class Admin_BaseController extends Zend_Controller_Action
 
         if($this->_request->getParam('contentMarkdown')){
             $context_html = Michelf\Markdown::defaultTransform($this->_request->getParam('contentMarkdown'));
-            Zend_Debug::dump($context_html);
+            //Zend_Debug::dump($context_html);
             $item->setContentHtml($context_html);
         }
 
@@ -330,40 +345,52 @@ class Admin_BaseController extends Zend_Controller_Action
 
         $this->getModelMapper()->save($item);
 
+
         if($item->getId() && $item->getId() != ''){
             $id = $item->getId();
         }
         else{
             $id = $this->getModelMapper()->getDbTable()->getAdapter()->lastInsertId();
-            $item = $this->getModelMapper()->find($id, $this->getModel());
-        }
 
-        
+        }
+        $item = $this->getModelMapper()->find($id, $this->getModel());
+
         foreach ($form->getElements() as $key => $element) {
             if($element instanceof Zend_Form_Element_File && $element->isUploaded()){
-
-                $uploadPath = $element->getAttrib('data-upload') . '/' . $id;
-
-                if(!file_exists(APPLICATION_ROOT.$uploadPath))
-                    mkdir(APPLICATION_ROOT.$uploadPath, 0755, true);
-
-                $element->setDestination(APPLICATION_ROOT.$uploadPath);
-
-                try {
-                    $element->receive();
-                    $item->setOptions(array(
-                        $element->getAttrib('data-input') => $uploadPath. '/' .$element->getFileName(null, false)
-                    ));
-                    $this->getModelMapper()->save($item);
-                }
-                catch (Zend_File_Transfer_Exception $e)
-                {
-                    throw new Exception('Bad image data: '.$e->getMessage());
-                }
+                $item = $this->_saveUploadFile($element, $item);
             }
         }
-        
-        //$this->getRedirector()->gotoSimpleAndExit('index', $this->_request->getControllerName());
+
+        if($this->_request->getControllerName() != strtolower($this->getNameModule())){
+            $this->getRedirector()->gotoSimpleAndExit('index');
+        }
+        else{
+            $this->getRedirector()->gotoUrlAndExit('/admin/'.strtolower($this->getNameModule()).'-categories/list/'.$item->getCategoryId().'/');
+        }
+    }
+
+    private function _saveUploadFile(Zend_Form_Element_File $element, $item)
+    {
+        $uploadPath = $element->getAttrib('data-upload') . '/' . $item->getId();
+
+        if(!file_exists(APPLICATION_ROOT.$uploadPath))
+            mkdir(APPLICATION_ROOT.$uploadPath, 0755, true);
+
+        $element->setDestination(APPLICATION_ROOT.$uploadPath);
+
+        try {
+            $element->receive();
+            $item->setOptions(array(
+                $element->getAttrib('data-input') => $uploadPath. '/' .$element->getFileName(null, false)
+            ));
+            $this->getModelMapper()->save($item);
+        }
+        catch (Zend_File_Transfer_Exception $e)
+        {
+            throw new Exception('Bad image data: '.$e->getMessage());
+        }
+
+        return $item;
     }
 
     private function _setMetaData($item)
@@ -388,7 +415,6 @@ class Admin_BaseController extends Zend_Controller_Action
         $this->_userAuth = Zend_Auth::getInstance()->getIdentity();
         return $this->_userAuth;
     }
-
 
 }
 

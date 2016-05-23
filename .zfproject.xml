@@ -312,6 +312,7 @@
               <actionMethod actionName="add"/>
               <actionMethod actionName="edit"/>
               <actionMethod actionName="delete"/>
+              <actionMethod actionName="section"/>
             </controllerFile>
             <controllerFile controllerName="Trash">
               <actionMethod actionName="index"/>
@@ -673,6 +674,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Base">
                 <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Media">
+                <viewScriptFile forActionName="section"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>

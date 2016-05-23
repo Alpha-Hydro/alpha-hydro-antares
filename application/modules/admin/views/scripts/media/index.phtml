@@ -16,6 +16,7 @@ $this->secondary_text = $this->categoryName.'Список публикаций';
                 <th>Категория</th>
             <?php endif;?>
             <th>Заголовок</th>
+            <th>Привязка к разделу сайта</th>
             <th>Сортировка</th>
             <th>Активность</th>
             <th>Действия</th>
@@ -32,6 +33,18 @@ $this->secondary_text = $this->categoryName.'Список публикаций';
                             ?></td>
                     <?php endif;?>
                     <td><?=$page->getName()?></td>
+                    <td>
+                        <div class="select-feedback">
+                            <?=$this->formSelect('sectionSite_'.$page->getId(),
+                                $page->getSectionSiteId(),
+                                array(
+                                    'class'=>'form-control sectionSite',
+                                    'data-itemId' => $page->getId()
+                                ),
+                                $this->getSectionSite())?>
+                            <span class="glyphicon glyphicon-ok select-control-feedback" aria-hidden="true"></span>
+                        </div>
+                    </td>
                     <td><?=$page->getSorting()?></td>
                     <td>
                         <a href="<?= $this->url(array(

@@ -1,6 +1,7 @@
 import ImageLoader = require('./ImageLoader');
 import Slugify = require('./Slugify');
 import SelectCategory = require('./SelectCategory');
+import SelectMediaSectionSite = require('./SelectMediaSectionSite');
 
 //show save form button
 const formItemEdit:HTMLElement = document.getElementById('itemEdit');
@@ -15,3 +16,4 @@ new ImageLoader('imageDraftLoad', 'imageDraftLoadFile', 'imageDraftLoad');
 new ImageLoader('imageTableLoadBtn', 'imageTableLoadFile', 'imageTable');
 new Slugify('.slugify');
 new SelectCategory('categoryId', 'path', 'fullPath');
+new SelectMediaSectionSite('.select-feedback');

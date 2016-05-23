@@ -1,4 +1,4 @@
-define(["require", "exports", './ImageLoader', './Slugify', './SelectCategory'], function (require, exports, ImageLoader, Slugify, SelectCategory) {
+define(["require", "exports", './ImageLoader', './Slugify', './SelectCategory', './SelectMediaSectionSite'], function (require, exports, ImageLoader, Slugify, SelectCategory, SelectMediaSectionSite) {
     "use strict";
     var formItemEdit = document.getElementById('itemEdit');
     var saveFormItemEdit = document.getElementById('saveItemEdit');
@@ -10,5 +10,6 @@ define(["require", "exports", './ImageLoader', './Slugify', './SelectCategory'],
     new ImageLoader('imageTableLoadBtn', 'imageTableLoadFile', 'imageTable');
     new Slugify('.slugify');
     new SelectCategory('categoryId', 'path', 'fullPath');
+    new SelectMediaSectionSite('.select-feedback');
 });
 //# sourceMappingURL=adminPublic.js.map
