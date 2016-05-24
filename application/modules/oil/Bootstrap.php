@@ -33,5 +33,15 @@ class Oil_Bootstrap extends Zend_Application_Module_Bootstrap
             'oil/%s/'
         );
         $router->addRoute('oil', $route_oil);
+
+        $module_articles = new Zend_Controller_Router_Route_Static(
+            'oil/articles',
+            array(
+                'module' => 'oil',
+                'controller' => 'index',
+                'action' => 'articles',
+            )
+        );
+        $router->addRoute('oil_articles', $module_articles);
     }
 }

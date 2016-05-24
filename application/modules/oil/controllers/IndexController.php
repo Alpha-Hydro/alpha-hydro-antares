@@ -2,32 +2,36 @@
 
 class Oil_IndexController extends Zend_Controller_Action
 {
+
     protected $_page_id = null;
 
     /**
      * @var Pages_Model_Mapper_Pages
+     * 
      *
      */
     protected $_pagesMapper = null;
 
     /**
      * @var Pages_Model_Pages
+     * 
      *
      */
     protected $_page = null;
 
     /**
      * @var Zend_Controller_Action_Helper_Redirector
+     * 
      *
      */
     protected $_redirector = null;
 
     /**
      * @var Oil_Model_Mapper_OilCategories
+     * 
      *
      */
     protected $_categoriesMapper = null;
-
 
     protected $_authUser = null;
 
@@ -110,7 +114,16 @@ class Oil_IndexController extends Zend_Controller_Action
 
         return $page;
     }
+
+    public function articlesAction()
+    {
+        // action body
+    }
+
+
 }
+
+
 
 
 

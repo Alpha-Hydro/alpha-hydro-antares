@@ -2,30 +2,35 @@
 
 class Manufacture_IndexController extends Zend_Controller_Action
 {
+
     protected $_page_id = null;
 
     /**
      * @var Pages_Model_Mapper_Pages
+     * 
      *
      */
     protected $_pagesMapper = null;
 
     /**
      * @var Pages_Model_Pages
+     * 
      *
      */
     protected $_page = null;
 
     /**
      * @var Zend_Controller_Action_Helper_Redirector
+     * 
      *
      */
     protected $_redirector = null;
 
     protected $_count_item_on_page = null;
-    protected $_categories = array();
-    protected $_authUser = null;
 
+    protected $_categories = array();
+
+    protected $_authUser = null;
 
     public function init()
     {
@@ -180,6 +185,7 @@ class Manufacture_IndexController extends Zend_Controller_Action
     /**
      * @param null $count_item_on_page
      * @return Manufacture_IndexController
+     *
      */
     public function setCountItemOnPage($count_item_on_page)
     {
@@ -189,6 +195,7 @@ class Manufacture_IndexController extends Zend_Controller_Action
 
     /**
      * @return null
+     *
      */
     public function getCountItemOnPage()
     {
@@ -198,6 +205,7 @@ class Manufacture_IndexController extends Zend_Controller_Action
     /**
      * @param array $categories
      * @return Manufacture_IndexController
+     *
      */
     public function setCategories($categories)
     {
@@ -207,6 +215,7 @@ class Manufacture_IndexController extends Zend_Controller_Action
 
     /**
      * @return array
+     *
      */
     public function getCategories()
     {
@@ -216,6 +225,7 @@ class Manufacture_IndexController extends Zend_Controller_Action
     /**
      * @return null|Pages_Model_Pages
      * @throws Zend_Controller_Action_Exception
+     *
      */
     public function pageModule()
     {
@@ -229,8 +239,15 @@ class Manufacture_IndexController extends Zend_Controller_Action
         return $page;
     }
 
+    public function articlesAction()
+    {
+        // action body
+    }
+
 
 }
+
+
 
 
 

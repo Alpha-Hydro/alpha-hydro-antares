@@ -150,6 +150,7 @@
           <controllersDirectory>
             <controllerFile controllerName="Index">
               <actionMethod actionName="index"/>
+              <actionMethod actionName="articles"/>
             </controllerFile>
             <controllerFile controllerName="Sidebar">
               <actionMethod actionName="index"/>
@@ -200,6 +201,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Products">
                 <viewScriptFile forActionName="print"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="articles"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -715,6 +719,7 @@
             <controllerFile controllerName="Index">
               <actionMethod actionName="index"/>
               <actionMethod actionName="cap"/>
+              <actionMethod actionName="articles"/>
             </controllerFile>
             <controllerFile controllerName="Categories">
               <actionMethod actionName="index"/>
@@ -774,6 +779,9 @@
               <viewControllerScriptsDirectory forControllerName="Categories">
                 <viewScriptFile forActionName="view"/>
               </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="articles"/>
+              </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
             <viewFiltersDirectory/>
@@ -785,6 +793,7 @@
             <controllerFile controllerName="Index">
               <actionMethod actionName="index"/>
               <actionMethod actionName="view"/>
+              <actionMethod actionName="articles"/>
             </controllerFile>
             <controllerFile controllerName="Breadcrumbs">
               <actionMethod actionName="index"/>
@@ -833,6 +842,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Oil">
                 <viewScriptFile forActionName="view"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="articles"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -969,6 +981,7 @@
               <actionMethod actionName="index"/>
               <actionMethod actionName="categories"/>
               <actionMethod actionName="view"/>
+              <actionMethod actionName="articles"/>
             </controllerFile>
             <controllerFile controllerName="Breadcrumbs">
               <actionMethod actionName="index"/>
@@ -1004,6 +1017,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Breadcrumbs">
                 <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Index">
+                <viewScriptFile forActionName="articles"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>

@@ -2,28 +2,33 @@
 
 class Catalog_IndexController extends Zend_Controller_Action
 {
+
     protected $_page_id = null;
 
     /**
      * @var Pages_Model_Mapper_Pages
+     * 
      *
      */
     protected $_pagesMapper = null;
 
     /**
      * @var Pages_Model_Pages
+     * 
      *
      */
     protected $_page = null;
 
     /**
      * @var Zend_Controller_Action_Helper_Redirector
+     * 
      *
      */
     protected $_redirector = null;
 
     /**
      * @var Zend_Auth
+     * 
      *
      */
     protected $_auth = null;
@@ -47,6 +52,20 @@ class Catalog_IndexController extends Zend_Controller_Action
             :$this->_page->getMetaKeywords();
 
         $this->view->adminPath = '';
+
+        $categories = new Catalog_Model_Mapper_Categories();
+
+        $select = $categories->getDbTable()->select();
+        $select->where('parent_id = ?', 0)
+            ->where('deleted != ?', 1)
+            ->order('sorting ASC');
+
+        if(!$this->_auth) $select->where('active != ?', 0);
+
+        $entries = $categories->fetchAll($select);
+
+        $this->view->entries = $entries;
+        
     }
 
     public function indexAction()
@@ -63,23 +82,12 @@ class Catalog_IndexController extends Zend_Controller_Action
             return;
         }
 
-        $categories = new Catalog_Model_Mapper_Categories();
-
-        $select = $categories->getDbTable()->select();
-        $select->where('parent_id = ?', 0)
-            ->where('deleted != ?', 1)
-            ->order('sorting ASC');
-
-        if(!$this->_auth) $select->where('active != ?', 0);
-
-        $entries = $categories->fetchAll($select);
-
-        $this->view->entries = $entries;
     }
 
     /**
      * @return null|Pages_Model_Pages
      * @throws Zend_Controller_Action_Exception
+     *
      */
     public function pageModule()
     {
@@ -93,6 +101,11 @@ class Catalog_IndexController extends Zend_Controller_Action
         return $page;
     }
 
-
+    public function articlesAction()
+    {
+        /*$this->view->render('/components/_articles.phtml');*/
+    }
 }
+
+
 

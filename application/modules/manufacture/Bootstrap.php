@@ -33,5 +33,15 @@ class Manufacture_Bootstrap extends Zend_Application_Module_Bootstrap
             'manufacture/%s/'
         );
         $router->addRoute('manufacture', $route_manufacture);
+
+        $module_articles = new Zend_Controller_Router_Route_Static(
+            'manufacture/articles',
+            array(
+                'module' => 'manufacture',
+                'controller' => 'index',
+                'action' => 'articles',
+            )
+        );
+        $router->addRoute('manufacture_articles', $module_articles);
     }
 }

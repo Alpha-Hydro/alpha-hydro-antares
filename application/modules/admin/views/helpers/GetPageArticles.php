@@ -8,6 +8,8 @@
  */
 class Zend_View_Helper_getPageArticles extends Zend_View_Helper_Abstract
 {
+    protected $_count_item_on_page = 5;
+
     function getPageArticles(){
         $frontController = Zend_Controller_Front::getInstance();
         $request = $frontController->getRequest();
@@ -23,10 +25,51 @@ class Zend_View_Helper_getPageArticles extends Zend_View_Helper_Abstract
 
         $mediaModelMapper = new Media_Model_Mapper_Media();
         $selectMedia = $mediaModelMapper->getDbTable()->select();
-        $selectMedia->where('section_site_id = ?', $page->getId());
+        $selectMedia
+            ->where('active != ?', 0)
+            ->where('deleted != ?', 1)
+            ->where('section_site_id = ?', $page->getId())
+            ->order('timestamp DESC');
 
-        $media = $mediaModelMapper->fetchAll($selectMedia);
+        $mediaItems = $mediaModelMapper->fetchAll($selectMedia);
 
-        return $media;
+        if(!empty($mediaItems)){
+            if(count($mediaItems) > $this->getCountItemOnPage()){
+                $mediaPages = array_chunk($mediaItems, $this->getCountItemOnPage());
+
+                $currentPage = 0;
+
+                if($request->getParam('page') && $request->getParam('page')>0)
+                    $currentPage = $request->getParam('page')-1;
+
+                if($request->getParam('page') && $request->getParam('page')>count($mediaPages))
+                    $currentPage = count($mediaPages)-1;
+
+                $mediaItems = $mediaPages[$currentPage];
+
+                $this->view->countPage = count($mediaPages);
+                $this->view->currentPage = $currentPage+1;
+            }
+        }
+
+        return $mediaItems;
+    }
+
+    /**
+     * @param null $count_item_on_page
+     * @return Zend_View_Helper_getPageArticles
+     */
+    public function setCountItemOnPage($count_item_on_page)
+    {
+        $this->_count_item_on_page = $count_item_on_page;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getCountItemOnPage()
+    {
+        return $this->_count_item_on_page;
     }
 }

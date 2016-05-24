@@ -1,65 +1,33 @@
 <?php
-/**
- * @var $pageArticle Media_Model_Media
-*/
-$this->headScript()
-    ->prependFile('//code.jquery.com/jquery-1.11.3.min.js')
-    ->appendFile('//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js');
-
-$pageArticles = $this->getPageArticles();
+$this->pageArticles = $this->getPageArticles();
 ?>
 
-<?php if(!empty($pageArticles)):?>
-<nav>
-    <ul class="list-group sidebar crop-bottom-shadow">
-        <li class="list-group-item sidebar-item">
-            <a href="" data-toggle="modal" data-target="#pageArticles">Справочный материал</a>
-        </li>
-    </ul>
-</nav>
-<!-- Modal -->
-<div class="modal fade" id="pageArticles" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h2 class="modal-title" id="myModalLabel">
-                    <?=$this->sectionName?>
-                    <small>Справочный материал</small>
-                </h2>
-            </div>
-            <div class="modal-body mlr2">
-                <?php foreach ($pageArticles as $pageArticle):?>
-                    <div class="media media-item line line-dotted">
-                        <?php if($pageArticle->getImage() && $pageArticle->getImage() != ''):?>
-                            <div class="media-left col-md-2">
-                                <div class="thumbnail col-md-10 hover-shadow">
-                                    <a href="<?=$this->url(array(
-                                        'fullPath' => $this->escape($pageArticle->getFullPath())
-                                    ),  'media', false, false)?>">
-                                        <img src="<?=$this->escape($pageArticle->getImage())?>" alt="<?=$this->escape($pageArticle->getName())?>" class="media-object"/>
-                                    </a>
-                                </div>
-                            </div>
-                        <?php endif;?>
-                        <div class="media-body">
-                            <h4 class="media-heading">
-                                <a href="<?=$this->url(array(
-                                    'fullPath' => $this->escape($pageArticle->getFullPath())
-                                ),  'media', false, false)?>"><?=$this->escape($pageArticle->getName())?></a>
-                            </h4>
-                            <?=$pageArticle->getSContent()?>
-                            <div class="text-right mt1"><a href="<?=$this->url(array(
-                                    'fullPath' => $this->escape($pageArticle->getFullPath())
-                                ),  'media', false, false)?>">читать...</a></div>
-                        </div>
+<?php if(!empty($this->pageArticles)):?>
+    <?php foreach ($this->pageArticles as $pageArticle):?>
+        <div class="media media-item line line-dotted">
+            <?php if($pageArticle->getImage() && $pageArticle->getImage() != ''):?>
+                <div class="media-left col-md-2">
+                    <div class="thumbnail col-md-10 hover-shadow">
+                        <a href="<?=$this->url(array(
+                            'fullPath' => $this->escape($pageArticle->getFullPath())
+                        ),  'media', false, false)?>">
+                            <img src="<?=$this->escape($pageArticle->getImage())?>" alt="<?=$this->escape($pageArticle->getName())?>" class="media-object"/>
+                        </a>
                     </div>
-                <?php endforeach;?>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                </div>
+            <?php endif;?>
+            <div class="media-body">
+                <h4 class="media-heading">
+                    <a href="<?=$this->url(array(
+                        'fullPath' => $this->escape($pageArticle->getFullPath())
+                    ),  'media', false, false)?>"><?=$this->escape($pageArticle->getName())?></a>
+                </h4>
+                <?=$pageArticle->getSContent()?>
+                <div class="text-right mt1"><a href="<?=$this->url(array(
+                        'fullPath' => $this->escape($pageArticle->getFullPath())
+                    ),  'media', false, false)?>">читать...</a></div>
             </div>
         </div>
-    </div>
-</div>
+    <?php endforeach;?>
+    <?= $this->render('components/_paginator.phtml')?>
 <?php endif;?>

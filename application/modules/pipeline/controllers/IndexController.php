@@ -80,7 +80,15 @@ class Pipeline_IndexController extends Zend_Controller_Action
         return $page;
     }
 
+    public function articlesAction()
+    {
+        // action body
+    }
+
+
 }
+
+
 
 
 
