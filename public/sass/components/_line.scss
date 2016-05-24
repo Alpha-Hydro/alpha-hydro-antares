@@ -7,4 +7,10 @@
   .line-dotted{
     border-bottom-style: dotted;
   }
+  &:last-child{
+    border-bottom: none;
+    margin:{
+      bottom: 0;
+    }
+  }
 }

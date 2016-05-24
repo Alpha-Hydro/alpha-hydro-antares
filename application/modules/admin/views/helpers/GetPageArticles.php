@@ -19,6 +19,8 @@ class Zend_View_Helper_getPageArticles extends Zend_View_Helper_Abstract
         if(!$page)
             return null;
 
+        $this->view->sectionName = $page->getTitle();
+
         $mediaModelMapper = new Media_Model_Mapper_Media();
         $selectMedia = $mediaModelMapper->getDbTable()->select();
         $selectMedia->where('section_site_id = ?', $page->getId());
