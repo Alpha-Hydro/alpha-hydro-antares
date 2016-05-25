@@ -15,11 +15,17 @@ class MediaCategoriesController extends Admin_BaseController
      */
     protected $_model = null;
 
+    /**
+     * @var Zend_Form[]
+     *
+     */
+    protected $_forms = array();
+
     public function init()
     {
         $this->_modelMapper = new Media_Model_Mapper_MediaCategories();
         $this->_model = new Media_Model_MediaCategories();
-
+        $this->_forms['edit'] = new Admin_Form_MediaCategoriesEdit();
     }
 
     public function indexAction()

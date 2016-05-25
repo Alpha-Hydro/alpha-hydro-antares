@@ -28,7 +28,7 @@ class MediaController extends Admin_BaseController
      * @var Zend_Form[]
      *
      */
-    protected $_form = array();
+    protected $_forms = array();
 
     public function init()
     {
@@ -37,7 +37,7 @@ class MediaController extends Admin_BaseController
         $this->_modelMapper = new Media_Model_Mapper_Media();
         $this->_model = new Media_Model_Media();
         $this->_modelCategoriesMapper = new Media_Model_Mapper_MediaCategories();
-        $this->_form['edit'] = new Admin_Form_MediaEdit();
+        $this->_forms['edit'] = new Admin_Form_MediaEdit();
 
     }
 
