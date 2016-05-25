@@ -48,12 +48,16 @@ class Catalog_Bootstrap extends Zend_Application_Module_Bootstrap
         );
         $router->addRoute('printPdf', $route_product_print_pdf);
 
-        $module_articles = new Zend_Controller_Router_Route_Static(
-            'catalog/articles',
+        $module_articles = new Zend_Controller_Router_Route(
+            'catalog/articles/:path',
             array(
                 'module' => 'catalog',
                 'controller' => 'index',
                 'action' => 'articles',
+                'path' => null
+            ),
+            array(
+                'path' => '[\w\-]+'
             )
         );
         $router->addRoute('catalog_articles', $module_articles);

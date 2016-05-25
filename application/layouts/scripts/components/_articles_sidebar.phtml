@@ -5,7 +5,7 @@ $this->pageArticles = $this->getPageArticles();
 <?php if(!empty($this->pageArticles)):?>
 <nav>
     <ul class="list-group sidebar crop-bottom-shadow">
-        <li class="list-group-item sidebar-item">
+        <li class="list-group-item sidebar-item <?=($this->actionName != 'articles')?'':'sidebar-item-current'?>">
             <a href="<?=$this->escape($this->getPageArticlesUrl())?>">Справочный материал</a>
         </li>
     </ul>

@@ -22,6 +22,16 @@ class Pipeline_IndexController extends Zend_Controller_Action
 
         $this->view->title = $pageTitle;
 
+        $categoriesMapper = new Pipeline_Model_Mapper_PipelineCategories();
+        $select =  $categoriesMapper->getDbTable()->select();
+        $select->where('parent_id = ?', 0)
+            ->where('active != ?', 0)
+            ->where('deleted != ?', 1)
+            ->order('sorting ASC');
+
+        $categories = $categoriesMapper->fetchAll($select);
+
+        $this->view->categories = $categories;
 
         /*//Заглушка
         if(!Zend_Auth::getInstance()->hasIdentity()){
@@ -49,17 +59,6 @@ class Pipeline_IndexController extends Zend_Controller_Action
 
 
         }
-
-        $categoriesMapper = new Pipeline_Model_Mapper_PipelineCategories();
-        $select =  $categoriesMapper->getDbTable()->select();
-        $select->where('parent_id = ?', 0)
-            ->where('active != ?', 0)
-            ->where('deleted != ?', 1)
-            ->order('sorting ASC');
-
-        $categories = $categoriesMapper->fetchAll($select);
-
-        $this->view->categories = $categories;
     }
 
     public function capAction()
@@ -82,7 +81,22 @@ class Pipeline_IndexController extends Zend_Controller_Action
 
     public function articlesAction()
     {
-        // action body
+        $this->view->title = 'Справочный материал';
+        $this->view->renderPage = '/components/_articles.phtml';
+
+        if($this->_request->getParam('path')){
+
+            $this->view->renderPage = '/components/_view_module_article.phtml';
+
+            $mediaModelMapper = new Media_Model_Mapper_Media();
+            $mediaItem = $mediaModelMapper->findBy('path', $this->_request->getParam('path'));
+
+            if(is_null($mediaItem))
+                throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+            $this->view->title = $mediaItem->getName();
+            $this->view->mediaItem = $mediaItem;
+        }
     }
 
 

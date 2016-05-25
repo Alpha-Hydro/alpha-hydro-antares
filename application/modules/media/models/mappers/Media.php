@@ -231,6 +231,68 @@ class Media_Model_Mapper_Media
         return $entry;
     }
 
+
+    /**
+     * @param $column
+     * @param $value
+     * @return Media_Model_Media|null
+     * @throws Zend_Db_Table_Exception
+     */
+    public function findBy($column, $value)
+    {
+        $table = $this->getDbTable();
+        $cols = $table->info('cols');
+
+        if(!in_array($column, $cols))
+            return null;
+
+        $select = $table->select()
+            ->where($column.' = ?', $value);
+
+        $result = $table->fetchAll($select);
+
+        if(0 == count($result))
+            return null;
+
+        $row = $result->current();
+
+        $entry = $this->_setDbData($row, new Media_Model_Media());
+
+        return $entry;
+
+    }
+
+    /**
+     * @param $column string
+     * @param $value string
+     * @return array|null
+     * @throws Zend_Db_Table_Exception
+     */
+    public function fetchBy($column, $value)
+    {
+        $table = $this->getDbTable();
+        $cols = $table->info('cols');
+
+        if(!in_array($column, $cols))
+            return null;
+
+        $select = $table->select()
+            ->where($column.' = ?', $value);
+
+        $result = $table->fetchAll($select);
+
+        if(0 == count($result))
+            return null;
+        
+        $entries   = array();
+        foreach ($result as $row) {
+            $entry = new Media_Model_Media();
+            $entry = $this->_setDbData($row, $entry);
+            $entries[] = $entry;
+        }
+        return $entries;
+    }
+
     /**
      * @return Zend_Search_Lucene_Interface
      */

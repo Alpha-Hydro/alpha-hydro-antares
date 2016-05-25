@@ -9,8 +9,8 @@ $this->pageArticles = $this->getPageArticles();
                 <div class="media-left col-md-2">
                     <div class="thumbnail col-md-10 hover-shadow">
                         <a href="<?=$this->url(array(
-                            'fullPath' => $this->escape($pageArticle->getFullPath())
-                        ),  'media', false, false)?>">
+                            'path' => $this->escape($pageArticle->getPath())
+                        ),  $this->moduleName.'_articles', false, false)?>">
                             <img src="<?=$this->escape($pageArticle->getImage())?>" alt="<?=$this->escape($pageArticle->getName())?>" class="media-object"/>
                         </a>
                     </div>
@@ -19,13 +19,13 @@ $this->pageArticles = $this->getPageArticles();
             <div class="media-body">
                 <h4 class="media-heading">
                     <a href="<?=$this->url(array(
-                        'fullPath' => $this->escape($pageArticle->getFullPath())
-                    ),  'media', false, false)?>"><?=$this->escape($pageArticle->getName())?></a>
+                        'path' => $this->escape($pageArticle->getPath())
+                    ),  $this->moduleName.'_articles', false, false)?>"><?=$this->escape($pageArticle->getName())?></a>
                 </h4>
                 <?=$pageArticle->getSContent()?>
                 <div class="text-right mt1"><a href="<?=$this->url(array(
-                        'fullPath' => $this->escape($pageArticle->getFullPath())
-                    ),  'media', false, false)?>">читать...</a></div>
+                        'path' => $this->escape($pageArticle->getPath())
+                    ),  $this->moduleName.'_articles', false, false)?>">читать...</a></div>
             </div>
         </div>
     <?php endforeach;?>

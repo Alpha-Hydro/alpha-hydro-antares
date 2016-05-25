@@ -13,7 +13,13 @@ class Zend_View_Helper_getPageArticles extends Zend_View_Helper_Abstract
     function getPageArticles(){
         $frontController = Zend_Controller_Front::getInstance();
         $request = $frontController->getRequest();
+
         $moduleName = $request->getModuleName();
+        $actionName = $request->getActionName();
+        //Zend_Debug::dump($request->getParams());
+
+        $this->view->moduleName = $moduleName;
+        $this->view->actionName = $actionName;
 
         $pagesMapper = new Pages_Model_Mapper_Pages();
         $page = $pagesMapper->findByPath($moduleName, new Pages_Model_Pages());
@@ -24,6 +30,7 @@ class Zend_View_Helper_getPageArticles extends Zend_View_Helper_Abstract
         $this->view->sectionName = $page->getTitle();
 
         $mediaModelMapper = new Media_Model_Mapper_Media();
+
         $selectMedia = $mediaModelMapper->getDbTable()->select();
         $selectMedia
             ->where('active != ?', 0)

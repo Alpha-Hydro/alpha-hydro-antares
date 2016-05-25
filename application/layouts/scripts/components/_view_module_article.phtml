@@ -1,0 +1,20 @@
+<?php 
+$this->headMeta()->prependName('robots', 'noindex, nofollow');
+
+$hostHttp = new Zend_Controller_Request_Http();
+$host = $hostHttp->getServer('HTTP_HOST');
+$this->headLink(array('rel' => 'canonical',
+    'href' => 'http://'.$host.'/media/'.$this->mediaItem->getFullPath()),
+    'PREPEND');
+?>
+<!--noindex-->
+<?php if(null !== $this->mediaItem->getImage()):?>
+    <div class="col-md-4 pull-right">
+        <div class="thumbnail"><img src="<?=$this->mediaItem->getImage()?>" alt="<?=$this->mediaItem->getName()?>"></div>
+    </div>
+<?php endif;?>
+<div class="media-content">
+    <p class="text-muted"><small><em><?=date("d.m.Y", strtotime($this->mediaItem->getTimestamp()));?> г.</em></small></p>
+    <?=($this->mediaItem->getContentHtml())?$this->mediaItem->getContentHtml():$this->mediaItem->getContent();?>
+</div>
+<!--/noindex-->

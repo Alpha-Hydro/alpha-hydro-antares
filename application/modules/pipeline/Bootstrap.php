@@ -33,12 +33,17 @@ class Pipeline_Bootstrap extends Zend_Application_Module_Bootstrap
         );
         $router->addRoute('pipeline', $route_pipeline);
 
-        $module_articles = new Zend_Controller_Router_Route_Static(
-            'pipeline/articles',
+        $module_articles = new Zend_Controller_Router_Route(
+            'pipeline/articles/:path',
             array(
                 'module' => 'pipeline',
                 'controller' => 'index',
                 'action' => 'articles',
+                'path' => null
+            )
+            ,
+            array(
+                'path' => '[\w\-]+'
             )
         );
         $router->addRoute('pipeline_articles', $module_articles);

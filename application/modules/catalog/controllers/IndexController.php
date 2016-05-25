@@ -103,7 +103,24 @@ class Catalog_IndexController extends Zend_Controller_Action
 
     public function articlesAction()
     {
-        /*$this->view->render('/components/_articles.phtml');*/
+        $this->view->title = 'Справочный материал';
+        $this->view->renderPage = '/components/_articles.phtml';
+
+        if($this->_request->getParam('path')){
+
+            $this->view->renderPage = '/components/_view_module_article.phtml';
+
+            $mediaModelMapper = new Media_Model_Mapper_Media();
+            $mediaItem = $mediaModelMapper->findBy('path', $this->_request->getParam('path'));
+
+            if(is_null($mediaItem))
+                throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+            $this->view->title = $mediaItem->getName();
+            $this->view->mediaItem = $mediaItem;
+        }
+
+
     }
 }
 
