@@ -88,7 +88,14 @@ class Admin_BaseController extends Zend_Controller_Action
         if ($this->getRequest()->isPost()){
             if ($form->isValid($this->_request->getPost())){
                 //Zend_Debug::dump($form->getValues());
-                $this->_saveFormData($form);
+                $item = $this->saveFormData($form);
+
+                if($this->_request->getControllerName() != strtolower($this->getNameModule())){
+                    $this->getRedirector()->gotoSimpleAndExit('index');
+                }
+                else{
+                    $this->getRedirector()->gotoUrlAndExit('/admin/'.strtolower($this->getNameModule()).'-categories/list/'.$item->getCategoryId().'/');
+                }
             }
 
             $form->setDefaults($this->_request->getPost());
@@ -129,8 +136,17 @@ class Admin_BaseController extends Zend_Controller_Action
 
         if ($this->getRequest()->isPost()){
             if ($form->isValid($this->getRequest()->getPost())) {
-                $this->_saveFormData($form);
+
+                $item = $this->saveFormData($form);
+
+                if($this->_request->getControllerName() != strtolower($this->getNameModule())){
+                    $this->getRedirector()->gotoSimpleAndExit('index');
+                }
+                else{
+                    $this->getRedirector()->gotoUrlAndExit('/admin/'.strtolower($this->getNameModule()).'-categories/list/'.$item->getCategoryId().'/');
+                }
             }
+
             $form->setDefaults($form->getValues());
         }
 
@@ -326,22 +342,27 @@ class Admin_BaseController extends Zend_Controller_Action
         return $this->_redirector;
     }
 
-    private function _saveFormData(Zend_Form $form)
+    /**
+     * Сохраняются только основные поля присланные с формы
+     * Для сохранения специфических полей таблиц нужно
+     * 1. Все поля таблицы добавить в форму со значениями по умолчанию
+     * 2. переопределить метод addAction в дочернем классе
+     * 
+     * @param Zend_Form $form
+     * @return null
+     * @throws Exception
+     */
+    public function saveFormData(Zend_Form $form)
     {
         $item = $this->getModel();
         $item->setOptions($form->getValues());
 
         if($this->_request->getParam('contentMarkdown')){
             $context_html = Michelf\Markdown::defaultTransform($this->_request->getParam('contentMarkdown'));
-            //Zend_Debug::dump($context_html);
             $item->setContentHtml($context_html);
         }
 
-        $this->_setMetaData($item);
-
-        $author = $this->_request->getParam('author');
-        if($author && empty($author))
-            $item->setAuthor($this->getUserAuth()->name);
+        $this->setMetaData($item);
 
         $this->getModelMapper()->save($item);
 
@@ -357,19 +378,14 @@ class Admin_BaseController extends Zend_Controller_Action
 
         foreach ($form->getElements() as $key => $element) {
             if($element instanceof Zend_Form_Element_File && $element->isUploaded()){
-                $item = $this->_saveUploadFile($element, $item);
+                $item = $this->saveUploadFile($element, $item);
             }
         }
 
-        if($this->_request->getControllerName() != strtolower($this->getNameModule())){
-            $this->getRedirector()->gotoSimpleAndExit('index');
-        }
-        else{
-            $this->getRedirector()->gotoUrlAndExit('/admin/'.strtolower($this->getNameModule()).'-categories/list/'.$item->getCategoryId().'/');
-        }
+        return $item;
     }
 
-    private function _saveUploadFile(Zend_Form_Element_File $element, $item)
+    public function saveUploadFile(Zend_Form_Element_File $element, $item)
     {
         $uploadPath = $element->getAttrib('data-upload') . '/' . $item->getId();
 
@@ -393,7 +409,7 @@ class Admin_BaseController extends Zend_Controller_Action
         return $item;
     }
 
-    private function _setMetaData($item)
+    public function setMetaData($item)
     {
         $metaTitle = $this->_request->getParam('metaTitle');
         if($metaTitle && empty($metaTitle))

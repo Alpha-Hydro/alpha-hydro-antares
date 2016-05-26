@@ -357,6 +357,76 @@ class CategoriesController extends Admin_BaseController
         return $treeCategories;
     }
 
+    public function breadcrumbsNavigation($category_id = null, $product_id = null)
+    {
+        $breadcrumbs = new Zend_Navigation();
+
+        $categoriesMapper = new Catalog_Model_Mapper_Categories();
+
+        $category = ($category_id)
+            ? $categoriesMapper->find($category_id, new Catalog_Model_Categories())
+            : null;
+
+        $i = 0;
+
+        if(isset($category) && is_null($product_id)){
+            $breadcrumbs->addPage(array(
+                'type' => 'uri',
+                'label' => $category->getName(),
+                'active' => true
+            ));
+        }
+
+        $parentCategories = $categoriesMapper->fetchTreeParentCategories($category->getParentId());
+
+        if(!is_null($product_id))
+            $parentCategories = $categoriesMapper->fetchTreeParentCategories($category_id);
+
+        if (!empty($parentCategories)) {
+            foreach ($parentCategories as $parentCategory) {
+                $breadcrumbs->addPage (
+                    array (
+                        "action" => "index",
+                        "controller" => "categories",
+                        "module" => "catalog",
+                        'order'	 => $i,
+                        'route'  => 'catalog',
+                        "params" => array(
+                            'fullPath'=>($parentCategory->id != 0) ? $parentCategory->full_path : null,
+                        ),
+                        'reset_params' => true,
+                        'encode_url' => false,
+                        'label' => $parentCategory->name,
+                    )
+                );
+                $i--;
+            }
+        }
+
+
+        $breadcrumbs->addPage(
+            new Zend_Navigation_Page_Uri(
+                array (
+                    'label' => 'Каталог',
+                    'uri' => '/catalog/',
+                    'order' => $i
+                )
+            )
+        );
+
+        $breadcrumbs->addPage(
+            new Zend_Navigation_Page_Uri(
+                array (
+                    'label' => 'Главная',
+                    'uri' => '/',
+                    'order' => $i-1
+                )
+            )
+        );
+
+        return $breadcrumbs;
+    }
+
     protected function _countSubCategories($id)
     {
         $select = $this->_modelMapper->getDbTable()->select();

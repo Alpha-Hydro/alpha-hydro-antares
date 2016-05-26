@@ -63,12 +63,15 @@ class Admin_Form_MediaEdit extends Twitter_Bootstrap_Form_Vertical
             'data-slugify'  => 'path',
         ));
 
+        $this->addElement('hidden', 'fullPath');
+
         $this->addDisplayGroup(
             array(
                 'categoryId',
                 'name',
                 'sectionSiteId',
                 'path',
+                'fullPath',
                 'id',
             ),
             'basic',
@@ -87,10 +90,13 @@ class Admin_Form_MediaEdit extends Twitter_Bootstrap_Form_Vertical
             'rows'          => '8',
         ));
 
+        $this->addElement('hidden', 'content');
+
         $this->addDisplayGroup(
             array(
                 'sContent',
                 'contentMarkdown',
+                'content'
             ),
             'desc',
             array(

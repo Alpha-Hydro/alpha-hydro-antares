@@ -73,7 +73,55 @@ class MediaController extends Admin_BaseController
 
     public function addAction()
     {
-        parent::addAction();
+        $form = $this->getForm('edit');
+
+        $form->setDefaults(array(
+            'sorting'       => 0,
+            'active'        => 1,
+            'deleted'       => 0,
+            'author'        => $this->getUserAuth()->name,
+        ));
+
+        foreach ($form->getElements() as $key => $element) {
+            if($element instanceof Zend_Form_Element_Image){
+                $form->setDefault($element->getName(), '/files/images/product/2012-05-22_foto_nv.jpg');
+            }
+        }
+
+        if ($this->getRequest()->isPost()){
+            if ($form->isValid($this->_request->getPost())){
+
+                $itemSaveForm = $this->saveFormData($form);
+
+                $item = $this->_modelMapper->find($itemSaveForm->getId(), $this->_model);
+
+                $item->setContent('');
+
+                $categoryId = ($this->_request->getParam('category_id'))
+                    ?$this->_request->getParam('category_id')
+                    :$item->getCategoryId();
+
+                $category = $this->_modelCategoriesMapper->find($categoryId, new Media_Model_MediaCategories());
+                $fullPath = ($category)
+                    ?$category->getPath().'/'.$item->getPath()
+                    :$item->getPath();
+
+                $item->setFullPath($fullPath);
+
+                $this->_modelMapper->save($item);
+
+                if($this->_request->getControllerName() != strtolower($this->getNameModule())){
+                    $this->getRedirector()->gotoSimpleAndExit('index');
+                }
+                else{
+                    $this->getRedirector()->gotoUrlAndExit('/admin/'.strtolower($this->getNameModule()).'-categories/list/'.$item->getCategoryId().'/');
+                }
+            }
+
+            $form->setDefaults($this->_request->getPost());
+        }
+
+        $this->view->form = $form;
 
         $config = array(
             Zend_Navigation_Page_Mvc::factory(array(
