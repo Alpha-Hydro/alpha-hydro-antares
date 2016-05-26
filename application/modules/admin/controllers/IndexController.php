@@ -13,15 +13,11 @@ class IndexController extends Zend_Controller_Action
     public function init()
     {
         $this->_filterSlugify = new Vlmeh_Filter_Slugify();
-
-        $ajaxContext = $this->_helper->getHelper('AjaxContext');
-        $ajaxContext
-            ->addActionContext('slugify', 'json')
-            ->addActionContext('slugify-product-sku', 'json');
     }
 
     public function indexAction()
     {
+        //Zend_Debug::dump($this->_request->getParams());
         $this->_helper->layout->setLayout('layout_admin');
         $this->forward('index', 'index', 'pages');
         return;

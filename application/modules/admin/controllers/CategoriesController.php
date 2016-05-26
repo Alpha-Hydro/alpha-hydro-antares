@@ -1,6 +1,8 @@
 <?php
 
-class CategoriesController extends Zend_Controller_Action
+include_once 'BaseController.php';
+
+class CategoriesController extends Admin_BaseController
 {
 
     /**
@@ -8,6 +10,17 @@ class CategoriesController extends Zend_Controller_Action
      *
      */
     protected $_modelMapper = null;
+
+    /**
+     * @var Catalog_Model_Categories
+     */
+    protected $_model = null;
+
+    /**
+     * @var Zend_Form[]
+     *
+     */
+    protected $_forms = array();
 
     /**
      * @var Zend_Controller_Request_Abstract
@@ -24,14 +37,11 @@ class CategoriesController extends Zend_Controller_Action
     public function init()
     {
         $this->_modelMapper = new Catalog_Model_Mapper_Categories();
+        $this->_model = new Catalog_Model_Categories();
+        //$this->_forms['edit'] =
         $this->_request = $this->getRequest();
         $this->_redirector = $this->_helper->getHelper('Redirector');
 
-        $contextSwitch = $this->_helper->getHelper('contextSwitch');
-        $contextSwitch
-            ->addActionContext('json', array('json'))
-            ->addActionContext('list', array('json'))
-            ->initContext();
     }
 
     public function indexAction()

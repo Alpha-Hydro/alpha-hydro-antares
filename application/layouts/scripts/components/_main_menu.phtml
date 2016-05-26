@@ -1,4 +1,6 @@
-<?php $menu = new Zend_Navigation(new Zend_Config_Xml(APPLICATION_PATH . "/navigations/main-menu.xml"));?>
-<?foreach ( $menu as $menuItem ) :?>
-    <li><a href="<?=$menuItem->getHref();?>/"><?=$menuItem; ?></a></li>
-<?php endforeach;?>
+<?php
+$config = new Zend_Config_Xml(APPLICATION_PATH.'/navigations/main-menu.xml');
+$container = new Zend_Navigation();
+$container->setPages($config->toArray());
+
+echo $this->navigation($container)->menu()->setUlClass('col-md-8')->setMaxDepth(0)->render();

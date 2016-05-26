@@ -50,6 +50,11 @@
           background: image-url('menu-item-active.png', false, false) transparent no-repeat center bottom / contain;
         }
       }
+      &.active{
+        >a{
+          background: image-url('menu-item-active.png', false, false) transparent no-repeat center bottom / contain;
+        }
+      }
     }
   }
 }

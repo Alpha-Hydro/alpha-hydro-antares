@@ -11,12 +11,14 @@
             <controller>index</controller>
             <action>index</action>
             <class>prepend-icon glyphicon glyphicon-dashboard</class>
+            <route>adminEdit</route>
         </dashboard>
         <modules>
             <label>Разделы сайта</label>
             <module>admin</module>
             <controller>pages</controller>
             <class>prepend-icon glyphicon glyphicon-th-list</class>
+            <route>adminEdit</route>
             <pages>
                 <home>
                     <label>Главная страница</label>
@@ -27,18 +29,21 @@
                         <id>1</id>
                     </params>
                     <resource>pages</resource>
+                    <route>adminEdit</route>
                 </home>
                 <catalog>
                     <label>Каталог</label>
                     <module>admin</module>
-                    <controller>catalog</controller>
-                    <resource>catalog</resource>
+                    <controller>categories</controller>
+                    <resource>categories</resource>
+                    <route>adminEdit</route>
                 </catalog>
                 <manufacture>
                     <label>Производство</label>
                     <module>admin</module>
                     <controller>manufacture-categories</controller>
                     <resource>manufacture-categories</resource>
+                    <route>adminEdit</route>
                     <pages>
                         <index>
                             <label>Список товаров</label>
@@ -46,6 +51,7 @@
                             <controller>manufacture</controller>
                             <action>index</action>
                             <resourse>manufacture</resourse>
+                            <route>adminEdit</route>
                         </index>
                         <add>
                             <label>Добавить товар</label>
@@ -53,6 +59,7 @@
                             <controller>manufacture</controller>
                             <action>add</action>
                             <resourse>manufacture</resourse>
+                            <route>adminEdit</route>
                         </add>
                         <edit>
                             <label>Редактировать товар</label>
@@ -60,12 +67,14 @@
                             <controller>manufacture</controller>
                             <action>edit</action>
                             <resourse>manufacture</resourse>
+                            <route>adminEdit</route>
                         </edit>
                         <category>
                             <label>Категории</label>
                             <module>admin</module>
                             <controller>manufacture-categories</controller>
                             <resourse>manufacture-categories</resourse>
+                            <route>adminEdit</route>
                         </category>
                         <category_list>
                             <label>Список товаров в категории</label>
@@ -73,6 +82,7 @@
                             <controller>manufacture-categories</controller>
                             <action>list</action>
                             <resourse>manufacture-categories</resourse>
+                            <route>adminEdit</route>
                         </category_list>
                         <category_add>
                             <label>Добавить категорию</label>
@@ -80,6 +90,7 @@
                             <controller>manufacture-categories</controller>
                             <action>add</action>
                             <resourse>manufacture-categories</resourse>
+                            <route>adminEdit</route>
                         </category_add>
                         <category_edit>
                             <label>Редактировать категорию</label>
@@ -87,6 +98,7 @@
                             <controller>manufacture-categories</controller>
                             <action>edit</action>
                             <resourse>manufacture-categories</resourse>
+                            <route>adminEdit</route>
                         </category_edit>
                     </pages>
                 </manufacture>
@@ -95,6 +107,7 @@
                     <module>admin</module>
                     <controller>pipeline-categories</controller>
                     <resource>pipeline-categories</resource>
+                    <route>adminEdit</route>
                     <pages>
                         <index>
                             <label>Список товаров</label>
@@ -102,6 +115,7 @@
                             <controller>pipeline</controller>
                             <action>index</action>
                             <resourse>pipeline</resourse>
+                            <route>adminEdit</route>
                         </index>
                         <add>
                             <label>Добавить товар</label>
@@ -109,6 +123,7 @@
                             <controller>pipeline</controller>
                             <action>add</action>
                             <resourse>pipeline</resourse>
+                            <route>adminEdit</route>
                         </add>
                         <edit>
                             <label>Редактировать товар</label>
@@ -116,12 +131,14 @@
                             <controller>pipeline</controller>
                             <action>edit</action>
                             <resourse>pipeline</resourse>
+                            <route>adminEdit</route>
                         </edit>
                         <categories>
                             <label>Категории</label>
                             <module>admin</module>
                             <controller>pipeline-categories</controller>
                             <resourse>pipeline-categories</resourse>
+                            <route>adminEdit</route>
                         </categories>
                         <category_list>
                             <label>Список товаров в категории</label>
@@ -129,6 +146,7 @@
                             <controller>pipeline-categories</controller>
                             <action>list</action>
                             <resourse>pipeline-categories</resourse>
+                            <route>adminEdit</route>
                         </category_list>
                         <category_add>
                             <label>Добавить категорию</label>
@@ -136,6 +154,7 @@
                             <controller>pipeline-categories</controller>
                             <action>add</action>
                             <resourse>pipeline-categories</resourse>
+                            <route>adminEdit</route>
                         </category_add>
                         <category_edit>
                             <label>Редактировать категорию</label>
@@ -143,12 +162,14 @@
                             <controller>pipeline-categories</controller>
                             <action>edit</action>
                             <resourse>pipeline-categories</resourse>
+                            <route>adminEdit</route>
                         </category_edit>
                         <property>
                             <label>Свойства товара</label>
                             <module>admin</module>
                             <controller>pipeline-property</controller>
                             <resourse>pipeline-property</resourse>
+                            <route>adminEdit</route>
                         </property>
                         <property_add>
                             <label>Добавить свойство</label>
@@ -156,6 +177,7 @@
                             <controller>pipeline-property</controller>
                             <action>add</action>
                             <resourse>pipeline-property</resourse>
+                            <route>adminEdit</route>
                         </property_add>
                         <property_edit>
                             <label>Редактировать свойство</label>
@@ -163,6 +185,7 @@
                             <controller>pipeline-property</controller>
                             <action>edit</action>
                             <resourse>pipeline-property</resourse>
+                            <route>adminEdit</route>
                         </property_edit>
                     </pages>
                 </pipeline>
@@ -171,6 +194,7 @@
                     <module>admin</module>
                     <controller>oil-categories</controller>
                     <resource>oil-categories</resource>
+                    <route>adminEdit</route>
                     <pages>
                         <index>
                             <label>Список товаров</label>
@@ -178,6 +202,7 @@
                             <controller>oil</controller>
                             <action>index</action>
                             <resourse>oil</resourse>
+                            <route>adminEdit</route>
                         </index>
                         <add>
                             <label>Добавить товар</label>
@@ -185,6 +210,7 @@
                             <controller>oil</controller>
                             <action>add</action>
                             <resourse>oil</resourse>
+                            <route>adminEdit</route>
                         </add>
                         <edit>
                             <label>Редактировать товар</label>
@@ -192,12 +218,14 @@
                             <controller>oil</controller>
                             <action>edit</action>
                             <resourse>oil</resourse>
+                            <route>adminEdit</route>
                         </edit>
                         <categories>
                             <label>Категории</label>
                             <module>admin</module>
                             <controller>oil-categories</controller>
                             <resourse>oil-categories</resourse>
+                            <route>adminEdit</route>
                         </categories>
                         <category_list>
                             <label>Список товаров в категории</label>
@@ -205,6 +233,7 @@
                             <controller>oil-categories</controller>
                             <action>list</action>
                             <resourse>oil-categories</resourse>
+                            <route>adminEdit</route>
                         </category_list>
                         <category_add>
                             <label>Добавить категорию</label>
@@ -212,6 +241,7 @@
                             <controller>oil-categories</controller>
                             <action>add</action>
                             <resourse>oil-categories</resourse>
+                            <route>adminEdit</route>
                         </category_add>
                         <category_edit>
                             <label>Редактировать категорию</label>
@@ -219,6 +249,7 @@
                             <controller>oil-categories</controller>
                             <action>edit</action>
                             <resourse>oil-categories</resourse>
+                            <route>adminEdit</route>
                         </category_edit>
                     </pages>
                 </oil>
@@ -227,12 +258,14 @@
                     <module>admin</module>
                     <controller>forum</controller>
                     <resource>forum</resource>
+                    <route>adminEdit</route>
                 </forum>
                 <media>
                     <label>Пресса</label>
                     <module>admin</module>
                     <controller>media-categories</controller>
                     <resource>media</resource>
+                    <route>adminEdit</route>
                     <pages>
                         <index>
                             <label>Список статей</label>
@@ -240,6 +273,7 @@
                             <controller>media</controller>
                             <action>index</action>
                             <resourse>media</resourse>
+                            <route>adminEdit</route>
                         </index>
                         <add>
                             <label>Добавить статью</label>
@@ -247,6 +281,7 @@
                             <controller>media</controller>
                             <action>add</action>
                             <resourse>media</resourse>
+                            <route>adminEdit</route>
                         </add>
                         <edit>
                             <label>Редактировать статью</label>
@@ -254,12 +289,14 @@
                             <controller>media</controller>
                             <action>edit</action>
                             <resourse>media</resourse>
+                            <route>adminEdit</route>
                         </edit>
                         <category>
                             <label>Категории</label>
                             <module>admin</module>
                             <controller>media-categories</controller>
                             <resourse>media-categories</resourse>
+                            <route>adminEdit</route>
                         </category>
                         <category_list>
                             <label>Список товаров в категории</label>
@@ -267,6 +304,7 @@
                             <controller>media-categories</controller>
                             <action>list</action>
                             <resourse>media-categories</resourse>
+                            <route>adminEdit</route>
                         </category_list>
                         <category_add>
                             <label>Добавить категорию</label>
@@ -274,6 +312,7 @@
                             <controller>media-categories</controller>
                             <action>add</action>
                             <resourse>media-categories</resourse>
+                            <route>adminEdit</route>
                         </category_add>
                         <category_edit>
                             <label>Редактировать категорию</label>
@@ -281,6 +320,7 @@
                             <controller>media-categories</controller>
                             <action>edit</action>
                             <resourse>media-categories</resourse>
+                            <route>adminEdit</route>
                         </category_edit>
                     </pages>
                 </media>
@@ -293,6 +333,7 @@
                         <id>2</id>
                     </params>
                     <resource>pages</resource>
+                    <route>adminEdit</route>
                 </about>
                 <contact>
                     <label>Контакты</label>
@@ -303,6 +344,7 @@
                         <id>3</id>
                     </params>
                     <resource>pages</resource>
+                    <route>adminEdit</route>
                 </contact>
             </pages>
         </modules>
@@ -312,6 +354,7 @@
             <controller>trash</controller>
             <class>prepend-icon glyphicon glyphicon-trash</class>
             <resource>trash</resource>
+            <route>adminEdit</route>
         </trash>
         <utils>
             <label>Утилиты</label>

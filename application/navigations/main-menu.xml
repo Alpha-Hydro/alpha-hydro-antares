@@ -5,54 +5,107 @@
         <module>catalog</module>
         <controller>index</controller>
         <route>default</route>
+        <pages>
+            <categories>
+                <label>Категории</label>
+                <module>catalog</module>
+                <controller>categories</controller>
+                <route>catalog</route>
+            </categories>
+            <articles>
+                <label>Справочный материал</label>
+                <module>catalog</module>
+                <controller>index</controller>
+                <action>articles</action>
+                <route>catalog_articles</route>
+            </articles>
+        </pages>
     </products>
-    <production>
+    <manufacture>
         <label>Производство</label>
         <module>manufacture</module>
         <controller>index</controller>
         <route>default</route>
-    </production>	
+        <pages>
+            <categories>
+                <label>Категории</label>
+                <module>manufacture</module>
+                <controller>index</controller>
+                <route>manufacture</route>
+            </categories>
+            <articles>
+                <label>Справочный материал</label>
+                <module>manufacture</module>
+                <controller>index</controller>
+                <action>articles</action>
+                <route>manufacture_articles</route>
+            </articles>
+        </pages>
+    </manufacture>
     <pipeline>
         <label>Детали трубопроводов</label>
         <module>pipeline</module>
         <controller>index</controller>
         <route>default</route>
+        <pages>
+            <categories>
+                <label>Категории</label>
+                <module>pipeline</module>
+                <controller>categories</controller>
+                <route>pipeline</route>
+            </categories>
+            <articles>
+                <label>Справочный материал</label>
+                <module>pipeline</module>
+                <controller>index</controller>
+                <action>articles</action>
+                <route>pipeline_articles</route>
+            </articles>
+        </pages>
     </pipeline>
     <oils>
         <label>Масла</label>
         <module>oil</module>
         <controller>index</controller>
         <route>default</route>
-    </oils>            
+        <pages>
+            <production>
+                <label>Продукция</label>
+                <module>oil</module>
+                <controller>index</controller>
+                <route>oil</route>
+            </production>
+            <articles>
+                <label>Справочный материал</label>
+                <module>oil</module>
+                <controller>index</controller>
+                <action>articles</action>
+                <route>oil_articles</route>
+            </articles>
+        </pages>
+    </oils>
     <forum>
         <label>Форум</label>
         <module>forum</module>
         <controller>index</controller>
         <route>default</route>
-    </forum>             
+    </forum>
     <media>
         <label>Пресса</label>
         <module>media</module>
         <controller>index</controller>
         <route>default</route>
-    </media>           
-	<aboutus>
+    </media>
+    <aboutus>
         <label>О нас</label>
-        <module>default</module>
+        <module>pages</module>
         <controller>about</controller>
         <route>default</route>
-    </aboutus>	
+    </aboutus>
     <contacts>
         <label>Контакты</label>
-        <module>default</module>
+        <module>pages</module>
         <controller>contacts</controller>
         <route>default</route>
-    </contacts>          
-    <!--<search>
-        <label>Поиск</label>
-        <module>default</module>
-        <controller>search</controller>
-        <route>default</route>
-        <enable>false</enable>
-    </search>-->
+    </contacts>
 </config>
