@@ -119,6 +119,7 @@ class Oil_IndexController extends Zend_Controller_Action
     {
         $this->view->title = 'Справочный материал';
         $this->view->renderPage = '/components/_articles.phtml';
+        $this->view->meta_title = $this->view->title.'. '. $this->pageModule()->getTitle().'.';
 
         if($this->_request->getParam('path')){
 
@@ -132,7 +133,10 @@ class Oil_IndexController extends Zend_Controller_Action
 
             $this->view->title = $mediaItem->getName();
             $this->view->mediaItem = $mediaItem;
+            $this->view->meta_title = $this->view->title.'. Справочный материал. '.$this->pageModule()->getTitle().'.';
         }
+
+        $this->view->headTitle($this->view->meta_title);
     }
 
 
