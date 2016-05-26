@@ -36,7 +36,7 @@
                     <module>admin</module>
                     <controller>categories</controller>
                     <resource>categories</resource>
-                    <route>adminEdit</route>
+                    <route>adminCategoriesEdit</route>
                 </catalog>
                 <manufacture>
                     <label>Производство</label>

@@ -131,6 +131,20 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         );
         $router->addRoute('adminEdit', $route);
 
+        $route = new Zend_Controller_Router_Route(
+            'admin/categories/:parent_id',
+            array(
+                'module' => 'admin',
+                'controller' => 'categories',
+                'action' => 'index',
+                'parent_id' => null,
+            ),
+            array(
+                'parent_id' => '\d+',
+            )
+        );
+        $router->addRoute('adminCategoriesEdit', $route);
+
     }
 
     public function _initAutoloader()

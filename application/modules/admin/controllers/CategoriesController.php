@@ -38,7 +38,7 @@ class CategoriesController extends Admin_BaseController
     {
         $this->_modelMapper = new Catalog_Model_Mapper_Categories();
         $this->_model = new Catalog_Model_Categories();
-        //$this->_forms['edit'] =
+        $this->_forms['edit'] = new Admin_Form_CategoriesEdit();
         $this->_request = $this->getRequest();
         $this->_redirector = $this->_helper->getHelper('Redirector');
 
@@ -46,6 +46,28 @@ class CategoriesController extends Admin_BaseController
 
     public function indexAction()
     {
+        $select = $this->_modelMapper->getDbTable()->select();
+
+        $parent_id = 0;
+
+        if($this->_request->getParam('parent_id') && $this->_request->getParam('parent_id') != 0){
+            $parent_id = $this->_request->getParam('parent_id');
+            Zend_Debug::dump($this->breadcrumbs($parent_id));
+        }
+
+
+        $select
+            ->where('parent_id = ?', $parent_id)
+            ->order('sorting ASC');
+
+
+        $pageItems = $this->_modelMapper->fetchAll($select);
+
+        if(!empty($pageItems))
+            $pageItems = $this->setPaginationPage($pageItems);
+
+
+        $this->view->pages = $pageItems;
         $this->view->auth = Zend_Auth::getInstance()->hasIdentity();
     }
 

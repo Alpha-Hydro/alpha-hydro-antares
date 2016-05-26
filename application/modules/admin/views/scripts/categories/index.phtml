@@ -1,4 +1,57 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Categories</b> and script/action name <b>index</b></p>
-</div>
+<?php
+/**
+ * @var $page Catalog_Model_Categories
+ */
+
+$this->title = 'Каталог';
+$this->secondary_text = 'Список категорий';
+?>
+
+<?php if(!empty($this->pages)):?>
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th class="col-md-1">№№ пп</th>
+            <th>Наименование</th>
+            <th>Активность</th>
+            <th></th>
+        </tr>
+        </thead>
+        <?php foreach ($this->pages as $page):?>
+            <tr class="<?=$this->contextualClassTr($page);?>">
+                <td><?=$page->getSorting()?></td>
+                <td>
+                    <a href="<?=$this->url(array(
+                        'parent_id'=>$page->getId(),
+                    ), 'adminCategoriesEdit', true, false)?>"><?=$page->getName()?></a>
+                </td>
+                <td>
+                    <a href="<?= $this->url(array(
+                        'module' => 'admin',
+                        'controller' => 'categories',
+                        'action' => 'enable',
+                        'id'=>$page->getId()
+                    ), 'adminEdit', true, false); ?>" title="<?=($page->getActive() != 0)?'скрыть':'показать'?>">
+                        <span class="glyphicon <?=($page->getActive() != 0)?'glyphicon-eye-open':'glyphicon-eye-close'?>"></span>
+                    </a>
+                </td>
+                <td width="150px">
+                    <?=$this->partial('_button_group_table.phtml', array(
+                        'item_controller' => 'categories',
+                        'item_id' => $page->getId(),
+                        'item_path' => '/catalog/'.$page->getFullPath(),
+                        'deleted' => ($page->getDeleted() != 0)? true : false,
+                    ))?>
+                </td>
+            </tr>
+        <?php endforeach;?>
+    </table>
+    <?= $this->render('components/_paginator.phtml')?>
+<?php else:?>
+    <div class="text-center">
+        <a href="<?=$this->url(
+            array('module'=>'admin', 'controller' => 'media-categories', 'action' => 'add'),
+            false,true
+        )?>" class="btn btn-success">Добавить категорию</a>
+    </div>
+<?php endif;?>
