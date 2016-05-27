@@ -41,3 +41,5 @@ button,
 .head-large{
   font-size: larger;
 }
+
+.w100  { width:  calc(100% -  #{$padding + $margin}); }

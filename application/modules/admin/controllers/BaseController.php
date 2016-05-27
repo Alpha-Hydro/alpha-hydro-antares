@@ -358,7 +358,7 @@ class Admin_BaseController extends Zend_Controller_Action
         $item->setOptions($form->getValues());
 
         if($this->_request->getParam('contentMarkdown')){
-            $context_html = Michelf\Markdown::defaultTransform($this->_request->getParam('contentMarkdown'));
+            $context_html = Michelf\MarkdownExtra::defaultTransform($this->_request->getParam('contentMarkdown'));
             $item->setContentHtml($context_html);
         }
 

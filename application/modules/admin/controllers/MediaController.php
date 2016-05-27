@@ -1,6 +1,5 @@
 <?php
-use Michelf\Markdown;
-include_once 'Michelf/Markdown.php';
+
 include_once 'BaseController.php';
 
 class MediaController extends Admin_BaseController

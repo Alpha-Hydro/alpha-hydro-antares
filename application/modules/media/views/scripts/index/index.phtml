@@ -11,7 +11,7 @@ $this->breadcrumbs = true;
     <?php if($this->mediaItems):?>
         <?php foreach ($this->mediaItems as $mediaItems):?>
             <div class="media media-item line line-dotted">
-                <?php if(!is_null($mediaItems->getImage())):?>
+                <?php if($mediaItems->getImage() && $mediaItems->getImage() != ''):?>
                     <div class="media-left col-md-3">
                         <div class="thumbnail col-md-10 hover-shadow">
                             <a href="<?=$this->url(array(

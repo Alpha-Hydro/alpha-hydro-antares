@@ -13,17 +13,20 @@ RewriteEngine On
 		Header append Vary: Accept-Encoding
 	</FilesMatch>
 	<FilesMatch "\.(ico|jpe?g|png|gif|swf)$">
-        Header set Cache-Control "public"
+        Header set Cache-Control "public, max-age=2592000, must-revalidate"
     </FilesMatch>
     <FilesMatch "\.(css)$">
-        Header set Cache-Control "public"
+        Header set Cache-Control "public, max-age=2592000, must-revalidate"
     </FilesMatch>
     <FilesMatch "\.(js)$">
-        Header set Cache-Control "private"
+        Header set Cache-Control "private, max-age=2592000, must-revalidate"
     </FilesMatch>
-    <FilesMatch "\.(x?html?|php)$">
-        Header set Cache-Control "private, must-revalidate"
+    <FilesMatch "\.(p?html?|php)$">
+        Header set Cache-Control "private, max-age=2592000, must-revalidate"
     </FilesMatch>
+#    <FilesMatch "\.(ogg|ogv|svg|svgz|eot|otf|woff|mp4|ttf|rss|atom|jpg|jpeg|gif|png|ico|zip|tgz|gz|rar|bz2|doc|xls|exe|ppt|tar|mid|midi|wav|bmp|rtf)$">
+#        Header set Cache-Control "max-age=2592000, must-revalidate"
+#    </FilesMatch>
 </IfModule>
 
 <IfModule mod_expires.c>

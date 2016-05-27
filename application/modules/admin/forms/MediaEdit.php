@@ -200,13 +200,19 @@ class Admin_Form_MediaEdit extends Twitter_Bootstrap_Form_Vertical
     public function getCategoryArray()
     {
         $mediaCategoryMapper = new Media_Model_Mapper_MediaCategories();
+        $select = $mediaCategoryMapper->getDbTable()->select();
+
+        $select
+            ->where('active != ?', 0)
+            ->where('deleted != ?', 1)
+            ->order('sorting ASC');
 
         $categoryArray = array();
         $categoryArray[] = 'нет';
         /**
          * @var $category Media_Model_MediaCategories;
          */
-        foreach ($mediaCategoryMapper->fetchAll() as $category) {
+        foreach ($mediaCategoryMapper->fetchAll($select) as $category) {
             $categoryArray[$category->getId()] = $category->getName();
         }
 
