@@ -12,10 +12,12 @@
                 ->prependHttpEquiv('Content-Type', 'text/html; charset=UTF-8');
 
             echo $this->headLink()
-                ->appendStylesheet('//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css')
-                ->appendStylesheet('/css/admin.css');
+                //->appendStylesheet('//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css')
+                //->appendStylesheet($this->baseUrl().'/css/global.min.css')
+                ->appendStylesheet($this->baseUrl().'/css/admin.min.css');
 
             $this->headScript()
+                ->prependFile('/js/admin.min.js')
                 ->prependFile('//code.jquery.com/jquery-1.11.3.min.js')
                 ->appendFile('//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js')
                 ->setAllowArbitraryAttributes(true)

@@ -1,3 +1,7 @@
+@import "bootstrap-compass";
+@import "vendors/bootstrap-admin-variables";
+@import "bootstrap";
+
 @import "compass/css3";
 @import "vendors/corpus/whitespace";
 @import "vendors/corpus/breakpoints";
@@ -210,8 +214,9 @@ span{
 }
 
 .edit-buttons-group{
-  margin-top: -50px;
-  margin-bottom: 20px;
+  position: absolute;
+  top: 5px;
+  left: 20px;
 }
 .image-edit{
   position: relative;

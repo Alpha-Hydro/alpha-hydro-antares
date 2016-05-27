@@ -20,7 +20,8 @@ if(document.querySelector('.itemButtonsComponent')){
 		var dataItem = {
 			controller: item.getAttribute('data-controller'),
 			id: item.getAttribute('data-id'),
-			active: item.getAttribute('data-active')
+			active: item.getAttribute('data-active'),
+			deleted: item.getAttribute('data-deleted')
 		};
 		ReactDOM.render(<ItemButtonsComponent dataItem = {dataItem}/>, item);
 	});

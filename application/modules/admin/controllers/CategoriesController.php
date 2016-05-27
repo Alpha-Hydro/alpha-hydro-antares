@@ -52,14 +52,12 @@ class CategoriesController extends Admin_BaseController
 
         if($this->_request->getParam('parent_id') && $this->_request->getParam('parent_id') != 0){
             $parent_id = $this->_request->getParam('parent_id');
-            Zend_Debug::dump($this->breadcrumbs($parent_id));
+            $this->view->breadcrumbs = $this->containerNavigation($parent_id);
         }
-
 
         $select
             ->where('parent_id = ?', $parent_id)
             ->order('sorting ASC');
-
 
         $pageItems = $this->_modelMapper->fetchAll($select);
 
@@ -357,42 +355,37 @@ class CategoriesController extends Admin_BaseController
         return $treeCategories;
     }
 
-    public function breadcrumbsNavigation($category_id = null, $product_id = null)
+    public function containerNavigation($category_id)
     {
-        $breadcrumbs = new Zend_Navigation();
+        $container = new Zend_Navigation();
 
         $categoriesMapper = new Catalog_Model_Mapper_Categories();
 
-        $category = ($category_id)
-            ? $categoriesMapper->find($category_id, new Catalog_Model_Categories())
-            : null;
+        $category = $categoriesMapper->find($category_id, new Catalog_Model_Categories());
 
         $i = 0;
 
-        if(isset($category) && is_null($product_id)){
-            $breadcrumbs->addPage(array(
+        if($category)
+            $container->addPage(array(
                 'type' => 'uri',
                 'label' => $category->getName(),
                 'active' => true
             ));
-        }
+
 
         $parentCategories = $categoriesMapper->fetchTreeParentCategories($category->getParentId());
 
-        if(!is_null($product_id))
-            $parentCategories = $categoriesMapper->fetchTreeParentCategories($category_id);
-
         if (!empty($parentCategories)) {
             foreach ($parentCategories as $parentCategory) {
-                $breadcrumbs->addPage (
+                $container->addPage (
                     array (
                         "action" => "index",
                         "controller" => "categories",
-                        "module" => "catalog",
+                        "module" => "admin",
                         'order'	 => $i,
-                        'route'  => 'catalog',
+                        'route'  => 'adminCategoriesEdit',
                         "params" => array(
-                            'fullPath'=>($parentCategory->id != 0) ? $parentCategory->full_path : null,
+                            'parent_id'=>($parentCategory->id != 0) ? $parentCategory->id : null,
                         ),
                         'reset_params' => true,
                         'encode_url' => false,
@@ -404,27 +397,17 @@ class CategoriesController extends Admin_BaseController
         }
 
 
-        $breadcrumbs->addPage(
+        $container->addPage(
             new Zend_Navigation_Page_Uri(
                 array (
                     'label' => 'Каталог',
-                    'uri' => '/catalog/',
+                    'uri' => '/admin/categories/',
                     'order' => $i
                 )
             )
         );
 
-        $breadcrumbs->addPage(
-            new Zend_Navigation_Page_Uri(
-                array (
-                    'label' => 'Главная',
-                    'uri' => '/',
-                    'order' => $i-1
-                )
-            )
-        );
-
-        return $breadcrumbs;
+        return $container;
     }
 
     protected function _countSubCategories($id)

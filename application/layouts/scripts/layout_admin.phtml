@@ -9,8 +9,8 @@ echo $this->doctype();
     echo $this->render("components/_meta_head.phtml");
 
     $this->headLink()
-        ->appendStylesheet($this->baseUrl().'/css/global.min.css')
         ->appendStylesheet($this->baseUrl().'/css/admin.min.css')
+        ->appendStylesheet($this->baseUrl().'/css/global.min.css')
         ->headLink(array('rel' => 'shortcut icon',
             'type' => "image/x-icon",
             'href' => $this->baseUrl().'/favicon.ico'),

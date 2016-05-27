@@ -15,11 +15,13 @@
                 </a>
             </div>
             <?php if($this->auth):?>
-                <div class="itemButtonsComponent"
-                     data-id="<?=$entry->id?>"
-                     data-controller="categories"
-                     data-active="<?=($entry->active != 0)?true:false?>"
-                ></div>
+                <div class="edit-buttons-group">
+                    <div class="itemButtonsComponent"
+                         data-id="<?=$entry->id?>"
+                         data-controller="categories"
+                         data-active="<?=($entry->active != 0)?true:false?>"
+                    ></div>
+                </div>
             <?php endif;?>
         </div>
     <?php endforeach; ?>
