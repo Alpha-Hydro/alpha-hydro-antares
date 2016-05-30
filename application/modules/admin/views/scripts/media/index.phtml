@@ -12,13 +12,12 @@ $this->secondary_text = $this->categoryName.'Список публикаций';
         <thead>
         <tr>
             <th>ID</th>
+            <th><span class="glyphicon glyphicon-sort"></span></th>
             <?php if(!$this->categoryName):?>
                 <th>Категория</th>
             <?php endif;?>
             <th>Заголовок</th>
             <th>Привязка к разделу сайта</th>
-            <th>Сортировка</th>
-            <th>Активность</th>
             <th>Действия</th>
         </tr>
         </thead>
@@ -26,13 +25,25 @@ $this->secondary_text = $this->categoryName.'Список публикаций';
             <?php foreach ($this->pages as $page):?>
                 <tr class="<?=$this->contextualClassTr($page);?>">
                     <td><?=$page->getId()?></td>
+                    <td><?=$page->getSorting()?></td>
                     <?php if(!$this->categoryName):?>
-                        <td><?=($this->getCategory($page->getCategoryId(), 'media'))
+                        <td>
+                            <?=($this->getCategory($page->getCategoryId(), 'media'))
                                 ?$this->getCategory($page->getCategoryId(), 'media')->getName()
                                 :'нет';
-                            ?></td>
+                            ?>
+                        </td>
                     <?php endif;?>
-                    <td><?=$page->getName()?></td>
+                    <td>
+                        <?php if($page->getDeleted() != 1):?>
+                            <a href="/media/<?=$page->getFullPath();?>" title="Посмотреть на сайте">
+                                <?=$page->getName()?>
+                                <span class="glyphicon glyphicon-link mlr1"></span>
+                            </a>
+                        <?php else:?>
+                            <?=$page->getName()?>
+                        <?php endif;?>
+                    </td>
                     <td>
                         <div class="select-feedback">
                             <?=$this->formSelect('sectionSite_'.$page->getId(),
@@ -45,23 +56,11 @@ $this->secondary_text = $this->categoryName.'Список публикаций';
                             <span class="glyphicon glyphicon-ok select-control-feedback" aria-hidden="true"></span>
                         </div>
                     </td>
-                    <td><?=$page->getSorting()?></td>
-                    <td>
-                        <a href="<?= $this->url(array(
-                            'module' => 'admin',
-                            'controller' => 'media',
-                            'action' => 'enable',
-                            'id'=>$page->getId(),
-                            'page'=>$this->currentPage
-                        ), 'adminEdit', true, false); ?>" title="<?=($page->getActive() != 0)?'скрыть':'показать'?>">
-                            <span class="glyphicon <?=($page->getActive() != 0)?'glyphicon-eye-open':'glyphicon-eye-close'?>"></span>
-                        </a>
-                    </td>
                     <td width="150px">
                         <?=$this->partial('_button_group_table.phtml', array(
                             'item_controller' => 'media',
                             'item_id' => $page->getId(),
-                            'item_path' => '/media/'.$page->getFullPath(),
+                            'active' => ($page->getActive() != 0)? true : false,
                             'deleted' => ($page->getDeleted() != 0)? true : false,
                         ))?>
                     </td>

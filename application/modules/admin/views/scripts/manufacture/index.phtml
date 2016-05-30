@@ -10,34 +10,37 @@ $this->secondary_text = $this->categoryName.'Список товаров';
     <thead>
     <tr>
         <th>ID</th>
-        <th>Категория</th>
-        <th>Заголовок</th>
-        <th>Сортировка</th>
-        <th>Активность</th>
-        <th></th>
+        <th><span class="glyphicon glyphicon-sort"></span></th>
+        <?php if(!$this->categoryName):?>
+            <th>Категория</th>
+        <?php endif;?>
+        <th>Наименование</th>
+        <th>Действия</th>
     </tr>
     </thead>
     <?php foreach ($this->pages as $page):?>
         <tr class="<?=$this->contextualClassTr($page);?>">
             <td><?=$page->getId()?></td>
-            <td><?=$this->getManufactureCategory($page->getCategoryId())->getTitle()?></td>
-            <td><?=$page->getTitle()?></td>
             <td><?=$page->getSorting()?></td>
+            <?php if(!$this->categoryName):?>
+                <td><?=$this->getCategory($page->getCategoryId(), 'manufacture')->getTitle()?></td>
+            <?php endif;?>
             <td>
-                <a href="<?= $this->url(array(
-                    'module' => 'admin',
-                    'controller' => 'manufacture',
-                    'action' => 'enable',
-                    'id'=>$page->getId()
-                ), null, true); ?>" title="<?=($page->getActive() != 0)?'скрыть':'показать'?>">
-                    <span class="glyphicon <?=($page->getActive() != 0)?'glyphicon-eye-open':'glyphicon-eye-close'?>"></span>
-                </a>
+                <?php if($page->getDeleted() != 1):?>
+                    <a href="/manufacture/<?=$page->getFullPath();?>" title="Посмотреть на сайте">
+                        <?=$page->getTitle()?>
+                        <span class="glyphicon glyphicon-link mlr1"></span>
+                    </a>
+                <?php else:?>
+                    <?=$page->getTitle()?>
+                <?php endif;?>
             </td>
             <td width="150px">
                 <?=$this->partial('_button_group_table.phtml', array(
                     'item_controller' => 'manufacture',
                     'item_id' => $page->getId(),
                     'item_path' => '/manufacture/'.$page->getFullPath(),
+                    'active' => ($page->getActive() != 0)? true : false,
                     'deleted' => ($page->getDeleted() != 0)? true : false,
                 ))?>
             </td>

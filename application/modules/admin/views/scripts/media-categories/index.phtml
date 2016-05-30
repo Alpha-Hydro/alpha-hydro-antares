@@ -11,41 +11,42 @@ $this->secondary_text = 'Список категорий';
         <thead>
         <tr>
             <th>ID</th>
+            <th><span class="glyphicon glyphicon-sort"></span></th>
             <th>Заголовок</th>
             <th>Url</th>
-            <th>Сортировка</th>
-            <th>Активность</th>
-            <th></th>
+            <th>Действия</th>
         </tr>
         </thead>
         <?php foreach ($this->pages as $page):?>
             <tr class="<?=$this->contextualClassTr($page);?>">
                 <td><?=$page->getId()?></td>
+                <td><?=$page->getSorting()?></td>
                 <td>
                     <a href="<?=$this->url(array(
                         'module'=>'admin',
                         'controller'=>'media-categories',
                         'action'=>'list',
                         'id'=>$page->getId(),
-                    ), 'adminEdit', true, false)?>"><?=$page->getName()?></a>
-                </td>
-                <td><?=$page->getPath()?></td>
-                <td><?=$page->getSorting()?></td>
-                <td>
-                    <a href="<?= $this->url(array(
-                        'module' => 'admin',
-                        'controller' => 'media-categories',
-                        'action' => 'enable',
-                        'id'=>$page->getId()
-                    ), 'adminEdit', true, false); ?>" title="<?=($page->getActive() != 0)?'скрыть':'показать'?>">
-                        <span class="glyphicon <?=($page->getActive() != 0)?'glyphicon-eye-open':'glyphicon-eye-close'?>"></span>
+                    ), 'adminEdit', true, false)?>">
+                        <span class="glyphicon glyphicon-folder-close mlr1"></span>
+                        <?=$page->getName()?>
                     </a>
+                </td>
+                <td>
+                    <?php if($page->getDeleted() != 1):?>
+                        <a href="/media/<?=$page->getPath()?>/" title="Посмотреть на сайте">
+                            <?=$page->getPath()?>
+                            <span class="glyphicon glyphicon-link mlr1"></span>
+                        </a>
+                    <?php else:?>
+                        <?=$page->getPath()?>
+                    <?php endif;?>
                 </td>
                 <td width="150px">
                     <?=$this->partial('_button_group_table.phtml', array(
                         'item_controller' => 'media-categories',
                         'item_id' => $page->getId(),
-                        'item_path' => '/media/'.$page->getPath(),
+                        'active' => ($page->getActive() != 0)? true : false,
                         'deleted' => ($page->getDeleted() != 0)? true : false,
                     ))?>
                 </td>

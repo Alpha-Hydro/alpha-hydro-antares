@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var $page Pages_Model_Pages
+ */
+
 $this->title = "Разделы сайта";
 $this->secondary_text = 'Статические страницы';
 ?>
@@ -6,25 +10,32 @@ $this->secondary_text = 'Статические страницы';
     <thead>
     <tr>
         <th>ID</th>
-        <th>Заголовок</th>
+        <th><span class="glyphicon glyphicon-sort"></span></th>
+        <th>Наименование</th>
         <th>Url</th>
-        <th>Сортировка в меню</th>
-        <th>Активность</th>
-        <th></th>
+        <th>Действия</th>
     </tr>
     </thead>
     <?php foreach ($this->pages as $page):?>
         <tr class="<?=$this->contextualClassTr($page);?>">
             <td><?=$page->getId()?></td>
-            <td><?=$page->getTitle()?></td>
-            <td><?=$page->getPath()?></td>
             <td><?=$page->getSorting()?></td>
-            <td><input type="checkbox" value="<?=$page->getActive()?>" <?=($page->getActive() != 0)?'checked':'';?>></td>
+            <td><?=$page->getTitle()?></td>
+            <td>
+                <?php if($page->getDeleted() != 1):?>
+                    <a href="/<?=($page->getPath() != 'home')?$page->getPath().'/':'';?>" title="Посмотреть на сайте">
+                        <?=$page->getPath()?>
+                        <span class="glyphicon glyphicon-link mlr1"></span>
+                    </a>
+                <?php else:?>
+                    <?=$page->getPath()?>
+                <?php endif;?>
+            </td>
             <td width="150px">
                 <?=$this->partial('_button_group_table.phtml', array(
                     'item_controller' => 'pages',
                     'item_id' => $page->getId(),
-                    'item_path' => ($page->getPath() != 'home')?'/'.$page->getPath():'',
+                    'active' => ($page->getActive() != 0)? true : false,
                     'deleted' => ($page->getDeleted() != 0)? true : false,
                 ))?>
             </td>

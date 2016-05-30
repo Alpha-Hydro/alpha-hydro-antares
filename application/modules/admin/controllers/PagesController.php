@@ -11,11 +11,13 @@ class PagesController extends Zend_Controller_Action
      * @var Pages_Model_Mapper_Pages
      *
      *
+     *
      */
-    protected $_pagesMapper = null;
+    protected $_modelMapper = null;
 
     /**
      * @var Pages_Model_Pages
+     *
      *
      *
      */
@@ -25,23 +27,16 @@ class PagesController extends Zend_Controller_Action
      * @var Zend_Controller_Action_Helper_Redirector
      *
      *
+     *
      */
     protected $_redirector = null;
 
     public function init()
     {
-        $this->_pagesMapper = new Pages_Model_Mapper_Pages();
+        $this->_modelMapper = new Pages_Model_Mapper_Pages();
 
         $this->_redirector = $this->_helper->getHelper('Redirector');
 
-        /*$ajaxContext = $this->_helper->getHelper('AjaxContext');
-        $ajaxContext
-            ->addActionContext('json', 'json');*/
-
-        $contextSwitch = $this->_helper->getHelper('contextSwitch');
-        $contextSwitch
-            ->addActionContext('json', array('json'))
-            ->initContext();
     }
 
     public function indexAction()
@@ -71,7 +66,7 @@ class PagesController extends Zend_Controller_Action
         if(is_null($pageId))
             $this->_redirector->gotoSimpleAndExit('index');
 
-        $page = $this->_pagesMapper->find($pageId, new Pages_Model_Pages());
+        $page = $this->_modelMapper->find($pageId, new Pages_Model_Pages());
 
         if(is_null($page))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
@@ -117,7 +112,7 @@ class PagesController extends Zend_Controller_Action
                     $page->setContentHtml($context_html);
                 }
 
-                $this->_pagesMapper->save($page);
+                $this->_modelMapper->save($page);
             }
 
             if ($form->isValid($request->getPost())) {
@@ -138,7 +133,7 @@ class PagesController extends Zend_Controller_Action
                 if(empty($metaDescription) && !empty($description))
                     $newPage->setMetaDescription($description);
 
-                $this->_pagesMapper->save($newPage);
+                $this->_modelMapper->save($newPage);
                 $form->setDefaults($form->getValues());
             }
 
@@ -186,13 +181,13 @@ class PagesController extends Zend_Controller_Action
         if(is_null($pageId))
             $this->_redirector->gotoSimpleAndExit('index');
 
-        $page = $this->_pagesMapper->find($pageId, new Pages_Model_Pages());
+        $page = $this->_modelMapper->find($pageId, new Pages_Model_Pages());
 
         if ($this->getRequest()->isPost()){
             if($this->getRequest()->getParam('dataFormSeo')){
                 $dataFormSeo = $this->getRequest()->getParam('dataFormSeo');
                 $page->setOptions($dataFormSeo);
-                $this->_pagesMapper->save($page);
+                $this->_modelMapper->save($page);
             }
         }
 
@@ -270,62 +265,49 @@ class PagesController extends Zend_Controller_Action
 
     public function deleteAction()
     {
-        $request = $this->getRequest();
-        $pageId = $request->getParam('id');
+        $itemId = $this->_request->getParam('id');
 
-        if(is_null($pageId))
+        if(is_null($itemId))
             $this->_redirector->gotoSimpleAndExit('index');
 
-        $page = $this->_pagesMapper->find($pageId, new Pages_Model_Pages());
+        $item = $this->_modelMapper->find($itemId, new Pages_Model_Pages());
 
-        if(is_null($page))
-            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+        $deleted = ($item->getDeleted() != 0)?0:1;
+        $item->setDeleted($deleted);
 
-        $page->setDeleted(1);
-        $page->setActive(0);
-        $this->_pagesMapper->save($page);
+        $this->_modelMapper->save($item);
 
-        $this->_redirector->gotoSimpleAndExit('index');
+        $url = ($item->getPath() != 'home')? '/'.$item->getPath():'/';
+        $this->_redirector->gotoUrlAndExit('/admin/pages/');
+    }
+
+    public function enableAction()
+    {
+        $itemId = $this->_request->getParam('id');
+
+        if(is_null($itemId))
+            $this->_redirector->gotoSimpleAndExit('index');
+
+        $item = $this->_modelMapper->find($itemId, new Pages_Model_Pages());
+
+        $active = ($item->getActive() != 0)?0:1;
+        $item->setActive($active);
+
+        $this->_modelMapper->save($item);
+
+        $url = ($item->getPath() != 'home')? '/'.$item->getPath():'/';
+        $this->_redirector->gotoUrlAndExit('/admin/pages/');
     }
 
     public function disabledAction()
     {
-        $request = $this->getRequest();
-        $pageId = $request->getParam('id');
-
-        if(is_null($pageId))
-            $this->_redirector->gotoSimpleAndExit('index');
-
-        $page = $this->_pagesMapper->find($pageId, new Pages_Model_Pages());
-
-        if(is_null($page))
-            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
-
-        $page->setActive(0);
-        $this->_pagesMapper->save($page);
-
-        $url = ($page->getPath() != 'home')? '/'.$page->getPath():'/';
-        $this->_redirector->gotoUrlAndExit($url);
+        $this->forward('enable');
     }
+
 
     public function enabledAction()
     {
-        $request = $this->getRequest();
-        $pageId = $request->getParam('id');
-
-        if(is_null($pageId))
-            $this->_redirector->gotoSimpleAndExit('index');
-
-        $page = $this->_pagesMapper->find($pageId, new Pages_Model_Pages());
-
-        if(is_null($page))
-            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
-
-        $page->setActive(1);
-        $this->_pagesMapper->save($page);
-
-        $url = ($page->getPath() != 'home')? '/'.$page->getPath():'/';
-        $this->_redirector->gotoUrlAndExit($url);
+        $this->forward('enable');
     }
 
     public function jsonAction()
@@ -339,7 +321,7 @@ class PagesController extends Zend_Controller_Action
         );
 
         if($pageId){
-            $this->_page = $this->_pagesMapper->find($pageId, new Pages_Model_Pages());
+            $this->_page = $this->_modelMapper->find($pageId, new Pages_Model_Pages());
 
             if(!is_null($this->_page))
                 $jsonData = array_merge($jsonData, $this->_page->getOptions());
@@ -354,6 +336,7 @@ class PagesController extends Zend_Controller_Action
      * @return PagesController
      *
      *
+     *
      */
     public function setPageId($page_id)
     {
@@ -365,12 +348,15 @@ class PagesController extends Zend_Controller_Action
      * @return null
      *
      *
+     *
      */
     public function getPageId()
     {
         return $this->_page_id;
     }
 }
+
+
 
 
 

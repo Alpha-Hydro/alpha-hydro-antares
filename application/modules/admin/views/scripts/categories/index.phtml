@@ -14,6 +14,7 @@ $this->secondary_text = 'Список категорий';
         <thead>
         <tr>
             <th class="col-md-1">№№ пп</th>
+            <th>ID</th>
             <th>Наименование</th>
             <th>Url</th>
             <th>Действия</th>
@@ -22,10 +23,14 @@ $this->secondary_text = 'Список категорий';
         <?php foreach ($this->pages as $page):?>
             <tr class="<?=$this->contextualClassTr($page);?>">
                 <td><?=$page->getSorting()?></td>
+                <td><?=$page->getId()?></td>
                 <td>
                     <a href="<?=$this->url(array(
                         'parent_id'=>$page->getId(),
-                    ), 'adminCategoriesEdit', true, false)?>"><?=$page->getName()?></a>
+                    ), 'adminCategoriesEdit', true, false)?>">
+                        <span class="glyphicon glyphicon-folder-close mlr1"></span>
+                        <?=$page->getName()?>
+                    </a>
                 </td>
                 <td>
                     <?php if($page->getDeleted() != 1):?>
@@ -36,6 +41,7 @@ $this->secondary_text = 'Список категорий';
                         'fullPath'=>$page->getFullPath()
                     ), 'catalog', true, false); ?>" title="Посмотреть на сайте">
                         <?=$page->getFullPath()?>
+                        <span class="glyphicon glyphicon-link mlr1"></span>
                     </a>
                     <?php else:?>
                         <?=$page->getFullPath()?>

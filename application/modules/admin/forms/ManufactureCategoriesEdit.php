@@ -8,20 +8,15 @@ class Admin_Form_ManufactureCategoriesEdit extends Twitter_Bootstrap_Form_Vertic
         $this->addElement('hidden', 'id');
         $this->addElement('hidden', 'parentId');
 
-        $uploadPath = '/upload/manufacture/category/';
-        $uploadDir = APPLICATION_ROOT . $uploadPath;
-        if(!file_exists($uploadDir))
-            mkdir($uploadDir, 0755, true);
-
         $image = new Zend_Form_Element_File('imageLoadFile');
         $image
-            ->setDestination($uploadPath)
+            ->setValueDisabled(true)
             ->addValidator('Size', false, 1024000)
             ->addValidator('Extension', false, 'jpg,png,gif')
             ->setAttribs(array(
                 'class' => 'hidden',
                 'data-input' => 'image',
-                'data-upload' => $uploadPath
+                'data-upload' => '/upload/manufacture/category'
             ));
         $this->addElement($image);
 
@@ -32,6 +27,7 @@ class Admin_Form_ManufactureCategoriesEdit extends Twitter_Bootstrap_Form_Vertic
             'class'         => 'img-thumbnail',
             'data-toggle'   => 'tooltip',
             'data-placement'=> 'bottom',
+            'data-input' => 'image',
             'title'         => 'Загрузить изображение',
         ));
 

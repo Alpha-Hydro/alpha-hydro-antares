@@ -248,6 +248,7 @@
               <actionMethod actionName="delete"/>
               <actionMethod actionName="seo"/>
               <actionMethod actionName="enabled"/>
+              <actionMethod actionName="enable"/>
             </controllerFile>
             <controllerFile controllerName="Oil">
               <actionMethod actionName="index"/>
@@ -681,6 +682,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Media">
                 <viewScriptFile forActionName="section"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Pages">
+                <viewScriptFile forActionName="enable"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
