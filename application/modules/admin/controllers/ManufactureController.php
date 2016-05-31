@@ -51,6 +51,13 @@ class ManufactureController extends Admin_BaseController
     {
         parent::indexAction();
 
+        if($this->_request->getParam('category_id'))
+            $this->view->categoryName = $this->_modelCategoriesMapper
+                    ->find(
+                        $this->_request->getParam('category_id'),
+                        new Manufacture_Model_ManufactureCategories())
+                    ->getTitle().' - ';
+
         $config = array(
             Zend_Navigation_Page_Mvc::factory(array(
                 'label' => 'Добавить товар',

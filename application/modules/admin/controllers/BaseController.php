@@ -20,6 +20,11 @@ class Admin_BaseController extends Zend_Controller_Action
     /**
      * @var null
      */
+    protected $_modelCategoriesMapper = null;
+
+    /**
+     * @var null
+     */
     protected $_count_item_on_page = null;
 
     /**
@@ -38,9 +43,9 @@ class Admin_BaseController extends Zend_Controller_Action
      */
     protected $_nameModule = null;
 
-    public function init()
+    /*public function init()
     {
-    }
+    }*/
 
     public function indexAction()
     {
@@ -266,7 +271,7 @@ class Admin_BaseController extends Zend_Controller_Action
     }
 
     /**
-     * @return null
+     * @return Catalog_Model_Mapper_Categories | Catalog_Model_Mapper_Products | Manufacture_Model_Mapper_ManufactureCategories | Manufacture_Model_Mapper_Manufacture | Pages_Model_Mapper_Pages | Pipeline_Model_Mapper_PipelineCategories | Pipeline_Model_Mapper_Pipeline | Oil_Model_Mapper_OilCategories | Oil_Model_Mapper_Oil | Media_Model_Mapper_MediaCategories | Media_Model_Mapper_Media
      */
     public function getModelMapper()
     {
@@ -276,6 +281,10 @@ class Admin_BaseController extends Zend_Controller_Action
                 'Model_Mapper',
                 $this->_getNamespace()
             ));
+
+            if(!class_exists($class, false))
+                return null;
+
             $this->_modelMapper = new $class();
         }
         return $this->_modelMapper;
@@ -283,7 +292,7 @@ class Admin_BaseController extends Zend_Controller_Action
 
 
     /**
-     * @return null
+     * @return Catalog_Model_Categories | Catalog_Model_Products | Manufacture_Model_ManufactureCategories | Manufacture_Model_Manufacture | Pages_Model_Pages | Pipeline_Model_PipelineCategories | Pipeline_Model_Pipeline | Oil_Model_OilCategories | Oil_Model_Oil | Media_Model_MediaCategories | Media_Model_Media
      */
     public function getModel()
     {
@@ -293,10 +302,35 @@ class Admin_BaseController extends Zend_Controller_Action
                 'Model',
                 $this->_getNamespace()
             ));
+
+            if(!class_exists($class, false))
+                return null;
+
             $this->_model = new $class();
         }
         return $this->_model;
     }
+
+    /**
+     * @return Manufacture_Model_Mapper_ManufactureCategories | Pipeline_Model_Mapper_PipelineCategories | Oil_Model_Mapper_OilCategories | Media_Model_Mapper_MediaCategories
+     */
+    public function getModelCategoriesMapper()
+    {
+        if(is_null($this->_modelCategoriesMapper)){
+            $class = join('_', array(
+                $this->getNameModule(),
+                'Model_Mapper',
+                $this->_getNamespace().'Categories'
+            ));
+
+            if(!class_exists($class, false))
+                return null;
+
+            $this->_modelCategoriesMapper = new $class();
+        }
+        return $this->_modelCategoriesMapper;
+    }
+
 
     /**
      * @return null
@@ -354,6 +388,7 @@ class Admin_BaseController extends Zend_Controller_Action
      */
     public function saveFormData(Zend_Form $form)
     {
+
         $item = $this->getModel();
         $item->setOptions($form->getValues());
 

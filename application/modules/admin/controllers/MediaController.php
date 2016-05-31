@@ -44,6 +44,14 @@ class MediaController extends Admin_BaseController
     {
 
         parent::indexAction();
+
+        if($this->_request->getParam('category_id'))
+            $this->view->categoryName = $this->_modelCategoriesMapper
+                    ->find(
+                        $this->_request->getParam('category_id'),
+                        new Media_Model_MediaCategories())
+                    ->getName().' - ';
+
         if($this->_request->getParam('category_id'))
             $this->view->categoryName = $this->_modelCategoriesMapper
                     ->find($this->_request->getParam('category_id'), new Media_Model_MediaCategories())

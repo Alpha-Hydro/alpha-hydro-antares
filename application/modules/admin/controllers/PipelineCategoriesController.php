@@ -1,14 +1,23 @@
 <?php
+include_once 'BaseController.php';
 
-use \Michelf\Markdown;
-include_once 'Michelf/Markdown.php';
-
-class PipelineCategoriesController extends Zend_Controller_Action
+class PipelineCategoriesController extends Admin_BaseController
 {
     /**
      * @var Pipeline_Model_Mapper_PipelineCategories
      */
     protected $_modelMapper = null;
+
+    /**
+     * @var Pipeline_Model_PipelineCategories
+     */
+    protected $_model = null;
+
+    /**
+     * @var Zend_Form[]
+     *
+     */
+    protected $_forms = array();
 
     /**
      * @var Zend_Controller_Action_Helper_Redirector
@@ -22,13 +31,17 @@ class PipelineCategoriesController extends Zend_Controller_Action
         $this->_count_item_on_page = 10;
 
         $this->_modelMapper = new Pipeline_Model_Mapper_PipelineCategories();
+        $this->_model = new Pipeline_Model_PipelineCategories();
+        $this->_forms['edit'] = new Admin_Form_PipelineCategoriesEdit();
+
         $this->_redirector = $this->_helper->getHelper('Redirector');
 
     }
 
     public function indexAction()
     {
-        $request = $this->getRequest();
+        parent::indexAction();
+        /*$request = $this->getRequest();
 
         $pageMapper = new Pipeline_Model_Mapper_PipelineCategories();
 
@@ -56,7 +69,7 @@ class PipelineCategoriesController extends Zend_Controller_Action
             }
         }
 
-        $this->view->pages = $pageItems;
+        $this->view->pages = $pageItems;*/
 
         $config = array(
             Zend_Navigation_Page_Mvc::factory(array(
@@ -73,34 +86,15 @@ class PipelineCategoriesController extends Zend_Controller_Action
         $this->view->container_nav = $containerNav;
     }
 
-    public function listAction()
+    /*public function listAction()
     {
         $this->forward('index', 'pipeline', 'admin', array('category_id' => $this->_getParam('id')));
         return;
-    }
+    }*/
 
     public function addAction()
     {
-        $request = $this->getRequest();
-        $form = new Admin_Form_PipelineCategoriesEdit();
-
-        $form->setDefaults(array(
-            'sorting'       => 0,
-            'active'        => 1,
-            'deleted'       => 0,
-            'imageLoad'     => '/files/images/product/2012-05-22_foto_nv.jpg',
-        ));
-
-        if ($this->getRequest()->isPost()){
-            if ($form->isValid($request->getPost())){
-                $this->_saveFormData($form);
-            }
-
-            $form->setDefaults($request->getPost());
-            $this->view->formData = $form->getValues();
-        }
-
-        $this->view->form = $form;
+        parent::addAction();
 
         $config = array(
             Zend_Navigation_Page_Mvc::factory(array(
@@ -125,37 +119,9 @@ class PipelineCategoriesController extends Zend_Controller_Action
 
     public function editAction()
     {
-        $request = $this->getRequest();
-        $itemId = $request->getParam('id');
+        parent::editAction();
 
-        if(is_null($itemId))
-            return $this->_helper->redirector('index');
-
-        $pipelineCategoryMapper = new Pipeline_Model_Mapper_PipelineCategories();
-        $page = $pipelineCategoryMapper->find($itemId, new Pipeline_Model_PipelineCategories());
-
-        $this->view->item = $page;
-
-        if(is_null($page))
-            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
-
-        $form = new Admin_Form_PipelineCategoriesEdit();
-        $form->setDefaults($page->getOptions());
-
-        $imageValue = ($form->getValue('image') != '')
-            ?$form->getValue('image')
-            :'/files/images/product/2012-05-22_foto_nv.jpg';
-        $form->setDefault('imageLoad', $imageValue);
-
-        if($this->getRequest()->isPost()){
-            if($form->isValid($request->getPost())){
-                $this->_saveFormData($form);
-            }
-        }
-
-        $this->view->form = $form;
-
-        $config = array(
+        /*$config = array(
             Zend_Navigation_Page_Mvc::factory(array(
                 'label' => 'Добавить категорию',
                 'module' => 'admin',
@@ -187,126 +153,7 @@ class PipelineCategoriesController extends Zend_Controller_Action
 
         $containerNav = new Zend_Navigation($config);
 
-        $this->view->container_nav = $containerNav;
-    }
-
-    public function deleteAction()
-    {
-        $request = $this->getRequest();
-        $categoryId = $request->getParam('id');
-
-        if(is_null($categoryId))
-            $this->_redirector->gotoSimpleAndExit('index');
-
-        $pipelineCategoryMapper = new Pipeline_Model_Mapper_PipelineCategories();
-        $pipelineCategory = $pipelineCategoryMapper->find($categoryId, new Pipeline_Model_PipelineCategories());
-
-        if(is_null($pipelineCategory))
-            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
-
-        $deleted = ($pipelineCategory->getDeleted() != 0)?0:1;
-        
-        $pipelineCategory->setDeleted($deleted);
-        $pipelineCategoryMapper->save($pipelineCategory);
-
-        $this->_redirector->gotoSimpleAndExit('index');
-    }
-
-    public function enableAction()
-    {
-        $itemId = $this->_request->getParam('id');
-
-        if(is_null($itemId))
-            $this->_redirector->gotoSimpleAndExit('index');
-
-        $item = $this->_modelMapper->find($itemId, new Pipeline_Model_PipelineCategories());
-
-        $active = ($item->getActive() != 0)?0:1;
-        $item->setActive($active);
-
-        $this->_modelMapper->save($item);
-
-        $this->_redirector->gotoSimpleAndExit('index');
-    }
-
-    public function jsonAction()
-    {
-        $request = $this->getRequest();
-        $id = $request->getParam('id');
-
-        $jsonData = array(
-            $request->getControllerKey() => $request->getControllerName(),
-            'role' => Zend_Auth::getInstance()->getIdentity()->role
-        );
-
-        if($id){
-            $entry = $this->_modelMapper->find($id, new Pipeline_Model_PipelineCategories());
-            if(!is_null($entry))
-                $jsonData = array_merge($jsonData, $entry->getOptions());
-        }
-
-
-        return $this->_helper->json->sendJson($jsonData);
-    }
-
-
-    /**
-     * @param null $count_item_on_page
-     * @return PipelineCategoriesController
-     */
-    public function setCountItemOnPage($count_item_on_page)
-    {
-        $this->_count_item_on_page = $count_item_on_page;
-        return $this;
-    }
-
-    /**
-     * @return null
-     */
-    public function getCountItemOnPage()
-    {
-        return $this->_count_item_on_page;
-    }
-
-    private function _saveFormData(Admin_Form_PipelineCategoriesEdit $form)
-    {
-        $request = $this->getRequest();
-
-        $item = new Pipeline_Model_PipelineCategories($form->getValues());
-        $pipelineCategoryMapper = new Pipeline_Model_Mapper_PipelineCategories();
-
-        $item->setFullPath($request->getParam('path'));
-
-        if($request->getParam('parentId') !== 0){
-            $parentCategory = $pipelineCategoryMapper
-                ->find($request->getParam('parentId'), new Pipeline_Model_PipelineCategories());
-
-            if(!is_null($parentCategory))
-                $item->setFullPath($parentCategory->getFullPath().'/'.$request->getParam('path'));
-        }
-
-        $file = $form->imageLoadFile->getFileInfo();
-        if(!empty($file) && $file['imageLoadFile']['name'] !== ''){
-            $form->imageLoadFile->receive();
-            $item->setImage('/upload/pipeline/category/'.$file['imageLoadFile']['name']);
-        }
-
-        $markdown = $request->getParam('contentMarkdown');
-        $context_html = Markdown::defaultTransform($markdown);
-        $item->setContentHtml($context_html);
-
-        $metaTitle = $request->getParam('metaTitle');
-        if(empty($metaTitle))
-            $item->setMetaTitle($request->getParam('title'));
-
-        $description = $request->getParam('description');
-        $metaDescription = $request->getParam('metaDescription');
-        if(empty($metaDescription) && !empty($description))
-            $item->setMetaDescription($description);
-
-        $pipelineCategoryMapper->save($item);
-
-        return $this->_helper->redirector('index');
+        $this->view->container_nav = $containerNav;*/
     }
 
 }

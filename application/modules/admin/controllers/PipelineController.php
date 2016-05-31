@@ -2,12 +2,30 @@
 use \Michelf\Markdown;
 include_once 'Michelf/Markdown.php';
 
-class PipelineController extends Zend_Controller_Action
+include_once 'BaseController.php';
+
+class PipelineController extends Admin_BaseController
 {
     /**
      * @var Pipeline_Model_Mapper_Pipeline
      */
     protected $_modelMapper = null;
+
+    /**
+     * @var Pipeline_Model_Pipeline
+     */
+    protected $_model = null;
+
+    /**
+     * @var Pipeline_Model_Mapper_PipelineCategories
+     */
+    protected $_modelCategoriesMapper = null;
+
+    /**
+     * @var Zend_Form[]
+     *
+     */
+    protected $_forms = array();
 
     /**
      * @var Zend_Controller_Action_Helper_Redirector
@@ -19,6 +37,10 @@ class PipelineController extends Zend_Controller_Action
     public function init()
     {
         $this->_modelMapper = new Pipeline_Model_Mapper_Pipeline();
+        $this->_model = new Pipeline_Model_Pipeline();
+        $this->_modelCategoriesMapper = new Pipeline_Model_Mapper_PipelineCategories();
+        $this->_forms['edit'] = new Admin_Form_PipelineEdit();
+
         $this->_redirector = $this->_helper->getHelper('Redirector');
 
         $ajaxContext = $this->_helper->getHelper('AjaxContext');
@@ -32,43 +54,14 @@ class PipelineController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $request = $this->getRequest();
+        parent::indexAction();
 
-        $pipelineMapper = new Pipeline_Model_Mapper_Pipeline();
-        $select = $pipelineMapper->getDbTable()->select();
-        $select->order('sorting ASC');
-
-        if($request->getParam('category_id')){
-            $pipelineCategoryMapper = new Pipeline_Model_Mapper_PipelineCategories();
-            $category = $pipelineCategoryMapper->find($request->getParam('category_id'), new Pipeline_Model_PipelineCategories());
-
-            if(!is_null($category)){
-                $select->where('category_id = ?', $request->getParam('category_id'));
-                $this->view->categoryName = $category->getTitle().' - ';
-            }
-        }
-
-        $pagesItems = $pipelineMapper->fetchAll($select);
-
-        if(!empty($pagesItems)){
-            if(count($pagesItems)> $this->getCountItemOnPage()){
-                $pageItems = array_chunk($pagesItems, $this->getCountItemOnPage());
-
-                $currentPage = 0;
-
-                if($request->getParam('page') && $request->getParam('page')>0)
-                    $currentPage = $request->getParam('page')-1;
-
-                if($request->getParam('page') && $request->getParam('page')>count($pageItems))
-                    $currentPage = count($pageItems)-1;
-
-                $pagesItems = $pageItems[$currentPage];
-                $this->view->countPage = count($pageItems);
-                $this->view->currentPage = $currentPage+1;
-            }
-        }
-
-        $this->view->pages = $pagesItems;
+        if($this->_request->getParam('category_id'))
+            $this->view->categoryName = $this->_modelCategoriesMapper
+                    ->find(
+                        $this->_request->getParam('category_id'),
+                        new Pipeline_Model_PipelineCategories())
+                    ->getTitle().' - ';
 
         $config = array(
             Zend_Navigation_Page_Mvc::factory(array(
@@ -89,6 +82,7 @@ class PipelineController extends Zend_Controller_Action
                 'controller' => 'pipeline',
                 'action' => 'add',
                 'resource' => 'pipeline',
+                'params' => array('id' => $this->_request->getParam('category_id'))
             )),
         );
 
@@ -99,15 +93,14 @@ class PipelineController extends Zend_Controller_Action
 
     public function addAction()
     {
-        $request = $this->getRequest();
-        $form = new Admin_Form_PipelineEdit();
+        $form = $this->_forms['edit'];
 
         $form->setDefaults(array(
             'sorting'       => 0,
             'active'        => 1,
             'deleted'       => 0,
-            'imageLoad'         => '/files/images/product/2012-05-22_foto_nv.jpg',
-            'imageDraftLoad'    => '/files/images/product/2012-05-22_foto_nv.jpg',
+            'categoryId'    => (!$this->_request->getParam('id'))?0:$this->_request->getParam('id'),
+            'imageLoad'         => '/files/images/product/2012-05-22_foto_nv.jpg'
         ));
 
         $form->getDisplayGroup('desc')->addAttribs(array('class'=>'tab-pane active'));
@@ -117,14 +110,36 @@ class PipelineController extends Zend_Controller_Action
         $imageTableElement->setAttrib('prepend_btn', $imageTablePrepend);
 
         if ($this->getRequest()->isPost()){
-            if ($form->isValid($request->getPost())){
-                $this->_saveFormData($form);
+            if ($form->isValid($this->_request->getPost())){
+
+                $itemSaveForm = $this->saveFormData($form);
+
+                $item = $this->_modelMapper->find($itemSaveForm->getId(), $this->_model);
+
+                $categoryId = ($this->_request->getParam('category_id'))
+                    ?$this->_request->getParam('category_id')
+                    :$item->getCategoryId();
+
+                $category = $this->_modelCategoriesMapper->find($categoryId, new Pipeline_Model_PipelineCategories());
+                $fullPath = ($category)
+                    ?$category->getPath().'/'.$item->getPath()
+                    :$item->getPath();
+
+                $item->setFullPath($fullPath);
+
+                $this->_modelMapper->save($item);
+
+                $this->_redirector->gotoRouteAndExit(array(
+                    'module' => 'admin',
+                    'controller' => 'pipeline-categories',
+                    'action' => 'list',
+                    'id'=>$item->getCategoryId()
+                ), 'adminEdit', true);
             }
 
-            $form->setDefaults($request->getPost());
-            $this->view->formData = $form->getValues();
+            $form->setDefaults($this->_request->getPost());
         }
-
+        
         $this->view->form = $form;
 
         $config = array(
@@ -282,7 +297,7 @@ class PipelineController extends Zend_Controller_Action
         $this->view->container_nav = $containerNav;
     }
 
-    public function deleteAction()
+    /*public function deleteAction()
     {
         $itemId = $this->_request->getParam('id');
         if(is_null($itemId))
@@ -303,9 +318,9 @@ class PipelineController extends Zend_Controller_Action
             'action' => 'list',
             'id'=>$item->getCategoryId()
         ), 'adminEdit', true);
-    }
+    }*/
 
-    public function enableAction()
+    /*public function enableAction()
     {
         $itemId = $this->_request->getParam('id');
 
@@ -325,48 +340,8 @@ class PipelineController extends Zend_Controller_Action
             'action' => 'list',
             'id'=>$item->getCategoryId()
         ), 'adminEdit', true);
-    }
+    }*/
 
-
-    public function jsonAction()
-    {
-        $request = $this->getRequest();
-        $id = $request->getParam('id');
-
-        $jsonData = array(
-            $request->getControllerKey() => $request->getControllerName(),
-            'role' => Zend_Auth::getInstance()->getIdentity()->role
-        );
-
-        if($id){
-            $entry = $this->_modelMapper->find($id, new Pipeline_Model_Pipeline());
-            if(!is_null($entry))
-                $jsonData = array_merge($jsonData, $entry->getOptions());
-        }
-
-
-        return $this->_helper->json->sendJson($jsonData);
-    }
-
-    /**
-     * @param null $count_item_on_page
-     * @return PipelineController
-     *
-     */
-    public function setCountItemOnPage($count_item_on_page)
-    {
-        $this->_count_item_on_page = $count_item_on_page;
-        return $this;
-    }
-
-    /**
-     * @return null
-     *
-     */
-    public function getCountItemOnPage()
-    {
-        return $this->_count_item_on_page;
-    }
 
     /**
      * @param $itemId

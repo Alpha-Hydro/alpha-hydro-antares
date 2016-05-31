@@ -5,30 +5,47 @@ class Admin_Form_PipelineCategoriesEdit extends Twitter_Bootstrap_Form_Vertical
 
     public function init()
     {
-        $this->addElement('hidden', 'id');
-
         $image = new Zend_Form_Element_File('imageLoadFile');
-        $image->setDestination(APPLICATION_ROOT.'/upload/pipeline/category/')
+        $image
+            ->setValueDisabled(true)
             ->addValidator('Size', false, 1024000)
             ->addValidator('Extension', false, 'jpg,png,gif')
-            ->setAttrib('class', 'hidden');
+            ->setAttribs(array(
+                'class' => 'hidden',
+                'data-input' => 'image',
+                'data-upload' => '/upload/pipeline/category'
+            ));
         $this->addElement($image);
+
+        $this->addElement('hidden', 'image');
 
         $this->addElement('image', 'imageLoad', array(
             'label'         => null,//'Изображение',
             'class'         => 'img-thumbnail',
             'data-toggle'   => 'tooltip',
             'data-placement'=> 'bottom',
+            'data-input' => 'image',
             'title'         => 'Загрузить изображение',
         ));
 
-        $this->addElement('hidden', 'image');
+        $this->addDisplayGroup(
+            array(
+                'imageLoad',
+                'imageLoadFile',
+                'image',
+            ),
+            'imageGroup',
+            array()
+        );
 
-        $this->addElement('select', 'parentId', array(
+        $this->addElement('hidden', 'id');
+        $this->addElement('hidden', 'parentId');
+
+        /*$this->addElement('select', 'parentId', array(
             'label'     => 'Родительская категория',
             'required'  => true,
             'multiOptions' => $this->getCategoryArray(),
-        ));
+        ));*/
 
         $this->addElement('text', 'title', array(
             'label'         => 'Наименование категории',
@@ -39,12 +56,24 @@ class Admin_Form_PipelineCategoriesEdit extends Twitter_Bootstrap_Form_Vertical
         ));
 
         $this->addElement('text', 'path', array(
-            'label'         => 'Url',
-            'placeholder'   => 'Url',
+            'label'         => 'Url страницы',
+            'placeholder'   => 'Url страницы',
             'required'      => true,
         ));
 
         $this->addElement('hidden', 'fullPath');
+
+        $this->addDisplayGroup(
+            array(
+                'title',
+                'parentId',
+                'path',
+                'id',
+                'fullPath'
+            ),
+            'basic',
+            array()
+        );
 
         $this->addElement('textarea', 'description', array(
             'label'         => 'Краткое описание категории',
@@ -57,6 +86,18 @@ class Admin_Form_PipelineCategoriesEdit extends Twitter_Bootstrap_Form_Vertical
             'placeholder'   => 'Текст',
             'rows'          => '8',
         ));
+
+        $this->addDisplayGroup(
+            array(
+                'description',
+                'contentMarkdown',
+            ),
+            'desc',
+            array(
+                'class' => 'tab-pane active',
+                'role'  => 'tabpanel'
+            )
+        );
 
 
         $this->addElement('text', 'metaTitle', array(
@@ -76,52 +117,6 @@ class Admin_Form_PipelineCategoriesEdit extends Twitter_Bootstrap_Form_Vertical
             'rows'          => '4',
         ));
 
-        $this->addElement('text', 'sorting', array(
-            'label'         => 'Сортировка',
-        ));
-
-        $this->addElement('checkbox', 'active', array(
-            'label'         => 'Активность',
-        ));
-
-        $this->addElement('checkbox', 'deleted', array(
-            'label'         => 'Cтраница удалена',
-        ));
-
-        $this->addDisplayGroup(
-            array(
-                'title',
-                'parentId',
-                'path',
-                'id',
-            ),
-            'basic',
-            array()
-        );
-
-
-        $this->addDisplayGroup(
-            array(
-                'imageLoad',
-                'imageLoadFile',
-                'image',
-            ),
-            'imageGroup',
-            array()
-        );
-
-        $this->addDisplayGroup(
-            array(
-                'description',
-                'contentMarkdown',
-            ),
-            'desc',
-            array(
-                'class' => 'tab-pane active',
-                'role'  => 'tabpanel'
-            )
-        );
-
         $this->addDisplayGroup(
             array(
                 'metaTitle',
@@ -135,6 +130,19 @@ class Admin_Form_PipelineCategoriesEdit extends Twitter_Bootstrap_Form_Vertical
 
             )
         );
+
+
+        $this->addElement('text', 'sorting', array(
+            'label'         => 'Сортировка',
+        ));
+
+        $this->addElement('checkbox', 'active', array(
+            'label'         => 'Активность',
+        ));
+
+        $this->addElement('checkbox', 'deleted', array(
+            'label'         => 'Cтраница удалена',
+        ));
 
         $this->addDisplayGroup(
             array(
@@ -160,15 +168,6 @@ class Admin_Form_PipelineCategoriesEdit extends Twitter_Bootstrap_Form_Vertical
         ));
 
         $this->getElement('submit')->removeDecorator('label');
-
-        /*$this->addElement('hash', 'csrf', array(
-            'ignore' => true,
-        ));*/
-
-        /*$classForm = $this->getAttrib('class');
-        $this->addAttribs(array(
-            'class' => 'tab-content '.$classForm,
-        ));*/
     }
 
     /**

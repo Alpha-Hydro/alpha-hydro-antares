@@ -5,31 +5,42 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
 
     public function init()
     {
-        $this->addElement('hidden', 'id');
-        $this->addElement('hidden', 'fullPath');
-
         $image = new Zend_Form_Element_File('imageLoadFile');
-        $image->setDestination(APPLICATION_ROOT.'/upload/pipeline/items/')
+        $image
+            ->setValueDisabled(true)
             ->addValidator('Size', false, 1024000)
             ->addValidator('Extension', false, 'jpg,png')
             ->setAttribs(
                 array(
                     'class' => 'hidden',
+                    'data-input' => 'image',
+                    'data-upload' => '/upload/pipeline/items'
                 )
             );
         $this->addElement($image);
+
+        $this->addElement('hidden', 'image');
 
         $this->addElement('image', 'imageLoad', array(
             'label'         => null,//'Изображение',
             'class'         => 'img-thumbnail',
             'data-toggle'   => 'tooltip',
             'data-placement'=> 'bottom',
+            'data-input' => 'image',
             'title'         => 'Загрузить изображение',
         ));
 
-        $this->addElement('hidden', 'image');
+        $this->addDisplayGroup(
+            array(
+                'imageLoad',
+                'imageLoadFile',
+                'image',
+            ),
+            'imageGroup',
+            array()
+        );
 
-        $imageDraft = new Zend_Form_Element_File('imageDraftLoadFile');
+        /*$imageDraft = new Zend_Form_Element_File('imageDraftLoadFile');
         $imageDraft->setDestination(APPLICATION_ROOT.'/upload/pipeline/items/')
             ->addValidator('Size', false, 1024000)
             ->addValidator('Extension', false, 'jpg,png')
@@ -50,24 +61,49 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
 
         $this->addElement('hidden', 'imageDraft');
 
+        $this->addDisplayGroup(
+            array(
+                'imageDraftLoad',
+                'imageDraftLoadFile',
+                'imageDraft',
+            ),
+            'imageDraftGroup',
+            array()
+        );*/
+
+
         $imageTable = new Zend_Form_Element_File('imageTableLoadFile');
-        $imageTable->setDestination(APPLICATION_ROOT.'/upload/pipeline/items/')
+        $imageTable
+            ->setValueDisabled(true)
             ->addValidator('Size', false, 1024000)
             ->addValidator('Extension', false, 'jpg,png,pdf')
             ->setAttribs(
                 array(
                     'class' => 'hidden',
+                    'data-input' => 'imageTable',
+                    'data-upload' => '/upload/pipeline/items'
                 )
-            )
-            ->setLabel('Таблица');
+            );
         $this->addElement($imageTable);
 
         $this->addElement('text', 'imageTable', array(
             'label'         => 'Таблица',
             'placeholder'   => 'Таблица размеров',
-            //'prepend_btn'       => '<a class="btn btn-default"><span class="glyphicon glyphicon-eye-open"></span></a>',
             'class'         => '',
         ));
+
+        $this->addDisplayGroup(
+            array(
+                'imageTable',
+                'imageTableLoadFile',
+            ),
+            'imageTableGroup',
+            array()
+        );
+
+
+        $this->addElement('hidden', 'id');
+        $this->addElement('hidden', 'fullPath');
 
         $this->addElement('text', 'title', array(
             'label'         => 'Наименование товара',
@@ -91,11 +127,18 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
             'required'      => true,
         ));
 
-        /*$this->addElement('text', 'fullPath', array(
-            'label'         => 'Url страницы',
-            'placeholder'   => 'Url страницы',
-            'required'      => true,
-        ));*/
+        $this->addDisplayGroup(
+            array(
+                'title',
+                'categoryId',
+                'path',
+                'fullPath',
+                'id',
+            ),
+            'basic',
+            array()
+        );
+
 
         $this->addElement('textarea', 'description', array(
             'label'         => 'Краткое описание страницы',
@@ -108,6 +151,19 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
             'placeholder'   => 'Текст',
             'rows'          => '8',
         ));
+
+        $this->addDisplayGroup(
+            array(
+                'description',
+                'contentMarkdown',
+            ),
+            'desc',
+            array(
+                'class' => 'tab-pane',
+                'role'  => 'tabpanel'
+            )
+        );
+
 
         $this->addElement('text', 'metaTitle', array(
             'label'         => 'SEO title',
@@ -126,70 +182,6 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
             'rows'          => '4',
         ));
 
-        $this->addElement('text', 'sorting', array(
-            'label'         => 'Сортировка',
-        ));
-
-        $this->addElement('checkbox', 'active', array(
-            'label'         => 'Активность',
-        ));
-
-        $this->addElement('checkbox', 'deleted', array(
-            'label'         => 'Cтраница удалена',
-        ));
-
-        $this->addDisplayGroup(
-            array(
-                'title',
-                'categoryId',
-                'path',
-                'fullPath',
-                'id',
-            ),
-            'basic',
-            array()
-        );
-
-        $this->addDisplayGroup(
-            array(
-                'imageLoad',
-                'imageLoadFile',
-                'image',
-            ),
-            'imageGroup',
-            array()
-        );
-
-        $this->addDisplayGroup(
-            array(
-                'imageTable',
-                'imageTableLoadFile',
-            ),
-            'imageTableGroup',
-            array()
-        );
-
-        $this->addDisplayGroup(
-            array(
-                'imageDraftLoad',
-                'imageDraftLoadFile',
-                'imageDraft',
-            ),
-            'imageDraftGroup',
-            array()
-        );
-
-        $this->addDisplayGroup(
-            array(
-                'description',
-                'contentMarkdown',
-            ),
-            'desc',
-            array(
-                'class' => 'tab-pane',
-                'role'  => 'tabpanel'
-            )
-        );
         $this->addDisplayGroup(
             array(
                 'metaTitle',
@@ -203,6 +195,20 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
 
             )
         );
+
+
+        $this->addElement('text', 'sorting', array(
+            'label'         => 'Сортировка',
+        ));
+
+        $this->addElement('checkbox', 'active', array(
+            'label'         => 'Активность',
+        ));
+
+        $this->addElement('checkbox', 'deleted', array(
+            'label'         => 'Cтраница удалена',
+        ));
+
         $this->addDisplayGroup(
             array(
                 'sorting',
@@ -227,15 +233,6 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
         ));
 
         $this->getElement('submit')->removeDecorator('label');
-
-        /*$this->addElement('hash', 'csrf', array(
-            'ignore' => true,
-        ));*/
-
-        /*$classForm = $this->getAttrib('class');
-        $this->addAttribs(array(
-            'class' => 'tab-content '.$classForm,
-        ));*/
     }
 
     /**

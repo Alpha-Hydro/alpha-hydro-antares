@@ -5,9 +5,6 @@ class Admin_Form_ManufactureCategoriesEdit extends Twitter_Bootstrap_Form_Vertic
 
     public function init()
     {
-        $this->addElement('hidden', 'id');
-        $this->addElement('hidden', 'parentId');
-
         $image = new Zend_Form_Element_File('imageLoadFile');
         $image
             ->setValueDisabled(true)
@@ -31,6 +28,19 @@ class Admin_Form_ManufactureCategoriesEdit extends Twitter_Bootstrap_Form_Vertic
             'title'         => 'Загрузить изображение',
         ));
 
+        $this->addDisplayGroup(
+            array(
+                'imageLoad',
+                'imageLoadFile',
+                'image',
+            ),
+            'imageGroup',
+            array()
+        );
+
+        $this->addElement('hidden', 'id');
+        $this->addElement('hidden', 'parentId');
+
         $this->addElement('text', 'title', array(
             'label'         => 'Заголовок страницы',
             'placeholder'   => 'Заголовок страницы',
@@ -45,6 +55,17 @@ class Admin_Form_ManufactureCategoriesEdit extends Twitter_Bootstrap_Form_Vertic
             'required'      => true,
         ));
 
+        $this->addDisplayGroup(
+            array(
+                'title',
+                'path',
+                'parentId',
+                'id',
+            ),
+            'basic',
+            array()
+        );
+
         $this->addElement('textarea', 'description', array(
             'label'         => 'Краткое описание страницы',
             'placeholder'   => 'Краткое описание страницы',
@@ -56,6 +77,18 @@ class Admin_Form_ManufactureCategoriesEdit extends Twitter_Bootstrap_Form_Vertic
             'placeholder'   => 'Текст',
             'rows'          => '8',
         ));
+
+        $this->addDisplayGroup(
+            array(
+                'description',
+                'contentMarkdown',
+            ),
+            'desc',
+            array(
+                'class' => 'tab-pane active',
+                'role'  => 'tabpanel'
+            )
+        );
 
         $this->addElement('text', 'metaTitle', array(
             'label'         => 'SEO title',
@@ -74,51 +107,6 @@ class Admin_Form_ManufactureCategoriesEdit extends Twitter_Bootstrap_Form_Vertic
             'rows'          => '4',
         ));
 
-        $this->addElement('text', 'sorting', array(
-            'label'         => 'Сортировка',
-        ));
-
-        $this->addElement('checkbox', 'active', array(
-            'label'         => 'Активность',
-        ));
-
-        $this->addElement('checkbox', 'deleted', array(
-            'label'         => 'Cтраница удалена',
-        ));
-
-        $this->addDisplayGroup(
-            array(
-                'imageLoad',
-                'imageLoadFile',
-                'image',
-            ),
-            'imageGroup',
-            array()
-        );
-
-        $this->addDisplayGroup(
-            array(
-                'title',
-                'path',
-                'parentId',
-                'id',
-            ),
-            'basic',
-            array()
-        );
-
-        $this->addDisplayGroup(
-            array(
-                'description',
-                'contentMarkdown',
-            ),
-            'desc',
-            array(
-                'class' => 'tab-pane active',
-                'role'  => 'tabpanel'
-            )
-        );
-
         $this->addDisplayGroup(
             array(
                 'metaTitle',
@@ -132,6 +120,18 @@ class Admin_Form_ManufactureCategoriesEdit extends Twitter_Bootstrap_Form_Vertic
 
             )
         );
+
+        $this->addElement('text', 'sorting', array(
+            'label'         => 'Сортировка',
+        ));
+
+        $this->addElement('checkbox', 'active', array(
+            'label'         => 'Активность',
+        ));
+
+        $this->addElement('checkbox', 'deleted', array(
+            'label'         => 'Cтраница удалена',
+        ));
 
         $this->addDisplayGroup(
             array(
@@ -151,19 +151,7 @@ class Admin_Form_ManufactureCategoriesEdit extends Twitter_Bootstrap_Form_Vertic
             'type'          => 'submit',
             'buttonType'    => 'success',
             'ignore' => true,
-            //'escape'        => false
         ));
-
-        /*$this->addElement('hash', 'csrf', array(
-            'ignore' => true,
-        ));*/
-
-        /*$classForm = $this->getAttrib('class');
-        $this->addAttribs(array(
-            'class' => 'tab-content '.$classForm,
-        ));*/
     }
-
-
 }
 
