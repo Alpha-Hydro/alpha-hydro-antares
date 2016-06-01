@@ -41,35 +41,6 @@ class PipelineCategoriesController extends Admin_BaseController
     public function indexAction()
     {
         parent::indexAction();
-        /*$request = $this->getRequest();
-
-        $pageMapper = new Pipeline_Model_Mapper_PipelineCategories();
-
-        $select = $pageMapper->getDbTable()->select();
-        $select->order('sorting ASC');
-
-        $pageItems = $pageMapper->fetchAll($select);
-
-        if(!empty($pageItems)){
-            if(count($pageItems)> $this->getCountItemOnPage()){
-
-                $pages = array_chunk($pageItems, $this->getCountItemOnPage());
-
-                $currentPage = 0;
-
-                if($request->getParam('page') && $request->getParam('page')>0)
-                    $currentPage = $request->getParam('page')-1;
-
-                if($request->getParam('page') && $request->getParam('page')>count($pages))
-                    $currentPage = count($pages)-1;
-
-                $pageItems = $pages[$currentPage];
-                $this->view->countPage = count($pages);
-                $this->view->currentPage = $currentPage+1;
-            }
-        }
-
-        $this->view->pages = $pageItems;*/
 
         $config = array(
             Zend_Navigation_Page_Mvc::factory(array(
@@ -85,13 +56,7 @@ class PipelineCategoriesController extends Admin_BaseController
 
         $this->view->container_nav = $containerNav;
     }
-
-    /*public function listAction()
-    {
-        $this->forward('index', 'pipeline', 'admin', array('category_id' => $this->_getParam('id')));
-        return;
-    }*/
-
+    
     public function addAction()
     {
         $form = $this->_forms['edit'];

@@ -53,6 +53,7 @@ class CategoriesController extends Admin_BaseController
         if($this->_request->getParam('parent_id') && $this->_request->getParam('parent_id') != 0){
             $parent_id = $this->_request->getParam('parent_id');
             $this->view->breadcrumbs = $this->containerNavigation($parent_id);
+            $this->view->current_category = $this->_request->getParam('parent_id');
         }
 
         $select
@@ -67,6 +68,17 @@ class CategoriesController extends Admin_BaseController
 
         $this->view->pages = $pageItems;
         $this->view->auth = Zend_Auth::getInstance()->hasIdentity();
+
+        $config = array(
+            array(
+                'label' => 'Добавить категорию',
+                'uri' => '#/addCategories'
+            ),
+        );
+
+        $containerNav = new Zend_Navigation($config);
+
+        $this->view->container_nav = $containerNav;
     }
 
     public function addAction()

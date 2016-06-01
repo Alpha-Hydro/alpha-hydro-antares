@@ -31,6 +31,7 @@ $this->sidebar_headers = true;
 <?php if($this->auth):?>
     <div class="col-md-3 text-center">
         <div id="categoriesAddButtton"
+             class="categories-list-item z-depth-1"
              data-id="<?=$this->current_category?>"
              data-controller = "categories"
              data-action="add"

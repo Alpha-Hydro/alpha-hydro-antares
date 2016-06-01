@@ -42,10 +42,10 @@ if (categoriesAddButtton){
 const itemAddButtton = document.getElementById('itemAddButtton');
 if (itemAddButtton){
 	dataItem = {
-		controller: itemAddButtton.getAttribute('data-controller'),
-		categoryId: itemAddButtton.getAttribute('data-categoryId'),
-		action: itemAddButtton.getAttribute('data-action'),
-		title: itemAddButtton.getAttribute('data-title')
+		controller: itemAddButtton.dataset.controller,
+		categoryId: itemAddButtton.dataset.categoryid,
+		action: itemAddButtton.dataset.action,
+		title: itemAddButtton.dataset.title
 	};
 	ReactDOM.render(<ItemAddButton dataItem = {dataItem}/>, itemAddButtton);
 }

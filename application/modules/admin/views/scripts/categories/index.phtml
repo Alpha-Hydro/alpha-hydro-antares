@@ -64,6 +64,13 @@ $this->secondary_text = 'Список категорий';
             </tr>
         <?php endforeach;?>
     </table>
+    <div id="categoriesAddButtton"
+         class="pull-left"
+         data-id="<?=$this->current_category?>"
+         data-controller = "categories"
+         data-action="add"
+         data-title="Добавить категорию"
+    ></div>
     <?= $this->render('components/_paginator.phtml')?>
 <?php else:?>
     <div class="text-center">

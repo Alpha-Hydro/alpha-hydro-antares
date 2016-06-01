@@ -35,9 +35,12 @@ export default class CategoriesAddButton extends React.Component{
 	
 	render() {
 		return (
-			<div className="categories-list-item z-depth-1" onClick={this.showModal.bind(this)}>
-				<img src="/files/images/category/icons/add-category.png" />
-				<p className="categories-list-item-name">{this.props.dataItem.title}</p>
+			<div>
+				<Button
+					{...this.props}
+					onClick={this.showModal.bind(this)}>
+					Добавить категорию
+				</Button>
 				<Modal
 					show={this.state.show}
 					onHide={this.hideModal.bind(this)}
