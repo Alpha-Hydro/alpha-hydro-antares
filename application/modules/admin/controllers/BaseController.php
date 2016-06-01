@@ -92,7 +92,6 @@ class Admin_BaseController extends Zend_Controller_Action
 
         if ($this->getRequest()->isPost()){
             if ($form->isValid($this->_request->getPost())){
-                //Zend_Debug::dump($form->getValues());
                 $item = $this->saveFormData($form);
 
                 if($this->_request->getControllerName() != strtolower($this->getNameModule())){
@@ -380,7 +379,7 @@ class Admin_BaseController extends Zend_Controller_Action
      * Сохраняются только основные поля присланные с формы
      * Для сохранения специфических полей таблиц нужно
      * 1. Все поля таблицы добавить в форму со значениями по умолчанию
-     * 2. переопределить метод addAction в дочернем классе
+     * 2. переопределить методы addAction или saveFormData в дочернем классе
      * 
      * @param Zend_Form $form
      * @return null
@@ -420,6 +419,12 @@ class Admin_BaseController extends Zend_Controller_Action
         return $item;
     }
 
+    /**
+     * @param Zend_Form_Element_File $element
+     * @param $item Catalog_Model_Categories | Catalog_Model_Products | Manufacture_Model_ManufactureCategories | Manufacture_Model_Manufacture | Pages_Model_Pages | Pipeline_Model_PipelineCategories | Pipeline_Model_Pipeline | Oil_Model_OilCategories | Oil_Model_Oil | Media_Model_MediaCategories | Media_Model_Media
+     * @return Catalog_Model_Categories | Catalog_Model_Products | Manufacture_Model_ManufactureCategories | Manufacture_Model_Manufacture | Pages_Model_Pages | Pipeline_Model_PipelineCategories | Pipeline_Model_Pipeline | Oil_Model_OilCategories | Oil_Model_Oil | Media_Model_MediaCategories | Media_Model_Media
+     * @throws Exception
+     */
     public function saveUploadFile(Zend_Form_Element_File $element, $item)
     {
         $uploadPath = $element->getAttrib('data-upload') . '/' . $item->getId();
@@ -427,12 +432,19 @@ class Admin_BaseController extends Zend_Controller_Action
         if(!file_exists(APPLICATION_ROOT.$uploadPath))
             mkdir(APPLICATION_ROOT.$uploadPath, 0755, true);
 
-        $element->setDestination(APPLICATION_ROOT.$uploadPath);
+        //$element->setDestination(APPLICATION_ROOT.$uploadPath);
+        
+        $fileName = $element->getFileName(null, false);
+
+        $path = APPLICATION_ROOT.$uploadPath.'/'.$fileName;
+        $path = iconv('utf-8', 'cp1251', $path);
 
         try {
+            $element->addFilter('Rename', array('target' => $path,
+                'overwrite' => true));
             $element->receive();
             $item->setOptions(array(
-                $element->getAttrib('data-input') => $uploadPath. '/' .$element->getFileName(null, false)
+                $element->getAttrib('data-input') => $uploadPath. '/' .$fileName
             ));
             $this->getModelMapper()->save($item);
         }
@@ -444,15 +456,19 @@ class Admin_BaseController extends Zend_Controller_Action
         return $item;
     }
 
+    /**
+     * @param $item Catalog_Model_Categories | Catalog_Model_Products | Manufacture_Model_ManufactureCategories | Manufacture_Model_Manufacture | Pages_Model_Pages | Pipeline_Model_PipelineCategories | Pipeline_Model_Pipeline | Oil_Model_OilCategories | Oil_Model_Oil | Media_Model_MediaCategories | Media_Model_Media
+     * @return Catalog_Model_Categories | Catalog_Model_Products | Manufacture_Model_ManufactureCategories | Manufacture_Model_Manufacture | Pages_Model_Pages | Pipeline_Model_PipelineCategories | Pipeline_Model_Pipeline | Oil_Model_OilCategories | Oil_Model_Oil | Media_Model_MediaCategories | Media_Model_Media
+     */
     public function setMetaData($item)
     {
         $metaTitle = $this->_request->getParam('metaTitle');
-        if($metaTitle && empty($metaTitle))
+        if(empty($metaTitle))
             $item->setMetaTitle($this->_request->getParam('title'));
 
         $description = $this->_request->getParam('description');
         $metaDescription = $this->_request->getParam('metaDescription');
-        if($description && empty($metaDescription) && !empty($description))
+        if(empty($metaDescription) && !empty($description))
             $item->setMetaDescription($description);
         
         return $item;

@@ -94,6 +94,15 @@ class PipelineCategoriesController extends Admin_BaseController
 
     public function addAction()
     {
+        $form = $this->_forms['edit'];
+
+        $form->setDefaults(array(
+            'sorting'       => 0,
+            'active'        => 1,
+            'deleted'       => 0,
+            'parentId'      => 0,
+        ));
+
         parent::addAction();
 
         $config = array(
@@ -154,6 +163,53 @@ class PipelineCategoriesController extends Admin_BaseController
         $containerNav = new Zend_Navigation($config);
 
         $this->view->container_nav = $containerNav;*/
+    }
+
+    public function saveFormData(Zend_Form $form)
+    {
+        
+        $item = $this->_model;
+        $item->setOptions($form->getValues());
+
+        if($this->_request->getParam('contentMarkdown')){
+            $context_html = Michelf\MarkdownExtra::defaultTransform($this->_request->getParam('contentMarkdown'));
+            $item->setContentHtml($context_html);
+        }
+
+        if(!$this->_request->getParam('fullPath')){
+            $fullPath = $this->_request->getParam('path');
+
+            if($this->_request->getParam('parentId') != 0){
+                $parentCategory = $this->_modelMapper->find($this->_request->getParam('parentId'), new Pipeline_Model_PipelineCategories());
+                if($parentCategory)
+                    $fullPath = $parentCategory->getFullPath();
+            }
+            $item->setFullPath($fullPath);
+        }
+
+        $this->setMetaData($item);
+
+        //Zend_Debug::dump($item);
+
+        $this->getModelMapper()->save($item);
+
+
+        if($item->getId() && $item->getId() != ''){
+            $id = $item->getId();
+        }
+        else{
+            $id = $this->getModelMapper()->getDbTable()->getAdapter()->lastInsertId();
+
+        }
+        $item = $this->getModelMapper()->find($id, $this->getModel());
+
+        foreach ($form->getElements() as $key => $element) {
+            if($element instanceof Zend_Form_Element_File && $element->isUploaded()){
+                $item = $this->saveUploadFile($element, $item);
+            }
+        }
+
+        return $item;
     }
 
 }

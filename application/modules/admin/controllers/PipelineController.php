@@ -1,7 +1,4 @@
 <?php
-use \Michelf\Markdown;
-include_once 'Michelf/Markdown.php';
-
 include_once 'BaseController.php';
 
 class PipelineController extends Admin_BaseController
@@ -95,6 +92,8 @@ class PipelineController extends Admin_BaseController
     {
         $form = $this->_forms['edit'];
 
+        parent::addAction();
+
         $form->setDefaults(array(
             'sorting'       => 0,
             'active'        => 1,
@@ -109,7 +108,8 @@ class PipelineController extends Admin_BaseController
         $imageTablePrepend = '<button type="button" class="btn btn-default" id="imageTableLoadBtn"><span class="glyphicon glyphicon-save"></span></button>';
         $imageTableElement->setAttrib('prepend_btn', $imageTablePrepend);
 
-        if ($this->getRequest()->isPost()){
+
+        /*if ($this->getRequest()->isPost()){
             if ($form->isValid($this->_request->getPost())){
 
                 $itemSaveForm = $this->saveFormData($form);
@@ -139,8 +139,8 @@ class PipelineController extends Admin_BaseController
 
             $form->setDefaults($this->_request->getPost());
         }
-        
-        $this->view->form = $form;
+
+        $this->view->form = $form;*/
 
         $config = array(
             Zend_Navigation_Page_Mvc::factory(array(
@@ -170,40 +170,15 @@ class PipelineController extends Admin_BaseController
 
     public function editAction()
     {
-        $request = $this->getRequest();
-        $itemId = $request->getParam('id');
 
-        if(is_null($itemId))
-            $this->_redirector->gotoSimpleAndExit('index');
+        $form = $this->_forms['edit'];
 
-        $pipelineMapper = new Pipeline_Model_Mapper_Pipeline();
-        $pipeline = $pipelineMapper->find($itemId, new Pipeline_Model_Pipeline());
-
-        if(is_null($pipeline))
-            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
-
-        $this->view->item = $pipeline;
-
-        $form = new Admin_Form_PipelineEdit();
-        $dataPage = $pipeline->getOptions();
-
-        foreach ($dataPage as $key => $value) {
-            $form->setDefault($key, $value);
-        }
-
-        $imageValue = ($form->getValue('image') != '')
-            ?$form->getValue('image')
-            :'/files/images/product/2012-05-22_foto_nv.jpg';
-        $form->setDefault('imageLoad', $imageValue);
-
-        $imageDraftValue = ($form->getValue('imageDraft') != '')
-            ?$form->getValue('imageDraft')
-            :'/files/images/product/2012-05-22_foto_nv.jpg';
-        $form->setDefault('imageDraftLoad', $imageDraftValue);
+        parent::editAction();
 
         $imageTableElement = $form->getElement('imageTable');
         $imageTablePrepend = '<button type="button" class="btn btn-default" id="imageTableLoadBtn"><span class="glyphicon glyphicon-save"></span></button>';
         $imageTableValue = $imageTableElement->getValue();
+
         if(!is_null($imageTableValue)){
             $imageTablePrepend .= '<a href="'.$imageTableValue.'" class="btn btn-default" target="_blank"><span class="glyphicon glyphicon-eye-open"></span></a>';
             $imageTablePrepend .= '<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span></button>';
@@ -211,44 +186,7 @@ class PipelineController extends Admin_BaseController
         $imageTableElement->setAttrib('prepend_btn', $imageTablePrepend);
 
 
-        if ($this->getRequest()->isPost()){
-            if ($form->isValid($request->getPost())){
-                $this->_saveFormData($form);
-            }
-
-            $form->setDefaults($request->getPost());
-            $this->view->formData = $form->getValues();
-        }
-
-        $this->view->form = $form;
-
-        $pipelineProperties = $pipelineMapper->fetchPropertyRel($itemId);
-
-        if(!empty($pipelineProperties)){
-            $propertyValuesMapper = new Pipeline_Model_Mapper_PipelinePropertyValues();
-
-            $viewProperties = array();
-            foreach ($pipelineProperties as $property) {
-                $propertyValues = $propertyValuesMapper->findByKey($itemId, $property->getId(), new Pipeline_Model_PipelinePropertyValues());
-                $viewProperties[$property->getName()] = $propertyValues;
-            }
-            //var_dump($viewProperties);
-            $this->view->properties = $viewProperties;
-        }
-
-        $propertyArray = $this->_getPropertyArray($itemId);
-
-        if(0 != count($propertyArray)){
-            $formValue = new Admin_Form_PipelinePropertyValue();
-            $formValue->setDefaults(array(
-                'pipelineId' => $itemId,
-                'propertyId' => 0,
-                'sorting' => 0,
-            ));
-
-            $formValue->getElement('propertyId')->setMultiOptions($propertyArray);
-            $this->view->formValue = $formValue;
-        }
+        $this->setViewPipelineProperties();
 
         $config = array(
             Zend_Navigation_Page_Mvc::factory(array(
@@ -258,12 +196,12 @@ class PipelineController extends Admin_BaseController
                 'resource' => 'pipeline-categories',
             )),
             Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Список свойств',
+                'label' => 'Свойства товаров',
                 'module' => 'admin',
                 'controller' => 'pipeline-property',
                 'resource' => 'pipeline-property',
             )),
-            Zend_Navigation_Page_Mvc::factory(array(
+            /*Zend_Navigation_Page_Mvc::factory(array(
                 'label' => 'Добавить',
                 'module' => 'admin',
                 'controller' => 'pipeline',
@@ -289,7 +227,7 @@ class PipelineController extends Admin_BaseController
                 'module' => 'admin',
                 'controller' => 'pipeline',
                 'resource' => 'pipeline',
-            )),
+            )),*/
         );
 
         $containerNav = new Zend_Navigation($config);
@@ -297,51 +235,116 @@ class PipelineController extends Admin_BaseController
         $this->view->container_nav = $containerNav;
     }
 
-    /*public function deleteAction()
+    public function selectAddPropertyAction()
+    {
+        $request = $this->getRequest();
+
+        if($request->getParam('propertyId')){
+            $propertyId = $request->getParam('propertyId');
+
+            $pipelinePropertyMapper = new Pipeline_Model_Mapper_PipelineProperty();
+            $pipelineProperty = $pipelinePropertyMapper
+                ->find($propertyId, new Pipeline_Model_PipelineProperty());
+
+            $this->view->property = $pipelineProperty;
+        }
+    }
+
+    public function selectPropertyItemArrayAction()
+    {
+        $request = $this->getRequest();
+        $itemId = $request->getParam('pipelineId');
+        $propertyArray = $this->_getPropertyArray($itemId);
+
+        $this->view->selectOptions = $propertyArray;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setViewPipelineProperties()
     {
         $itemId = $this->_request->getParam('id');
-        if(is_null($itemId))
-            $this->_redirector->gotoSimpleAndExit('index');
 
-        $item = $this->_modelMapper->find($itemId, new Pipeline_Model_Pipeline());
-        if(is_null($item))
-            throw new Zend_Controller_Action_Exception('Страница не найдена', 404);
+        $pipelineProperties = $this->_modelMapper->fetchPropertyRel($itemId);
 
-        $deleted = ($item->getDeleted() != 0)?0:1;
+        if(!empty($pipelineProperties)){
+            $propertyValuesMapper = new Pipeline_Model_Mapper_PipelinePropertyValues();
 
-        $item->setDeleted($deleted);
-        $this->_modelMapper->save($item);
+            $viewProperties = array();
+            /**@var $property Pipeline_Model_PipelineProperty*/
+            foreach ($pipelineProperties as $property) {
+                $propertyValues = $propertyValuesMapper->findByKey($itemId, $property->getId(), new Pipeline_Model_PipelinePropertyValues());
+                $viewProperties[$property->getName()] = $propertyValues;
+            }
+            $this->view->properties = $viewProperties;
+        }
 
-        $this->_redirector->gotoRouteAndExit(array(
-            'module' => 'admin',
-            'controller' => 'pipeline-categories',
-            'action' => 'list',
-            'id'=>$item->getCategoryId()
-        ), 'adminEdit', true);
-    }*/
+        $propertyArray = $this->_getPropertyArray($itemId);
 
-    /*public function enableAction()
+        if(0 != count($propertyArray)){
+            $formValue = new Admin_Form_PipelinePropertyValue();
+            $formValue->setDefaults(array(
+                'pipelineId' => $itemId,
+                'propertyId' => 0,
+                'sorting' => 0,
+            ));
+
+            $formValue->getElement('propertyId')->setMultiOptions($propertyArray);
+            $this->view->formValue = $formValue;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Zend_Form $form
+     * @return Catalog_Model_Categories|Catalog_Model_Products|Manufacture_Model_Manufacture|Manufacture_Model_ManufactureCategories|Media_Model_Media|Media_Model_MediaCategories|null|Oil_Model_Oil|Oil_Model_OilCategories|Pages_Model_Pages|Pipeline_Model_Pipeline|Pipeline_Model_PipelineCategories
+     * @throws Exception
+     */
+    public function saveFormData(Zend_Form $form)
     {
-        $itemId = $this->_request->getParam('id');
 
-        if(is_null($itemId))
-            $this->_redirector->gotoSimpleAndExit('index');
+        $item = $this->_model;
+        $item->setOptions($form->getValues());
 
-        $item = $this->_modelMapper->find($itemId, new Pipeline_Model_Pipeline());
+        if($this->_request->getParam('contentMarkdown')){
+            $context_html = Michelf\MarkdownExtra::defaultTransform($this->_request->getParam('contentMarkdown'));
+            $item->setContentHtml($context_html);
+        }
 
-        $active = ($item->getActive() != 0)?0:1;
-        $item->setActive($active);
+        $categoryId = ($this->_request->getParam('category_id'))
+            ?$this->_request->getParam('category_id')
+            :$item->getCategoryId();
 
-        $this->_modelMapper->save($item);
+        $category = $this->_modelCategoriesMapper->find($categoryId, new Pipeline_Model_PipelineCategories());
+        $fullPath = ($category)
+            ?$category->getPath().'/'.$item->getPath()
+            :$item->getPath();
 
-        $this->_redirector->gotoRouteAndExit(array(
-            'module' => 'admin',
-            'controller' => 'pipeline-categories',
-            'action' => 'list',
-            'id'=>$item->getCategoryId()
-        ), 'adminEdit', true);
-    }*/
+        $item->setFullPath($fullPath);
 
+        $this->setMetaData($item);
+
+        $this->getModelMapper()->save($item);
+
+        if($item->getId() && $item->getId() != ''){
+            $id = $item->getId();
+        }
+        else{
+            $id = $this->getModelMapper()->getDbTable()->getAdapter()->lastInsertId();
+
+        }
+        $item = $this->getModelMapper()->find($id, $this->getModel());
+
+        foreach ($form->getElements() as $key => $element) {
+            if($element instanceof Zend_Form_Element_File && $element->isUploaded()){
+                $item = $this->saveUploadFile($element, $item);
+            }
+        }
+
+        return $item;
+    }
 
     /**
      * @param $itemId
@@ -384,88 +387,6 @@ class PipelineController extends Admin_BaseController
         $pipelinePropertyArray['new'] = 'Новое свойство...';
 
         return $pipelinePropertyArray;
-    }
-
-    public function selectAddPropertyAction()
-    {
-        $request = $this->getRequest();
-
-        if($request->getParam('propertyId')){
-            $propertyId = $request->getParam('propertyId');
-
-            $pipelinePropertyMapper = new Pipeline_Model_Mapper_PipelineProperty();
-            $pipelineProperty = $pipelinePropertyMapper
-                ->find($propertyId, new Pipeline_Model_PipelineProperty());
-
-            $this->view->property = $pipelineProperty;
-        }
-    }
-
-    public function selectPropertyItemArrayAction()
-    {
-        $request = $this->getRequest();
-        $itemId = $request->getParam('pipelineId');
-        $propertyArray = $this->_getPropertyArray($itemId);
-
-        $this->view->selectOptions = $propertyArray;
-    }
-
-    private function _saveFormData(Admin_Form_PipelineEdit $form)
-    {
-        $request = $this->getRequest();
-        $pipeline = new Pipeline_Model_Pipeline($form->getValues());
-        $pipelineMapper = new Pipeline_Model_Mapper_Pipeline();
-
-        $pipelineCategoryMapper = new Pipeline_Model_Mapper_PipelineCategories();
-        $pipelineCategory = $pipelineCategoryMapper->find($request->getParam('categoryId'),
-            new Pipeline_Model_PipelineCategories());
-
-        //set FullPath
-        $fullPath = (!is_null($pipelineCategory))
-            ?$pipelineCategory->getPath().'/'.$this->getParam('path')
-            :$this->getParam('path');
-        $pipeline->setFullPath($fullPath);
-
-        //set Image
-        $fileImage = $form->imageLoadFile->getFileInfo();
-        if(!empty($fileImage) && $fileImage['imageLoadFile']['name'] != ''){
-            $form->imageLoadFile->receive();
-            $pipeline->setImage('/upload/pipeline/items/'.$fileImage['imageLoadFile']['name']);
-        }
-
-        //set imageDraft
-        $fileDraftImage = $form->imageDraftLoadFile->getFileInfo();
-        if(!empty($fileDraftImage) && $fileDraftImage['imageDraftLoadFile']['name'] != ''){
-            $form->imageDraftLoadFile->receive();
-            $pipeline->setImageDraft('/upload/pipeline/items/'.$fileDraftImage['imageDraftLoadFile']['name']);
-        }
-
-        //set imageTable
-        $fileTableImage = $form->imageTableLoadFile->getFileInfo();
-        if(!empty($fileTableImage) && $fileTableImage['imageTableLoadFile']['name'] != ''){
-            $form->imageTableLoadFile->receive();
-            $pipeline->setImageTable('/upload/pipeline/items/'.$fileTableImage['imageTableLoadFile']['name']);
-        }
-
-        //set Content (html)
-        $markdown = $request->getParam('contentMarkdown');
-        $context_html = Markdown::defaultTransform($markdown);
-        $pipeline->setContentHtml($context_html);
-
-        //set meta title
-        $metaTitle = $request->getParam('metaTitle');
-        if(empty($metaTitle))
-            $pipeline->setMetaTitle($request->getParam('title'));
-
-        //set meta Description
-        $description = $request->getParam('description');
-        $metaDescription = $request->getParam('metaDescription');
-        if(empty($metaDescription) && !empty($description))
-            $pipeline->setMetaDescription($description);
-
-        $pipelineMapper->save($pipeline);
-
-        return $this->_helper->redirector('index');
     }
 }
 
