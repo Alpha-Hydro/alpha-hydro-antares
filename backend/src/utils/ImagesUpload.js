@@ -47,15 +47,16 @@ export default class ImagesUpload extends React.Component {
 					accept="image/*"
 					name={(!this.props.inputName)?"fileLoad":this.props.inputName}
 					onChange={this.handleFiles.bind(this)}/>
-
-				<ButtonGroup bsSize="small">
-					<Button bsStyle="primary" onClick={this.fileSelect.bind(this)}>
-						<Glyphicon glyph="download-alt" />
-					</Button>
-					<Button bsStyle="danger" className={this.state.delete} onClick={this.fileDelete.bind(this)}>
-						<Glyphicon glyph="trash" />
-					</Button>
-				</ButtonGroup>
+				<div className="show-btn-group">
+					<ButtonGroup bsSize="small">
+						<Button bsStyle="primary" onClick={this.fileSelect.bind(this)}>
+							<Glyphicon glyph="download-alt" />
+						</Button>
+						<Button bsStyle="danger" className={this.state.delete} onClick={this.fileDelete.bind(this)}>
+							<Glyphicon glyph="trash" />
+						</Button>
+					</ButtonGroup>
+				</div>
 			</div>
 		);
 	}

@@ -35,9 +35,12 @@ export default class ItemAddButton extends React.Component{
 	
 	render() {
 		return (
-			<div className="categories-list-item z-depth-1" onClick={this.showModal.bind(this)}>
-				<img src="/files/images/category/icons/add-category.png" />
-				<p className="categories-list-item-name">{this.props.dataItem.title}</p>
+			<div>
+				<Button
+					{...this.props}
+					onClick={this.showModal.bind(this)}>
+					{this.props.dataItem.title}
+				</Button>
 				<Modal
 					show={this.state.show}
 					onHide={this.hideModal.bind(this)}
@@ -46,7 +49,7 @@ export default class ItemAddButton extends React.Component{
 					<Modal.Header closeButton>
 						<Modal.Title id="contained-modal-title-lg" className="h3">
 							{this.state.data.name}
-							<small>{this.props.dataItem.title}</small>
+							<small className="block">{this.props.dataItem.title}</small>
 						</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>

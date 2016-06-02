@@ -49,19 +49,27 @@ class Admin_BaseController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        /**
-         * @var $select Zend_Db_Table_Select;
-         */
-        $select = $this->getModelMapper()->getDbTable()->select();
+        //Zend_Debug::dump($this->_request->getParams());
+        $cache = Zend_Registry::get('cache');
+        $cacheName = 'Admin_'.$this->_getNamespace().'_'
+            .$this->_request->getParam('category_id');
 
-        if($this->_request->getParam('category_id')){
-            $select->where('category_id = ?', $this->_request->getParam('category_id'));
-        }
+        if(!$pageItems = $cache->load($cacheName)){
+            /**
+             * @var $select Zend_Db_Table_Select;
+             */
+            $select = $this->getModelMapper()->getDbTable()->select();
 
-        $pageItems = $this->getModelMapper()->fetchAll($select);
+            if($this->_request->getParam('category_id')){
+                $select->where('category_id = ?', $this->_request->getParam('category_id'));
+            }
 
-        if(!empty($pageItems)){
-            $pageItems = $this->setPaginationPage($pageItems);
+            $pageItems = $this->getModelMapper()->fetchAll($select);
+
+            if(!empty($pageItems)){
+                $pageItems = $this->setPaginationPage($pageItems);
+            }
+            $cache->save($pageItems, $cacheName, array('admin', $this->getNameModule(), $this->_getNamespace()));
         }
 
         $this->view->pages = $pageItems;

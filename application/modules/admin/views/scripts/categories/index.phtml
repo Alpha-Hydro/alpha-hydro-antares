@@ -13,8 +13,8 @@ $this->secondary_text = 'Список категорий';
     <table class="table table-striped table-bordered">
         <thead>
         <tr>
-            <th class="col-md-1">№№ пп</th>
             <th>ID</th>
+            <th><span class="glyphicon glyphicon-sort"></span></th>
             <th>Наименование</th>
             <th>Url</th>
             <th>Действия</th>
@@ -22,8 +22,8 @@ $this->secondary_text = 'Список категорий';
         </thead>
         <?php foreach ($this->pages as $page):?>
             <tr class="<?=$this->contextualClassTr($page);?>">
-                <td><?=$page->getSorting()?></td>
                 <td><?=$page->getId()?></td>
+                <td><?=$page->getSorting()?></td>
                 <td>
                     <a href="<?=$this->url(array(
                         'parent_id'=>$page->getId(),
@@ -54,29 +54,16 @@ $this->secondary_text = 'Список категорий';
                          data-active="<?=($page->getActive() != 0)?true:false?>"
                          data-deleted="<?=($page->getDeleted() != 0)?true:false?>"
                     ></div>
-                    <?/*=$this->partial('_button_group_table.phtml', array(
-                        'item_controller' => 'categories',
-                        'item_id' => $page->getId(),
-                        'item_path' => '/catalog/'.$page->getFullPath(),
-                        'deleted' => ($page->getDeleted() != 0)? true : false,
-                    ))*/?>
                 </td>
             </tr>
         <?php endforeach;?>
     </table>
-    <div id="categoriesAddButtton"
-         class="pull-left"
-         data-id="<?=$this->current_category?>"
-         data-controller = "categories"
-         data-action="add"
-         data-title="Добавить категорию"
-    ></div>
-    <?= $this->render('components/_paginator.phtml')?>
-<?php else:?>
-    <div class="text-center">
-        <a href="<?=$this->url(
-            array('module'=>'admin', 'controller' => 'media-categories', 'action' => 'add'),
-            false,true
-        )?>" class="btn btn-success">Добавить категорию</a>
-    </div>
 <?php endif;?>
+<div id="categoriesAddButtton"
+     class="pull-left"
+     data-id="<?=$this->current_category?>"
+     data-controller = "categories"
+     data-action="add"
+     data-title="Добавить категорию"
+></div>
+<?= $this->render('components/_paginator.phtml')?>

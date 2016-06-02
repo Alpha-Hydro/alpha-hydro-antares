@@ -34,7 +34,7 @@ export default class CategoriesFormAdd extends React.Component{
 	componentWillMount(){
 		var parentId = this.props.data.id;
 
-		categoryHelpers.getGategoryList(parentId)
+		categoryHelpers.getCurrentGategoryList(parentId)
 			.then(function(categoryList){
 				this.setState({categoryList: categoryList});
 			}.bind(this));

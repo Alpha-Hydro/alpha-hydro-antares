@@ -39,7 +39,7 @@ export default class CategoriesAddButton extends React.Component{
 				<Button
 					{...this.props}
 					onClick={this.showModal.bind(this)}>
-					Добавить категорию
+					{this.props.dataItem.title}
 				</Button>
 				<Modal
 					show={this.state.show}
@@ -49,7 +49,7 @@ export default class CategoriesAddButton extends React.Component{
 					<Modal.Header closeButton>
 						<Modal.Title id="contained-modal-title-lg" className="h3">
 							{this.state.data.name}
-							<small>{this.props.dataItem.title}</small>
+							<small className="block">{this.props.dataItem.title}</small>
 						</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>

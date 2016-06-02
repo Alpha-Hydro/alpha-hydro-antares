@@ -1,4 +1,68 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Products</b> and script/action name <b>index</b></p>
-</div>
+<?php
+/**
+ * @var $page Catalog_Model_Products
+ */
+
+$this->title = 'Каталог';
+$this->secondary_text = $this->categoryName.'Список товаров';
+
+?>
+<?php if($this->breadcrumbs)
+    echo $this->navigation($this->breadcrumbs)->menu()->setUlClass('breadcrumb')?>
+<?php if(!empty($this->pages)):?>
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th><span class="glyphicon glyphicon-sort"></span></th>
+            <?php if(!$this->categoryName):?>
+                <th>Категория</th>
+            <?php endif;?>
+            <th>Наименование</th>
+            <th>Действия</th>
+        </tr>
+        </thead>
+        <?php foreach ($this->pages as $page):?>
+            <tr class="<?=$this->contextualClassTr($page);?>">
+                <td><?=$page->getId()?></td>
+                <td><?=$page->getSorting()?></td>
+                <?php if(!$this->categoryName):?>
+                    <td><?=$this->getCategoryProduct($page->getId())->getName()?></td>
+                <?php endif;?>
+                <td>
+                    <?php if($page->getDeleted() != 1):?>
+                        <a href="<?= $this->url(array(
+                            'module' => 'catalog',
+                            'controller' => 'categories',
+                            'action' => 'index',
+                            'fullPath'=>$page->getFullPath()
+                        ), 'catalog', true, false); ?>" title="Посмотреть на сайте">
+                            <?=$page->getSku().' ('.$page->getName().')'?>
+                            <span class="glyphicon glyphicon-link mlr1"></span>
+                        </a>
+                    <?php else:?>
+                        <?=$page->getSku().' ('.$page->getName().')'?>
+                    <?php endif;?>
+                </td>
+                <td width="150px">
+                    <div class="itemButtonsComponent"
+                         data-id="<?=$page->getId()?>"
+                         data-controller="products"
+                         data-active="<?=($page->getActive() != 0)?true:false?>"
+                         data-deleted="<?=($page->getDeleted() != 0)?true:false?>"
+                    ></div>
+                </td>
+            </tr>
+        <?php endforeach;?>
+    </table>
+<?php endif;?>
+
+<div id="itemAddButtton"
+     class="pull-left"
+     data-categoryId="<?=$this->current_category?>"
+     data-controller = "products"
+     data-action="add"
+     data-title="Добавить новый продукт"
+></div>
+
+<?= $this->render('components/_paginator.phtml')?>

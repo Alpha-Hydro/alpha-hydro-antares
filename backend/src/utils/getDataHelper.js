@@ -41,7 +41,7 @@ var helpers = {
 			});
 	},
 
-	getGategoryList: function(id){
+	getCurrentGategoryList: function(id){
 		return axios.get("/api/categories/list/" + id + "/")
 			.then(function (response) {
 				return response.data;

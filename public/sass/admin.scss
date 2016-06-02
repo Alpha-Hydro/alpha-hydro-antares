@@ -5,6 +5,8 @@
 @import "compass/css3";
 @import "vendors/corpus/whitespace";
 @import "vendors/corpus/breakpoints";
+@import "vendors/corpus/utilities";
+
 //@import "vendors/corpus/grid";
 @import "components/input-spinner";
 @import "components/vertical-center";
@@ -220,11 +222,19 @@ span{
 }
 .image-edit{
   position: relative;
-  > .btn-group{
+  > .show-btn-group{
     position: absolute;
     width: 100%;
-    top: 5px;
-    left: 5px;
+    text-align: center;
+    top: 40%;
+    opacity: 0;
+    @include transition(all .4s ease-in-out);
+  }
+  &:hover{
+    cursor: pointer;
+    > .show-btn-group{
+      opacity: 1;
+    }
   }
 }
 input[type=number] {

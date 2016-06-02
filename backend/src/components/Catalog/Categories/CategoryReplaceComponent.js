@@ -38,7 +38,7 @@ export default class CategoryReplaceComponent extends React.Component {
 	open() {
 		var id = this.props.currentCategory.id;
 
-		categoryHelpers.getGategoryList(id)
+		categoryHelpers.getCurrentGategoryList(id)
 			.then(function(categoryList){
 				this.setState({
 					categoryList: categoryList,
@@ -81,7 +81,7 @@ export default class CategoryReplaceComponent extends React.Component {
 				});
 			}.bind(this));
 
-		categoryHelpers.getGategoryList(id)
+		categoryHelpers.getCurrentGategoryList(id)
 			.then(function(categoryList){
 				this.setState({
 					categoryList: categoryList

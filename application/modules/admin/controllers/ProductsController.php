@@ -1,6 +1,8 @@
 <?php
 
-class ProductsController extends Zend_Controller_Action
+include_once 'BaseController.php';
+
+class ProductsController extends Admin_BaseController
 {
 
     /**
@@ -10,10 +12,22 @@ class ProductsController extends Zend_Controller_Action
     protected $_modelMapper = null;
 
     /**
+     * @var Catalog_Model_Products
+     *
+     */
+    protected $_model = null;
+
+    /**
      * @var Catalog_Model_Mapper_Categories
      *
      */
-    protected $_categoriesModelMapper = null;
+    protected $_modelCategoriesMapper = null;
+
+    /**
+     * @var Catalog_Model_Categories
+     *
+     */
+    protected $_categoriesModel = null;
 
     /**
      * @var Catalog_Model_Mapper_ProductParams
@@ -51,35 +65,63 @@ class ProductsController extends Zend_Controller_Action
      */
     protected $_redirector = null;
 
+    /**
+     * @var null
+     */
+    protected $_count_item_on_page = null;
+
+
     public function init()
     {
         $this->_modelMapper = new Catalog_Model_Mapper_Products();
-        $this->_categoriesModelMapper = new Catalog_Model_Mapper_Categories();
+        $this->_model = new Catalog_Model_Products();
+
+        $this->_modelCategoriesMapper = new Catalog_Model_Mapper_Categories();
+        $this->_categoriesModel = new Catalog_Model_Categories();
+
         $this->_paramsMapper = new Catalog_Model_Mapper_ProductParams();
+
         $this->_subproductsModelMapper = new Catalog_Model_Mapper_Subproducts();
         $this->_subproductsParamsMapper = new Catalog_Model_Mapper_SubproductParams();
         $this->_subproductParamsValuesMapper = new Catalog_Model_Mapper_SubproductParamsValues();
 
         $this->_request = $this->getRequest();
         $this->_redirector = $this->_helper->getHelper('Redirector');
-
-        $contextSwitch = $this->_helper->getHelper('contextSwitch');
-        $contextSwitch
-            ->addActionContext('json', array('json'))
-            ->addActionContext('category', array('json'))
-            ->addActionContext('property', array('json'))
-            ->addActionContext('property-edit', array('json'))
-            ->addActionContext('property-del', array('json'))
-            ->addActionContext('modification', array('json'))
-            ->addActionContext('modification-edit', array('json'))
-            ->addActionContext('modification-del', array('json'))
-            ->addActionContext('modification-property-edit', array('json'))
-            ->initContext();
+        $this->_count_item_on_page = 10;
     }
 
     public function indexAction()
     {
-        // action body
+        //Zend_Debug::dump($this->_request->getParams());
+
+        $select = $this->_modelMapper->getDbTable()->select();
+        $select->order('sorting ASC');
+
+        if($this->_request->getParam('category_id')){
+            $pageItems = $this->_modelCategoriesMapper
+                ->fetchProductsRel($this->_request->getParam('category_id'), $select);
+
+            $category = $this->_modelCategoriesMapper
+                ->find(
+                    $this->_request->getParam('category_id'),
+                    new Catalog_Model_Categories()
+                );
+        }
+        else{
+            $pageItems = $this->_modelMapper->fetchAll($select);
+        }
+
+        if(!empty($pageItems))
+            $pageItems = $this->setPaginationPage($pageItems);
+
+        $this->view->pages = $pageItems;
+
+        if(isset($category)){
+            $this->view->categoryName = $category->getName().' - ';
+            $this->view->current_category = $category->getId();
+        }
+
+
     }
 
     public function jsonAction()
@@ -136,7 +178,7 @@ class ProductsController extends Zend_Controller_Action
 
     public function breadcrumbs($id, $full = false)
     {
-        $entries = $this->_categoriesModelMapper->fetchTreeParentCategories($id);
+        $entries = $this->_modelCategoriesMapper->fetchTreeParentCategories($id);
         $breadcrumbs = array();
         foreach ($entries as $entry) {
             $breadcrumbs[] = $entry->name;
@@ -176,7 +218,7 @@ class ProductsController extends Zend_Controller_Action
 
                 //fullPath, categoryId в category_xref
                 $categoryId = $this->_request->getParam('categoryId');
-                $category = $this->_categoriesModelMapper->find($categoryId, new Catalog_Model_Categories());
+                $category = $this->_modelCategoriesMapper->find($categoryId, new Catalog_Model_Categories());
                 if($category){
                     $fullPath = $category->getFullPath().'/'.$dataProducts['path'];
                     $product->setFullPath($fullPath);

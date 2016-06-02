@@ -30,7 +30,7 @@ export default class ModalComponent extends React.Component{
 				<Modal.Header closeButton>
 					<Modal.Title id="contained-modal-title-lg" className="h3">
 						{(!this.props.data.title)?this.props.data.name:this.props.data.title}
-						<small>{this.props.title}</small>
+						<small className="block">{this.props.title}</small>
 					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>

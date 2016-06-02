@@ -6,59 +6,58 @@ $this->title = 'Производство';
 $this->secondary_text = 'Список категорий';
 ?>
 <?php if(!empty($this->pages)):?>
-<table class="table table-striped table-bordered">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th><span class="glyphicon glyphicon-sort"></span></th>
-        <th>Наименование</th>
-        <th>Url</th>
-        <th>Действия</th>
-    </tr>
-    </thead>
-    <?php foreach ($this->pages as $page):?>
-        <tr class="<?=$this->contextualClassTr($page);?>">
-            <td><?=$page->getId()?></td>
-            <td><?=$page->getSorting()?></td>
-            <td>
-                <a href="<?=$this->url(array(
-                    'module'=>'admin',
-                    'controller'=>'manufacture-categories',
-                    'action'=>'list',
-                    'id'=>$page->getId(),
-                ), null, true)?>">
-                    <span class="glyphicon glyphicon-folder-close mlr1"></span>
-                    <?=$page->getTitle()?>
-                </a>
-            </td>
-            <td>
-                <?php if($page->getDeleted() != 1):?>
-                    <a href="/manufacture/<?=$page->getPath()?>/" title="Посмотреть на сайте">
-                        <?=$page->getPath()?>
-                        <span class="glyphicon glyphicon-link mlr1"></span>
-                    </a>
-                <?php else:?>
-                    <?=$page->getPath()?>
-                <?php endif;?>
-            </td>
-            <td width="150px">
-                <?=$this->partial('_button_group_table.phtml', array(
-                    'item_controller' => 'manufacture-categories',
-                    'item_id' => $page->getId(),
-                    'item_path' => '/manufacture/'.$page->getPath(),
-                    'active' => ($page->getActive() != 0)? true : false,
-                    'deleted' => ($page->getDeleted() != 0)? true : false,
-                ))?>
-            </td>
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th><span class="glyphicon glyphicon-sort"></span></th>
+            <th>Наименование</th>
+            <th>Url</th>
+            <th>Действия</th>
         </tr>
-    <?php endforeach;?>
-</table>
-<?= $this->render('components/_paginator.phtml')?>
-<?php else:?>
-<div class="text-center">
+        </thead>
+        <?php foreach ($this->pages as $page):?>
+            <tr class="<?=$this->contextualClassTr($page);?>">
+                <td><?=$page->getId()?></td>
+                <td><?=$page->getSorting()?></td>
+                <td>
+                    <a href="<?=$this->url(array(
+                        'module'=>'admin',
+                        'controller'=>'manufacture-categories',
+                        'action'=>'list',
+                        'id'=>$page->getId(),
+                    ), null, true)?>">
+                        <span class="glyphicon glyphicon-folder-close mlr1"></span>
+                        <?=$page->getTitle()?>
+                    </a>
+                </td>
+                <td>
+                    <?php if($page->getDeleted() != 1):?>
+                        <a href="/manufacture/<?=$page->getPath()?>/" title="Посмотреть на сайте">
+                            <?=$page->getPath()?>
+                            <span class="glyphicon glyphicon-link mlr1"></span>
+                        </a>
+                    <?php else:?>
+                        <?=$page->getPath()?>
+                    <?php endif;?>
+                </td>
+                <td width="150px">
+                    <?=$this->partial('_button_group_table.phtml', array(
+                        'item_controller' => 'manufacture-categories',
+                        'item_id' => $page->getId(),
+                        'item_path' => '/manufacture/'.$page->getPath(),
+                        'active' => ($page->getActive() != 0)? true : false,
+                        'deleted' => ($page->getDeleted() != 0)? true : false,
+                    ))?>
+                </td>
+            </tr>
+        <?php endforeach;?>
+    </table>
+<?php endif;?>
+<div class="pull-left">
     <a href="<?=$this->url(
         array('module'=>'admin', 'controller' => 'manufacture-categories', 'action' => 'add'),
         false,true
-    )?>" class="btn btn-success">Добавить категорию</a>
+    )?>" class="btn btn-default">Добавить категорию</a>
 </div>
-<?php endif;?>
+<?= $this->render('components/_paginator.phtml')?>
