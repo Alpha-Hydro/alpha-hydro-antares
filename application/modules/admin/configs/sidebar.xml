@@ -7,11 +7,8 @@
         </headgroup>
         <dashboard>
             <label>Dashboard</label>
-            <module>admin</module>
-            <controller>index</controller>
-            <action>index</action>
+            <route>adminAdvanced</route>
             <class>prepend-icon glyphicon glyphicon-dashboard</class>
-            <route>adminEdit</route>
         </dashboard>
         <modules>
             <label>Разделы сайта</label>
@@ -37,6 +34,16 @@
                     <controller>categories</controller>
                     <resource>categories</resource>
                     <route>adminCategoriesEdit</route>
+                    <pages>
+                        <category_list>
+                            <label>Список товаров в категории</label>
+                            <module>admin</module>
+                            <controller>categories</controller>
+                            <action>list</action>
+                            <resourse>categories</resourse>
+                            <route>adminEdit</route>
+                        </category_list>
+                    </pages>
                 </catalog>
                 <manufacture>
                     <label>Производство</label>

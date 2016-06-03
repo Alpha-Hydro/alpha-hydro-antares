@@ -11,26 +11,26 @@ class Admin_Form_Auth extends Twitter_Bootstrap_Form_Horizontal
         $this->_addClassNames('well well-lg');
 
         $this->addElement('text', 'username', array(
-            'label'         => 'Login',
+            'label'         => 'Логин',
             'placeholder'   => 'E-mail',
             'prepend'       => '@',
         ));
 
         $this->addElement('password', 'password', array(
-            'label'         => 'Password',
-            'placeholder' => 'Password',
+            'label'         => 'Пароль',
+            'placeholder' => 'Пароль',
             'prepend'       => '&#128274;',
         ));
 
         $this->addElement('button', 'submit', array(
-            'label'         => 'Sing in',
+            'label'         => 'Вход',
             'type'          => 'submit',
             'buttonType'    => 'success',
             //'escape'        => false
         ));
 
         $this->addElement('button', 'reset', array(
-            'label'         => 'Reset',
+            'label'         => 'Отмена',
             'type'          => 'reset'
         ));
 
@@ -39,7 +39,7 @@ class Admin_Form_Auth extends Twitter_Bootstrap_Form_Horizontal
             array('username', 'password', 'submit', 'reset'),
             'login',
             array(
-                'legend' => 'Administrator'
+                'legend' => 'Вход в админ панель'
             )
         );
 

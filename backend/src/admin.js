@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import ButtonGroup from "react-bootstrap/lib/ButtonGroup";
 
-import PanelNavComponent from "./components/PanelNavComponent";
+import PanelButtonsComponent from "./components/PanelButtonsComponent";
 import ItemButtonsComponent from "./components/ItemButtonsComponent";
 import CategoriesAddButton from "./components/Catalog/Categories/CategoriesAddButton";
 import ItemAddButton from "./components/Catalog/Products/ProductAddButton";
@@ -12,7 +12,7 @@ import ProductModificationPropertyEditButton from "./components/Catalog/ProductM
 
 const adminPanel = document.getElementById('admin-panel');
 if(adminPanel)
-	ReactDOM.render(<PanelNavComponent />, adminPanel);
+	ReactDOM.render(<PanelButtonsComponent bsClass="btn-group-lg btn-group"/>, adminPanel);
 
 if(document.querySelector('.itemButtonsComponent')){
 	const itemButtonsComponents = [].slice.call(document.querySelectorAll('.itemButtonsComponent'));
@@ -23,7 +23,7 @@ if(document.querySelector('.itemButtonsComponent')){
 			active: item.getAttribute('data-active'),
 			deleted: item.getAttribute('data-deleted')
 		};
-		ReactDOM.render(<ItemButtonsComponent dataItem = {dataItem}/>, item);
+		ReactDOM.render(<ItemButtonsComponent dataItem = {item.dataset}/>, item);
 	});
 }
 
@@ -31,12 +31,12 @@ var dataItem;
 const categoriesAddButtton = document.getElementById('categoriesAddButtton');
 if (categoriesAddButtton){
 	dataItem = {
-		controller: categoriesAddButtton.getAttribute('data-controller'),
-		id: categoriesAddButtton.getAttribute('data-id'),
-		action: categoriesAddButtton.getAttribute('data-action'),
-		title: categoriesAddButtton.getAttribute('data-title')
+		controller: categoriesAddButtton.dataset.controller,
+		id: categoriesAddButtton.dataset.id,
+		action: categoriesAddButtton.dataset.action,
+		title: categoriesAddButtton.dataset.title
 	};
-	ReactDOM.render(<CategoriesAddButton dataItem = {dataItem}/>, categoriesAddButtton);
+	ReactDOM.render(<CategoriesAddButton dataItem = {categoriesAddButtton.dataset}/>, categoriesAddButtton);
 }
 
 const itemAddButtton = document.getElementById('itemAddButtton');
@@ -47,7 +47,7 @@ if (itemAddButtton){
 		action: itemAddButtton.dataset.action,
 		title: itemAddButtton.dataset.title
 	};
-	ReactDOM.render(<ItemAddButton dataItem = {dataItem}/>, itemAddButtton);
+	ReactDOM.render(<ItemAddButton dataItem = {itemAddButtton.dataset}/>, itemAddButtton);
 }
 
 var productId;

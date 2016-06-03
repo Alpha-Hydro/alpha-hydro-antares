@@ -23,9 +23,9 @@ class AuthController extends Zend_Controller_Action
         if (Zend_Auth::getInstance()->hasIdentity()) {
             // если да, то делаем редирект, чтобы исключить многократную авторизацию
             $this->_redirector->gotoSimpleAndExit('index', 'index');
-            return;
         }
 
+        $this->_helper->layout->setLayout('layout_auth');
         // создаём форму и передаём её во view
         $form = new Admin_Form_Auth();
         $this->view->form_auth = $form;
@@ -78,12 +78,14 @@ class AuthController extends Zend_Controller_Action
 
     public function logoutAction()
     {
-        $url = 'http://alpha-hydro.loc';
+        $url = explode('.', $this->_request->getServer('HTTP_HOST'), 2);
+
+
         // уничтожаем информацию об авторизации пользователя
         Zend_Auth::getInstance()->clearIdentity();
 
         // и отправляем его на главную
-        $this->_redirector->gotoUrl($url);
+        $this->_redirector->gotoUrl('http://'.$url[1]);
     }
 
 

@@ -2,7 +2,7 @@
 
 include_once 'BaseController.php';
 
-class ManufactureCategoriesController extends Admin_BaseController
+class ManufactureCategoriesController extends BaseController
 {
     /**
      * @var Manufacture_Model_Mapper_ManufactureCategories

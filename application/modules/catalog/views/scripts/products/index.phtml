@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var $entry Catalog_Model_Products
+ * @var $property Catalog_Model_ProductParams
+ */
 $this->headTitle($this->title);
 $this->meta_title = $this->title;
 $this->breadcrumbs = true;
@@ -8,47 +12,56 @@ $this->sidebar_headers = true;
 <div class="container-fluid product-list">
     <?php if($this->entries): ?>
         <?php foreach ($this->entries as $entry): ?>
-        <div class="row product-item">
-            <div class="col-md-3">
-                <div class="thumbnail product-images">
-                    <a href="<?=$this->url(
-                        array(
-                            'controller' => 'products',
-                            'action'=>'view',
-                            'fullPath'=>$entry->fullPath
-                        ),'catalog',true,false) ?>">
-                        <img src="<?=$entry->uploadPathDraft . $entry->image;?>" alt="<?=$entry->name?>"/>
-                    </a>
+            <div class="row product-item">
+                <div class="col-md-3">
+                    <div class="thumbnail product-images">
+                        <a href="<?=$this->url(
+                            array(
+                                'controller' => 'products',
+                                'action'=>'view',
+                                'fullPath'=>$entry->getFullPath()
+                            ),'catalog',true,false) ?>">
+                            <img src="<?=$entry->getUploadPath() . $entry->getImage();?>" alt="<?=$entry->getName()?>"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="pull-right">
+                        <div class="itemButtonsComponent"
+                             data-id="<?=$entry->getId()?>"
+                             data-controller="products"
+                             data-active="<?=($entry->getActive() != 0)?true:false?>"
+                             data-deleted="<?=($entry->getDeleted() != 0)?true:false?>"
+                             data-bsStyle="primary"
+                        ></div>
+                    </div>
+                    <h2 class="h4">
+                        <a href="<?=$this->url(
+                            array(
+                                'controller' => 'products',
+                                'action'=>'view',
+                                'fullPath'=>$entry->getFullPath()
+                            ),'catalog',true,false) ?>">
+                            <?=$entry->getSku()?>
+                        </a>
+                        <small><?=$entry->getName()?></small>
+                    </h2>
+                    <div class="product-property">
+                        <?php $productProperty = $this->getProductProperty($entry->getId())?>
+                        <?php if(!empty($productProperty)):?>
+                        <table class="table table-striped table-condensed product-property">
+                            <?php foreach ($productProperty as $property):?>
+                                <tr>
+                                    <th class="col-md-4"><?= $property->getName() ?></th>
+                                    <td><?= $property->getValue() ?></td>
+                                </tr>
+                            <?php endforeach;?>
+                        </table>
+                        <?php endif;?>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-9">
-                <h2 class="h4">
-                    <a href="<?=$this->url(
-                        array(
-                            'controller' => 'products',
-                            'action'=>'view',
-                            'fullPath'=>$entry->fullPath
-                        ),'catalog',true,false) ?>">
-                        <?=$entry->sku?>
-                    </a>
-                    <small><?=$entry->name?></small>
-                </h2>
-                <div class="product-property">
-                    <?php $productProperty = $this->getProductProperty($entry->id)?>
-                    <?php if(!empty($productProperty)):?>
-                    <table class="table table-striped table-condensed product-property">
-                        <?php foreach ($productProperty as $property):?>
-                            <tr>
-                                <th class="col-md-4"><?= $property->name ?></th>
-                                <td><?= $property->value ?></td>
-                            </tr>
-                        <?php endforeach;?>
-                    </table>
-                    <?php endif;?>
-                </div>
-            </div>
-        </div>
-    <?php endforeach; ?>
+        <?php endforeach; ?>
     <?php endif; ?>
     <?php if($this->auth):?>
         <div class="col-md-3 text-center">

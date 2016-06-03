@@ -81,8 +81,13 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         $acl->addRole('admin', 'guest');
 
         $acl->deny();
-        //$acl->allow('guest', array('default', 'catalog', 'error'));
         $acl->allow('guest', 'auth');
+        /*$acl->allow('guest', array(
+                'auth',
+                'error',
+                'index',
+                )
+            );*/
         $acl->allow('manager', array(
             'index',
             'pages',
@@ -144,6 +149,17 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
             )
         );
         $router->addRoute('adminCategoriesEdit', $route);
+
+        $route = new Zend_Controller_Router_Route_Static(
+            'admin/',
+            array(
+                'module' => 'admin',
+                'controller' => 'index',
+                'action' => 'index',
+                'advanced' => 'dashboard',
+            )
+        );
+        $router->addRoute('adminAdvanced', $route);
 
     }
 

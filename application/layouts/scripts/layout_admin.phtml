@@ -22,21 +22,32 @@ echo $this->doctype();
     ?>
 </head>
 <body>
-    <?= $this->render("components/admin/_admin_top_panel.phtml")?>
-    <div class="container-fluid">
+    <?= $this->render("components/_admin_top_panel.phtml")?>
+    <div class="layout">
+        <?= $this->render("components/_header.phtml")?>
+        <div class="main" role="main">
+            <div class="container">
+                <?php /*echo $this->layout()->content */?>
+                <?= $this->render('_module_admin.phtml') ?>
+            </div>
+        </div>
+        <div class="layout-footer"></div>
+    </div>
+    <?= $this->render("components/_footer.phtml")?>
+    <!--<div class="container-fluid">
         <div class="row">
             <div class="col-md-11">
                 <div class="container mb4">
-                    <?= $this->render('_module_admin.phtml') ?>
+                    <?/*= $this->render('_module_admin.phtml') */?>
                 </div>
             </div>
             <div class="col-md-1">
                 <div id="admin-panel"></div>
             </div>
         </div>
-    </div>
+    </div>-->
     <div id="modal" class="my-div"></div>
-    <div id="pageData"></div>
+    <!--<div id="pageData"></div>-->
     <?/*= $this->render("components/_admin_auth.phtml");*/?>
     <?= $this->headScript();?>
 <?php /*Zend_Debug::dump($this->paramsPage());*/?>

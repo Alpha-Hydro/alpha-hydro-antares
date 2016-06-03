@@ -1,0 +1,22 @@
+<?php echo $this->doctype() ?>
+<html lang="ru">
+    <head>
+        <?php
+            echo $this->headMeta()
+                ->prependName('viewport', 'width=device-width, initial-scale=1.0')
+                ->prependHttpEquiv('X-UA-Compatible', 'IE=edge')
+                ->prependHttpEquiv('Content-Type', 'text/html; charset=UTF-8');
+
+            echo $this->headLink()
+                ->appendStylesheet('//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css');
+        ?>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="page-header text-center">
+                <img src="/img/logo/alpha-hydro-logo-ru.svg" alt="Alpha-Hydro" />
+            </div>
+            <?=$this->layout()->content?>
+        </div>
+    </body>
+</html>

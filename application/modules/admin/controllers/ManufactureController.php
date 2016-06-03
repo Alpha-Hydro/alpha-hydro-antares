@@ -4,7 +4,7 @@ include_once 'Michelf/Markdown.php';
 
 include_once 'BaseController.php';
 
-class ManufactureController extends Admin_BaseController
+class ManufactureController extends BaseController
 {
     /**
      * @var Manufacture_Model_Mapper_Manufacture

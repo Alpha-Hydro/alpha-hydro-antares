@@ -17,10 +17,13 @@ class IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        //Zend_Debug::dump($this->_request->getParams());
-        $this->_helper->layout->setLayout('layout_admin');
-        $this->forward('index', 'index', 'pages');
-        return;
+        if(!$this->_request->getParam('advanced')){
+            $this->_helper->layout->setLayout('layout_admin');
+            $this->forward('index', 'index', 'pages');
+            return;
+        }
+
+        Zend_Debug::dump($this->_request->getParams());
     }
 
     public function slugifyAction()

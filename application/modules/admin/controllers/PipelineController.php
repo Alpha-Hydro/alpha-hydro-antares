@@ -1,7 +1,7 @@
 <?php
 include_once 'BaseController.php';
 
-class PipelineController extends Admin_BaseController
+class PipelineController extends BaseController
 {
     /**
      * @var Pipeline_Model_Mapper_Pipeline

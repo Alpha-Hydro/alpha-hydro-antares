@@ -3,6 +3,7 @@ import dataHelpers from "../utils/getDataHelper";
 
 import ButtonComponent from "./PanelButtons/ButtonComponent";
 import ModalComponent from "./ModalComponent";
+import ButtonGroup from "react-bootstrap/lib/ButtonGroup";
 
 export default class PanelButtonsComponent extends React.Component{
 	constructor(props){
@@ -45,13 +46,8 @@ export default class PanelButtonsComponent extends React.Component{
 		});
 	}
 
-	handlerClickList(){
-		var path = this.state.data.controller;
-		window.location = '/admin/'+path;
-	}
-
 	render() {
-		const bsStyle = "primary";
+		const bsStyle = (this.props.bsstyle)?this.props.bsstyle:'link';
 
 		const Buttons = [
 			{icon: "edit", enable: true,action: "edit", role: "manager", title:"Редактировать"},
@@ -71,9 +67,10 @@ export default class PanelButtonsComponent extends React.Component{
 		);
 
 		return (
-			<div className="btn-group-vertical btn-group-lg">
-				{Buttons}
-				<ButtonComponent bsStyle="primary" icon="list" title="Cписок категорий" eventClick={this.handlerClickList.bind(this)}/>
+			<div>
+				<ButtonGroup {...this.props}>
+					{Buttons}
+				</ButtonGroup>
 				<ModalComponent
 					show={this.state.show}
 					hide={this.hideModal.bind(this)}

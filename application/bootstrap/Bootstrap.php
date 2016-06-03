@@ -39,8 +39,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $pluginsLoader = new Zend_Loader_PluginLoader();
         $pluginsLoader->addPrefixPath("Plugin", APPLICATION_PATH.'/plugins');
 
-        $pluginsLoader->load("Redirect");
         $front = Zend_Controller_Front::getInstance();
+
+        $pluginsLoader->load("Redirect");
         if ( $pluginsLoader->isLoaded("Redirect"))
             $front->registerPlugin(new Plugin_Redirect());
 

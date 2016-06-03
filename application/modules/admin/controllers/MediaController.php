@@ -2,7 +2,7 @@
 
 include_once 'BaseController.php';
 
-class MediaController extends Admin_BaseController
+class MediaController extends BaseController
 {
 
     /**

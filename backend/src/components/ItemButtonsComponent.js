@@ -39,7 +39,7 @@ export default class ItemButtonsComponent extends React.Component{
 	}
 
 	render() {
-		const bsStyle = "default";
+		const bsStyle = (this.props.dataItem.bsstyle)?this.props.dataItem.bsstyle:'default';
 
 		const Buttons = [
 			{

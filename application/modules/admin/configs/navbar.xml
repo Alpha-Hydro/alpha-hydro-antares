@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
     <nav>
-        <!--<site>
-            <label>На сайт</label>
-            <uri>/</uri>
-        </site>-->
         <logout>
             <label>Выход</label>
             <module>admin</module>
@@ -13,6 +9,17 @@
             <route>default</route>
         </logout>
     </nav>
+    <admin>
+        <dashboard>
+            <label>Advanced Admin</label>
+            <module>admin</module>
+            <controller>index</controller>
+            <action>index</action>
+            <params>
+                <admin>true</admin>
+            </params>
+        </dashboard>
+    </admin>
     <main>
         <home>
             <label>Главная</label>

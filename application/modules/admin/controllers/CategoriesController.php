@@ -2,7 +2,7 @@
 
 include_once 'BaseController.php';
 
-class CategoriesController extends Admin_BaseController
+class CategoriesController extends BaseController
 {
 
     /**

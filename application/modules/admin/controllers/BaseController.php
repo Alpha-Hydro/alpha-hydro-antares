@@ -1,6 +1,6 @@
 <?php
 
-class Admin_BaseController extends Zend_Controller_Action
+class BaseController extends Zend_Controller_Action
 {
     /**
      * @var array Form instances
@@ -147,6 +147,19 @@ class Admin_BaseController extends Zend_Controller_Action
         }
 
         if ($this->getRequest()->isPost()){
+
+            if($this->_request->getParam('dataPage')){
+                $dataPage = $this->_request->getParam('dataPage');
+                $this->getModel()->setOptions($dataPage);
+
+                $upload = new Zend_File_Transfer();
+                if($upload->isUploaded()){
+                    Zend_Debug::dump($upload->getFileInfo('fileLoad'));
+                }
+
+
+            }
+
             if ($form->isValid($this->getRequest()->getPost())) {
 
                 $item = $this->saveFormData($form);
@@ -463,6 +476,8 @@ class Admin_BaseController extends Zend_Controller_Action
 
         return $item;
     }
+
+
 
     /**
      * @param $item Catalog_Model_Categories | Catalog_Model_Products | Manufacture_Model_ManufactureCategories | Manufacture_Model_Manufacture | Pages_Model_Pages | Pipeline_Model_PipelineCategories | Pipeline_Model_Pipeline | Oil_Model_OilCategories | Oil_Model_Oil | Media_Model_MediaCategories | Media_Model_Media
