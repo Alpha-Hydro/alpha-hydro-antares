@@ -24,7 +24,7 @@ class Pages_IndexController extends Zend_Controller_Action
         $this->_page = $this->_pagesMapper->findByPath($this->getPageDefaultPath(), new Pages_Model_Pages());
         $this->setPageId($this->_page->getId());
 
-        $this->view->adminPath = 'pages/edit/'.$this->getPageId();
+        $this->view->adminPath = 'pages/';
         $this->view->itemId = $this->getPageId();
 
     }

@@ -71,7 +71,7 @@ class Oil_CategoriesController extends Zend_Controller_Action
         $current_category_id = $category->getId();
         $this->view->category = $category;
         $this->view->title = $category->getTitle();
-        $this->view->adminPath = 'oil-categories/edit/'.$category->getId();
+        $this->view->adminPath = 'oil-categories/list/'.$category->getId();
 
         if($current_category_id != 0){
             if(!is_null($this->getRequest()->getParam('json'))

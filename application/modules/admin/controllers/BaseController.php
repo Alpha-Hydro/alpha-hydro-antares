@@ -43,6 +43,11 @@ class BaseController extends Zend_Controller_Action
      */
     protected $_nameModule = null;
 
+    /**
+     * @var null
+     */
+    protected $_upload_path = null;
+
     /*public function init()
     {
     }*/
@@ -86,6 +91,12 @@ class BaseController extends Zend_Controller_Action
     {
         $form = $this->getForm('edit');
 
+        $url = $this->_request->getServer('HTTP_REFERER');
+        $form->addElement('hidden','currentUrl');
+        $element = $form->getElement('currentUrl');
+        $element->setValue($url);
+        $form->getDisplayGroup('basic')->addElement($element);
+
         $form->setDefaults(array(
             'sorting'       => 0,
             'active'        => 1,
@@ -102,12 +113,8 @@ class BaseController extends Zend_Controller_Action
             if ($form->isValid($this->_request->getPost())){
                 $item = $this->saveFormData($form);
 
-                if($this->_request->getControllerName() != strtolower($this->getNameModule())){
-                    $this->getRedirector()->gotoSimpleAndExit('index');
-                }
-                else{
-                    $this->getRedirector()->gotoUrlAndExit('/admin/'.strtolower($this->getNameModule()).'-categories/list/'.$item->getCategoryId().'/');
-                }
+                $this->clearCache($this->_getNamespace());
+                $this->getRedirector()->gotoUrlAndExit($this->_request->getParam('currentUrl'));
             }
 
             $form->setDefaults($this->_request->getPost());
@@ -131,6 +138,13 @@ class BaseController extends Zend_Controller_Action
         $this->view->item = $page;
 
         $form = $this->getForm('edit');
+
+        $url = $this->_request->getServer('HTTP_REFERER');
+        $form->addElement('hidden','currentUrl');
+        $element = $form->getElement('currentUrl');
+        $element->setValue($url);
+        $form->getDisplayGroup('basic')->addElement($element);
+
         $dataPage = $page->getOptions();
         foreach ($dataPage as $key => $value) {
             $form->setDefault($key, $value);
@@ -148,28 +162,11 @@ class BaseController extends Zend_Controller_Action
 
         if ($this->getRequest()->isPost()){
 
-            if($this->_request->getParam('dataPage')){
-                $dataPage = $this->_request->getParam('dataPage');
-                $this->getModel()->setOptions($dataPage);
-
-                $upload = new Zend_File_Transfer();
-                if($upload->isUploaded()){
-                    Zend_Debug::dump($upload->getFileInfo('fileLoad'));
-                }
-
-
-            }
-
             if ($form->isValid($this->getRequest()->getPost())) {
-
                 $item = $this->saveFormData($form);
 
-                if($this->_request->getControllerName() != strtolower($this->getNameModule())){
-                    $this->getRedirector()->gotoSimpleAndExit('index');
-                }
-                else{
-                    $this->getRedirector()->gotoUrlAndExit('/admin/'.strtolower($this->getNameModule()).'-categories/list/'.$item->getCategoryId().'/');
-                }
+                $this->clearCache($this->_getNamespace());
+                $this->getRedirector()->gotoUrlAndExit($this->_request->getParam('currentUrl'));
             }
 
             $form->setDefaults($form->getValues());
@@ -193,13 +190,18 @@ class BaseController extends Zend_Controller_Action
 
         $item->setDeleted($deleted);
         $this->getModelMapper()->save($item);
+        
+        $this->clearCache($this->_getNamespace());
 
-        if($this->_request->getControllerName() != strtolower($this->getNameModule())){
+        $url = $this->_request->getServer('HTTP_REFERER');
+        $this->getRedirector()->gotoUrlAndExit($url);
+
+        /*if($this->_request->getControllerName() != strtolower($this->getNameModule())){
             $this->getRedirector()->gotoSimpleAndExit('index');
         }
         else{
             $this->getRedirector()->gotoUrlAndExit('/admin/'.strtolower($this->getNameModule()).'-categories/list/'.$item->getCategoryId().'/');
-        }
+        }*/
     }
 
     public function enableAction()
@@ -218,12 +220,10 @@ class BaseController extends Zend_Controller_Action
         $item->setActive($enabled);
         $this->getModelMapper()->save($item);
 
-        if($this->_request->getControllerName() != strtolower($this->getNameModule())){
-            $this->getRedirector()->gotoSimpleAndExit('index');
-        }
-        else{
-            $this->getRedirector()->gotoUrlAndExit('/admin/'.strtolower($this->getNameModule()).'-categories/list/'.$item->getCategoryId().'/');
-        }
+        $this->clearCache($this->_getNamespace());
+
+        $url = $this->_request->getServer('HTTP_REFERER');
+        $this->getRedirector()->gotoUrlAndExit($url);
 
     }
 
@@ -478,6 +478,42 @@ class BaseController extends Zend_Controller_Action
     }
 
 
+    /**
+     * @param $item Catalog_Model_Categories | Catalog_Model_Products | Manufacture_Model_ManufactureCategories | Manufacture_Model_Manufacture | Pages_Model_Pages | Pipeline_Model_PipelineCategories | Pipeline_Model_Pipeline | Oil_Model_OilCategories | Oil_Model_Oil | Media_Model_MediaCategories | Media_Model_Media
+     * @return Catalog_Model_Categories | Catalog_Model_Products | Manufacture_Model_ManufactureCategories | Manufacture_Model_Manufacture | Pages_Model_Pages | Pipeline_Model_PipelineCategories | Pipeline_Model_Pipeline | Oil_Model_OilCategories | Oil_Model_Oil | Media_Model_MediaCategories | Media_Model_Media
+     * @throws Exception
+     */
+    public function setUploadImage($item)
+    {
+        $upload = new Zend_File_Transfer_Adapter_Http();
+        if($upload->isUploaded() && !is_null($this->_upload_path)){
+            $uploadPath = $this->_upload_path.$item->getId();
+            $destinationPath = APPLICATION_ROOT.$uploadPath;
+
+            if(!file_exists($destinationPath))
+                mkdir($destinationPath, 0755, true);
+
+            $imageFile = $upload->getFileInfo('fileLoad');
+            $imagePath = $destinationPath.'/'.$imageFile['fileLoad']['name'];
+            $imagePath = iconv('utf-8', 'cp1251', $imagePath);
+
+            $upload->addValidator('Size', false, 1024000)
+                ->addValidator('Extension', false, 'jpg,png,gif,svg');
+
+            try {
+                $upload->addFilter('Rename', array('target' => $imagePath,
+                    'overwrite' => true));
+                $upload->receive();
+                $item->setImage($uploadPath.'/'.$imageFile['fileLoad']['name']);
+            }
+            catch (Zend_File_Transfer_Exception $e)
+            {
+                throw new Exception('Bad image data: '.$e->getMessage());
+            }
+        }
+
+        return $item;
+    }
 
     /**
      * @param $item Catalog_Model_Categories | Catalog_Model_Products | Manufacture_Model_ManufactureCategories | Manufacture_Model_Manufacture | Pages_Model_Pages | Pipeline_Model_PipelineCategories | Pipeline_Model_Pipeline | Oil_Model_OilCategories | Oil_Model_Oil | Media_Model_MediaCategories | Media_Model_Media
@@ -504,6 +540,15 @@ class BaseController extends Zend_Controller_Action
     {
         $this->_userAuth = Zend_Auth::getInstance()->getIdentity();
         return $this->_userAuth;
+    }
+
+    public function clearCache($tag)
+    {
+        $cache = Zend_Registry::get('cache');
+        $cache->clean(
+            Zend_Cache::CLEANING_MODE_MATCHING_TAG,
+            array($tag)
+        );
     }
 
 }

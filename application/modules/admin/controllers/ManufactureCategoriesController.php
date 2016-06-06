@@ -27,6 +27,8 @@ class ManufactureCategoriesController extends BaseController
 
     protected $_count_item_on_page = null;
 
+    protected $_upload_path = null;
+
     public function init()
     {
         $this->_count_item_on_page = 10;
@@ -34,7 +36,7 @@ class ManufactureCategoriesController extends BaseController
         $this->_modelMapper = new Manufacture_Model_Mapper_ManufactureCategories();
         $this->_model = new Manufacture_Model_ManufactureCategories();
         $this->_forms['edit'] = new Admin_Form_ManufactureCategoriesEdit();
-
+        $this->_upload_path = '/upload/manufacture/categories/';
 
         $this->_redirector = $this->_helper->getHelper('Redirector');
     }
@@ -79,6 +81,29 @@ class ManufactureCategoriesController extends BaseController
         $containerNav = new Zend_Navigation($config);
 
         $this->view->container_nav = $containerNav;*/
+    }
+
+    public function editAction()
+    {
+        if($this->_request->getParam('dataPage')){
+            $dataPage = $this->_request->getParam('dataPage');
+            $id = $this->_request->getParam('id');
+
+            $categories = $this->_modelMapper->find($id, $this->_model);
+            $categories->setOptions($dataPage);
+
+            $this->setUploadImage($categories);
+
+            $markdown = $dataPage['contentMarkdown'];
+            $context_html = \Michelf\Markdown::defaultTransform($markdown);
+            $categories->setContentHtml($context_html);
+
+            $this->_modelMapper->save($categories);
+
+            $this->_redirector->gotoUrlAndExit($this->_request->getParam('currentUrl'));
+        }
+
+        parent::editAction();
     }
 }
 

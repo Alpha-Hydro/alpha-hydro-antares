@@ -95,7 +95,7 @@ class PagesController extends Zend_Controller_Action
                     $destinationPath = UPLOAD_DIR.'/pages/'.$request->getParam('id');
 
                     if(!file_exists($destinationPath))
-                        mkdir($destinationPath, 0755);
+                        mkdir($destinationPath, 0755,true);
 
                     $upload->setDestination($destinationPath)
                         ->addValidator('Size', false, 1024000)

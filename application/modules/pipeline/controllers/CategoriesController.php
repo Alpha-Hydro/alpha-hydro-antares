@@ -22,7 +22,7 @@ class Pipeline_CategoriesController extends Zend_Controller_Action
         $categories = $categoriesMapper->fetchAll($select);
 
         $this->view->categories = $categories;
-        $this->view->adminPath = 'pipeline-categories/';
+        //$this->view->adminPath = 'pipeline-categories/';
     }
 
     public function indexAction()
@@ -44,7 +44,9 @@ class Pipeline_CategoriesController extends Zend_Controller_Action
         $current_category_id = $category->getId();
         $this->view->category = $category;
         $this->view->title = $category->getTitle();
-        $this->view->adminPath = 'pipeline-categories/edit/'.$category->getId();
+        $this->view->adminPath = 'pipeline-categories/list/'.$category->getId();
+
+        Zend_Debug::dump($this->_request->getParams());
 
         if($current_category_id !== 0){
 

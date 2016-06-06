@@ -50,8 +50,8 @@ export default class PanelButtonsComponent extends React.Component{
 		const bsStyle = (this.props.bsstyle)?this.props.bsstyle:'link';
 
 		const Buttons = [
-			{icon: "edit", enable: true,action: "edit", role: "manager", title:"Редактировать"},
-			{icon: "cog", enable: true, action: "seo", role: "admin", title:"Мета теги"},
+			{icon: "pencil", enable: true,action: "edit", role: "manager", title:"Редактировать"},
+			{icon: "tags", enable: true, action: "seo", role: "admin", title:"Мета теги"},
 			{icon: "trash", enable: this.state.data.role === 'admin', action: "delete", role: "admin", title:"Удалить"},
 			{icon: "eye-close", enable: this.state.data.active !=0, action: "disabled", role: "admin", title:"Скрыть"},
 			{icon: "eye-open", enable: this.state.data.active !=1, action: "enabled", role: "admin", title:"Показать"}

@@ -14,8 +14,6 @@ class Catalog_CategoriesController extends Zend_Controller_Action
         $request = $this->getRequest();
         $this->_fullPath =  $request->getParam('fullPath');
         $this->_auth = Zend_Auth::getInstance()->hasIdentity();
-
-        $this->view->adminPath = '';
     }
 
     public function indexAction()
@@ -37,6 +35,7 @@ class Catalog_CategoriesController extends Zend_Controller_Action
 
 
         $current_category_id = $category->getId();
+        $this->view->adminPath = 'categories/'.$current_category_id;
 
         if($current_category_id !== 0){
 

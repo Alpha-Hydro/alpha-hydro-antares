@@ -51,7 +51,7 @@ class Catalog_IndexController extends Zend_Controller_Action
             ?'каталог, оборудование, гидрокомпоненты, РВД, шланги, втулки, фитинги, защита для шлангов, БРС, скобы, трубы, арматура, краны, манометры, уплотнители.'
             :$this->_page->getMetaKeywords();
 
-        $this->view->adminPath = '';
+        $this->view->adminPath = 'categories';
 
         $categories = new Catalog_Model_Mapper_Categories();
 

@@ -10,7 +10,6 @@ class Catalog_ProductsController extends Zend_Controller_Action
     {
         $request = $this->getRequest();
         $this->_fullPath =  $request->getParam('fullPath');
-        $this->view->adminPath = '';
     }
 
     /**
@@ -31,6 +30,7 @@ class Catalog_ProductsController extends Zend_Controller_Action
         $this->setCurrentCategory($category);
 
         $current_category_id = $category->getId();
+        $this->view->adminPath = 'categories/list/'.$current_category_id;
 
         $productsMapper = new Catalog_Model_Mapper_Products();
         $select = $productsMapper->getDbTable()
@@ -113,6 +113,7 @@ class Catalog_ProductsController extends Zend_Controller_Action
         $categoryRel = $products->findCategoryRel($product->getId(), new Catalog_Model_Categories());
         $this->setCurrentCategory($categoryRel);
         $this->view->current_category = $categoryRel->getId();
+        $this->view->adminPath = 'categories/list/'.$categoryRel->getId();
 
         if(!is_null($product->getAImages())){
             $draftImages = unserialize($product->getAImages());

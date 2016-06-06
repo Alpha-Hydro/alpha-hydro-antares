@@ -28,6 +28,8 @@ class Zend_View_Helper_ParamsPage extends Zend_Controller_Plugin_Abstract
         //$params = $request->getControllerKey();
 
         $params = $request->getParams();
+        
+        $this->view->params = $params;
 
         return $params;
 

@@ -55,6 +55,8 @@ class Manufacture_IndexController extends Zend_Controller_Action
         if(!is_null($this->_authUser))
             $this->view->authUser = $this->_authUser;
 
+        $this->view->adminPath = 'manufacture-categories/';
+
     }
 
     public function indexAction()
@@ -115,7 +117,7 @@ class Manufacture_IndexController extends Zend_Controller_Action
         }
 
         $this->view->category = $manufactureCategory;
-        $this->view->adminPath = 'manufacture-categories/edit/'.$manufactureCategory->getId();
+        $this->view->adminPath = 'manufacture-categories/list/'.$manufactureCategory->getId();
 
         $manufactureItems = $manufactureCategoriesMapper->fetchManufactureRel($manufactureCategory->getId());
 

@@ -39,7 +39,7 @@ class Pipeline_IndexController extends Zend_Controller_Action
             $this->render('cap');
         }*/
 
-        $this->view->adminPath = 'pipeline';
+        $this->view->adminPath = 'pipeline-categories/';
     }
 
     public function indexAction()

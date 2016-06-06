@@ -51,6 +51,8 @@ class Oil_IndexController extends Zend_Controller_Action
         $this->_authUser = Zend_Auth::getInstance()->getIdentity();
         if(!is_null($this->_authUser))
             $this->view->authUser = $this->_authUser;
+
+        $this->view->adminPath = 'oil-categories/';
     }
 
     public function indexAction()

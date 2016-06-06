@@ -1,12 +1,19 @@
+<?php
+    $action = Zend_Controller_Front::getInstance()->getRequest()->getActionName();
+?>
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-2">
                 <ul class="nav navbar-nav navbar-left">
-                    <li><a href="<?=$this->url(array(), 'adminAdvanced', true, false)?>">Advanced Admin</a></li>
+                    <li><a href="/admin/<?=$this->adminPath?>">Advanced Admin</a></li>
                 </ul>
             </div>
-            <div id="admin-panel" class="col-md-8 text-center"></div>
+            <div class="col-md-8 text-center">
+                <?php if($action != 'articles'):?>
+                    <div id="admin-panel"></div>
+                <?php endif;?>
+            </div>
             <div class="col-md-2">
                 <?php $this->navbarRightMenu();?>
             </div>

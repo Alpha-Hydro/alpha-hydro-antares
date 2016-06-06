@@ -26,6 +26,8 @@ class Media_IndexController extends Zend_Controller_Action
         $this->setCategories($mediaCategories);
 
         $this->view->categories = $this->getCategories();
+
+        $this->view->adminPath = 'media-categories/';
     }
 
     public function indexAction()
@@ -51,6 +53,8 @@ class Media_IndexController extends Zend_Controller_Action
         }
 
         $mediaCategoryId = $this->getCategoriesDefaultId();
+
+        $this->view->adminPath = 'media-categories/list/'.$mediaCategoryId;
 
         if(!is_null($this->getRequest()->getParam('json'))
             && Zend_Auth::getInstance()->hasIdentity()){
