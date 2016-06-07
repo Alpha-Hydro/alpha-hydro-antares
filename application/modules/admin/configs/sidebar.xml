@@ -329,6 +329,14 @@
                             <resourse>media-categories</resourse>
                             <route>adminEdit</route>
                         </category_edit>
+                        <section>
+                            <label>Список публикаций в разделе</label>
+                            <module>admin</module>
+                            <controller>media</controller>
+                            <action>section</action>
+                            <resourse>media</resourse>
+                            <route>adminEdit</route>
+                        </section>
                     </pages>
                 </media>
                 <about>
@@ -353,6 +361,13 @@
                     <resource>pages</resource>
                     <route>adminEdit</route>
                 </contact>
+                <search>
+                    <label>Поиск</label>
+                    <module>admin</module>
+                    <controller>search</controller>
+                    <resource>search</resource>
+                    <route>adminEdit</route>
+                </search>
             </pages>
         </modules>
         <trash>

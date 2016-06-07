@@ -54,30 +54,58 @@ class BaseController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        //Zend_Debug::dump($this->_request->getParams());
         $cache = Zend_Registry::get('cache');
-        $cacheName = 'Admin_'.$this->_getNamespace().'_'
-            .$this->_request->getParam('category_id');
+        $cacheName = 'Admin_'.$this->_getNamespace();
+
+        /**
+         * @var $select Zend_Db_Table_Select;
+         */
+        $select = $this->getModelMapper()->getDbTable()->select();
+
+        if($this->_request->getParam('filter') && $this->_request->getParam('val')){
+            $colsTable = $this->getModelMapper()->getDbTable()->info('cols');
+            if(in_array($this->_request->getParam('filter'), $colsTable)){
+                $select->where(
+                    $this->_request->getParam('filter').'= ?',
+                    $this->_request->getParam('val')
+                );
+                $cacheName .= '_'.$this->_request->getParam('filter').'_'.$this->_request->getParam('val');
+            }
+        }
+
+        if($this->_request->getParam('category_id')){
+            $select->where('category_id = ?', $this->_request->getParam('category_id'));
+            $cacheName .= '_'.$this->_request->getParam('category_id');
+        }
 
         if(!$pageItems = $cache->load($cacheName)){
-            /**
-             * @var $select Zend_Db_Table_Select;
-             */
-            $select = $this->getModelMapper()->getDbTable()->select();
-
-            if($this->_request->getParam('category_id')){
-                $select->where('category_id = ?', $this->_request->getParam('category_id'));
-            }
-
             $pageItems = $this->getModelMapper()->fetchAll($select);
 
-            if(!empty($pageItems)){
-                $pageItems = $this->setPaginationPage($pageItems);
-            }
             $cache->save($pageItems, $cacheName, array('admin', $this->getNameModule(), $this->_getNamespace()));
         }
 
-        $this->view->pages = $pageItems;
+        if(!empty($pageItems)){
+            $pageItems = $this->setPaginationPage($pageItems);
+        }
+
+        $this->view->assign('pages', $pageItems);
+
+        $config = array(
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Редактировать раздел',
+                'module' => 'admin',
+                'controller' => 'pages',
+                'action' => 'edit',
+                'params' => array(
+                    'id' => $this->getPageModule()->getId(),
+                ),
+                'resourse' =>'pages',
+                'route' => 'adminEdit'
+            )),
+        );
+        $containerNav = new Zend_Navigation($config);
+
+        $this->view->assign('container_nav', $containerNav);
 
     }
 
@@ -120,7 +148,7 @@ class BaseController extends Zend_Controller_Action
             $form->setDefaults($this->_request->getPost());
         }
 
-        $this->view->form = $form;
+        $this->view->assign('form', $form);
     }
 
     public function editAction()
@@ -135,7 +163,7 @@ class BaseController extends Zend_Controller_Action
         if(is_null($page))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
-        $this->view->item = $page;
+        //$this->view->item = $page;
 
         $form = $this->getForm('edit');
 
@@ -172,7 +200,10 @@ class BaseController extends Zend_Controller_Action
             $form->setDefaults($form->getValues());
         }
 
-        $this->view->form = $form;
+        $this->view->assign(array(
+            'item' => $page,
+            'form' => $form
+        ));
     }
 
     public function deleteAction()
@@ -264,8 +295,11 @@ class BaseController extends Zend_Controller_Action
                 $currentPage = count($pages)-1;
 
             $pagesItems = $pages[$currentPage];
-            $this->view->countPage = count($pages);
-            $this->view->currentPage = $currentPage+1;
+
+            $this->view->assign(array(
+                'countPage' => count($pages),
+                'currentPage' => $currentPage+1
+            ));
         }
         
         return $pagesItems;
@@ -542,6 +576,10 @@ class BaseController extends Zend_Controller_Action
         return $this->_userAuth;
     }
 
+    /**
+     * @param $tag
+     * @throws Zend_Exception
+     */
     public function clearCache($tag)
     {
         $cache = Zend_Registry::get('cache');
@@ -549,6 +587,21 @@ class BaseController extends Zend_Controller_Action
             Zend_Cache::CLEANING_MODE_MATCHING_TAG,
             array($tag)
         );
+    }
+
+    public function getPageModule($pageModulePath = null)
+    {
+        if(is_null($pageModulePath))        
+            $pageModulePath = strtolower($this->getNameModule());
+        
+        $pagesMapper = new Pages_Model_Mapper_Pages();
+
+        $page = $pagesMapper->findByPath($pageModulePath, new Pages_Model_Pages());
+
+        if(is_null($page))
+            throw new Zend_Controller_Action_Exception("Раздел '".$pageModulePath."' не добален в таблицу 'Pages'", 404);
+
+        return $page;
     }
 
 }

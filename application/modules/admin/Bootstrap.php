@@ -58,6 +58,7 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         $acl->addResource(new Zend_Acl_Resource('media-categories'));
         $acl->addResource(new Zend_Acl_Resource('about'));
         $acl->addResource(new Zend_Acl_Resource('contacts'));
+        $acl->addResource(new Zend_Acl_Resource('search'));
 
         $acl->addResource(new Zend_Acl_Resource('trash'));
 

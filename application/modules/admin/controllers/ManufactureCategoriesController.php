@@ -41,48 +41,6 @@ class ManufactureCategoriesController extends BaseController
         $this->_redirector = $this->_helper->getHelper('Redirector');
     }
 
-    public function indexAction()
-    {
-        parent::indexAction();
-
-        $config = array(
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Добавить категорию',
-                'module' => 'admin',
-                'controller' => 'manufacture-categories',
-                'action' => 'add',
-                'resource' => 'manufacture-categories',
-            )),
-        );
-        $containerNav = new Zend_Navigation($config);
-
-        $this->view->container_nav = $containerNav;
-    }
-
-    public function addAction()
-    {
-        parent::addAction();
-
-        /*$config = array(
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Добавить категорию',
-                'module' => 'admin',
-                'controller' => 'manufacture-categories',
-                'action' => 'add',
-                'resource' => 'manufacture-categories',
-            )),
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Отменить',
-                'module' => 'admin',
-                'controller' => 'manufacture-categories',
-                'resource' => 'manufacture-categories',
-            )),
-        );
-        $containerNav = new Zend_Navigation($config);
-
-        $this->view->container_nav = $containerNav;*/
-    }
-
     public function editAction()
     {
         if($this->_request->getParam('dataPage')){

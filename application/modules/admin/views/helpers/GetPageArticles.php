@@ -28,6 +28,7 @@ class Zend_View_Helper_getPageArticles extends Zend_View_Helper_Abstract
             return null;
 
         $this->view->sectionName = $page->getTitle();
+        $this->view->sectionId = $page->getId();
 
         $mediaModelMapper = new Media_Model_Mapper_Media();
 

@@ -28,7 +28,7 @@ class AuthController extends Zend_Controller_Action
         $this->_helper->layout->setLayout('layout_auth');
         // создаём форму и передаём её во view
         $form = new Admin_Form_Auth();
-        $this->view->form_auth = $form;
+        $this->view->assign('form_auth', $form);
 
 
         // Если к нам идёт Post запрос
@@ -70,7 +70,7 @@ class AuthController extends Zend_Controller_Action
                     return;
 
                 } else {
-                    $this->view->errMessage = 'Вы ввели неверное имя пользователя или неверный пароль';
+                    $this->view->assign('errMessage', 'Вы ввели неверное имя пользователя или неверный пароль');
                 }
             }
         }

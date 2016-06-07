@@ -13,7 +13,7 @@ export default class DefaultFormEdit extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			title : props.data.title,
+			title : (!props.data.title)?props.data.name:props.data.title,
 			path: props.data.path,
 			description: props.data.description,
 			contentMarkdown: props.data.contentMarkdown,

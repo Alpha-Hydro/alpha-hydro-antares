@@ -29,7 +29,8 @@ class ForumController extends Zend_Controller_Action
     {
         $this->_forumMapper = new Forum_Model_Mapper_Forum();
         $this->_userAuth = Zend_Auth::getInstance()->getIdentity();
-        $this->view->user = $this->_userAuth;
+        
+        $this->view->assign('user', $this->_userAuth);
 
         $this->setCountItemOnPage(10);
 
@@ -48,7 +49,7 @@ class ForumController extends Zend_Controller_Action
     {
         $request = $this->getRequest();
         if($request->getParam('page'))
-            $this->view->currentPage = $request->getParam('page');
+            $this->view->assign('currentPage', $request->getParam('page'));
 
         $noReply = $this->getNoReply();
         if(!empty($noReply))
@@ -285,8 +286,11 @@ class ForumController extends Zend_Controller_Action
                 $currentPage = count($pages)-1;
 
             $result = $pages[$currentPage];
-            $this->view->countPage = count($pages);
-            $this->view->currentPage = $currentPage+1;
+            
+            $this->view->assign(array(
+                'countPage' => count($pages),
+                'currentPage' => $currentPage+1
+            ));
         }
 
         return $result;
@@ -294,7 +298,7 @@ class ForumController extends Zend_Controller_Action
 
     /**
      * @param array $topics
-     * @return Admin_ForumController
+     * @return ForumController
      */
     public function setForums($topics)
     {
@@ -312,7 +316,7 @@ class ForumController extends Zend_Controller_Action
 
     /**
      * @param array $noReply
-     * @return Admin_ForumController
+     * @return ForumController
      */
     public function setNoReply($noReply)
     {

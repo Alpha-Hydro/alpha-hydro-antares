@@ -12,6 +12,10 @@ class Search_IndexController extends Zend_Controller_Action
         $ajaxContext
             ->addActionContext('autocomplete', 'html')
             ->initContext('html');
+
+        $this->view->assign(array(
+            'adminPath' => 'search/'
+        ));
     }
 
     public function indexAction()
@@ -63,7 +67,7 @@ class Search_IndexController extends Zend_Controller_Action
 
         if(!empty($query)){
             $query = str_replace(array('.',',',' ','-','_','/','\\','*','+','&','^','%','#','@','!','(',')','~','<','>',':',';','"',"'","|"), '', $query);
-            $nameQuery = $this->getRequest ()->getParam('query');
+            $nameQuery = $this->getRequest()->getParam('query');
 
             $productsMapper = new Catalog_Model_Mapper_Products();
             $select = $productsMapper->getDbTable()->select();

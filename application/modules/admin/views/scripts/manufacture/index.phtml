@@ -52,12 +52,12 @@ $this->secondary_text = $this->categoryName.'Список товаров';
     <a href="<?=$this->url(
         array(
             'module'=>'admin',
-            'controller' => 'manufacture-categories',
+            'controller' => 'manufacture',
             'action' => 'add',
             'id' => $this->category_id
             ),
         false,true
-    )?>" class="btn btn-default">Добавить категорию</a>
+    )?>" class="btn btn-default">Добавить товар</a>
 </div>
 <?= $this->render('components/_paginator.phtml')?>
 

@@ -1,3 +1,14 @@
+<?php
+unset($_GET['page']);
+
+if(0 != count($_GET)){
+    $params = array();
+    foreach ($_GET as $key => $val) {
+        $params[]= $key.'='.$val;
+    }
+    $this->params = implode("&", $params);
+}
+?>
 <?php if($this->countPage && $this->countPage > 1):?>
 <nav class="text-right">
     <ul class="pagination pagination-sm">
@@ -17,7 +28,7 @@
         $k = 2;
         $z = ($this->countPage-1 < $pageRange)?$this->countPage-1:$pageRange;
 
-        if($this->currentPage > $pageRange-1){
+        if($this->currentPage > $pageRange){ //$this->currentPage > $pageRange-1
             $k = $this->currentPage-$n;
             $z = $this->currentPage+$n;
             if($z > $this->countPage-1){
@@ -26,6 +37,8 @@
             }
             echo '<li class="free"><a></a></li>';
         }
+
+        //Zend_Debug::dump($z);
 
         for ($i = $k; $i <= $z; $i++) {
             $href = ($i != 1)

@@ -1,6 +1,4 @@
 <?php
-use \Michelf\Markdown;
-include_once 'Michelf/Markdown.php';
 
 include_once 'BaseController.php';
 
@@ -52,71 +50,25 @@ class ManufactureController extends BaseController
 
     public function indexAction()
     {
-        parent::indexAction();
 
         if($this->_request->getParam('category_id')){
-            $this->view->categoryName = $this->_modelCategoriesMapper
-                    ->find(
-                        $this->_request->getParam('category_id'),
-                        new Manufacture_Model_ManufactureCategories())
-                    ->getTitle().' - ';
+            $category = $this->_modelCategoriesMapper
+                ->find(
+                    $this->_request->getParam('category_id'),
+                    new Manufacture_Model_ManufactureCategories());
+            if($category)
+                $this->view->assign('categoryName', $category->getTitle().' - ');
 
-            $this->view->category_id = $this->_request->getParam('category_id');
+            $this->view->assign('category_id', $this->_request->getParam('category_id'));
         }
 
-
-
-
-        $config = array(
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Добавить товар',
-                'module' => 'admin',
-                'controller' => 'manufacture',
-                'action' => 'add',
-                'resource' => 'manufacture',
-            )),
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Категории',
-                'module' => 'admin',
-                'controller' => 'manufacture-categories',
-                'resource' => 'manufacture-categories',
-            )),
-        );
-
-        $containerNav = new Zend_Navigation($config);
-
-        $this->view->container_nav = $containerNav;
+        parent::indexAction();
     }
 
     public function addAction()
     {
+        Zend_Debug::dump($this->_request->getParams());
         parent::addAction();
-
-        /*$config = array(
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Добавить товар',
-                'module' => 'admin',
-                'controller' => 'manufacture',
-                'action' => 'add',
-                'resource' => 'manufacture',
-            )),
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Категории',
-                'module' => 'admin',
-                'controller' => 'manufacture-categories',
-                'resource' => 'manufacture-categories',
-            )),
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Отмена',
-                'module' => 'admin',
-                'controller' => 'manufacture',
-                'resource' => 'manufacture',
-            )),
-        );
-
-        $containerNav = new Zend_Navigation($config);
-
-        $this->view->container_nav = $containerNav;*/
     }
 
     public function editAction()
@@ -140,40 +92,6 @@ class ManufactureController extends BaseController
         }
 
         parent::editAction();
-
-        /*$config = array(
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Добавить товар',
-                'module' => 'admin',
-                'controller' => 'manufacture',
-                'action' => 'add',
-                'resource' => 'manufacture',
-            )),
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Удалить',
-                'module' => 'admin',
-                'controller' => 'manufacture',
-                'action' => 'delete',
-                'resource' => 'manufacture',
-                'params' => array(
-                    'id' => $itemId,
-                ),
-            )),
-            Zend_Navigation_Page_Uri::factory(array(
-                'label' => 'Посмотреть на сайте',
-                'uri' => '/manufacture/'.$manufacture->getFullPath().'/',
-            )),
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Отмена',
-                'module' => 'admin',
-                'controller' => 'manufacture',
-                'resource' => 'manufacture',
-            )),
-        );
-
-        $containerNav = new Zend_Navigation($config);
-
-        $this->view->container_nav = $containerNav;*/
     }
 }
 

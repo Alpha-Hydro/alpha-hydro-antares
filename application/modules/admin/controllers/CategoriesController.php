@@ -46,14 +46,15 @@ class CategoriesController extends BaseController
 
     public function indexAction()
     {
-
         $parent_id = ($this->_request->getParam('parent_id'))
             ?$this->_request->getParam('parent_id')
             :0;
 
         if($parent_id != 0){
-            $this->view->breadcrumbs = $this->containerNavigation($parent_id);
-            $this->view->current_category = $this->_request->getParam('parent_id');
+            $this->view->assign(array(
+                'breadcrumbs' => $this->containerNavigation($parent_id),
+                'current_category' =>$this->_request->getParam('parent_id')
+            ));
         }
 
         $cache = Zend_Registry::get('cache');
@@ -81,14 +82,32 @@ class CategoriesController extends BaseController
 
         $pageItems = $this->setPaginationPage($pageItems);
 
-        $this->view->pages = $pageItems;
-        $this->view->auth = Zend_Auth::getInstance()->hasIdentity();
+        $this->view->assign(array(
+            'pages' => $pageItems,
+            'auth' => Zend_Auth::getInstance()->hasIdentity()
+        ));
 
+        $config = array(
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Редактировать раздел',
+                'module' => 'admin',
+                'controller' => 'pages',
+                'action' => 'edit',
+                'params' => array(
+                    'id' => $this->getPageModule('catalog')->getId(),
+                ),
+                'resourse' =>'pages',
+                'route' => 'adminEdit'
+            )),
+        );
+        $containerNav = new Zend_Navigation($config);
+
+        $this->view->assign('container_nav', $containerNav);
     }
 
     public function addAction()
     {
-        $category = new Catalog_Model_Categories();
+        $category = $this->_model;
 
         if($this->_request->isPost()){
             if ($this->_request->getParam('dataFormCategory')) {
@@ -130,7 +149,6 @@ class CategoriesController extends BaseController
             $url = $this->_request->getParam('currentUrl');
             $this->_redirector->gotoUrlAndExit($url);
         }
-
     }
 
 
@@ -318,41 +336,6 @@ class CategoriesController extends BaseController
     {
         $this->forward('index', 'products', 'admin', array('category_id' => $this->_getParam('id')));
         return;
-//        $request = $this->getRequest();
-//        $id = $request->getParam('id');
-//
-//        $jsonData = array();
-//
-//        if(isset($id)){
-//            $category = $this->_modelMapper->find($id, new Catalog_Model_Categories());
-//            $parent_id = $category->getParentId();
-//
-//            if($request->getParam('children'))
-//                $parent_id = $category->getId();
-//
-//            $select = $this->_modelMapper->getDbTable()->select();
-//            $select->where('parent_id = ?', $parent_id)
-//                ->order('sorting ASC');
-//
-//            $entries = $this->_modelMapper->fetchAll($select);
-//            if(!is_null($entries)){
-//                /** @var Catalog_Model_Categories $entry */
-//                foreach ($entries as $entry) {
-//                    $categoryInfo = array(
-//                        'id' => $entry->getId(),
-//                        'parentId' => $entry->getParentId(),
-//                        'name' => $entry->getName(),
-//                        'active' => $entry->getActive(),
-//                        'deleted' => $entry->getDeleted(),
-//                        'countSubCategories' => $this->_countSubCategories($entry->getId())
-//                    );
-//                    $jsonData[] = $categoryInfo;
-//                }
-//            }
-//        }
-////        Zend_Debug::dump($request->getParams());
-////        Zend_Debug::dump($jsonData);
-//        return $this->_helper->json->sendJson($jsonData);
     }
 
     public function breadcrumbs($id){

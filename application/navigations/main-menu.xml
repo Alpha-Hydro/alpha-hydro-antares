@@ -69,12 +69,12 @@
         <controller>index</controller>
         <route>default</route>
         <pages>
-            <production>
-                <label>Продукция</label>
+            <categories>
+                <label>Категории</label>
                 <module>oil</module>
-                <controller>index</controller>
+                <controller>categories</controller>
                 <route>oil</route>
-            </production>
+            </categories>
             <articles>
                 <label>Справочный материал</label>
                 <module>oil</module>

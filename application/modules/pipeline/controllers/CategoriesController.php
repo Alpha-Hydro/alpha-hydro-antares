@@ -45,9 +45,7 @@ class Pipeline_CategoriesController extends Zend_Controller_Action
         $this->view->category = $category;
         $this->view->title = $category->getTitle();
         $this->view->adminPath = 'pipeline-categories/list/'.$category->getId();
-
-        Zend_Debug::dump($this->_request->getParams());
-
+        
         if($current_category_id !== 0){
 
             if(!is_null($this->getRequest()->getParam('json'))

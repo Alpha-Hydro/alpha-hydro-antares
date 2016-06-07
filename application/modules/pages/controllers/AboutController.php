@@ -22,8 +22,14 @@ class Pages_AboutController extends Zend_Controller_Action
         $this->_pagesMapper = new Pages_Model_Mapper_Pages();
         $this->_page = $this->_pagesMapper->findByPath($this->getPageDefaultPath(), new Pages_Model_Pages());
         $this->setPageId($this->_page->getId());
-
-        $this->view->adminPath = 'pages/edit/'.$this->getPageId();
+        
+        
+        $this->view->assign(array(
+            'adminPath' => 'pages/edit/'.$this->getPageId(),
+            'page' => $this->_page,
+            'meta_description' => $this->_page->getMetaDescription(),
+            'meta_keywords' => $this->_page->getMetaKeywords()
+        ));
     }
 
     public function indexAction()
@@ -37,11 +43,6 @@ class Pages_AboutController extends Zend_Controller_Action
             $this->forward('json', 'pages', 'admin', array('id' => $id));
             return;
         }
-
-
-        $this->view->page = $this->_page;
-        $this->view->meta_description = $this->_page->getMetaDescription();
-        $this->view->meta_keywords = $this->_page->getMetaKeywords();
     }
 
 

@@ -318,6 +318,7 @@
               <actionMethod actionName="edit"/>
               <actionMethod actionName="delete"/>
               <actionMethod actionName="section"/>
+              <actionMethod actionName="sectionView"/>
             </controllerFile>
             <controllerFile controllerName="Trash">
               <actionMethod actionName="index"/>
@@ -373,6 +374,9 @@
               <actionMethod actionName="json"/>
             </controllerFile>
             <controllerFile controllerName="Base">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Search">
               <actionMethod actionName="index"/>
             </controllerFile>
           </controllersDirectory>
@@ -685,6 +689,12 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Pages">
                 <viewScriptFile forActionName="enable"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Media">
+                <viewScriptFile forActionName="sectionView"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Search">
+                <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>

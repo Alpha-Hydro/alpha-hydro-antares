@@ -8,11 +8,13 @@ class MediaController extends BaseController
     /**
      * @var Media_Model_Mapper_Media
      *
+     *
      */
     protected $_modelMapper = null;
 
     /**
      * @var Media_Model_Mapper_MediaCategories
+     *
      *
      */
     protected $_modelCategoriesMapper = null;
@@ -20,11 +22,13 @@ class MediaController extends BaseController
     /**
      * @var Media_Model_Media
      *
+     *
      */
     protected $_model = null;
 
     /**
      * @var Zend_Form[]
+     *
      *
      */
     protected $_forms = array();
@@ -45,17 +49,15 @@ class MediaController extends BaseController
 
         parent::indexAction();
 
-        if($this->_request->getParam('category_id'))
-            $this->view->categoryName = $this->_modelCategoriesMapper
-                    ->find(
-                        $this->_request->getParam('category_id'),
-                        new Media_Model_MediaCategories())
-                    ->getName().' - ';
+        if($this->_request->getParam('category_id')){
+            $category = $this->_modelCategoriesMapper
+                ->find(
+                    $this->_request->getParam('category_id'),
+                    new Media_Model_MediaCategories());
 
-        if($this->_request->getParam('category_id'))
-            $this->view->categoryName = $this->_modelCategoriesMapper
-                    ->find($this->_request->getParam('category_id'), new Media_Model_MediaCategories())
-                    ->getName() . ' - ';
+            $category && $this->view->categoryName = $category->getName().' - ';
+        }
+        
 
         $config = array(
             Zend_Navigation_Page_Mvc::factory(array(
@@ -65,12 +67,12 @@ class MediaController extends BaseController
                 'action' => 'add',
                 'resource' => 'media',
             )),
-            Zend_Navigation_Page_Mvc::factory(array(
+            /*Zend_Navigation_Page_Mvc::factory(array(
                 'label' => 'Категории',
                 'module' => 'admin',
                 'controller' => 'media-categories',
                 'resource' => 'media-categories',
-            )),
+            )),*/
         );
 
         $containerNav = new Zend_Navigation($config);
@@ -217,12 +219,21 @@ class MediaController extends BaseController
 
                 $jsonData['message'] = 'Ok';
             }
+            $this->_helper->json->sendJson($jsonData);
+        }
+        
+        if($this->_request->getParam('id')){
+            $this->forward('index', null, null, array(
+                'filter' => 'section_site_id',
+                'val' => $this->_request->getParam('id')
+            ));
         }
 
-        return $this->_helper->json->sendJson($jsonData);
     }
 
 }
+
+
 
 
 

@@ -11,7 +11,7 @@ class Forum_IndexController extends Zend_Controller_Action
             ->addActionContext('refresh-captcha', 'json')
             ->initContext('html');
 
-        $this->view->adminPath = 'forum/?page='.$this->getRequest()->getParam('page');
+        $this->view->adminPath = 'forum/';
     }
 
     public function indexAction()
