@@ -20,7 +20,7 @@ class Media_IndexController extends Zend_Controller_Action
             ->where('deleted != ?', 1)
             ->where('active != ?', 0)
             //После создания модулей Производство, Масла, ТП - удалить
-            ->where('id IN(?)', array(2, 3, 4))
+            //->where('id IN(?)', array(2, 3, 4))
             ->order('sorting ASC');
         $mediaCategories = $mediaCategoryMapper->fetchAll($select);
         $this->setCategories($mediaCategories);

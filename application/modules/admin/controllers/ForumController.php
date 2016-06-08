@@ -1,13 +1,18 @@
 <?php
-use \Michelf\Markdown;
-include_once 'Michelf/Markdown.php';
 
-class ForumController extends Zend_Controller_Action
+include_once 'BaseController.php';
+
+class ForumController extends BaseController
 {
     /**
      * @var Forum_Model_Mapper_Forum
      */
-    protected $_forumMapper;
+    protected $_modelMapper;
+
+    /**
+     * @var Forum_Model_Forum
+     */
+    protected $_model;
 
     /**
      * @var Zend_Auth
@@ -21,35 +26,31 @@ class ForumController extends Zend_Controller_Action
 
     protected $_forums = array();
     protected $_noReply = array();
-    protected $_count_item_on_page = null;
 
     protected $_currentUrl = null;
 
     public function init()
     {
-        $this->_forumMapper = new Forum_Model_Mapper_Forum();
+        $this->_redirector = $this->_helper->getHelper('Redirector');
+        $this->_modelMapper = new Forum_Model_Mapper_Forum();
+        $this->_model = new Forum_Model_Forum();
+
         $this->_userAuth = Zend_Auth::getInstance()->getIdentity();
         
-        $this->view->assign('user', $this->_userAuth);
-
-        $this->setCountItemOnPage(10);
-
         $this->setNoReplyForums();
-
-        $this->_redirector = $this->_helper->getHelper('Redirector');
-
         $this->setCurrentUrl(
             ($this->getRequest()->getParam('page'))
                 ?'/admin/forum/?page='.$this->getRequest()->getParam('page')
                 :'/admin/forum'
             );
+
+        $this->view->assign('user', $this->_userAuth);
     }
 
     public function indexAction()
     {
-        $request = $this->getRequest();
-        if($request->getParam('page'))
-            $this->view->assign('currentPage', $request->getParam('page'));
+        if($this->_request->getParam('page'))
+            $this->view->assign('currentPage', $this->_request->getParam('page'));
 
         $noReply = $this->getNoReply();
         if(!empty($noReply))
@@ -61,35 +62,55 @@ class ForumController extends Zend_Controller_Action
             $pageItems = $this->paginationView($pageItems);
             $this->view->assign('forums',$pageItems);
         }
+
+        $config = array(
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'На сайт',
+                'uri' => ($this->getRequest()->getParam('page'))
+                    ?'/forum/?page='.$this->getRequest()->getParam('page')
+                    :'/forum/'
+            )),
+        );
+        $containerNav = new Zend_Navigation($config);
+
+        $editUrlOptions = array(
+            'module' => 'admin',
+            'controller' => 'pages',
+            'action' => 'edit',
+            'id' => $this->getPageModule('forum')->getId(),
+        );
+
+        $this->view->assign(array(
+            'editUrlOptions' => $editUrlOptions,
+            'container_nav' => $containerNav
+        ));
     }
 
     public function deleteAction()
     {
-        $request = $this->getRequest();
-        $itemId = $request->getParam('id');
+        $itemId = $this->_request->getParam('id');
 
         if(is_null($itemId)){
             $this->_redirector->gotoUrlAndExit($this->getCurrentUrl());
             return;
         }
 
-        $item = $this->_forumMapper->find($itemId, new Forum_Model_Forum());
+        $item = $this->_modelMapper->find($itemId, new Forum_Model_Forum());
 
         if(is_null($item))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
         $item->setActive(0);
         $item->setDeleted(1);
-        $this->_forumMapper->save($item);
+        $this->_modelMapper->save($item);
 
-        //$this->_redirector->gotoSimpleAndExit('index',null, null, array('page' => $request->getParam('page')));
+        //$this->_redirector->gotoSimpleAndExit('index',null, null, array('page' => $this->_request->getParam('page')));
         $this->_redirector->gotoUrlAndExit($this->getCurrentUrl());
     }
 
     public function replyAction()
     {
-        $request = $this->getRequest();
-        $itemId = $request->getParam('id');
+        $itemId = $this->_request->getParam('id');
 
         if(is_null($itemId)){
             $this->_redirector->gotoUrlAndExit($this->getCurrentUrl());
@@ -97,7 +118,7 @@ class ForumController extends Zend_Controller_Action
         }
 
 
-        $quest = $this->_forumMapper->find($itemId, new Forum_Model_Forum());
+        $quest = $this->_modelMapper->find($itemId, new Forum_Model_Forum());
 
         $item = new Forum_Model_Forum();
 
@@ -108,14 +129,14 @@ class ForumController extends Zend_Controller_Action
         $item->setActive(1);
         $item->setDeleted(0);
 
-        $markdown = $request->getParam('contentMarkdown');
+        $markdown = $this->_request->getParam('contentMarkdown');
         if($markdown && $markdown != ''){
-            $context_html = Markdown::defaultTransform($markdown);
+            $context_html = \Michelf\Markdown::defaultTransform($markdown);
 
             $item->setContent($context_html);
             $item->setContentMarkdown($markdown);
 
-            $this->_forumMapper->save($item);
+            $this->_modelMapper->save($item);
 
             $this->sendReplyMail($quest, $item);
         }
@@ -125,8 +146,7 @@ class ForumController extends Zend_Controller_Action
 
     public function editAction()
     {
-        $request = $this->getRequest();
-        $itemId = $request->getParam('id');
+        $itemId = $this->_request->getParam('id');
 
         if(is_null($itemId)){
             $this->_redirector->gotoUrlAndExit($this->getCurrentUrl());
@@ -134,18 +154,18 @@ class ForumController extends Zend_Controller_Action
         }
 
 
-        $item = $this->_forumMapper->find($itemId, new Forum_Model_Forum());
+        $item = $this->_modelMapper->find($itemId, new Forum_Model_Forum());
 
         $oldContent = $item->getContent();
 
-        $markdown = $request->getParam('contentMarkdown');
+        $markdown = $this->_request->getParam('contentMarkdown');
         if($markdown && $markdown != ''){
-            $context_html = Markdown::defaultTransform($markdown);
+            $context_html = \Michelf\Markdown::defaultTransform($markdown);
 
             $item->setContent($context_html);
             $item->setContentMarkdown($markdown);
 
-            $this->_forumMapper->save($item);
+            $this->_modelMapper->save($item);
 
             if($this->_userAuth->email != $item->getEmail())
                 $this->sendEditMail($item, $oldContent);
@@ -224,11 +244,11 @@ class ForumController extends Zend_Controller_Action
      */
     public function setNoReplyForums()
     {
-        $select = $this->_forumMapper->getDbTable()->select();
+        $select = $this->_modelMapper->getDbTable()->select();
         $select->where('parent_id is null')
             ->where('deleted != ?', 1)
             ->order('timestamp DESC');
-        $forumItems = $this->_forumMapper->fetchAll($select);
+        $forumItems = $this->_modelMapper->fetchAll($select);
 
         if(!empty($forumItems)){
             $forums = array();
@@ -243,7 +263,7 @@ class ForumController extends Zend_Controller_Action
                     ->where('deleted != ?', 1)
                     ->order('timestamp ASC');
 
-                $reply = $this->_forumMapper->fetchAll($select);
+                $reply = $this->_modelMapper->fetchAll($select);
 
                 if(0 !== count($reply)){
                     $topic['question'] = $forumItem;
@@ -272,17 +292,16 @@ class ForumController extends Zend_Controller_Action
     public function paginationView(array $pageItems)
     {
         $result = array();
-        $request = $this->getRequest();
         if(count($pageItems)> $this->getCountItemOnPage()){
 
             $pages = array_chunk($pageItems, $this->getCountItemOnPage());
 
             $currentPage = 0;
 
-            if($request->getParam('page') && $request->getParam('page')>0)
-                $currentPage = $request->getParam('page')-1;
+            if($this->_request->getParam('page') && $this->_request->getParam('page')>0)
+                $currentPage = $this->_request->getParam('page')-1;
 
-            if($request->getParam('page') && $request->getParam('page')>count($pages))
+            if($this->_request->getParam('page') && $this->_request->getParam('page')>count($pages))
                 $currentPage = count($pages)-1;
 
             $result = $pages[$currentPage];
@@ -330,24 +349,6 @@ class ForumController extends Zend_Controller_Action
     public function getNoReply()
     {
         return $this->_noReply;
-    }
-
-    /**
-     * @param null $count_item_on_page
-     * @return Admin_ForumController
-     */
-    public function setCountItemOnPage($count_item_on_page)
-    {
-        $this->_count_item_on_page = $count_item_on_page;
-        return $this;
-    }
-
-    /**
-     * @return null
-     */
-    public function getCountItemOnPage()
-    {
-        return $this->_count_item_on_page;
     }
 
     /**

@@ -78,31 +78,55 @@ class CategoriesController extends BaseController
                 'action' => 'list',
                 'id'=>$parent_id
             ), 'adminEdit', true);
-            //$this->_redirector->gotoUrlAndExit('/admin/categories/list/'.$parent_id.'/');
 
         $pageItems = $this->setPaginationPage($pageItems);
 
-        $this->view->assign(array(
-            'pages' => $pageItems,
-            'auth' => Zend_Auth::getInstance()->hasIdentity()
-        ));
-
         $config = array(
             Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Редактировать раздел',
-                'module' => 'admin',
-                'controller' => 'pages',
-                'action' => 'edit',
-                'params' => array(
-                    'id' => $this->getPageModule('catalog')->getId(),
-                ),
-                'resourse' =>'pages',
-                'route' => 'adminEdit'
+                'label' => 'На сайт',
+                'uri' => '/catalog/'.$this->_modelMapper->getFullPathById($parent_id)
             )),
         );
         $containerNav = new Zend_Navigation($config);
 
-        $this->view->assign('container_nav', $containerNav);
+        $editUrlOptions = array(
+            'module' => 'admin',
+            'controller' => 'pages',
+            'action' => 'edit',
+            'id' => $this->getPageModule('catalog')->getId(),
+        );
+        
+        $this->view->assign(array(
+            'pages' => $pageItems,
+            'auth' => Zend_Auth::getInstance()->hasIdentity(),
+            'editUrlOptions' => $editUrlOptions,
+            'container_nav' => $containerNav
+        ));
+    }
+
+    public function listAction()
+    {
+        $editUrlOptions = array(
+            'module' => 'admin',
+            'controller' => 'pages',
+            'action' => 'edit',
+            'id' => $this->getPageModule('catalog')->getId(),
+        );
+        $config = array(
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'На сайт',
+                'uri' => '/catalog/'.$this->_modelMapper->getFullPathById($this->_request->getParam('id'))
+            )),
+        );
+        $containerNav = new Zend_Navigation($config);
+
+        $this->view->assign(array(
+            'editUrlOptions' => $editUrlOptions,
+            'container_nav' => $containerNav
+        ));
+
+        $this->forward('index', 'products', 'admin', array('category_id' => $this->_getParam('id')));
+        return;
     }
 
     public function addAction()
@@ -150,7 +174,6 @@ class CategoriesController extends BaseController
             $this->_redirector->gotoUrlAndExit($url);
         }
     }
-
 
     public function editAction()
     {
@@ -208,30 +231,6 @@ class CategoriesController extends BaseController
         }
     }
 
-    public function seoAction()
-    {
-        $categoryId = $this->_request->getParam('id');
-        if(is_null($categoryId))
-            $this->_redirector->gotoSimpleAndExit('index');
-
-        $category = $this->_modelMapper->find($categoryId, new Catalog_Model_Categories());
-
-        if(is_null($category))
-            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
-
-        if($this->_request->isPost()) {
-            $url = $this->_request->getParam('currentUrl');
-
-            if($this->_request->getParam('dataFormSeo')){
-                $dataFormSeo = $this->_request->getParam('dataFormSeo');
-                $category->setOptions($dataFormSeo);
-                $this->_modelMapper->save($category);
-            }
-
-            $this->_redirector->gotoUrlAndExit($url);
-        }
-    }
-
     public function deleteAction()
     {
         $categoryId = $this->_request->getParam('id');
@@ -251,6 +250,53 @@ class CategoriesController extends BaseController
                 $category
                     ->setDeleted(1)
                     ->setModDate(date("Y-m-d H:i:s"));
+                $this->_modelMapper->save($category);
+            }
+
+            $this->_redirector->gotoUrlAndExit($url);
+        }
+    }
+
+    public function jsonAction()
+    {
+        $request = $this->getRequest();
+        $id = $request->getParam('id');
+
+        $jsonData = array(
+            $request->getControllerKey() => $request->getControllerName(),
+            'role' => Zend_Auth::getInstance()->getIdentity()->role,
+            'name' => 'Каталог',
+            'id' => '0',
+        );
+
+        if($id){
+            $entry = $this->_modelMapper->find($id, new Catalog_Model_Categories());
+            if(!is_null($entry)){
+                $jsonData = array_merge($jsonData, $entry->getOptions());
+                $jsonData = array_merge($jsonData, $this->breadcrumbs($id));
+            }
+        }
+
+        return $this->_helper->json->sendJson($jsonData);
+    }
+
+    public function seoAction()
+    {
+        $categoryId = $this->_request->getParam('id');
+        if(is_null($categoryId))
+            $this->_redirector->gotoSimpleAndExit('index');
+
+        $category = $this->_modelMapper->find($categoryId, new Catalog_Model_Categories());
+
+        if(is_null($category))
+            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+        if($this->_request->isPost()) {
+            $url = $this->_request->getParam('currentUrl');
+
+            if($this->_request->getParam('dataFormSeo')){
+                $dataFormSeo = $this->_request->getParam('dataFormSeo');
+                $category->setOptions($dataFormSeo);
                 $this->_modelMapper->save($category);
             }
 
@@ -308,36 +354,10 @@ class CategoriesController extends BaseController
         }
     }
 
-    public function jsonAction()
-    {
-        $request = $this->getRequest();
-        $id = $request->getParam('id');
-
-        $jsonData = array(
-            $request->getControllerKey() => $request->getControllerName(),
-            'role' => Zend_Auth::getInstance()->getIdentity()->role,
-            'name' => 'Каталог',
-            'id' => '0',
-        );
-
-        if($id){
-            $entry = $this->_modelMapper->find($id, new Catalog_Model_Categories());
-            if(!is_null($entry)){
-                $jsonData = array_merge($jsonData, $entry->getOptions());
-                $jsonData = array_merge($jsonData, $this->breadcrumbs($id));
-            }
-        }
-
-
-        return $this->_helper->json->sendJson($jsonData);
-    }
-
-    public function listAction()
-    {
-        $this->forward('index', 'products', 'admin', array('category_id' => $this->_getParam('id')));
-        return;
-    }
-
+    /**
+     * @param $id
+     * @return array
+     */
     public function breadcrumbs($id){
         $entries = $this->_modelMapper->fetchTreeParentCategories($id);
         $breadcrumbs = array();
@@ -357,6 +377,11 @@ class CategoriesController extends BaseController
         return $treeCategories;
     }
 
+    /**
+     * @param $category_id
+     * @return Zend_Navigation
+     * @throws Zend_Navigation_Exception
+     */
     public function containerNavigation($category_id)
     {
         $container = new Zend_Navigation();
@@ -412,6 +437,10 @@ class CategoriesController extends BaseController
         return $container;
     }
 
+    /**
+     * @param $id
+     * @return int
+     */
     protected function _countSubCategories($id)
     {
         $select = $this->_modelMapper->getDbTable()->select();

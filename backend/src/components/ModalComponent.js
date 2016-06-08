@@ -12,6 +12,16 @@ export default class ModalComponent extends React.Component{
 	}
 
 	render() {
+		const btnSubmit = () => {
+			switch (this.props.action) {
+				case "add": return {style: 'success', text: 'Добавить'};
+				case "disabled": return {style: 'primary', text: 'Скрыть'};
+				case "enabled": return {style: 'success', text: 'Показать'};
+				case "delete": return {style: 'danger', text: 'Удалить'};
+				default: return {style: 'success', text: 'Сохранить'};
+
+		}};
+
 		return (
 			<Modal
 				show={this.props.show}
@@ -38,7 +48,7 @@ export default class ModalComponent extends React.Component{
 				</Modal.Body>
 				<Modal.Footer>
 					<Button onClick={this.hideModal.bind(this)}>Отмена</Button>
-					<Button form="formModal" bsStyle="success" type="submit">Сохранить изменения</Button>
+					<Button form="formModal" bsStyle={btnSubmit().style} type="submit">{btnSubmit().text}</Button>
 				</Modal.Footer>
 			</Modal>
 		);

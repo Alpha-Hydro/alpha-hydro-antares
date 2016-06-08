@@ -5,8 +5,6 @@ class Admin_Form_MediaCategoriesEdit extends Twitter_Bootstrap_Form_Vertical
 
     public function init()
     {
-        $this->addElement('hidden', 'id');
-
         $image = new Zend_Form_Element_File('imageLoadFile');
         $image
             ->setValueDisabled(true)
@@ -29,12 +27,15 @@ class Admin_Form_MediaCategoriesEdit extends Twitter_Bootstrap_Form_Vertical
             'data-input' => 'image',
             'title'         => 'Загрузить изображение',
         ));
-        
-        $this->addElement('select', 'parentId', array(
+
+        $this->addElement('hidden', 'id');
+        $this->addElement('hidden', 'parentId');
+
+        /*$this->addElement('select', 'parentId', array(
             'label'     => 'Родительская категория',
             'required'  => true,
             'multiOptions' => $this->getCategoryArray(),
-        ));
+        ));*/
 
         $this->addElement('text', 'name', array(
             'label'         => 'Наименование категории',

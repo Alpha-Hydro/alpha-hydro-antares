@@ -46,9 +46,6 @@ class MediaController extends BaseController
 
     public function indexAction()
     {
-
-        parent::indexAction();
-
         if($this->_request->getParam('category_id')){
             $category = $this->_modelCategoriesMapper
                 ->find(
@@ -56,28 +53,11 @@ class MediaController extends BaseController
                     new Media_Model_MediaCategories());
 
             $category && $this->view->categoryName = $category->getName().' - ';
+
+            $this->view->assign('category_id', $this->_request->getParam('category_id'));
         }
-        
 
-        $config = array(
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Добавить статью',
-                'module' => 'admin',
-                'controller' => 'media',
-                'action' => 'add',
-                'resource' => 'media',
-            )),
-            /*Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Категории',
-                'module' => 'admin',
-                'controller' => 'media-categories',
-                'resource' => 'media-categories',
-            )),*/
-        );
-
-        $containerNav = new Zend_Navigation($config);
-
-        $this->view->container_nav = $containerNav;
+        parent::indexAction();
     }
 
     public function addAction()

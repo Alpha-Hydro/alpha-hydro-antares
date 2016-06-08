@@ -56,8 +56,8 @@ class ManufactureController extends BaseController
                 ->find(
                     $this->_request->getParam('category_id'),
                     new Manufacture_Model_ManufactureCategories());
-            if($category)
-                $this->view->assign('categoryName', $category->getTitle().' - ');
+            
+            $category && $this->view->assign('categoryName', $category->getTitle().' - ');
 
             $this->view->assign('category_id', $this->_request->getParam('category_id'));
         }
@@ -67,8 +67,16 @@ class ManufactureController extends BaseController
 
     public function addAction()
     {
-        Zend_Debug::dump($this->_request->getParams());
         parent::addAction();
+
+        $form = $this->_forms['edit'];
+        $form->setDefaults(array(
+            'sorting'       => 0,
+            'active'        => 1,
+            'deleted'       => 0,
+            'categoryId'    => (!$this->_request->getParam('id'))?0:$this->_request->getParam('id'),
+            'imageLoad'         => '/files/images/product/2012-05-22_foto_nv.jpg'
+        ));
     }
 
     public function editAction()

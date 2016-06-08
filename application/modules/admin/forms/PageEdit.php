@@ -5,8 +5,30 @@ class Admin_Form_PageEdit extends Twitter_Bootstrap_Form_Vertical
 
     public function init()
     {
-        //$this->setIsArray(true);
+        $image = new Zend_Form_Element_File('imageLoadFile');
+        $image
+            ->setValueDisabled(true)
+            ->addValidator('Size', false, 1024000)
+            ->addValidator('Extension', false, 'jpg,png,gif')
+            ->setAttribs(
+                array(
+                    'class' => 'hidden',
+                    'data-input' => 'image',
+                    'data-upload' => '/upload/pages'
+                )
+            );
+        $this->addElement($image);
 
+        $this->addElement('hidden', 'image');
+
+        $this->addElement('image', 'imageLoad', array(
+            'label'         => null,//'Изображение',
+            'class'         => 'img-thumbnail',
+            'data-toggle'   => 'tooltip',
+            'data-placement'=> 'bottom',
+            'data-input' => 'image',
+            'title'         => 'Загрузить изображение',
+        ));
 
         $this->addElement('hidden', 'id');
 
@@ -23,23 +45,6 @@ class Admin_Form_PageEdit extends Twitter_Bootstrap_Form_Vertical
             'placeholder'   => 'Url страницы',
             'required'      => true,
         ));
-
-        $this->addElement('hidden', 'image');
-
-        $this->addElement('image', 'imageLoad', array(
-            'label'         => null,//'Изображение',
-            'class'         => 'img-thumbnail',
-            'data-toggle'   => 'tooltip',
-            'data-placement'=> 'bottom',
-            'title'         => 'Загрузить изображение',
-        ));
-
-        $image = new Zend_Form_Element_File('imageLoadFile');
-        $image->setDestination(APPLICATION_ROOT.'/upload/pages')
-            ->addValidator('Size', false, 1024000)
-            ->addValidator('Extension', false, 'jpg,png,gif')
-            ->setAttrib('class', 'hidden');
-        $this->addElement($image);
 
         $this->addElement('textarea', 'description', array(
             'label'         => 'Краткое описание страницы',
@@ -122,10 +127,8 @@ class Admin_Form_PageEdit extends Twitter_Bootstrap_Form_Vertical
             ),
             'seo',
             array(
-                //'legend' => 'SEO',
                 'class' => 'tab-pane',
                 'role'  => 'tabpanel',
-
             )
         );
 
@@ -137,7 +140,6 @@ class Admin_Form_PageEdit extends Twitter_Bootstrap_Form_Vertical
             ),
             'additionally',
             array(
-                //'legend' => 'Дополнительно',
                 'class' => 'tab-pane',
                 'role'  => 'tabpanel'
             )
@@ -148,16 +150,6 @@ class Admin_Form_PageEdit extends Twitter_Bootstrap_Form_Vertical
             'type'          => 'submit',
             'buttonType'    => 'success',
             'ignore' => true,
-            //'escape'        => false
-        ));
-
-        /*$this->addElement('hash', 'csrf', array(
-            'ignore' => true,
-        ));*/
-
-        $classForm = $this->getAttrib('class');
-        $this->addAttribs(array(
-            'class' => 'tab-content '.$classForm,
         ));
     }
 

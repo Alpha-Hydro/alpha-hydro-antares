@@ -41,6 +41,30 @@ class ManufactureCategoriesController extends BaseController
         $this->_redirector = $this->_helper->getHelper('Redirector');
     }
 
+    public function indexAction()
+    {
+        parent::indexAction();
+        $config = array(
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'На сайт',
+                'uri' => '/manufacture/'
+            )),
+        );
+        $containerNav = new Zend_Navigation($config);
+
+        $editUrlOptions = array(
+            'module' => 'admin',
+            'controller' => 'pages',
+            'action' => 'edit',
+            'id' => $this->getPageModule('manufacture')->getId(),
+        );
+
+        $this->view->assign(array(
+            'editUrlOptions' => $editUrlOptions,
+            'container_nav' => $containerNav
+        ));
+    }
+
     public function editAction()
     {
         if($this->_request->getParam('dataPage')){

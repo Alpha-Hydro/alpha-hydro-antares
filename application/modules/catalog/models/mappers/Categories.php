@@ -456,5 +456,21 @@ class Catalog_Model_Mapper_Categories
         return $entries;
     }
 
+    /**
+     * @param $id
+     * @return mixed|string
+     */
+    public function getFullPathById($id)
+    {
+        $fullPath = '';
+        if($id != 0){
+            $entry = $this->find($id, new Catalog_Model_Categories());
+            if($entry)
+                $fullPath = $entry->getFullPath();
+        }
+
+        return $fullPath;
+    }
+
 }
 

@@ -59,6 +59,19 @@
                             <action>index</action>
                             <resourse>manufacture</resourse>
                             <route>adminEdit</route>
+                            <pages>
+                                <edit>
+                                    <label>Производство</label>
+                                    <module>admin</module>
+                                    <controller>pages</controller>
+                                    <action>edit</action>
+                                    <params>
+                                        <id>4</id>
+                                    </params>
+                                    <resource>pages</resource>
+                                    <route>adminEdit</route>
+                                </edit>
+                            </pages>
                         </index>
                         <add>
                             <label>Добавить товар</label>
@@ -123,6 +136,19 @@
                             <action>index</action>
                             <resourse>pipeline</resourse>
                             <route>adminEdit</route>
+                            <pages>
+                                <edit>
+                                    <label>Трубопроводная арматура</label>
+                                    <module>admin</module>
+                                    <controller>pages</controller>
+                                    <action>edit</action>
+                                    <params>
+                                        <id>6</id>
+                                    </params>
+                                    <resource>pages</resource>
+                                    <route>adminEdit</route>
+                                </edit>
+                            </pages>
                         </index>
                         <add>
                             <label>Добавить товар</label>
@@ -210,6 +236,19 @@
                             <action>index</action>
                             <resourse>oil</resourse>
                             <route>adminEdit</route>
+                            <pages>
+                                <edit>
+                                    <label>Масла и очистители</label>
+                                    <module>admin</module>
+                                    <controller>pages</controller>
+                                    <action>edit</action>
+                                    <params>
+                                        <id>7</id>
+                                    </params>
+                                    <resource>pages</resource>
+                                    <route>adminEdit</route>
+                                </edit>
+                            </pages>
                         </index>
                         <add>
                             <label>Добавить товар</label>
@@ -266,6 +305,19 @@
                     <controller>forum</controller>
                     <resource>forum</resource>
                     <route>adminEdit</route>
+                    <pages>
+                        <edit>
+                            <label>Форум</label>
+                            <module>admin</module>
+                            <controller>pages</controller>
+                            <action>edit</action>
+                            <params>
+                                <id>8</id>
+                            </params>
+                            <resource>pages</resource>
+                            <route>adminEdit</route>
+                        </edit>
+                    </pages>
                 </forum>
                 <media>
                     <label>Пресса</label>
@@ -281,6 +333,19 @@
                             <action>index</action>
                             <resourse>media</resourse>
                             <route>adminEdit</route>
+                            <pages>
+                                <edit>
+                                    <label>Пресса</label>
+                                    <module>admin</module>
+                                    <controller>pages</controller>
+                                    <action>edit</action>
+                                    <params>
+                                        <id>9</id>
+                                    </params>
+                                    <resource>pages</resource>
+                                    <route>adminEdit</route>
+                                </edit>
+                            </pages>
                         </index>
                         <add>
                             <label>Добавить статью</label>

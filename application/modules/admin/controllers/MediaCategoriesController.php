@@ -17,7 +17,6 @@ class MediaCategoriesController extends BaseController
 
     /**
      * @var Zend_Form[]
-     *
      */
     protected $_forms = array();
 
@@ -33,24 +32,46 @@ class MediaCategoriesController extends BaseController
         parent::indexAction();
         $config = array(
             Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Добавить категорию',
-                'module' => 'admin',
-                'controller' => 'media-categories',
-                'action' => 'add',
-                'resource' => 'media-categories',
-            ))
+                'label' => 'На сайт',
+                'uri' => '/media/'
+            )),
         );
-
         $containerNav = new Zend_Navigation($config);
 
-        $this->view->container_nav = $containerNav;
+        $editUrlOptions = array(
+            'module' => 'admin',
+            'controller' => 'pages',
+            'action' => 'edit',
+            'id' => $this->getPageModule('media')->getId(),
+        );
+
+        $this->view->assign(array(
+            'editUrlOptions' => $editUrlOptions,
+            'container_nav' => $containerNav
+        ));
     }
 
-    public function addAction()
+    public function editAction()
     {
-        parent::addAction();
+        if($this->_request->getParam('dataPage')){
+            $dataPage = $this->_request->getParam('dataPage');
+            $id = $this->_request->getParam('id');
+
+            $categories = $this->_modelMapper->find($id, $this->_model);
+            $categories->setOptions($dataPage);
+
+            $this->setUploadImage($categories);
+
+            /*$markdown = $dataPage['contentMarkdown'];
+            $context_html = \Michelf\Markdown::defaultTransform($markdown);
+            $categories->setContentHtml($context_html);*/
+
+            $this->_modelMapper->save($categories);
+
+            $this->_redirector->gotoUrlAndExit($this->_request->getParam('currentUrl'));
+        }
+        parent::editAction();
     }
-    
 }
 
 

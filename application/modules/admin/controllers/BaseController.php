@@ -3,7 +3,7 @@
 class BaseController extends Zend_Controller_Action
 {
     /**
-     * @var array Form instances
+     * @var Zend_Form[]
      */
     protected $_forms = array();
 
@@ -89,28 +89,34 @@ class BaseController extends Zend_Controller_Action
         }
 
         $this->view->assign('pages', $pageItems);
-
-        $config = array(
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Редактировать раздел',
-                'module' => 'admin',
-                'controller' => 'pages',
-                'action' => 'edit',
-                'params' => array(
-                    'id' => $this->getPageModule()->getId(),
-                ),
-                'resourse' =>'pages',
-                'route' => 'adminEdit'
-            )),
-        );
-        $containerNav = new Zend_Navigation($config);
-
-        $this->view->assign('container_nav', $containerNav);
-
     }
 
     public function listAction()
     {
+        $editUrlOptions = array(
+            'module' => 'admin',
+            'controller' => $this->_request->getControllerName(),
+            'action' => 'edit',
+            'id' => $this->_request->getParam('id'),
+        );
+
+        $colsTable = $this->getModelMapper()->getDbTable()->info('cols');
+        $item = $this->getModelMapper()->find($this->_request->getParam('id'), $this->getModel());
+
+        $uri = (in_array('full_path', $colsTable))?$item->getFullPath():$item->getPath();
+
+        $config = array(
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'На сайт',
+                'uri' => '/'.strtolower($this->getNameModule()).'/'.$uri.'/'
+            )),
+        );
+        $containerNav = new Zend_Navigation($config);
+        $this->view->assign(array(
+            'editUrlOptions' => $editUrlOptions,
+            'container_nav' => $containerNav
+        ));
+
         $this->forward('index', strtolower($this->getNameModule()), 'admin', array('category_id' => $this->_getParam('id')));
         return;
     }
@@ -148,7 +154,18 @@ class BaseController extends Zend_Controller_Action
             $form->setDefaults($this->_request->getPost());
         }
 
-        $this->view->assign('form', $form);
+        $config = array(
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Отменить',
+                'uri' => $url
+            )),
+        );
+        $containerNav = new Zend_Navigation($config);
+
+        $this->view->assign(array(
+            'form' => $form,
+            'container_nav' => $containerNav
+        ));
     }
 
     public function editAction()
@@ -200,9 +217,18 @@ class BaseController extends Zend_Controller_Action
             $form->setDefaults($form->getValues());
         }
 
+        $config = array(
+            Zend_Navigation_Page_Mvc::factory(array(
+                'label' => 'Отменить',
+                'uri' => $url
+            )),
+        );
+        $containerNav = new Zend_Navigation($config);
+
         $this->view->assign(array(
             'item' => $page,
-            'form' => $form
+            'form' => $form,
+            'container_nav' => $containerNav
         ));
     }
 
@@ -226,13 +252,6 @@ class BaseController extends Zend_Controller_Action
 
         $url = $this->_request->getServer('HTTP_REFERER');
         $this->getRedirector()->gotoUrlAndExit($url);
-
-        /*if($this->_request->getControllerName() != strtolower($this->getNameModule())){
-            $this->getRedirector()->gotoSimpleAndExit('index');
-        }
-        else{
-            $this->getRedirector()->gotoUrlAndExit('/admin/'.strtolower($this->getNameModule()).'-categories/list/'.$item->getCategoryId().'/');
-        }*/
     }
 
     public function enableAction()
@@ -597,9 +616,6 @@ class BaseController extends Zend_Controller_Action
         $pagesMapper = new Pages_Model_Mapper_Pages();
 
         $page = $pagesMapper->findByPath($pageModulePath, new Pages_Model_Pages());
-
-        if(is_null($page))
-            throw new Zend_Controller_Action_Exception("Раздел '".$pageModulePath."' не добален в таблицу 'Pages'", 404);
 
         return $page;
     }
