@@ -3,18 +3,25 @@ $this->headTitle($this->title .'. '. $this->secondaryHeader);
 $this->meta_title = $this->title .'. '. $this->secondaryHeader;
 $this->breadcrumbs = true;
 $this->sidebar_headers = true;
-$this->product_id = $this->product->id;
+
+/**
+ * @var $product Catalog_Model_Products
+ * @var $property Catalog_Model_ProductParams
+ * @var $subproductProperty Catalog_Model_SubproductParams
+ */
+$product = $this->product;
+$this->product_id = $product->getId();
 ?>
 
 <div class="col-xs-6 col-md-3">
     <div class="product-images">
         <div class="thumbnail">
-            <img src="<?=$this->product->uploadPath . $this->product->image;?>" alt="<?=$this->product->name?>"/>
+            <img src="<?=$product->getUploadPath() . $product->getImage();?>" alt="<?=$product->getName()?>"/>
         </div>
         <?php if($this->draftImage):?>
             <div class="thumbnail">
                 <a href="#" data-toggle="modal" data-target="#draftImageProduct">
-                    <img src="<?=$this->product->uploadPathDraft . $this->product->draft?>" alt="<?=$this->product->name?>"/>
+                    <img src="<?=$product->getUploadPathDraft() . $product->getDraft()?>" alt="<?=$product->getName()?>"/>
                 </a>
             </div>
             <!-- Modal -->
@@ -23,11 +30,11 @@ $this->product_id = $this->product->id;
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel"><?=$this->product->sku?> <small><?=$this->product->name?></small></h4>
+                            <h4 class="modal-title" id="myModalLabel"><?=$this->transformProductSku($product->getSku())?> <small><?=$product->getName()?></small></h4>
                         </div>
                         <div class="modal-body">
                             <div class="modal-draft-images text-center">
-                                <img src="<?=$this->product->uploadPathDraft . $this->product->draft?>" alt="<?=$this->product->name?>"/>
+                                <img src="<?=$product->getUploadPathDraft() . $product->getDraft()?>" alt="<?=$product->getName()?>"/>
                             </div>
                         </div>
                     </div>
@@ -40,23 +47,23 @@ $this->product_id = $this->product->id;
     <?php if($this->productProperty):?>
         <div class="row">
             <div class="col-xs-11"><h4>Свойства</h4></div>
-            <div class="col-xs-1" id="product-property-edit" data-id="<?=$this->product->id?>"></div>
+            <div class="col-xs-1" id="product-property-edit" data-id="<?=$product->getId()?>"></div>
         </div>
         <table class="table table-striped table-condensed product-property">
             <?php foreach ($this->productProperty as $property):?>
                 <tr>
-                    <th class="col-md-4"><?= $property->name ?></th>
-                    <td><?= $property->value ?></td>
+                    <th class="col-md-4"><?= $property->getName() ?></th>
+                    <td><?= $property->getValue() ?></td>
                 </tr>
             <?php endforeach;?>
         </table>
     <?php endif;?>
 
-    <?php if($this->product->description != ''):?>
+    <?php if($product->getDescription() != ''):?>
         <div class="row mb2">
             <div class="col-md-12">
                 <h4>Описание</h4>
-                <?=$this->product->description?>
+                <?=$product->getDescription()?>
             </div>
         </div>
     <?php endif;?>
@@ -67,15 +74,15 @@ $this->product_id = $this->product->id;
     <div class="col-md-12">
         <div class="row">
             <div class="col-xs-10"><h4>Модификации и размеры</h4></div>
-            <div class="col-xs-2" id="product-modification-edit" data-id="<?=$this->product->id?>"></div>
+            <div class="col-xs-2" id="product-modification-edit" data-id="<?=$product->getId()?>"></div>
         </div>
         <table class="table table-striped modifications">
             <thead>
             <tr>
                 <td>Название</td>
                 <?php if($this->subproductProperty):?>
-                    <?php foreach ($this->subproductProperty as $propertyName):?>
-                        <td><?=$propertyName->name?></td>
+                    <?php foreach ($this->subproductProperty as $subproductProperty):?>
+                        <td><?=$subproductProperty->getName()?></td>
                     <?php endforeach;?>
                 <?php endif;?>
             </tr>
@@ -95,8 +102,8 @@ $this->product_id = $this->product->id;
 
 <div class="col-md-12">
     <div class="footnote">
-        <?php if($this->product->note != ''):?>
-            * <?=$this->product->note?>
+        <?php if($product->getNote() != ''):?>
+            * <?=$product->getNote()?>
         <?php endif;?>
     </div>
 </div>

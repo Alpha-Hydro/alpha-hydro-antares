@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var $product Catalog_Model_Products
+ */
+
 $this->headTitle($this->title);
 $this->meta_title = $this->title;
 $this->breadcrumbs = false;
@@ -17,7 +21,7 @@ $this->headScript()->appendFile('/js/catalog.min.js');
                         'fullPath'=>$product->getFullPath(),
                     ),'catalog',true,false) ?>" title="<?=$product->getName()?>">
                     <img src="/files/images/category/<?=$product->getImage();?>" alt="<?=$product->getName();?>"/>
-                    <p class="categories-list-item-name"><?=$product->getSku()?></p>
+                    <p class="categories-list-item-name"><?=$this->transformProductSku($product->getSku())?></p>
                 </a>
             </div>
         <?php endforeach; ?>

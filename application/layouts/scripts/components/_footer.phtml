@@ -1,13 +1,22 @@
 <?php
 $hostHttp = new Zend_Controller_Request_Http();
 $host = $hostHttp->getServer('HTTP_HOST');
+
+$aHostName = array(
+    'alfa-hydro.loc',
+    'alfa-hydro.com',
+);
+
 ?>
 <div class="footer" role="contentinfo">
     <div class="wrapper text-center">
         <div>© Альфа-Гидро, 2009-<?=date('Y')?></div>
         <div>Гидравлические системы и компоненты</div>
     </div>
+    <?php if(!in_array($host, $aHostName)):?>
     <div class="admin">
         <div><!--noindex--><a href="http://admin.<?=$host?>" class="btn btn-alpha default" rel="nofollow">Вход</a><!--/noindex--></div>
     </div>
+    <?=$this->render("components/_admin_auth.phtml");?>
+    <?php endif;?>
 </div>

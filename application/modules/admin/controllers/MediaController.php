@@ -62,12 +62,14 @@ class MediaController extends BaseController
 
     public function addAction()
     {
-        $form = $this->getForm('edit');
+        parent::addAction();
 
+        $form = $this->_forms['edit'];
         $form->setDefaults(array(
             'sorting'       => 0,
             'active'        => 1,
             'deleted'       => 0,
+            'categoryId'    => (!$this->_request->getParam('id'))?0:$this->_request->getParam('id'),
             'author'        => $this->getUserAuth()->name,
         ));
 
@@ -76,109 +78,6 @@ class MediaController extends BaseController
                 $form->setDefault($element->getName(), '/files/images/product/2012-05-22_foto_nv.jpg');
             }
         }
-
-        if ($this->getRequest()->isPost()){
-            if ($form->isValid($this->_request->getPost())){
-
-                $itemSaveForm = $this->saveFormData($form);
-
-                $item = $this->_modelMapper->find($itemSaveForm->getId(), $this->_model);
-
-                $item->setContent('');
-
-                $categoryId = ($this->_request->getParam('category_id'))
-                    ?$this->_request->getParam('category_id')
-                    :$item->getCategoryId();
-
-                $category = $this->_modelCategoriesMapper->find($categoryId, new Media_Model_MediaCategories());
-                $fullPath = ($category)
-                    ?$category->getPath().'/'.$item->getPath()
-                    :$item->getPath();
-
-                $item->setFullPath($fullPath);
-
-                $this->_modelMapper->save($item);
-
-                if($this->_request->getControllerName() != strtolower($this->getNameModule())){
-                    $this->getRedirector()->gotoSimpleAndExit('index');
-                }
-                else{
-                    $this->getRedirector()->gotoUrlAndExit('/admin/'.strtolower($this->getNameModule()).'-categories/list/'.$item->getCategoryId().'/');
-                }
-            }
-
-            $form->setDefaults($this->_request->getPost());
-        }
-
-        $this->view->form = $form;
-
-        $config = array(
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Добавить товар',
-                'module' => 'admin',
-                'controller' => 'media',
-                'action' => 'add',
-                'resource' => 'media',
-            )),
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Категории',
-                'module' => 'admin',
-                'controller' => 'media-categories',
-                'resource' => 'media-categories',
-            )),
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Отмена',
-                'module' => 'admin',
-                'controller' => 'media',
-                'resource' => 'media',
-            )),
-        );
-        $containerNav = new Zend_Navigation($config);
-
-        $this->view->container_nav = $containerNav;
-    }
-
-    public function editAction()
-    {
-        parent::editAction();
-
-        $config = array(
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Добавить товар',
-                'module' => 'admin',
-                'controller' => 'media',
-                'action' => 'add',
-                'resource' => 'media',
-            )),
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Удалить',
-                'module' => 'admin',
-                'controller' => 'media',
-                'action' => 'delete',
-                'resource' => 'media',
-                'params' => array(
-                    'id' => $this->_request->getParam('id'),
-                ),
-            )),
-            Zend_Navigation_Page_Uri::factory(array(
-                'label' => 'Посмотреть на сайте',
-                'uri' => '/media/'.$this->_modelMapper
-                        ->find(
-                            $this->_request->getParam('id'),
-                            $this->_model)
-                        ->getFullPath().'/',
-            )),
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Отмена',
-                'module' => 'admin',
-                'controller' => 'media',
-                'resource' => 'media',
-            )),
-        );
-
-        $containerNav = new Zend_Navigation($config);
-
-        $this->view->container_nav = $containerNav;
     }
 
     public function sectionAction()
@@ -200,6 +99,7 @@ class MediaController extends BaseController
                 $jsonData['message'] = 'Ok';
             }
             $this->_helper->json->sendJson($jsonData);
+            return;
         }
         
         if($this->_request->getParam('id')){

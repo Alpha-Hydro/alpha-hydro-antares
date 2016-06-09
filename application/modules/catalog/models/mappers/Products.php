@@ -247,6 +247,14 @@ class Catalog_Model_Mapper_Products
         return $entries;
     }
 
+    /**
+     * @param $id
+     * @param Zend_Db_Table_Select|null $select
+     * @param bool $isArray
+     * @return array|null
+     * @throws Zend_Db_Table_Exception
+     * @throws Zend_Db_Table_Row_Exception
+     */
     public function findSubproductParams($id, Zend_Db_Table_Select $select = null, $isArray = false)
     {
         $result = $this->getDbTable()->find($id);

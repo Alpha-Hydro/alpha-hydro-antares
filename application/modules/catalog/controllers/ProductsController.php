@@ -6,6 +6,11 @@ class Catalog_ProductsController extends Zend_Controller_Action
     protected $_fullPath = null;
     protected $_currentCategory = null;
 
+    protected $_aHostName = array(
+        'alfa-hydro.loc',
+        'alfa-hydro.com',
+    );
+
     public function init()
     {
         $request = $this->getRequest();
@@ -106,14 +111,9 @@ class Catalog_ProductsController extends Zend_Controller_Action
             return;
         }
 
-        $this->view->product = $product;
-        $this->view->title = $product->getSku();
-        $this->view->secondaryHeader = $product->getName();
 
         $categoryRel = $products->findCategoryRel($product->getId(), new Catalog_Model_Categories());
         $this->setCurrentCategory($categoryRel);
-        $this->view->current_category = $categoryRel->getId();
-        $this->view->adminPath = 'categories/list/'.$categoryRel->getId();
 
         if(!is_null($product->getAImages())){
             $draftImages = unserialize($product->getAImages());
@@ -163,7 +163,6 @@ class Catalog_ProductsController extends Zend_Controller_Action
 
             $meta_description = implode(", ", array_reverse($aDescription));
         }
-        $this->view->meta_description = $meta_description;
 
         if($product->getMetaKeywords() != ''){
             $meta_keywords = $product->getMetaKeywords();
@@ -182,7 +181,16 @@ class Catalog_ProductsController extends Zend_Controller_Action
             $aKeywords[] = $product->getName();
             $meta_keywords = implode(", ", array_reverse($aKeywords));
         }
-        $this->view->meta_keywords = $meta_keywords;
+
+        $this->view->assign(array(
+            'product' => $product,
+            'title' => $this->transformSku($product->getSku()),
+            'secondaryHeader' => $product->getName(),
+            'current_category' => $categoryRel->getId(),
+            'adminPath' => 'categories/list/'.$categoryRel->getId(),
+            'meta_description' => $meta_description,
+            'meta_keywords' => $meta_keywords,
+        ));
     }
 
     public function printAction()
@@ -192,6 +200,8 @@ class Catalog_ProductsController extends Zend_Controller_Action
         $product = new Catalog_Model_Products();
 
         $product = $products->findByFulPath($fullPath, $product);
+        if(is_null($product))
+            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
         $subproducts = new Catalog_Model_Mapper_Subproducts();
         $select = $subproducts->getDbTable()->select()
@@ -215,15 +225,15 @@ class Catalog_ProductsController extends Zend_Controller_Action
             $tableModifications = $this->modificationsTableValues($modifications);
             array_unshift($tableModifications, $headTable);
         }
-        //print_r($tableModifications);
+        //print_r(count(array_shift($tableModifications))-1);
 
         $pdf = new Catalog_Model_PrintPdf();
 
         // set document information
         $pdf->SetAuthor('Альфа Гидро');
-        $pdf->SetTitle($product->getSku().'. '.$product->getName());
-        $pdf->SetSubject($product->getSku().'. '.$product->getName());
-        $pdf->SetKeywords($product->getSku().', '.$product->getName());
+        $pdf->SetTitle($this->transformSku($product->getSku()).'. '.$product->getName());
+        $pdf->SetSubject($this->transformSku($product->getSku()).'. '.$product->getName());
+        $pdf->SetKeywords($this->transformSku($product->getSku()).', '.$product->getName());
 
         $pdf->SetFont('', '', 12, '', true);
 
@@ -256,7 +266,7 @@ class Catalog_ProductsController extends Zend_Controller_Action
             foreach ($modifications as $modification) {
                 $modificationPropertyValues = $subproducts->findSubProductParamValue($modification->getId());
                 $values = array();
-                $values[] = $modification->getSku();
+                $values[] = $this->transformSku($modification->getSku());
                 foreach ($modificationPropertyValues as $modificationPropertyValue) {
                     $values[] = $modificationPropertyValue->getValue();
                 }
@@ -294,6 +304,20 @@ class Catalog_ProductsController extends Zend_Controller_Action
     public function getCurrentCategory()
     {
         return $this->_currentCategory;
+    }
+
+    /**
+     * @param $sku
+     * @return string
+     */
+    public function transformSku($sku)
+    {
+        $hostName = $this->_request->getServer('HTTP_HOST');
+        if(in_array($hostName, $this->_aHostName) && $sku[0] === 'A'){
+            $sku = substr($sku, 1);
+        }
+
+        return $sku;
     }
 
 }

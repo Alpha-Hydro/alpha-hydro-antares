@@ -1,10 +1,3 @@
-<?php
-$this->headScript()
-    ->appendFile("/js/adminAuth.min.js");
-
-$requestParams = Zend_Controller_Front::getInstance()->getRequest()->getParams();
-
-?>
 <?php if(!Zend_Auth::getInstance()->hasIdentity()):?>
 <div class="modal fade" tabindex="-1" role="dialog" id="modalAuth">
     <div class="modal-dialog">
@@ -44,6 +37,7 @@ $requestParams = Zend_Controller_Front::getInstance()->getRequest()->getParams()
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <?php endif;?>
+<?php $this->headScript()->appendFile("/js/adminAuth.min.js");?>
 <?php $this->headScript()->captureStart() ?>
 var goAdmin = new AdminAuth('<?=$this->adminPath?>');
 <?php $this->headScript()->captureEnd() ?>

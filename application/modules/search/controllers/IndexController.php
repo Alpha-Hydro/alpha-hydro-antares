@@ -50,12 +50,15 @@ class Search_IndexController extends Zend_Controller_Action
                         $currentPage = count($productsPages)-1;
 
                     $products = $productsPages[$currentPage];
-                    $this->view->countPage = count($productsPages);
-                    $this->view->currentPage = $currentPage+1;
-                    $this->view->query = $request->getParam('query');
+                    
+                    $this->view->assign(array(
+                        'countPage' => count($productsPages),
+                        'currentPage' => $currentPage+1,
+                        'query' => $request->getParam('query'),
+                    ));
                 }
 
-                $this->view->products = $products;
+                $this->view->assign('products', $products);
             }
         }
 

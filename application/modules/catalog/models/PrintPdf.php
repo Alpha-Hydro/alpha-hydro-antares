@@ -3,6 +3,9 @@ require_once 'tcpdf/tcpdf.php';
 
 class Catalog_Model_PrintPdf extends TCPDF
 {
+    /**
+     * @var Catalog_Model_Products
+     */
     protected $_product;
 
     protected $_aModificationsProduct = array();
@@ -10,6 +13,13 @@ class Catalog_Model_PrintPdf extends TCPDF
     protected $_widthWorkspacePage;
 
     protected $_last_page_flag = false;
+
+    protected $_hostName;
+
+    protected $_aHostName = array(
+        'alfa-hydro.loc',
+        'alfa-hydro.com',
+    );
 
 
     public function __construct()
@@ -37,6 +47,8 @@ class Catalog_Model_PrintPdf extends TCPDF
         //$this->setPrintFooter(false);
 
         $this->setWidthWorkspacePage($this->getPageWidth()-PDF_MARGIN_LEFT-PDF_MARGIN_RIGHT);
+
+        $this->setHostName(Zend_Controller_Front::getInstance()->getRequest()->getServer('HTTP_HOST'));
     }
 
     public function Close() {
@@ -50,10 +62,10 @@ class Catalog_Model_PrintPdf extends TCPDF
      */
     public function Header() {
         $this->SetFont('', 'B', 16);
-        $this->Write(0, $this->_product->sku);
+        $this->Write(0, $this->transformSku($this->getProduct()->getSku()));
         $this->Ln();
         $this->SetFontSize(12);
-        $this->Write(0, $this->_product->name);
+        $this->Write(0, $this->getProduct()->getName());
 
         $style = array('width' => 0.1, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => $this->footer_line_color);
         $this->SetY(20);
@@ -79,7 +91,7 @@ class Catalog_Model_PrintPdf extends TCPDF
         $this->SetXY($this->x + 3, $this->y + 1);
         $this->SetFillColor(228,228,228);
         $numberPageWith = 20;
-        $this->Cell($this->getPageWidth() - $this->x - $numberPageWith - 3, 7, 'www.alpha-hydro.com', 0, 0, 'C', true, 'http://alpha-hydro.loc/catalog/shlangi/gidravlika/shlangi-vysokogo-davlenija/kompaktnye-shlangi/AKP1001SC/', 0, false, 'M');
+        $this->Cell($this->getPageWidth() - $this->x - $numberPageWith - 3, 7, 'www.'.$this->getHostName(), 0, 0, 'C', true, 'http://'.$this->getHostName().'/catalog/'.$this->getProduct()->getFullPath(), 0, false, 'M');
         $this->SetX($this->x + 3);
         $this->SetFillColor(0,148,218);
         $this->SetTextColor(255);
@@ -173,34 +185,36 @@ class Catalog_Model_PrintPdf extends TCPDF
 
         $this->SetFont('','',8);
         $headTable = array_shift ($table);
-        $widthName = 25;
-        $w = array($widthName, ($this->getWidthWorkspacePage()-$widthName)/(count($headTable)-1));
 
-        $this->setCellPaddings('', 1, '', 1);
-        $this->SetFillColor(0,148,218);
-        $this->SetTextColor(255);
-        foreach ($headTable as $key => $column) {
-            $wKew = ($key == 0)? $w[0]: $w[1];
-            $this->MultiCell($wKew, 17, $column, 0, 'C', true, 0, '', '', true, 0, false, true, 0, 'M', true);
-        }
-        $this->ln();
-        $this->SetTextColor(0);
-        foreach ($table as $key => $row) {
-            $this->SetFillColor(255,255,255);
-            if($key & 1)
-                $this->SetFillColor(228,228,228);
-            foreach ($row as $k => $value) {
-                $wk = ($k == 0)? $w[0]: $w[1];
-                $this->Cell($wk, 0, $value, 0, 0, 'C', true);
+        if(count($headTable) > 1) {
+            $widthName = 25;
+            $w = array($widthName, ($this->getWidthWorkspacePage() - $widthName) / (count($headTable) - 1));
+
+            $this->setCellPaddings('', 1, '', 1);
+            $this->SetFillColor(0, 148, 218);
+            $this->SetTextColor(255);
+            foreach ($headTable as $key => $column) {
+                $wKew = ($key == 0) ? $w[0] : $w[1];
+                $this->MultiCell($wKew, 17, $column, 0, 'C', true, 0, '', '', true, 0, false, true, 0, 'M', true);
             }
             $this->ln();
-        }
+            $this->SetTextColor(0);
+            foreach ($table as $key => $row) {
+                $this->SetFillColor(255, 255, 255);
+                if ($key & 1)
+                    $this->SetFillColor(228, 228, 228);
+                foreach ($row as $k => $value) {
+                    $wk = ($k == 0) ? $w[0] : $w[1];
+                    $this->Cell($wk, 0, $value, 0, 0, 'C', true);
+                }
+                $this->ln();
+            }
 
-        $product = $this->getProduct();
-        if($product->note != ''){
-            $this->Write(0, '*'.$product->note);
+            $product = $this->getProduct();
+            if ($product->note != '') {
+                $this->Write(0, '*' . $product->note);
+            }
         }
-
 
         return $this;
     }
@@ -247,7 +261,7 @@ class Catalog_Model_PrintPdf extends TCPDF
     }
 
     /**
-     * @return mixed
+     * @return Catalog_Model_Products
      */
     public function getProduct()
     {
@@ -276,6 +290,34 @@ class Catalog_Model_PrintPdf extends TCPDF
     public function isLastPageFlag()
     {
         return $this->_last_page_flag;
+    }
+
+    public function transformSku($sku)
+    {
+        $hostName = $this->getHostName();
+        if(in_array($hostName, $this->_aHostName) && $sku[0] === 'A'){
+            $sku = substr($sku, 1);
+        }
+
+        return $sku;
+    }
+
+    /**
+     * @param mixed $hostName
+     * @return Catalog_Model_PrintPdf
+     */
+    public function setHostName($hostName)
+    {
+        $this->_hostName = $hostName;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHostName()
+    {
+        return $this->_hostName;
     }
 
 }

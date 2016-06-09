@@ -7,65 +7,75 @@ $this->title = 'Пресса';
 $this->secondary_text = $this->categoryName.'Список публикаций';
 
 ?>
-
+<?php if($this->pages):?>
     <table class="table table-striped table-bordered">
         <thead>
-        <tr>
-            <th>ID</th>
-            <th><span class="glyphicon glyphicon-sort"></span></th>
-            <?php if(!$this->categoryName):?>
-                <th>Категория</th>
-            <?php endif;?>
-            <th>Заголовок</th>
-            <th>Привязка к разделу сайта</th>
-            <th>Действия</th>
-        </tr>
+            <tr>
+                <th>ID</th>
+                <th><span class="glyphicon glyphicon-sort"></span></th>
+                <?php if(!$this->categoryName):?>
+                    <th>Категория</th>
+                <?php endif;?>
+                <th>Заголовок</th>
+                <th>Привязка к разделу сайта</th>
+                <th>Действия</th>
+            </tr>
         </thead>
-        <?php if($this->pages):?>
-            <?php foreach ($this->pages as $page):?>
-                <tr class="<?=$this->contextualClassTr($page);?>">
-                    <td><?=$page->getId()?></td>
-                    <td><?=$page->getSorting()?></td>
-                    <?php if(!$this->categoryName):?>
-                        <td>
-                            <?=($this->getCategory($page->getCategoryId(), 'media'))
-                                ?$this->getCategory($page->getCategoryId(), 'media')->getName()
-                                :'нет';
-                            ?>
-                        </td>
-                    <?php endif;?>
+        <?php foreach ($this->pages as $page):?>
+            <tr class="<?=$this->contextualClassTr($page);?>">
+                <td><?=$page->getId()?></td>
+                <td><?=$page->getSorting()?></td>
+                <?php if(!$this->categoryName):?>
                     <td>
-                        <?php if($page->getDeleted() != 1):?>
-                            <a href="/media/<?=$page->getFullPath();?>" title="Посмотреть на сайте">
-                                <?=$page->getName()?>
-                                <span class="glyphicon glyphicon-link mlr1"></span>
-                            </a>
-                        <?php else:?>
+                        <?=($this->getCategory($page->getCategoryId(), 'media'))
+                            ?$this->getCategory($page->getCategoryId(), 'media')->getName()
+                            :'нет';
+                        ?>
+                    </td>
+                <?php endif;?>
+                <td>
+                    <?php if($page->getDeleted() != 1):?>
+                        <a href="/media/<?=$page->getFullPath();?>" title="Посмотреть на сайте">
                             <?=$page->getName()?>
-                        <?php endif;?>
-                    </td>
-                    <td>
-                        <div class="select-feedback">
-                            <?=$this->formSelect('sectionSite_'.$page->getId(),
-                                $page->getSectionSiteId(),
-                                array(
-                                    'class'=>'form-control sectionSite input-sm',
-                                    'data-itemId' => $page->getId()
-                                ),
-                                $this->getSectionSite())?>
-                            <span class="glyphicon glyphicon-ok select-control-feedback" aria-hidden="true"></span>
-                        </div>
-                    </td>
-                    <td width="150px">
-                        <?=$this->partial('_button_group_table.phtml', array(
-                            'item_controller' => 'media',
-                            'item_id' => $page->getId(),
-                            'active' => ($page->getActive() != 0)? true : false,
-                            'deleted' => ($page->getDeleted() != 0)? true : false,
-                        ))?>
-                    </td>
-                </tr>
-            <?php endforeach;?>
-        <?php endif;?>
+                            <span class="glyphicon glyphicon-link mlr1"></span>
+                        </a>
+                    <?php else:?>
+                        <?=$page->getName()?>
+                    <?php endif;?>
+                </td>
+                <td>
+                    <div class="select-feedback">
+                        <?=$this->formSelect('sectionSite_'.$page->getId(),
+                            $page->getSectionSiteId(),
+                            array(
+                                'class'=>'form-control sectionSite input-sm',
+                                'data-itemId' => $page->getId()
+                            ),
+                            $this->getSectionSite())?>
+                        <span class="glyphicon glyphicon-ok select-control-feedback" aria-hidden="true"></span>
+                    </div>
+                </td>
+                <td width="150px">
+                    <?=$this->partial('_button_group_table.phtml', array(
+                        'item_controller' => 'media',
+                        'item_id' => $page->getId(),
+                        'active' => ($page->getActive() != 0)? true : false,
+                        'deleted' => ($page->getDeleted() != 0)? true : false,
+                    ))?>
+                </td>
+            </tr>
+        <?php endforeach;?>
     </table>
+<?php endif;?>
+<div class="pull-left">
+    <a href="<?=$this->url(
+        array(
+            'module'=>'admin',
+            'controller' => 'media',
+            'action' => 'add',
+            'id' => $this->category_id
+        ),
+        false,true
+    )?>" class="btn btn-default">Добавить публикацию</a>
+</div>
 <?= $this->render('components/_paginator.phtml')?>
