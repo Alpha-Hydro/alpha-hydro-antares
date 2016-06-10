@@ -1,9 +1,8 @@
 <?php
 
-use \Michelf\Markdown;
-include_once 'Michelf/Markdown.php';
+include_once 'BaseController.php';
 
-class OilCategoriesController extends Zend_Controller_Action
+class OilCategoriesController extends BaseController
 {
 
     /**
@@ -12,308 +11,112 @@ class OilCategoriesController extends Zend_Controller_Action
     protected $_modelMapper = null;
 
     /**
-     * @var Zend_Controller_Action_Helper_Redirector
+     * @var Oil_Model_OilCategories
      */
-    protected $_redirector = null;
+    protected $_model = null;
 
     /**
-     * @var Admin_Form_OilCategoriesEdit;
+     * @var Zend_Form[];
      */
-    protected $_form = null;
-
-    protected $_count_item_on_page = null;
+    protected $_forms = array();
 
     public function init()
     {
-        $this->setCountItemOnPage(10);
         $this->_modelMapper = new Oil_Model_Mapper_OilCategories();
-        $this->_form = new Admin_Form_OilCategoriesEdit();
-        $this->_redirector = $this->_helper->getHelper('Redirector');
+        $this->_model = new Oil_Model_OilCategories();
+        $this->_forms['edit'] = new Admin_Form_OilCategoriesEdit();
 
     }
 
     public function indexAction()
     {
-        $request = $this->getRequest();
-
-        $select = $this->_modelMapper->getDbTable()->select();
-        $select->order('sorting ASC');
-
-        $pageItems = $this->_modelMapper->fetchAll($select);
-
-        if(!empty($pageItems)){
-            if(count($pageItems)> $this->getCountItemOnPage()){
-
-                $pages = array_chunk($pageItems, $this->getCountItemOnPage());
-
-                $currentPage = 0;
-
-                if($request->getParam('page') && $request->getParam('page')>0)
-                    $currentPage = $request->getParam('page')-1;
-
-                if($request->getParam('page') && $request->getParam('page')>count($pages))
-                    $currentPage = count($pages)-1;
-
-                $pageItems = $pages[$currentPage];
-                $this->view->countPage = count($pages);
-                $this->view->currentPage = $currentPage+1;
-            }
-        }
-
-        $this->view->pages = $pageItems;
+        parent::indexAction();
 
         $config = array(
             Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Добавить категорию',
-                'module' => 'admin',
-                'controller' => 'oil-categories',
-                'action' => 'add',
-                'resource' => 'oil-categories',
+                'label' => 'На сайт',
+                'uri' => '/oil/'
             )),
         );
-
         $containerNav = new Zend_Navigation($config);
 
-        $this->view->container_nav = $containerNav;
+        $editUrlOptions = array(
+            'module' => 'admin',
+            'controller' => 'pages',
+            'action' => 'edit',
+            'id' => $this->getPageModule('oil')->getId(),
+        );
 
-    }
-
-    public function addAction()
-    {
-        $request = $this->getRequest();
-
-        $this->_form->setDefaults(array(
-            'sorting'       => 0,
-            'active'        => 1,
-            'deleted'       => 0,
-            'imageLoad'     => '/files/images/product/2012-05-22_foto_nv.jpg',
+        $this->view->assign(array(
+            'editUrlOptions' => $editUrlOptions,
+            'container_nav' => $containerNav
         ));
-
-        if ($this->getRequest()->isPost()){
-            if ($this->_form->isValid($request->getPost())){
-                $this->_saveFormData($this->_form);
-            }
-
-            $this->_form->setDefaults($request->getPost());
-            $this->view->formData = $this->_form->getValues();
-        }
-
-        $this->view->form = $this->_form;
-
-        $config = array(
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Добавить категорию',
-                'module' => 'admin',
-                'controller' => 'oil-categories',
-                'action' => 'add',
-                'resource' => 'oil-categories',
-            )),
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Отменить',
-                'module' => 'admin',
-                'controller' => 'oil-categories',
-                'resource' => 'oil-categories',
-            )),
-        );
-
-        $containerNav = new Zend_Navigation($config);
-
-        $this->view->container_nav = $containerNav;
     }
 
     public function editAction()
     {
-        //Zend_Debug::dump($this->_request->getParams());
+        if($this->_request->getParam('dataPage')){
+            $dataPage = $this->_request->getParam('dataPage');
+            $id = $this->_request->getParam('id');
 
-        $itemId = $this->_request->getParam('id');
-        if(is_null($itemId))
-            $this->_redirector->gotoSimpleAndExit('index');
+            $categories = $this->_modelMapper->find($id, $this->_model);
+            $categories->setOptions($dataPage);
 
-        $page = $this->_modelMapper->find($itemId, new Oil_Model_OilCategories());
+            $this->setUploadImage($categories);
 
-        $this->view->item = $page;
+            $markdown = $dataPage['contentMarkdown'];
+            $context_html = \Michelf\Markdown::defaultTransform($markdown);
+            $categories->setContentHtml($context_html);
 
-        if(is_null($page))
-            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+            $this->_modelMapper->save($categories);
 
-        $this->_form->setDefaults($page->getOptions());
+            $this->getRedirector()->gotoUrlAndExit($this->_request->getParam('currentUrl'));
+        }
 
-        $imageValue = ($this->_form->getValue('image') != '')
-            ?$this->_form->getValue('image')
-            :'/files/images/product/2012-05-22_foto_nv.jpg';
+        parent::editAction();
+    }
 
-        $this->_form->setDefault('imageLoad', $imageValue);
+    public function saveFormData(Zend_Form $form)
+    {
+        $item = $this->getModel();
+        $item->setOptions($form->getValues());
 
-        if($this->getRequest()->isPost()){
-            if($this->_form->isValid($this->getRequest()->getPost())){
-                $this->_saveFormData($this->_form);
+        if($this->_request->getParam('contentMarkdown')){
+            $context_html = Michelf\MarkdownExtra::defaultTransform($this->_request->getParam('contentMarkdown'));
+            $item->setContentHtml($context_html);
+        }
+
+        $item->setFullPath($this->_request->getParam('path'));
+
+        if($this->_request->getParam('parentId') !== 0){
+            $parentCategory = $this->_modelMapper
+                ->find($this->_request->getParam('parentId'), new Oil_Model_OilCategories());
+
+            if(!is_null($parentCategory))
+                $item->setFullPath($parentCategory->getFullPath().'/'.$this->_request->getParam('path'));
+        }
+
+        $this->setMetaData($item);
+
+        $this->getModelMapper()->save($item);
+
+
+        if($item->getId() && $item->getId() != ''){
+            $id = $item->getId();
+        }
+        else{
+            $id = $this->getModelMapper()->getDbTable()->getAdapter()->lastInsertId();
+
+        }
+        $item = $this->getModelMapper()->find($id, $this->getModel());
+
+        foreach ($form->getElements() as $key => $element) {
+            if($element instanceof Zend_Form_Element_File && $element->isUploaded()){
+                $item = $this->saveUploadFile($element, $item);
             }
         }
 
-        $this->view->form = $this->_form;
-
-        $config = array(
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Добавить категорию',
-                'module' => 'admin',
-                'controller' => 'oil-categories',
-                'action' => 'add',
-                'resource' => 'oil-categories',
-            )),
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Удалить',
-                'module' => 'admin',
-                'controller' => 'oil-categories',
-                'action' => 'delete',
-                'resource' => 'oil-categories',
-                'params' => array(
-                    'id' => $itemId,
-                ),
-            )),
-            Zend_Navigation_Page_Uri::factory(array(
-                'label' => 'Посмотреть на сайте',
-                'uri' => '/oil/'.$page->getFullPath().'/',
-            )),
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Отменить',
-                'module' => 'admin',
-                'controller' => 'oil-categories',
-                'resource' => 'oil-categories',
-            )),
-        );
-
-        $containerNav = new Zend_Navigation($config);
-
-        $this->view->container_nav = $containerNav;
-    }
-
-    public function deleteAction()
-    {
-        $itemId = $this->_request->getParam('id');
-
-        if(is_null($itemId))
-            $this->_redirector->gotoSimpleAndExit('index');
-
-        $category = $this->_modelMapper->find($itemId, new Oil_Model_OilCategories());
-        if(is_null($category))
-            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
-
-        $deleted = ($category->getDeleted() != 0)?0:1;
-
-        $category->setDeleted($deleted);
-        $this->_modelMapper->save($category);
-
-        $this->_redirector->gotoSimpleAndExit('index');
-    }
-
-    public function enableAction()
-    {
-        $itemId = $this->_request->getParam('id');
-
-        if(is_null($itemId))
-            $this->_redirector->gotoSimpleAndExit('index');
-
-        $item = $this->_modelMapper->find($itemId, new Oil_Model_OilCategories());
-
-        $active = ($item->getActive() != 0)?0:1;
-        $item->setActive($active);
-
-        $this->_modelMapper->save($item);
-
-        $this->_redirector->gotoSimpleAndExit('index');
-    }
-
-    public function listAction()
-    {
-        $this->forward('index', 'oil', 'admin', array('category_id' => $this->_getParam('id')));
-        return;
-    }
-
-    public function jsonAction()
-    {
-        $id = $this->_request->getParam('id');
-
-        $jsonData = array(
-            $this->_request->getControllerKey() => $this->_request->getControllerName(),
-            'role' => Zend_Auth::getInstance()->getIdentity()->role
-        );
-
-        if($id){
-            $entry = $this->_modelMapper->find($id, new Oil_Model_OilCategories());
-            if(!is_null($entry))
-                $jsonData = array_merge($jsonData, $entry->getOptions());
-        }
-
-
-        return $this->_helper->json->sendJson($jsonData);
-    }
-
-    /**
-     * @param null $count_item_on_page
-     * @return OilCategoriesController
-     */
-    public function setCountItemOnPage($count_item_on_page)
-    {
-        $this->_count_item_on_page = $count_item_on_page;
-        return $this;
-    }
-
-    /**
-     * @return null
-     */
-    public function getCountItemOnPage()
-    {
-        return $this->_count_item_on_page;
-    }
-
-    private function _saveFormData(Admin_Form_OilCategoriesEdit $form)
-    {
-        $request = $this->getRequest();
-
-        $item = new Oil_Model_OilCategories($form->getValues());
-
-        $item->setFullPath($request->getParam('path'));
-
-        if($request->getParam('parentId') !== 0){
-            $parentCategory = $this->_modelMapper
-                ->find($request->getParam('parentId'), new Oil_Model_OilCategories());
-
-            if(!is_null($parentCategory))
-                $item->setFullPath($parentCategory->getFullPath().'/'.$request->getParam('path'));
-        }
-
-
-        if($form->imageLoadFile->isUploaded()){
-            //Zend_Debug::dump($form->imageLoadFile->getFileInfo());
-            $form->imageLoadFile->receive();
-            $file = $form->imageLoadFile->getFileInfo();
-            $item->setImage('/upload/oil/categories/'.$file['imageLoadFile']['name']);
-        }
-
-        $markdown = $request->getParam('contentMarkdown');
-        $context_html = Markdown::defaultTransform($markdown);
-        $item->setContentHtml($context_html);
-
-        $metaTitle = $request->getParam('metaTitle');
-        if(empty($metaTitle))
-            $item->setMetaTitle($request->getParam('title'));
-
-        $description = $request->getParam('description');
-        $metaDescription = $request->getParam('metaDescription');
-        if(empty($metaDescription) && !empty($description))
-            $item->setMetaDescription($description);
-
-        $keywords = $request->getParam('metaKeywords');
-        if(empty($keywords))
-            $item->setMetaKeywords($request->getParam('title'));
-
-        $item->setCreateDate(date("Y-m-d H:i:s"));
-
-        //Zend_Debug::dump($item);
-
-        $this->_modelMapper->save($item);
-
-        $this->_redirector->gotoSimpleAndExit('index');
+        return $item;
     }
 }
 

@@ -68,7 +68,7 @@ class MediaCategoriesController extends BaseController
 
             $this->_modelMapper->save($categories);
 
-            $this->_redirector->gotoUrlAndExit($this->_request->getParam('currentUrl'));
+            $this->getRedirector()->gotoUrlAndExit($this->_request->getParam('currentUrl'));
         }
         parent::editAction();
     }

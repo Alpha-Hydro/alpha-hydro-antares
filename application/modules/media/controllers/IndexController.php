@@ -19,22 +19,19 @@ class Media_IndexController extends Zend_Controller_Action
         $select
             ->where('deleted != ?', 1)
             ->where('active != ?', 0)
-            //После создания модулей Производство, Масла, ТП - удалить
-            //->where('id IN(?)', array(2, 3, 4))
             ->order('sorting ASC');
         $mediaCategories = $mediaCategoryMapper->fetchAll($select);
         $this->setCategories($mediaCategories);
 
-        $this->view->categories = $this->getCategories();
-
-        $this->view->adminPath = 'media-categories/';
+        $this->view->assign(array(
+            'categories' => $this->getCategories(),
+            'adminPath' => 'media-categories/',
+            'title' => 'Пресса'
+        ));
     }
 
     public function indexAction()
     {
-        //var_dump($this->getAllParams());
-
-        $this->view->title = 'Пресса';
         $mediaCategoryMapper = new Media_Model_Mapper_MediaCategories();
 
         $request = $this->getRequest();
@@ -53,8 +50,6 @@ class Media_IndexController extends Zend_Controller_Action
         }
 
         $mediaCategoryId = $this->getCategoriesDefaultId();
-
-        $this->view->adminPath = 'media-categories/list/'.$mediaCategoryId;
 
         if(!is_null($this->getRequest()->getParam('json'))
             && Zend_Auth::getInstance()->hasIdentity()){
@@ -88,8 +83,10 @@ class Media_IndexController extends Zend_Controller_Action
 
                 $mediaItems = $mediaPages[$currentPage];
 
-                $this->view->countPage = count($mediaPages);
-                $this->view->currentPage = $currentPage+1;
+                $this->view->assign(array(
+                    'countPage' => count($mediaPages),
+                    'currentPage' => $currentPage+1,
+                ));
             }
 
             if(!isset($mediaCategory))
@@ -98,17 +95,24 @@ class Media_IndexController extends Zend_Controller_Action
 
 
             if (isset($mediaCategory))
-                $this->view->currentCategory = $mediaCategory;
+                $this->view->assign('currentCategory', $mediaCategory);
 
-            $this->view->title = $mediaCategory->getName();
-            $this->view->mediaItems = $mediaItems;
+            $this->view->assign(array(
+                'title' => $mediaCategory->getName(),
+                'mediaItems' => $mediaItems,
+            ));
         }
 
         $categoryName = '';
         if(isset($mediaCategory))
             $categoryName = $mediaCategory->getName();
-        $this->view->meta_description = 'Альфа-Гидро - Пресса. '.$categoryName;
-        $this->view->meta_keywords = 'пресса, новости, акции, статьи';
+
+        $this->view->assign(array(
+            'meta_description' => 'Альфа-Гидро - Пресса. '.$categoryName,
+            'meta_keywords' => 'пресса, новости, акции, статьи',
+            'adminPath' => 'media-categories/list/'.$mediaCategoryId,
+        ));
+
     }
 
     public function viewAction()
@@ -130,21 +134,26 @@ class Media_IndexController extends Zend_Controller_Action
             return;
         }
 
-        $this->view->mediaItem = $mediaItem;
-
         $mediaCategoryMapper = new Media_Model_Mapper_MediaCategories();
         $currentCategory = $mediaCategoryMapper->find($mediaItem->getCategoryId(), new Media_Model_MediaCategories());
-        $this->view->currentCategory = $currentCategory;
 
         $meta_description =($mediaItem->getMetaDescription() != '')
             ? $mediaItem->getMetaDescription()
             : $mediaItem->getName().'. '.$currentCategory->getName().'. Альфа-Гидро.';
-        $this->view->meta_description = $meta_description;
+
 
         $meta_keywords = ($mediaItem->getMetaKeywords() != '')
             ? $mediaItem->getMetaKeywords()
             : $mediaItem->getName().', '.$currentCategory->getName().', пресса';
-        $this->view->meta_keywords = $meta_keywords;
+
+        $this->view->assign(array(
+            'mediaItem' => $mediaItem,
+            'currentCategory' => $currentCategory,
+            'meta_description' => $meta_description,
+            'meta_keywords' => $meta_keywords,
+            'adminPath' => 'media/edit/'.$mediaItem->getId(),
+        ));
+
     }
 
     public function pageModule()

@@ -111,6 +111,51 @@ class MediaController extends BaseController
 
     }
 
+    public function saveFormData(Zend_Form $form)
+    {
+
+        $item = $this->getModel();
+        $item->setOptions($form->getValues());
+
+        if($this->_request->getParam('contentMarkdown')){
+            $context_html = Michelf\MarkdownExtra::defaultTransform($this->_request->getParam('contentMarkdown'));
+            $item->setContentHtml($context_html);
+        }
+
+        $categoryId = ($this->_request->getParam('category_id'))
+            ?$this->_request->getParam('category_id')
+            :$item->getCategoryId();
+
+        $category = $this->_modelCategoriesMapper->find($categoryId, new Media_Model_MediaCategories());
+        $fullPath = ($category)
+            ?$category->getPath().'/'.$item->getPath()
+            :$item->getPath();
+
+        $item->setFullPath($fullPath);
+
+        $this->setMetaData($item);
+
+        $this->getModelMapper()->save($item);
+
+
+        if($item->getId() && $item->getId() != ''){
+            $id = $item->getId();
+        }
+        else{
+            $id = $this->getModelMapper()->getDbTable()->getAdapter()->lastInsertId();
+
+        }
+        $item = $this->getModelMapper()->find($id, $this->getModel());
+
+        foreach ($form->getElements() as $key => $element) {
+            if($element instanceof Zend_Form_Element_File && $element->isUploaded()){
+                $item = $this->saveUploadFile($element, $item);
+            }
+        }
+
+        return $item;
+    }
+
 }
 
 

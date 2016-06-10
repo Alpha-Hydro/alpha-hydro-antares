@@ -52,12 +52,11 @@ $this->secondary_text = 'Список категорий';
             </tr>
         <?php endforeach;?>
     </table>
-    <?= $this->render('components/_paginator.phtml')?>
-<?php else:?>
-    <div class="text-center">
-        <a href="<?=$this->url(
-            array('module'=>'admin', 'controller' => 'oil-categories', 'action' => 'add'),
-            false,true
-        )?>" class="btn btn-success">Добавить категорию</a>
-    </div>
 <?php endif;?>
+<div class="pull-left">
+    <a href="<?=$this->url(
+        array('module'=>'admin', 'controller' => 'oil-categories', 'action' => 'add'),
+        false,true
+    )?>" class="btn btn-default">Добавить категорию</a>
+</div>
+<?= $this->render('components/_paginator.phtml')?>

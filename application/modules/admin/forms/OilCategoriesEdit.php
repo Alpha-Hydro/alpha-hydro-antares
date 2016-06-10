@@ -5,34 +5,37 @@ class Admin_Form_OilCategoriesEdit extends Twitter_Bootstrap_Form_Vertical
 
     public function init()
     {
-        $this->addElement('hidden', 'id');
-        
-        $uploadDir = UPLOAD_DIR .'/oil/categories';
-        if(!file_exists($uploadDir))
-            mkdir($uploadDir, 0755, true);
-
         $image = new Zend_Form_Element_File('imageLoadFile');
-        $image->setDestination($uploadDir)
+        $image
+            ->setValueDisabled(true)
             ->addValidator('Size', false, 1024000)
             ->addValidator('Extension', false, 'jpg,png,gif')
-            ->setAttrib('class', 'hidden');
+            ->setAttribs(array(
+                'class' => 'hidden',
+                'data-input' => 'image',
+                'data-upload' => '/upload/oil/categories'
+            ));
         $this->addElement($image);
 
+        $this->addElement('hidden', 'image');
+        
         $this->addElement('image', 'imageLoad', array(
             'label'         => null,//'Изображение',
             'class'         => 'img-thumbnail',
             'data-toggle'   => 'tooltip',
             'data-placement'=> 'bottom',
+            'data-input' => 'image',
             'title'         => 'Загрузить изображение',
         ));
 
-        $this->addElement('hidden', 'image');
 
-        $this->addElement('select', 'parentId', array(
+        $this->addElement('hidden', 'id');
+        $this->addElement('hidden', 'parentId');
+        /*$this->addElement('select', 'parentId', array(
             'label'     => 'Родительская категория',
             'required'  => true,
             'multiOptions' => $this->getCategoryArray(),
-        ));
+        ));*/
 
         $this->addElement('text', 'title', array(
             'label'         => 'Наименование категории',

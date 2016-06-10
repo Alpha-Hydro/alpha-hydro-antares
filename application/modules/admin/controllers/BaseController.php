@@ -301,6 +301,8 @@ class BaseController extends Zend_Controller_Action
      */
     public function setPaginationPage(&$pagesItems)
     {
+
+
         if(count($pagesItems) > $this->getCountItemOnPage()){
 
             $pages = array_chunk($pagesItems, $this->getCountItemOnPage());
