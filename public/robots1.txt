@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+Disallow: /captcha*
+Disallow: /catalog/categories*
+Disallow: /catalog/products*
+Disallow: /catalog/basket*
+Disallow: /catalog/index*
+Disallow: /catalog/*pdf
+Disallow: /catalogs*
+Disallow: /section*
+Disallow: /index*
+Disallow: /admin
+Disallow: /storage
+Clean-param: all /forum/
+Clean-param: faq /forum/
+Clean-param: reviews /forum/
+Host: alpha-hydro.com
+Sitemap: http://alpha-hydro.com/sitemap1.xml

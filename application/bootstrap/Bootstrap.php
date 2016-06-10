@@ -52,16 +52,25 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     {
         $router = Zend_Controller_Front::getInstance()->getRouter();
 
-        $sitemap = new Zend_Controller_Router_Route_Regex(
-            'sitemap.xml',
+        $sitemap = new Zend_Controller_Router_Route_Static(
+            '/sitemap.xml',
             array(
                 'module' => 'default',
                 'controller' => 'sitemap',
                 'action' => 'index',
-            ),
-            'sitemap.xml'
+            )
         );
         $router->addRoute('sitemap', $sitemap);
+
+        $robots_txt = new Zend_Controller_Router_Route_Static(
+            '/robots.txt',
+            array(
+                'module' => 'default',
+                'controller' => 'robotstxt',
+                'action' => 'index',
+            )
+        );
+        $router->addRoute('robots_txt', $robots_txt);
     }
 
     public function _initCache()

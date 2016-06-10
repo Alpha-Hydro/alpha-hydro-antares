@@ -89,6 +89,9 @@
               <actionMethod actionName="oil"/>
               <actionMethod actionName="contacts"/>
             </controllerFile>
+            <controllerFile controllerName="Robotstxt">
+              <actionMethod actionName="index"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory enabled="false"/>
           <layoutsDirectory enabled="false"/>
@@ -139,6 +142,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Sections">
                 <viewScriptFile forActionName="contacts"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Robotstxt">
+                <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
