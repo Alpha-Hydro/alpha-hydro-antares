@@ -1,6 +1,6 @@
 <?php
 
-class Admin_Form_BaseItemEdit extends Zend_Form
+class Admin_Form_BaseItemEdit extends Twitter_Bootstrap_Form_Vertical
 {
 
     public function init()

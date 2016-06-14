@@ -75,7 +75,7 @@ class Catalog_Model_Mapper_Products
      * @param null $select
      * @return array
      */
-    public function fetchAll($select = null)
+    public function fetchAll($select = null, $isArray = false)
     {
         $resultSet = $this->getDbTable()->fetchAll($select);
         
@@ -83,7 +83,9 @@ class Catalog_Model_Mapper_Products
         foreach ($resultSet as $row) {
         	$entry = new Catalog_Model_Products();
         	$entry = $this->_setDbData($row, $entry);
-        	$entries[] = $entry;
+        	$entries[] = (!$isArray)
+                ?$entry
+                :$entry->getOptions();
         }
         
         return $entries;

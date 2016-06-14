@@ -463,7 +463,6 @@ class BaseController extends Zend_Controller_Action
      */
     public function saveFormData(Zend_Form $form)
     {
-
         $item = $this->getModel();
         $item->setOptions($form->getValues());
 
@@ -475,7 +474,6 @@ class BaseController extends Zend_Controller_Action
         $this->setMetaData($item);
 
         $this->getModelMapper()->save($item);
-
 
         if($item->getId() && $item->getId() != ''){
             $id = $item->getId();

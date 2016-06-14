@@ -36,8 +36,8 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<?php endif;?>
 <?php $this->headScript()->appendFile("/js/adminAuth.min.js");?>
 <?php $this->headScript()->captureStart() ?>
 var goAdmin = new AdminAuth('<?=$this->adminPath?>');
 <?php $this->headScript()->captureEnd() ?>
+<?php endif;?>
