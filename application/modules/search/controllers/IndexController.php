@@ -27,12 +27,18 @@ class Search_IndexController extends Zend_Controller_Action
 
         if(!empty($query)){
             $query = str_replace(array('.',',',' ','-','_','/','\\','*','+','&','^','%','#','@','!','(',')','~','<','>',':',';','"',"'","|"), '', $query);
-            $nameQuery = $request->getParam('query');
+            //$nameQuery = $this->_request->getParam('query');
+            //$sQuery = "(`s_name` LIKE '%$query%' OR `name` LIKE '%$nameQuery%')";
+            $sQuery = "MATCH(s_name, sku, name, meta_keywords) AGAINST ('+$query*' IN BOOLEAN MODE)";
+
 
             $productsMapper = new Catalog_Model_Mapper_Products();
             $select = $productsMapper->getDbTable()->select();
 
-            $select->where("(`s_name` LIKE '%$query%' OR `name` LIKE '%$nameQuery%')")
+            $select
+                ->where('active != ?', 0)
+                ->where('deleted != ?', 1)
+                ->where($sQuery)
                 ->order("CHAR_LENGTH(sku) ASC");
 
             $products = $productsMapper->fetchAll($select);
