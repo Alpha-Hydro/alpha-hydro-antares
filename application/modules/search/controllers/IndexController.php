@@ -67,36 +67,30 @@ class Search_IndexController extends Zend_Controller_Action
     {
         $this->_helper->layout()->disableLayout();
         $query = $this->getRequest()->getParam('query');
-
-        $jsonData = array();
+        
         $productsMapper = new Catalog_Model_Mapper_Products();
 
         if($this->_request->getParam('query')){
             $query = str_replace(array('.',',',' ','-','_','/','\\','*','+','&','^','%','#','@','!','(',')','~','<','>',':',';','"',"'","|"), '', $query);
-            $nameQuery = $this->_request->getParam('query');
+            //$nameQuery = $this->_request->getParam('query');
+            //$sQuery = "(`s_name` LIKE '%$query%' OR `name` LIKE '%$nameQuery%')";
+            $sQuery = "MATCH(s_name, sku, name, meta_keywords) AGAINST ('+$query*' IN BOOLEAN MODE)";
 
             $select = $productsMapper->getDbTable()->select();
 
-            $select->where("(`s_name` LIKE '%$query%' OR `name` LIKE '%$nameQuery%')")
+            $select
+                ->where('active != ?', 0)
+                ->where('deleted != ?', 1)
+                ->where($sQuery)
                 ->limit(15)
                 ->order("CHAR_LENGTH(sku) ASC");
 
             $products = $productsMapper->fetchAll($select);
 
             if(!empty($products)){
-                /*foreach ($products as $product) {
-                    $jsonData[] = array(
-                        'sku' => $product->getSku(),
-                        'fullPath' => $product->getFullPath()
-                        );
-                }*/
                 $this->view->assign('products', $products);
             }
-
         }
-
-        //$this->_helper->json->sendJson($jsonData);
-
     }
 
     /**

@@ -3,12 +3,9 @@
  * @var $product Catalog_Model_Products
 */
 ?>
-
-<?php /*if($this->products):*/?><!--
+<?php if($this->products):?>
     <li class="dropdown-header">В каталоге:</li>
-    <?php /*foreach ($this->products as $product):*/?>
-        <li><a href="/catalog/<?/*=$product->getFullPath()*/?>/" title="<?/*=$product->getName()*/?>"><?/*=$this->transformProductSku($product->getSku());*/?></a></li>
-    <?php /*endforeach;*/?>
---><?php /*endif;*/?>
-
-OK
+    <?php foreach ($this->products as $product):?>
+        <li><a href="/catalog/<?=$product->getFullPath()?>/" title="<?=$product->getName()?>"><?=$this->transformProductSku($product->getSku());?></a></li>
+    <?php endforeach;?>
+<?php endif;?>

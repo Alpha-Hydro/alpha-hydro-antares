@@ -8,6 +8,8 @@
   "files": [
     "adminPublic.ts",
     "catalog.min.ts",
-    "pipelinePropertyEdit.ts"
+    "pipelinePropertyEdit.ts",
+    "search.ts"
+
   ]
 }

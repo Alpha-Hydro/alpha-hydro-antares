@@ -15,7 +15,7 @@
       error: (jqXHR, textStatus, errorThrown) ->
         ajaxResponseContent.html "AJAX Error: #{textStatus}"
       success: (data, textStatus, jqXHR) ->
-#        console.log(data)
+        console.log(data)
         ajaxResponseContent.html data
         if data isnt ''
           dropdoun.addClass 'open'

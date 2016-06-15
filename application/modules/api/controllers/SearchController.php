@@ -17,11 +17,16 @@ class Api_SearchController extends Zend_Controller_Action
         if($this->_request->getParam('query')){
             $query = $this->_request->getParam('query');
             $query = str_replace(array('.',',',' ','-','_','/','\\','*','+','&','^','%','#','@','!','(',')','~','<','>',':',';','"',"'","|"), '', $query);
-            $nameQuery = $this->_request->getParam('query');
-
-            $select = $productsMapper->getDbTable()->select();
+            //$nameQuery = $this->_request->getParam('query');
             //$sQuery = "(`s_name` LIKE '%$query%' OR `name` LIKE '%$nameQuery%')";
             $sQuery = "MATCH(s_name, sku, name) AGAINST ('+$query*' IN BOOLEAN MODE)";
+
+            $select = $productsMapper->getDbTable()->select();
+            
+            if(!Zend_Auth::getInstance()->hasIdentity())
+                $select
+                    ->where('active != ?', 0)
+                    ->where('deleted != ?', 1);
 
             $select->where($sQuery)
                 ->limit(15)
@@ -30,10 +35,9 @@ class Api_SearchController extends Zend_Controller_Action
             $products = $productsMapper->fetchAll($select, true);
 
             $products && $jsonData = $products;
-
         }
 
-        $this->_helper->json->sendJson($jsonData);
+        $this->_helper->json->sendJson();
     }
 
 
