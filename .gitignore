@@ -13,7 +13,7 @@ db-backup.sql
 _utils
 
 _db
-tests
+# tests
 db.xml
 db.ini
 
@@ -55,3 +55,29 @@ public/tmp
 
 *.php.bak
 ~*
+appadmin/modules/default/models/
+appadmin/modules/default/views/filters/
+application/modules/Pdf/
+application/modules/admin/views/filters/
+application/modules/api/models/
+application/modules/api/views/filters/
+application/modules/api/views/helpers/
+application/modules/catalog/views/filters/
+application/modules/default/views/filters/
+application/modules/forum/views/filters/
+application/modules/forum/views/helpers/
+application/modules/manufacture/views/filters/
+application/modules/media/views/filters/
+application/modules/media/views/helpers/
+application/modules/oil/views/filters/
+application/modules/oil/views/helpers/
+application/modules/pages/views/filters/
+application/modules/pipeline/views/filters/
+application/modules/search/views/filters/
+application/modules/search/views/helpers/
+application/modules/utils/views/filters/
+files/pdf/book/
+library/tcpdf/fonts/arial/
+library/tcpdf/fonts/times/
+new/
+public/sass/themes/

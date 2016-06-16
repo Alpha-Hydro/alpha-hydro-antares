@@ -81,7 +81,6 @@ class Catalog_IndexController extends Zend_Controller_Action
             $this->forward('json', 'pages', 'admin', array('id' => $id));
             return;
         }
-
     }
 
     /**
