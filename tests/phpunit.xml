@@ -12,16 +12,16 @@
         <directory>./</directory>
     </testsuite>
 
-    <!--<testsuite name="Library Test Suite">
+    <testsuite name="Library Test Suite">
         <directory>./library</directory>
-    </testsuite>-->
+    </testsuite>
 
     <filter>
-        <!-- не смотрим на следующие директории -->
-        <!--<blacklist>
+         не смотрим на следующие директории
+        <blacklist>
             <directory suffix=".php">../appadmin</directory>
             <directory suffix=".php">../tests</directory>
-        </blacklist>-->
+        </blacklist>
         <!-- смотрим лишь на следующие директории -->
         <whitelist>
             <directory suffix=".php">../application</directory>

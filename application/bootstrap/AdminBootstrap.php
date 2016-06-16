@@ -50,7 +50,7 @@ class AdminBootstrap extends Zend_Application_Bootstrap_Bootstrap
         );
 
         $backendOptions = array(
-            'cache_dir' => APPLICATION_ROOT.'/cache/' // директория, в которой размещаются файлы кэша
+            'cache_dir' => '../cache/' // директория, в которой размещаются файлы кэша
         );
 
         // получение объекта Zend_Cache_Core
