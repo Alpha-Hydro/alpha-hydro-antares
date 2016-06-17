@@ -140,6 +140,7 @@ class CategoriesController extends BaseController
                 $category
                     ->setMetaTitle($dataCategory['name'])
                     ->setMetaDescription($dataCategory['description'])
+                    ->setContentHtml(Michelf\MarkdownExtra::defaultTransform($dataCategory['contentMarkdown']))
                     ->setMetaKeywords($dataCategory['name'])
                     ->setAddDate(date("Y-m-d H:i:s"))
                     ->setModDate(date("Y-m-d H:i:s"))
@@ -197,6 +198,9 @@ class CategoriesController extends BaseController
                 $dataCategory = $this->_request->getParam('dataFormCategory');
                 $category->setOptions($dataCategory);
                 $category->setModDate(date("Y-m-d H:i:s"));
+
+                $context_html = Michelf\MarkdownExtra::defaultTransform($dataCategory['contentMarkdown']);
+                $category->setContentHtml($context_html);
 
                 if($dataCategory['parentId'] != $parentCategoryId){
                     $parentFullPath = $this->_modelMapper->generateFullPath($dataCategory['parentId']);

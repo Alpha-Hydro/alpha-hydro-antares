@@ -35,7 +35,7 @@ class Catalog_CategoriesController extends Zend_Controller_Action
 
 
         $current_category_id = $category->getId();
-        $this->view->adminPath = 'categories/'.$current_category_id;
+        $this->view->assign('adminPath', 'categories/'.$current_category_id);
 
         if($current_category_id !== 0){
 
@@ -56,26 +56,21 @@ class Catalog_CategoriesController extends Zend_Controller_Action
             $entries = $categories->fetchAll($select);
 
             if(empty($entries)){
-
                 /*$productsMapper = new Catalog_Model_Mapper_Products();
                 $select = $productsMapper->getDbTable()->select()->order('sorting ASC');
                 $entries = $categories->fetchProductsRel($current_category_id, $select);*/
 
+                $this->view->assign(array('category' => $category));
                 $this->forward('index', 'products');
                 return;
             }
-            $this->view->entries = $entries;
-
+            $this->view->assign('entries', $entries);
         }
         else{
             $this->redirect('/catalog/', array('code'=>301));
             return;
         }
 
-        $this->view->title = $category->getName();
-        $this->view->current_category = $current_category_id;
-
-        $this->view->meta_description = $this->setMetaDescription($category);
 
         if($category->getMetaKeywords() != ''){
             $meta_keywords = $category->getMetaKeywords();
@@ -90,7 +85,13 @@ class Catalog_CategoriesController extends Zend_Controller_Action
             $aKeywords[] = $category->getName();
             $meta_keywords = implode(", ", array_reverse($aKeywords));
         }
-        $this->view->meta_keywords = strtolower($meta_keywords);
+        
+        $this->view->assign(array(
+            'title' => $category->getName(),
+            'current_category' => $current_category_id,
+            'meta_description' => $this->setMetaDescription($category),
+            'meta_keywords' => strtolower($meta_keywords),
+        ));
     }
 
     /**

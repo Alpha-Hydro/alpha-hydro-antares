@@ -109,6 +109,17 @@ export default class CategoriesFormEdit extends React.Component{
 								placeholder="Описание категории"
 								name="dataFormCategory[description]"
 								onChange={this.handleChange('description').bind(this)}
+								rows="4"
+							/>
+						</FormGroup>
+						<FormGroup>
+							<ControlLabel>Текст на странице (markdown)</ControlLabel>
+							<FormControl
+								componentClass="textarea"
+								placeholder="Текст на странице"
+								name="dataFormCategory[contentMarkdown]"
+								value={this.state.data.contentMarkdown}
+								onChange={this.handleChange('contentMarkdown').bind(this)}
 								rows="8"
 							/>
 						</FormGroup>

@@ -2,13 +2,25 @@
 /**
  * @var $entry Catalog_Model_Products
  * @var $property Catalog_Model_ProductParams
+ * @var $category Catalog_Model_Categories
  */
+$category = $this->category;
 $this->headTitle($this->title);
 $this->meta_title = $this->title;
 $this->breadcrumbs = true;
 $this->sidebar_headers = true;
-
 ?>
+
+<?php if($category->getContentHtml()):?>
+    <div class="col-md-12">
+        <?php if($category->getImage()):?>
+        <div class="thumbnail pull-right ml2 mb1">
+            <img src="<?=$category->getUploadPath() . $category->getImage();?>" alt="<?=$category->getName()?>"/>
+        </div>
+        <?php endif;?>
+        <?=$category->getContentHtml()?>
+    </div>
+<?php endif;?>
 
 <div class="container-fluid product-list">
     <?php if($this->entries): ?>

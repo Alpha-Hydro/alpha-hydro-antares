@@ -4,30 +4,32 @@ $this->meta_title = $this->title;
 $this->breadcrumbs = true;
 $this->sidebar_headers = true;
 ?>
+<?php if($this->entries):?>
+    <?php foreach ($this->entries as $entry): ?>
+        <div class="col-md-3 text-center ">
+            <a class="categories-list-item z-depth-1" href="<?=$this->url(
+                array(
+                    'module' => 'catalog',
+                    'controller' => 'categories',
+                    'action' => 'index',
+                    'fullPath'=>$entry->fullPath,
+                ),'catalog',true,false) ?>">
+                <img src="<?=$entry->uploadPath.$entry->image;?>" alt="<?=$entry->name?>"/>
+                <p class="categories-list-item-name"><?=$entry->name?></p>
+            </a>
+            <?php if($this->auth):?>
+                <div class="edit-buttons-group">
+                    <div class="itemButtonsComponent"
+                         data-id="<?=$entry->id?>"
+                         data-controller="categories"
+                         data-active="<?=($entry->active != 0)?true:false?>"
+                    ></div>
+                </div>
+            <?php endif;?>
+        </div>
+    <?php endforeach; ?>
+<?php endif;?>
 
-<?php foreach ($this->entries as $entry): ?>
-    <div class="col-md-3 text-center ">
-        <a class="categories-list-item z-depth-1" href="<?=$this->url(
-            array(
-                'module' => 'catalog',
-                'controller' => 'categories',
-                'action' => 'index',
-                'fullPath'=>$entry->fullPath,
-            ),'catalog',true,false) ?>">
-            <img src="<?=$entry->uploadPath.$entry->image;?>" alt="<?=$entry->name?>"/>
-            <p class="categories-list-item-name"><?=$entry->name?></p>
-        </a>
-        <?php if($this->auth):?>
-            <div class="edit-buttons-group">
-                <div class="itemButtonsComponent"
-                     data-id="<?=$entry->id?>"
-                     data-controller="categories"
-                     data-active="<?=($entry->active != 0)?true:false?>"
-                ></div>
-            </div>
-        <?php endif;?>
-    </div>
-<?php endforeach; ?>
 <?php if($this->auth):?>
     <div class="col-md-3 text-center">
         <div id="categoriesAddButtton"

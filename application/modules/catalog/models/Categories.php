@@ -15,6 +15,10 @@ class Catalog_Model_Categories
 
     protected $_description = null;
 
+    protected $_content_html = null;
+
+    protected $_content_markdown = null;
+
     protected $_add_date = null;
 
     protected $_mod_date = null;
@@ -554,6 +558,42 @@ class Catalog_Model_Categories
     public function getUploadPath()
     {
         return $this->_upload_path;
+    }
+
+    /**
+     * @param null $content_html
+     * @return Catalog_Model_Categories
+     */
+    public function setContentHtml($content_html)
+    {
+        $this->_content_html = $content_html;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getContentHtml()
+    {
+        return $this->_content_html;
+    }
+
+    /**
+     * @param null $comtent_markdown
+     * @return Catalog_Model_Categories
+     */
+    public function setContentMarkdown($comtent_markdown)
+    {
+        $this->_content_markdown = $comtent_markdown;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getContentMarkdown()
+    {
+        return $this->_content_markdown;
     }
 
 

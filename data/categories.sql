@@ -14,3 +14,6 @@ UPDATE categories SET active = 0 WHERE `order` = -100;
 UPDATE categories SET sorting = `order` WHERE `order` > -100 ;
 
 ALTER TABLE categories ADD deleted INT DEFAULT 0 NOT NULL;
+
+ALTER TABLE categories ADD content_markdown TEXT NULL;
+ALTER TABLE categories ADD content_html TEXT NULL;
