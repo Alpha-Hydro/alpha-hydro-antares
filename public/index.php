@@ -22,7 +22,7 @@ defined('FONT_DIR')
 
 // Ensure library/ is on include_path
 set_include_path(implode(PATH_SEPARATOR, array(
-    realpath(APPLICATION_PATH . '/../../frameworks/Zend12/library'),
+    realpath(__DIR__ . '/../../frameworks/Zend12/library'),
     get_include_path(),
 )));
 

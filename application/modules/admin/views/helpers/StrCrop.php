@@ -1,5 +1,6 @@
 <?php
-class Zend_View_Helper_StrCrop extends Zend_View_Helper_Abstract {
+class Zend_View_Helper_StrCrop extends Zend_View_Helper_Abstract
+{
 	
 	function strCrop($string, $len = 180) {
 

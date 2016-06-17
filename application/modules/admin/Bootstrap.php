@@ -14,7 +14,7 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
 
         $pluginsLoader = new Zend_Loader_PluginLoader();
         $pluginsLoader->addPrefixPath('Plugin', $this->getResourceLoader()->getBasePath().'/plugins');
-        $pluginsLoader->load("Acl");
+        $pluginsLoader->load("AclAdmin");
 
         $pluginsLoader->addPrefixPath('Plugin', APPLICATION_PATH.'/plugins');
         $pluginsLoader->load("LayoutLoader");
@@ -112,7 +112,7 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
 
         // регистрируем плагин с названием Acl, в который передаём
         // на ACL и экземпляр Zend_Auth
-        $fc->registerPlugin(new Plugin_Acl($acl, Zend_Auth::getInstance()));
+        $fc->registerPlugin(new Plugin_AclAdmin($acl, Zend_Auth::getInstance()));
 
         // Цепляем ACL к Zend_Navigation
         Zend_View_Helper_Navigation_HelperAbstract::setDefaultAcl($acl);

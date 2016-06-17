@@ -6,7 +6,7 @@
  * Date: 16.09.2015
  * Time: 11:32
  */
-class Zend_View_Helper_transformProductSku extends Zend_Controller_Plugin_Abstract
+class Zend_View_Helper_TransformProductSku extends Zend_View_Helper_Abstract
 {
     protected $_aHostName = array(
         'alfa-hydro.loc',

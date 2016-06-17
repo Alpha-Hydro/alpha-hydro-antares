@@ -6,7 +6,7 @@
  * Date: 16.09.2015
  * Time: 11:32
  */
-class Zend_View_Helper_transformProductSku extends Zend_Controller_Plugin_Abstract
+class Zend_View_Helper_TransformSku extends Zend_View_Helper_Abstract
 {
     protected $_aHostName = array(
         'alfa-hydro.loc',
@@ -17,7 +17,7 @@ class Zend_View_Helper_transformProductSku extends Zend_Controller_Plugin_Abstra
      * @param $sku
      * @return string
      */
-    function transformProductSku($sku){
+    function transformSku($sku){
 
         $hostName = Zend_Controller_Front::getInstance()->getRequest()->getServer('HTTP_HOST');
 

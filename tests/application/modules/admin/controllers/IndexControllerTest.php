@@ -16,9 +16,9 @@ class Admin_IndexControllerTest extends ControllerTestCase
 
         $this->dispatch('/admin/index/slugify');
 
-        /*$this->assertModule('admin');
+        $this->assertModule('admin');
         $this->assertController('index');
-        $this->assertAction('slugify');*/
+        $this->assertAction('slugify');
     }
 
     /**
