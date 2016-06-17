@@ -9,6 +9,7 @@ import ControlLabel from "react-bootstrap/lib/ControlLabel";
 import InputGroup from "react-bootstrap/lib/InputGroup";
 
 import ImagesUpload from "./../../../utils/ImagesUpload";
+import Slugify from "./../../../utils/slugifyHelper";
 import categoryHelpers from "./../../../utils/getDataHelper";
 
 import CategoryReplace from "./CategoryReplaceComponent";
@@ -39,6 +40,16 @@ export default class CategoriesFormEdit extends React.Component{
 			data[key]	= e.target.value;
 			this.setState({data:data});
 		};
+	}
+
+	titleChange(e){
+		var title = e.target.value;
+		Slugify.getSlugify(title)
+			.then(function (path) {
+				var data = this.state.data;
+				data['path']	= path;
+				this.setState({data: data});
+			}.bind(this));
 	}
 
 	selectCategory(id){
@@ -81,10 +92,15 @@ export default class CategoriesFormEdit extends React.Component{
 								placeholder="Заголовок"
 								name="dataFormCategory[name]"
 								onChange={this.handleChange('name').bind(this)}
+								onBlur={this.titleChange.bind(this)}
 								required
 							/>
 						</FormGroup>
-
+						<input type="hidden"
+									 name="dataFormCategory[path]"
+									 value={this.state.data.path}
+									 required
+						/>
 						<FormGroup>
 							<ControlLabel>Родительская категория</ControlLabel>
 							<InputGroup>

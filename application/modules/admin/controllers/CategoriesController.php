@@ -171,6 +171,7 @@ class CategoriesController extends BaseController
                 }
             }
 
+            $this->clearCache('CatalogCategories');
             $url = $this->_request->getParam('currentUrl');
             $this->_redirector->gotoUrlAndExit($url);
         }
@@ -230,8 +231,8 @@ class CategoriesController extends BaseController
 
                 $this->_modelMapper->save($category);
             }
-
-            $this->_redirector->gotoUrlAndExit($url);
+            $this->clearCache('CatalogCategories');
+            //$this->_redirector->gotoUrlAndExit($url);
         }
     }
 
