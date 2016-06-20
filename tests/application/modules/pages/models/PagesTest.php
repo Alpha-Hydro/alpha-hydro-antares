@@ -46,17 +46,18 @@ class Application_Model_PagesTest extends Zend_Test_PHPUnit_ControllerTestCase
     public function gbEntryProvider()
     {
         return array(
+            'id' => '',
             'path' => 'test_user',
             'title' => 'Test User',
             'description' => 'Test User',
             'contentHtml' => 'This is a test',
-            'contentMarkdown' => 'This is a test',
             'metaTitle' => 'Test User',
             'metaDescription' => 'This is a test',
             'metaKeywords' => 'This is a test',
             'sorting' => '0',
             'active' => '1',
             'deleted' => '0',
+            'contentMarkdown' => 'This is a test',
             'image' => '/upload/pages/1/LOGO-new.svg',
             'dateCreate' => '2016-06-20 00:00:00'
         );
