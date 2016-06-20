@@ -197,29 +197,30 @@ class CategoriesController extends BaseController
 
             if ($this->_request->getParam('dataFormCategory')) {
                 $dataCategory = $this->_request->getParam('dataFormCategory');
+
                 $category->setOptions($dataCategory);
                 $category->setModDate(date("Y-m-d H:i:s"));
 
                 $context_html = Michelf\MarkdownExtra::defaultTransform($dataCategory['contentMarkdown']);
                 $category->setContentHtml($context_html);
 
-                if($dataCategory['parentId'] != $parentCategoryId){
-                    $parentFullPath = $this->_modelMapper->generateFullPath($dataCategory['parentId']);
-                    $fullPath = (!is_null($parentFullPath))
-                        ? $parentFullPath.'/'.$category->getPath()
-                        : $category->getPath();
-                    $category->setFullPath($fullPath);
-                    $url = '/catalog/'.$parentFullPath;
-                    $productsRel = $this->_modelMapper->fetchProductsRel($categoryId);
-                    if($productsRel){
-                        $productsMapper = new Catalog_Model_Mapper_Products();
-                        /** @var Catalog_Model_Products $product */
-                        foreach ($productsRel as $product) {
-                            $product->setFullPath($fullPath.'/'.$product->getPath());
-                            $productsMapper->save($product);
-                        }
+
+                $parentFullPath = $this->_modelMapper->generateFullPath($dataCategory['parentId']);
+                $fullPath = (!is_null($parentFullPath))
+                    ? $parentFullPath.'/'.$category->getPath()
+                    : $category->getPath();
+                $category->setFullPath($fullPath);
+                $url = '/catalog/'.$fullPath;
+                $productsRel = $this->_modelMapper->fetchProductsRel($categoryId);
+                if($productsRel){
+                    $productsMapper = new Catalog_Model_Mapper_Products();
+                    /** @var Catalog_Model_Products $product */
+                    foreach ($productsRel as $product) {
+                        $product->setFullPath($fullPath.'/'.$product->getPath());
+                        $productsMapper->save($product);
                     }
                 }
+
 
                 $upload = new Zend_File_Transfer();
                 if ($upload->isUploaded()) {
@@ -232,7 +233,7 @@ class CategoriesController extends BaseController
                 $this->_modelMapper->save($category);
             }
             $this->clearCache('CatalogCategories');
-            //$this->_redirector->gotoUrlAndExit($url);
+            $this->_redirector->gotoUrlAndExit($url);
         }
     }
 
