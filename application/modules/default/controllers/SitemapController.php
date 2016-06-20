@@ -46,22 +46,6 @@ class SitemapController extends Zend_Controller_Action
             $sitemap->addPages(array(
                 array(
                     'type' => 'uri',
-                    'uri' => '/catalog/',
-                ),
-                array(
-                    'type' => 'uri',
-                    'uri' => '/pipeline/',
-                ),
-                array(
-                    'type' => 'uri',
-                    'uri' => '/oil/',
-                ),
-                array(
-                    'type' => 'uri',
-                    'uri' => '/forum/',
-                ),
-                array(
-                    'type' => 'uri',
                     'uri' => '/search/',
                 ),
             ));

@@ -100,12 +100,12 @@
         <label>О нас</label>
         <module>pages</module>
         <controller>about</controller>
-        <route>default</route>
+        <route>pages_about</route>
     </aboutus>
     <contacts>
         <label>Контакты</label>
         <module>pages</module>
         <controller>contacts</controller>
-        <route>default</route>
+        <route>pages_contacts</route>
     </contacts>
 </config>
