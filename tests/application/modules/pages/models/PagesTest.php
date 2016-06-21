@@ -46,27 +46,51 @@ class Application_Model_PagesTest extends Zend_Test_PHPUnit_ControllerTestCase
     public function gbEntryProvider()
     {
         return array(
-            'id' => '',
-            'path' => 'test_user',
-            'title' => 'Test User',
-            'description' => 'Test User',
-            'contentHtml' => 'This is a test',
-            'metaTitle' => 'Test User',
-            'metaDescription' => 'This is a test',
-            'metaKeywords' => 'This is a test',
-            'sorting' => '0',
-            'active' => '1',
-            'deleted' => '0',
-            'contentMarkdown' => 'This is a test',
-            'image' => '/upload/pages/1/LOGO-new.svg',
-            'dateCreate' => '2016-06-20 00:00:00'
+            array(
+                'id' => '',
+                'path' => 'test_user',
+                'title' => 'Test User',
+                'description' => 'Test User',
+                'contentHtml' => 'This is a test',
+                'metaTitle' => 'Test User',
+                'metaDescription' => 'This is a test',
+                'metaKeywords' => 'This is a test',
+                'sorting' => '0',
+                'active' => '1',
+                'deleted' => '0',
+                'contentMarkdown' => 'This is a test',
+                'image' => '/upload/pages/1/LOGO-new.svg',
+                'dateCreate' => '2016-06-20 00:00:00'
+            ),
+            array(
+                'id' => '',
+                'path' => 'test_user',
+                'title' => 'Test User',
+                'description' => 'Test User',
+                'contentHtml' => 'This is a test',
+                'metaTitle' => 'Test User',
+                'metaDescription' => 'This is a test',
+                'metaKeywords' => 'This is a test',
+                'sorting' => '0',
+                'active' => '1',
+                'deleted' => '0',
+                'contentMarkdown' => 'This is a test',
+                'image' => '/upload/pages/1/LOGO-new.svg',
+                'dateCreate' => '2016-06-20 00:00:00'
+            )
         );
     }
 
-    public function testEntryCanBeOptionsAtConstruct()
+    /**
+     * dataProvider gbEntryProvider
+     * @param $data
+     */
+    public function testEntryCanBeOptionsAtConstruct($data = null)
     {
         $data = $this->gbEntryProvider();
-        $entry = new Pages_Model_Pages($data);
-        $this->assertSame($data, $entry->getOptions());
+        $entry = new Pages_Model_Pages($data[0]);
+        $this->assertSame($data[0], $entry->getOptions());
+        //$this->_gb->addEntry(new Pages_Model_Pages($data));
+        //$this->assertTrue($this->_gb->hasEntries());
     }
 }

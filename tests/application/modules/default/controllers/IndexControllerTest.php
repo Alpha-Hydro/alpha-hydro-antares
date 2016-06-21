@@ -10,15 +10,18 @@ class Default_IndexControllerTest extends ControllerTestCase
 
         $this->dispatch($url);
 
-        Zend_Debug::dump($this->getResponse()->getHttpResponseCode());
+        //Zend_Debug::dump($this->getResponse()->getHttpResponseCode());
         //Zend_Debug::dump($this->getResponse()->outputBody());
 
+        $this->assertNotController('error');
+        $this->assertNotAction('error');
+
         // assertions
-        $this->assertResponseCode(200);
         $this->assertModule($urlParams['module']);
         $this->assertController($urlParams['controller']);
         $this->assertAction($urlParams['action']);
-        
+        $this->assertResponseCode(200);
+
         $this->assertQueryContentContains(
             'div#view-content p',
             'View script for controller <b>' . $params['controller'] . '</b> and script/action name <b>' . $params['action'] . '</b>'
