@@ -7,6 +7,8 @@ import FormGroup from "react-bootstrap/lib/FormGroup";
 import FormControl from "react-bootstrap/lib/FormControl";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
 import InputGroup from "react-bootstrap/lib/InputGroup";
+import Button from "react-bootstrap/lib/Button";
+import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 import ImagesUpload from "./../../../utils/ImagesUpload";
 import Slugify from "./../../../utils/slugifyHelper";
@@ -44,6 +46,16 @@ export default class CategoriesFormEdit extends React.Component{
 
 	titleChange(e){
 		var title = e.target.value;
+		Slugify.getSlugify(title)
+			.then(function (path) {
+				var data = this.state.data;
+				data['path']	= path;
+				this.setState({data: data});
+			}.bind(this));
+	}
+
+	generatePathFromTitle(){
+		var title = this.state.data.name;
 		Slugify.getSlugify(title)
 			.then(function (path) {
 				var data = this.state.data;
@@ -92,15 +104,27 @@ export default class CategoriesFormEdit extends React.Component{
 								placeholder="Заголовок"
 								name="dataFormCategory[name]"
 								onChange={this.handleChange('name').bind(this)}
-								onBlur={this.titleChange.bind(this)}
 								required
 							/>
 						</FormGroup>
-						<input type="hidden"
-									 name="dataFormCategory[path]"
-									 value={this.state.data.path}
-									 required
-						/>
+						<FormGroup>
+							<ControlLabel>Url</ControlLabel>
+							<InputGroup>
+								<InputGroup.Button>
+									<Button bsStyle="primary" onClick={this.generatePathFromTitle.bind(this)}>
+										<Glyphicon glyph="refresh" />
+									</Button>
+								</InputGroup.Button>
+								<FormControl
+									type="text"
+									value={this.state.data.path}
+									placeholder="Url"
+									name="dataFormCategory[path]"
+									onChange={this.handleChange('path').bind(this)}
+									required
+								/>
+							</InputGroup>
+						</FormGroup>
 						<FormGroup>
 							<ControlLabel>Родительская категория</ControlLabel>
 							<InputGroup>

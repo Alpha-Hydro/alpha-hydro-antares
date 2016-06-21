@@ -261,6 +261,7 @@
               <actionMethod actionName="edit"/>
               <actionMethod actionName="add"/>
               <actionMethod actionName="delete"/>
+              <actionMethod actionName="seo"/>
             </controllerFile>
             <controllerFile controllerName="ManufactureCategories">
               <actionMethod actionName="index"/>
@@ -381,6 +382,7 @@
             </controllerFile>
             <controllerFile controllerName="Base">
               <actionMethod actionName="index"/>
+              <actionMethod actionName="seo"/>
             </controllerFile>
             <controllerFile controllerName="Search">
               <actionMethod actionName="index"/>
@@ -701,6 +703,12 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Search">
                 <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Base">
+                <viewScriptFile forActionName="seo"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Oil">
+                <viewScriptFile forActionName="seo"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
@@ -1362,6 +1370,18 @@
         <testApplicationControllerDirectory>
           <testApplicationControllerFile forControllerName="Index"/>
         </testApplicationControllerDirectory>
+        <testApplicationModulesDirectory>
+          <testApplicationModuleDirectory forModuleName="admin">
+            <testApplicationControllerDirectory>
+              <testApplicationControllerFile forControllerName="Base">
+                <testApplicationActionMethod forActionName="seo"/>
+              </testApplicationControllerFile>
+              <testApplicationControllerFile forControllerName="Oil">
+                <testApplicationActionMethod forActionName="seo"/>
+              </testApplicationControllerFile>
+            </testApplicationControllerDirectory>
+          </testApplicationModuleDirectory>
+        </testApplicationModulesDirectory>
       </testApplicationDirectory>
       <testLibraryDirectory/>
     </testsDirectory>

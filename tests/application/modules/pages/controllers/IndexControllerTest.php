@@ -4,12 +4,22 @@ class PagesIndexControllerTest extends ControllerTestCase
 {
     public function testIndexAction()
     {
-        $this->dispatch('/');
+        $params = array('action' => 'index', 'controller' => 'index', 'module' => 'pages');
+        $urlParams = $this->urlizeOptions($params);
+        $url = $this->url($urlParams, null, false, true, true);
 
-        //????
-        $this->assertModule('default');
-        $this->assertController('error');
-        $this->assertAction('error');
+        $this->dispatch($url);
+
+        // assertions
+        //$this->assertResponseCode(200);
+        //$this->assertModule($urlParams['module']);
+        //$this->assertController($urlParams['controller']);
+        //$this->assertAction($urlParams['action']);
+
+        /*$this->assertQueryContentContains(
+            'div#view-content p',
+            'View script for controller <b>' . $params['controller'] . '</b> and script/action name <b>' . $params['action'] . '</b>'
+        );*/
     }
 
     public function testIndexActionWithJson()

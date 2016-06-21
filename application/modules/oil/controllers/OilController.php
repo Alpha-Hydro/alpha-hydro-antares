@@ -80,6 +80,13 @@ class Oil_OilController extends Zend_Controller_Action
         if(is_null($pageItem))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
+        if(!is_null($this->getRequest()->getParam('json'))
+            && Zend_Auth::getInstance()->hasIdentity()){
+
+            $this->forward('json', 'oil', 'admin', array('id' => $pageItem->getId()));
+            return;
+        }
+
         $category = $this->_categoriesMapper
             ->find($pageItem->getCategoryId(), new Oil_Model_OilCategories());
 

@@ -2,55 +2,88 @@
 
 class BaseController extends Zend_Controller_Action
 {
+
     /**
      * @var Zend_Form[]
+     *
+     *
+     *
+     *
      */
     protected $_forms = array();
 
     /**
      * @var null
+     *
+     *
+     *
+     *
      */
     protected $_modelMapper = null;
 
     /**
      * @var null
+     *
+     *
+     *
+     *
      */
     protected $_model = null;
 
     /**
      * @var null
+     *
+     *
+     *
+     *
      */
     protected $_modelCategoriesMapper = null;
 
     /**
      * @var null
+     *
+     *
+     *
+     *
      */
     protected $_count_item_on_page = null;
 
     /**
      * @var Zend_Controller_Action_Helper_Redirector
      *
+     *
+     *
+     *
+     *
      */
     protected $_redirector = null;
 
     /**
      * @var Zend_Auth
+     *
+     *
+     *
+     *
      */
-    protected $_userAuth;
+    protected $_userAuth = null;
 
     /**
      * @var null
+     *
+     *
+     *
+     *
      */
     protected $_nameModule = null;
 
     /**
      * @var null
+     *
+     *
+     *
+     *
      */
     protected $_upload_path = null;
-
-    /*public function init()
-    {
-    }*/
 
     public function indexAction()
     {
@@ -298,6 +331,10 @@ class BaseController extends Zend_Controller_Action
     /**
      * @param $pagesItems
      * @return mixed
+     *
+     *
+     *
+     *
      */
     public function setPaginationPage(&$pagesItems)
     {
@@ -331,6 +368,10 @@ class BaseController extends Zend_Controller_Action
      *
      * @param string $name
      * @return Zend_Form
+     *
+     *
+     *
+     *
      */
     public function getForm($name)
     {
@@ -346,7 +387,16 @@ class BaseController extends Zend_Controller_Action
     }
 
     /**
-     * @return Catalog_Model_Mapper_Categories | Catalog_Model_Mapper_Products | Manufacture_Model_Mapper_ManufactureCategories | Manufacture_Model_Mapper_Manufacture | Pages_Model_Mapper_Pages | Pipeline_Model_Mapper_PipelineCategories | Pipeline_Model_Mapper_Pipeline | Oil_Model_Mapper_OilCategories | Oil_Model_Mapper_Oil | Media_Model_Mapper_MediaCategories | Media_Model_Mapper_Media
+     * @return Catalog_Model_Mapper_Categories | Catalog_Model_Mapper_Products |
+     * Manufacture_Model_Mapper_ManufactureCategories |
+     * Manufacture_Model_Mapper_Manufacture | Pages_Model_Mapper_Pages |
+     * Pipeline_Model_Mapper_PipelineCategories | Pipeline_Model_Mapper_Pipeline |
+     * Oil_Model_Mapper_OilCategories | Oil_Model_Mapper_Oil |
+     * Media_Model_Mapper_MediaCategories | Media_Model_Mapper_Media
+     *
+     *
+     *
+     *
      */
     public function getModelMapper()
     {
@@ -365,9 +415,16 @@ class BaseController extends Zend_Controller_Action
         return $this->_modelMapper;
     }
 
-
     /**
-     * @return Catalog_Model_Categories | Catalog_Model_Products | Manufacture_Model_ManufactureCategories | Manufacture_Model_Manufacture | Pages_Model_Pages | Pipeline_Model_PipelineCategories | Pipeline_Model_Pipeline | Oil_Model_OilCategories | Oil_Model_Oil | Media_Model_MediaCategories | Media_Model_Media
+     * @return Catalog_Model_Categories | Catalog_Model_Products |
+     * Manufacture_Model_ManufactureCategories | Manufacture_Model_Manufacture |
+     * Pages_Model_Pages | Pipeline_Model_PipelineCategories | Pipeline_Model_Pipeline
+     * | Oil_Model_OilCategories | Oil_Model_Oil | Media_Model_MediaCategories |
+     * Media_Model_Media
+     *
+     *
+     *
+     *
      */
     public function getModel()
     {
@@ -387,7 +444,13 @@ class BaseController extends Zend_Controller_Action
     }
 
     /**
-     * @return Manufacture_Model_Mapper_ManufactureCategories | Pipeline_Model_Mapper_PipelineCategories | Oil_Model_Mapper_OilCategories | Media_Model_Mapper_MediaCategories
+     * @return Manufacture_Model_Mapper_ManufactureCategories |
+     * Pipeline_Model_Mapper_PipelineCategories | Oil_Model_Mapper_OilCategories |
+     * Media_Model_Mapper_MediaCategories
+     *
+     *
+     *
+     *
      */
     public function getModelCategoriesMapper()
     {
@@ -406,9 +469,12 @@ class BaseController extends Zend_Controller_Action
         return $this->_modelCategoriesMapper;
     }
 
-
     /**
      * @return null
+     *
+     *
+     *
+     *
      */
     public function getCountItemOnPage()
     {
@@ -422,6 +488,10 @@ class BaseController extends Zend_Controller_Action
      * this returns that module name or the first class name segment.
      *
      * @return string This class namespace
+     *
+     *
+     *
+     *
      */
     private function _getNamespace()
     {
@@ -431,6 +501,10 @@ class BaseController extends Zend_Controller_Action
 
     /**
      * @return null|string
+     *
+     *
+     *
+     *
      */
     public function getNameModule()
     {
@@ -444,6 +518,10 @@ class BaseController extends Zend_Controller_Action
 
     /**
      * @return Zend_Controller_Action_Helper_Redirector
+     *
+     *
+     *
+     *
      */
     public function getRedirector()
     {
@@ -452,14 +530,22 @@ class BaseController extends Zend_Controller_Action
     }
 
     /**
-     * Сохраняются только основные поля присланные с формы
-     * Для сохранения специфических полей таблиц нужно
-     * 1. Все поля таблицы добавить в форму со значениями по умолчанию
-     * 2. переопределить методы addAction или saveFormData в дочернем классе
-     * 
+     * Сохраняются только основные поля
+     * присланные с формы
+     * Для сохранения специфических полей таблиц
+     * нужно
+     * 1. Все поля таблицы добавить в форму со
+     * значениями по умолчанию
+     * 2. переопределить методы addAction или saveFormData в
+     * дочернем классе
+     *
      * @param Zend_Form $form
      * @return null
      * @throws Exception
+     *
+     *
+     *
+     *
      */
     public function saveFormData(Zend_Form $form)
     {
@@ -495,9 +581,21 @@ class BaseController extends Zend_Controller_Action
 
     /**
      * @param Zend_Form_Element_File $element
-     * @param $item Catalog_Model_Categories | Catalog_Model_Products | Manufacture_Model_ManufactureCategories | Manufacture_Model_Manufacture | Pages_Model_Pages | Pipeline_Model_PipelineCategories | Pipeline_Model_Pipeline | Oil_Model_OilCategories | Oil_Model_Oil | Media_Model_MediaCategories | Media_Model_Media
-     * @return Catalog_Model_Categories | Catalog_Model_Products | Manufacture_Model_ManufactureCategories | Manufacture_Model_Manufacture | Pages_Model_Pages | Pipeline_Model_PipelineCategories | Pipeline_Model_Pipeline | Oil_Model_OilCategories | Oil_Model_Oil | Media_Model_MediaCategories | Media_Model_Media
+     * @param $item Catalog_Model_Categories | Catalog_Model_Products |
+     * Manufacture_Model_ManufactureCategories | Manufacture_Model_Manufacture |
+     * Pages_Model_Pages | Pipeline_Model_PipelineCategories | Pipeline_Model_Pipeline
+     * | Oil_Model_OilCategories | Oil_Model_Oil | Media_Model_MediaCategories |
+     * Media_Model_Media
+     * @return Catalog_Model_Categories | Catalog_Model_Products |
+     * Manufacture_Model_ManufactureCategories | Manufacture_Model_Manufacture |
+     * Pages_Model_Pages | Pipeline_Model_PipelineCategories | Pipeline_Model_Pipeline
+     * | Oil_Model_OilCategories | Oil_Model_Oil | Media_Model_MediaCategories |
+     * Media_Model_Media
      * @throws Exception
+     *
+     *
+     *
+     *
      */
     public function saveUploadFile(Zend_Form_Element_File $element, $item)
     {
@@ -530,11 +628,22 @@ class BaseController extends Zend_Controller_Action
         return $item;
     }
 
-
     /**
-     * @param $item Catalog_Model_Categories | Catalog_Model_Products | Manufacture_Model_ManufactureCategories | Manufacture_Model_Manufacture | Pages_Model_Pages | Pipeline_Model_PipelineCategories | Pipeline_Model_Pipeline | Oil_Model_OilCategories | Oil_Model_Oil | Media_Model_MediaCategories | Media_Model_Media
-     * @return Catalog_Model_Categories | Catalog_Model_Products | Manufacture_Model_ManufactureCategories | Manufacture_Model_Manufacture | Pages_Model_Pages | Pipeline_Model_PipelineCategories | Pipeline_Model_Pipeline | Oil_Model_OilCategories | Oil_Model_Oil | Media_Model_MediaCategories | Media_Model_Media
+     * @param $item Catalog_Model_Categories | Catalog_Model_Products |
+     * Manufacture_Model_ManufactureCategories | Manufacture_Model_Manufacture |
+     * Pages_Model_Pages | Pipeline_Model_PipelineCategories | Pipeline_Model_Pipeline
+     * | Oil_Model_OilCategories | Oil_Model_Oil | Media_Model_MediaCategories |
+     * Media_Model_Media
+     * @return Catalog_Model_Categories | Catalog_Model_Products |
+     * Manufacture_Model_ManufactureCategories | Manufacture_Model_Manufacture |
+     * Pages_Model_Pages | Pipeline_Model_PipelineCategories | Pipeline_Model_Pipeline
+     * | Oil_Model_OilCategories | Oil_Model_Oil | Media_Model_MediaCategories |
+     * Media_Model_Media
      * @throws Exception
+     *
+     *
+     *
+     *
      */
     public function setUploadImage($item)
     {
@@ -569,8 +678,20 @@ class BaseController extends Zend_Controller_Action
     }
 
     /**
-     * @param $item Catalog_Model_Categories | Catalog_Model_Products | Manufacture_Model_ManufactureCategories | Manufacture_Model_Manufacture | Pages_Model_Pages | Pipeline_Model_PipelineCategories | Pipeline_Model_Pipeline | Oil_Model_OilCategories | Oil_Model_Oil | Media_Model_MediaCategories | Media_Model_Media
-     * @return Catalog_Model_Categories | Catalog_Model_Products | Manufacture_Model_ManufactureCategories | Manufacture_Model_Manufacture | Pages_Model_Pages | Pipeline_Model_PipelineCategories | Pipeline_Model_Pipeline | Oil_Model_OilCategories | Oil_Model_Oil | Media_Model_MediaCategories | Media_Model_Media
+     * @param $item Catalog_Model_Categories | Catalog_Model_Products |
+     * Manufacture_Model_ManufactureCategories | Manufacture_Model_Manufacture |
+     * Pages_Model_Pages | Pipeline_Model_PipelineCategories | Pipeline_Model_Pipeline
+     * | Oil_Model_OilCategories | Oil_Model_Oil | Media_Model_MediaCategories |
+     * Media_Model_Media
+     * @return Catalog_Model_Categories | Catalog_Model_Products |
+     * Manufacture_Model_ManufactureCategories | Manufacture_Model_Manufacture |
+     * Pages_Model_Pages | Pipeline_Model_PipelineCategories | Pipeline_Model_Pipeline
+     * | Oil_Model_OilCategories | Oil_Model_Oil | Media_Model_MediaCategories |
+     * Media_Model_Media
+     *
+     *
+     *
+     *
      */
     public function setMetaData($item)
     {
@@ -588,6 +709,10 @@ class BaseController extends Zend_Controller_Action
 
     /**
      * @return Zend_Auth
+     *
+     *
+     *
+     *
      */
     public function getUserAuth()
     {
@@ -598,6 +723,10 @@ class BaseController extends Zend_Controller_Action
     /**
      * @param $tag
      * @throws Zend_Exception
+     *
+     *
+     *
+     *
      */
     public function clearCache($tag)
     {
@@ -608,6 +737,14 @@ class BaseController extends Zend_Controller_Action
         );
     }
 
+    /**
+     * @param null $pageModulePath
+     * @return null|Pages_Model_Pages
+     *
+     *
+     *
+     *
+     */
     public function getPageModule($pageModulePath = null)
     {
         if(is_null($pageModulePath))        
@@ -620,5 +757,19 @@ class BaseController extends Zend_Controller_Action
         return $page;
     }
 
+    public function seoAction()
+    {
+        // action body
+    }
+
+
 }
+
+
+
+
+
+
+
+
 

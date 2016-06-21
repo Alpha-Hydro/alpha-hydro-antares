@@ -4,29 +4,45 @@ include_once 'BaseController.php';
 
 class OilController extends BaseController
 {
+
     /**
      * @var Oil_Model_Mapper_Oil
+     *
+     *
+     *
      */
     protected $_modelMapper = null;
 
     /**
      * @var Oil_Model_Oil
+     *
+     *
+     *
      */
     protected $_model = null;
 
     /**
      * @var Oil_Model_Mapper_OilCategories
      *
+     *
+     *
+     *
      */
     protected $_modelCategoriesMapper = null;
 
     /**
      * @var Zend_Form[];
+     *
+     *
+     *
      */
     protected $_forms = array();
 
     /**
      * @var Zend_Controller_Action_Helper_Redirector
+     *
+     *
+     *
      */
     protected $_redirector = null;
 
@@ -56,7 +72,40 @@ class OilController extends BaseController
 
         parent::indexAction();
     }
-    
+
+    public function editAction()
+    {
+        if($this->_request->getParam('dataPage')){
+
+            $dataPage = $this->_request->getParam('dataPage');
+            $id = $this->_request->getParam('id');
+
+            $item = $this->_modelMapper->find($id, $this->_model);
+            $item->setOptions($dataPage);
+
+            $this->setUploadImage($item);
+
+            if($markdown = $dataPage['contentMarkdown']){
+                $context_html = \Michelf\Markdown::defaultTransform($markdown);
+                $item->setContentHtml($context_html);
+            }
+
+            $category = $this->_modelCategoriesMapper->find($item->getCategoryId(), new Oil_Model_OilCategories());
+            $fullPath = ($category)
+                ?$category->getPath().'/'.$item->getPath()
+                :$item->getPath();
+
+            $item->setFullPath($fullPath);
+
+            $url = '/oil/'.$fullPath;
+
+            $this->_modelMapper->save($item);
+
+            $this->getRedirector()->gotoUrlAndExit($url);
+        }
+        parent::editAction();
+    }
+
     public function addAction()
     {
         parent::addAction();
@@ -116,7 +165,19 @@ class OilController extends BaseController
         return $item;
     }
 
+    public function seoAction()
+    {
+        // action body
+    }
+
+
 }
+
+
+
+
+
+
 
 
 

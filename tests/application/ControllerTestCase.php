@@ -58,4 +58,28 @@ abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
             Zend_Auth::getInstance()->getStorage()->write($authAdapter->getRealm());
         }
     }
+
+    /**
+     * URL Helper
+     *
+     * @param array $urlOptions
+     * @param string $name
+     * @param bool $reset
+     * @param bool $encode
+     * @param bool $default
+     * @return string
+     * @throws Exception
+     */
+    public function url($urlOptions = array(), $name = null, $reset = false, $encode = true, $default = false)
+    {
+        $frontController = $this->getFrontController();
+        $router = $frontController->getRouter();
+        if (!$router instanceof Zend_Controller_Router_Rewrite) {
+            throw new Exception('This url helper utility function only works when the router is of type Zend_Controller_Router_Rewrite');
+        }
+        if ($default) {
+            $router->addDefaultRoutes();
+        }
+        return $router->assemble($urlOptions, $name, $reset, $encode);
+    }
 }
