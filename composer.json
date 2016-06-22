@@ -1,9 +1,10 @@
 {
   "require": {
-    "fxp/composer-asset-plugin": "^1.1",
     "zendframework/zendframework1": "1.12.*"
   },
   "require-dev": {
-    "codeception/codeception": "*"
+    "codeception/codeception": "*",
+    "akrabat/akrabat_db_schema_manager": "^1.0.0",
+    "vladmeh/zftool": "1.0.*"
   }
 }

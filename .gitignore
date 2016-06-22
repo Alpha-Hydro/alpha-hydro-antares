@@ -83,5 +83,4 @@ new/
 public/sass/themes/
 tests/_output/*
 /vendor/
-
-tests/_output/*
+/composer.lock
