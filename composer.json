@@ -1,0 +1,9 @@
+{
+  "require": {
+    "fxp/composer-asset-plugin": "^1.1",
+    "zendframework/zendframework1": "1.12.*"
+  },
+  "require-dev": {
+    "codeception/codeception": "*"
+  }
+}

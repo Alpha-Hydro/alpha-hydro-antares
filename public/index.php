@@ -11,7 +11,12 @@ defined('APPLICATION_ENV')
 /**
  * Path to root folder
  */
-define('APPLICATION_ROOT', realpath(__DIR__.'/../'));
+defined('APPLICATION_ROOT')
+    || define('APPLICATION_ROOT', realpath(__DIR__.'/../'));
+
+// Define path to entire project
+defined('BASE_PATH')
+|| define('BASE_PATH', realpath(dirname(__FILE__) . '/..'));
 
 /**
  * Path to font folder
@@ -21,10 +26,19 @@ defined('FONT_DIR')
 
 
 // Ensure library/ is on include_path
-set_include_path(implode(PATH_SEPARATOR, array(
+/*set_include_path(implode(PATH_SEPARATOR, array(
     realpath(__DIR__ . '/../../frameworks/Zend12/library'),
     get_include_path(),
+)));*/
+
+
+// Ensure library/ is on include_path
+set_include_path(implode(PATH_SEPARATOR, array(
+    realpath(__DIR__ . '/../library'),
+    get_include_path(),
 )));
+
+require_once BASE_PATH . '/vendor/autoload.php';
 
 /** Zend_Application */
 require_once 'Zend/Application.php';

@@ -9,6 +9,9 @@ class IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
+        $pageMapper = new Pages_Model_Mapper_Pages();
+        $pageMapper->getDbTable();
+        
         //Zend_Debug::dump($this->_request->getParams());
         //$this->forward('index', 'index', 'pages');
 
@@ -29,9 +32,9 @@ class IndexController extends Zend_Controller_Action
                     'forum_reply' => $forumReply,
                 ));
             }
-        }
+        }*/
 
-        $mediaMapper = new Media_Model_Mapper_Media();
+        /*$mediaMapper = new Media_Model_Mapper_Media();
         $select = $mediaMapper->getDbTable()->select();
 
         //News
@@ -44,10 +47,10 @@ class IndexController extends Zend_Controller_Action
         $newsItem = $mediaMapper->fetchAll($select);
 
         if(!empty($newsItem))
-            $this->view->assign('newsItem', array_shift($newsItem));
+            $this->view->assign('newsItem', array_shift($newsItem));*/
 
         //article
-        $select->reset()
+        /*$select->reset()
             ->where('deleted != ?', 1)
             ->where('active != ?', 0)
             ->where('category_id = ?', 4)

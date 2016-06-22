@@ -7,9 +7,9 @@ class OilControllerTest extends ControllerTestCase
 {
     public function testSeoAction()
     {
-        /*$params = array('action' => 'seo', 'controller' => 'Oil', 'module' => 'admin');
+        /*$params = array('action' => 'seo', 'controller' => 'oil', 'module' => 'admin');
         $urlParams = $this->urlizeOptions($params);
-        $url = $this->url($urlParams);
+        $url = $this->url($urlParams, null, false, true, true);
         $this->dispatch($url);
         
         // assertions
