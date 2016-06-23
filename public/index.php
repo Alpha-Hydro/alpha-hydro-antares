@@ -26,19 +26,19 @@ defined('FONT_DIR')
 
 
 // Ensure library/ is on include_path
-/*set_include_path(implode(PATH_SEPARATOR, array(
+set_include_path(implode(PATH_SEPARATOR, array(
     realpath(__DIR__ . '/../../frameworks/Zend12/library'),
     get_include_path(),
-)));*/
+)));
 
 
 // Ensure library/ is on include_path
-set_include_path(implode(PATH_SEPARATOR, array(
+/*set_include_path(implode(PATH_SEPARATOR, array(
     realpath(__DIR__ . '/../library'),
     get_include_path(),
 )));
 
-require_once BASE_PATH . '/vendor/autoload.php';
+require_once BASE_PATH . '/vendor/autoload.php';*/
 
 /** Zend_Application */
 require_once 'Zend/Application.php';
