@@ -27,10 +27,16 @@ defined('UPLOAD_DIR')
 
 
 // Ensure library/ is on include_path
-set_include_path(implode(PATH_SEPARATOR, array(
+/*set_include_path(implode(PATH_SEPARATOR, array(
     realpath(APPLICATION_PATH . '/../../frameworks/Zend12/library'),
     get_include_path(),
+)));*/
+set_include_path(implode(PATH_SEPARATOR, array(
+    realpath(__DIR__ . '/../library'),
+    get_include_path(),
 )));
+
+require_once APPLICATION_ROOT . '/vendor/autoload.php';
 
 /** Zend_Application */
 require_once 'Zend/Application.php';
