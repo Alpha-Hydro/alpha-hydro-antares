@@ -46,7 +46,8 @@ $application = new Zend_Application(
     APPLICATION_ENV,
     array(
         'config' => array(
-            APPLICATION_PATH . '/configs/app_admin.ini'
+            APPLICATION_PATH . '/configs/app_admin.ini',
+            APPLICATION_PATH . '/configs/db.xml'
         ),
     )
 );
