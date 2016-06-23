@@ -36,6 +36,19 @@ class AdminBootstrap extends Zend_Application_Bootstrap_Bootstrap
         $view->auth = Zend_Auth::getInstance()->hasIdentity();
     }
 
+    protected function _initFrontControllerOutput() {
+        $this->bootstrap('FrontController');
+        $frontController = $this->getResource('FrontController');
+
+        $response = new Zend_Controller_Response_Http;
+        $response->setHeader('Content-Type', 'text/html; charset=UTF-8', true);
+        $frontController->setResponse($response);
+
+        $frontController->setParam('useDefaultControllerAlways', false);
+
+        return $frontController;
+    }
+
     protected function _initPlugins() {
         $this->bootstrap('frontController');
 
