@@ -21,6 +21,10 @@ class AdminBootstrap extends Zend_Application_Bootstrap_Bootstrap
         return $resourceLoader;
     }
 
+    public function _initMB(){
+        mb_internal_encoding("UTF-8");
+    }
+
     /**
      *
      */
