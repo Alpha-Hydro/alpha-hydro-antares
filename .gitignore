@@ -16,6 +16,7 @@ _db
 # tests
 db.xml
 db.ini
+db.php
 
 ### SVN template
 .svn/

@@ -28,6 +28,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     {
         $this->bootstrap('view');
         $view = $this->getResource('view');
+        $view->setEncoding('UTF-8');
         $view->doctype('HTML5');
         $view->addScriptPath(APPLICATION_PATH."/layouts/scripts/");
         $view->addBasePath(APPLICATION_PATH."/modules/admin/views/");
