@@ -20,11 +20,7 @@ class AdminBootstrap extends Zend_Application_Bootstrap_Bootstrap
 
         return $resourceLoader;
     }
-
-    public function _initMB(){
-        mb_internal_encoding("UTF-8");
-    }
-
+    
     /**
      *
      */
@@ -33,6 +29,7 @@ class AdminBootstrap extends Zend_Application_Bootstrap_Bootstrap
         $this->bootstrap('view');
         $view = $this->getResource('view');
         $view->setEncoding('UTF-8');
+        $view->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8');
         $view->doctype('HTML5');
         $view->addBasePath(APPLICATION_PATH."/modules/admin/views/");
         $view->addScriptPath(APPLICATION_PATH."/layouts/scripts/");
