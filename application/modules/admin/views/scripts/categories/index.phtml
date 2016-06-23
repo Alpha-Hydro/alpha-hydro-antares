@@ -29,7 +29,7 @@ $this->secondary_text = 'Список категорий';
                         'parent_id'=>$page->getId(),
                     ), 'adminCategoriesEdit', true, false)?>">
                         <span class="glyphicon glyphicon-folder-close mlr1"></span>
-                        <?=$page->getName()?>
+                        <?=$this->escape($page->getName())?>
                     </a>
                 </td>
                 <td>
