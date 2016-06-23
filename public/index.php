@@ -49,7 +49,7 @@ $application = new Zend_Application(
     array(
         'config' => array(
             APPLICATION_PATH . '/configs/application.ini',
-            APPLICATION_PATH . '/configs/db.xml'
+            APPLICATION_PATH . '/configs/db.ini'
         ),
     )
 );
