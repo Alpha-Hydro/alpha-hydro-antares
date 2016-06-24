@@ -26,6 +26,9 @@ class AdminBootstrap extends Zend_Application_Bootstrap_Bootstrap
      */
     protected function _initDoctype()
     {
+        $config = $this->getOptions();
+        Zend_Debug::dump($config);
+
         $this->bootstrap('view');
         $view = $this->getResource('view');
         $view->setEncoding('UTF-8');
