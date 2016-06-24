@@ -26,31 +26,18 @@ class AdminBootstrap extends Zend_Application_Bootstrap_Bootstrap
      */
     protected function _initDoctype()
     {
-        $config = $this->getOptions();
-        Zend_Debug::dump($config);
-
         $this->bootstrap('view');
         $view = $this->getResource('view');
+        
         $view->setEncoding('UTF-8');
-        $view->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8');
         $view->doctype('HTML5');
+        $view->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8');
+        
         $view->addBasePath(APPLICATION_PATH."/modules/admin/views/");
         $view->addScriptPath(APPLICATION_PATH."/layouts/scripts/");
         $view->auth = Zend_Auth::getInstance()->hasIdentity();
     }
-
-    protected function _initFrontControllerOutput() {
-        $this->bootstrap('FrontController');
-        $frontController = $this->getResource('FrontController');
-
-        $response = new Zend_Controller_Response_Http;
-        $response->setHeader('Content-Type', 'text/html; charset=UTF-8', true);
-        $frontController->setResponse($response);
-
-        $frontController->setParam('useDefaultControllerAlways', false);
-
-        return $frontController;
-    }
+    
 
     protected function _initPlugins() {
         $this->bootstrap('frontController');

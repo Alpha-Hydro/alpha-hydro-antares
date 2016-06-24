@@ -26,11 +26,13 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
      */
     protected function _initDoctype()
     {
-        Zend_Debug::dump($this->getOptions());
         $this->bootstrap('view');
         $view = $this->getResource('view');
+
         $view->setEncoding('UTF-8');
         $view->doctype('HTML5');
+        $view->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8');
+
         $view->addScriptPath(APPLICATION_PATH."/layouts/scripts/");
         $view->addBasePath(APPLICATION_PATH."/modules/admin/views/");
         $view->addBasePath(APPLICATION_PATH."/modules/default/views/");
