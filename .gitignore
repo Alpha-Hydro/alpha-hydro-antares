@@ -13,10 +13,7 @@ db-backup.sql
 _utils
 
 _db
-# tests
-db.xml
-db.ini
-db.php
+
 
 ### SVN template
 .svn/
