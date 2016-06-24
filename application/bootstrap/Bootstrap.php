@@ -26,6 +26,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
      */
     protected function _initDoctype()
     {
+        Zend_Debug::dump($this->getOptions());
         $this->bootstrap('view');
         $view = $this->getResource('view');
         $view->setEncoding('UTF-8');
