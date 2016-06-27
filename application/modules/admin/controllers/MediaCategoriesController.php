@@ -72,7 +72,18 @@ class MediaCategoriesController extends BaseController
         }
         parent::editAction();
     }
+
+    public function seoAction()
+    {
+        // action body
+    }
+
+
 }
+
+
+
+
 
 
 

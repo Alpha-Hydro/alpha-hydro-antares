@@ -28,4 +28,16 @@ include_path = ".... vendor/zendframework/zendframework1/library"
 ```
 
 #### ZF1 Tool CLI
-- копируем из `.... vendor/zendframework/zendframework1/bin` -> `.... vendor/bin`
+```bash
+> cp vendor/zendframework/zendframework1/bin vendor/bin
+> zf --setup storage-directory
+> zf --setup config-file
+```
+
+#### .zf.ini
+```
+php.include_path = "... vendor\zendframework\zendframework1\library; ... vendor\vladmeh"
+autoloadernamespaces.0 = "Zftool_"
+basicloader.classes.0 = "Zftool_Tool_Project_Provider_ModelMapperProvider"
+basicloader.classes.1 = "Zftool_Tool_Project_Provider_Manifest"
+```

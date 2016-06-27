@@ -24,7 +24,7 @@ class Catalog_Model_Mapper_Categories
     }
 
     /**
-     * @return Model_DbTable_Categories
+     * @return Catalog_Model_DbTable_Categories
      */
     public function getDbTable()
     {

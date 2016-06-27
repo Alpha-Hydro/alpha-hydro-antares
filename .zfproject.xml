@@ -335,6 +335,7 @@
               <actionMethod actionName="add"/>
               <actionMethod actionName="edit"/>
               <actionMethod actionName="delete"/>
+              <actionMethod actionName="seo"/>
             </controllerFile>
             <controllerFile controllerName="About">
               <actionMethod actionName="index"/>
@@ -708,6 +709,12 @@
                 <viewScriptFile forActionName="seo"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Oil">
+                <viewScriptFile forActionName="seo"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="MediaCategories">
+                <viewScriptFile forActionName="seo"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="MediaCategories">
                 <viewScriptFile forActionName="seo"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>

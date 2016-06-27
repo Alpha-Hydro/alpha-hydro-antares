@@ -8,5 +8,5 @@ class_name: AcceptanceTester
 modules:
     enabled:
         - PhpBrowser:
-            url: http://alpha-hydro.loc
+            url: http://admin.alpha-hydro.loc
         - \Helper\Acceptance

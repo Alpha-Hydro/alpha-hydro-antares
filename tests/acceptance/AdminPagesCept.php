@@ -5,6 +5,6 @@ $I->amOnPage('/');
 $I->fillField('username','admin@alpha-hydro.com');
 $I->fillField('password','admin');
 $I->click('Вход');
-$I->click('Каталог');
-$I->submitForm('#search', ['query' => 'ASDR']);
-$I->see('Результаты поиска', 'h1');
+
+$I->click('Advanced Admin');
+$I->see('Разделы сайта', 'h2');
