@@ -9,3 +9,23 @@
 - www -> /public
 - admin -> /backend
 - old -> /frontend
+
+## Настройка локального окружения
+
+#### Composer
+```
+composer install
+```
+
+#### php.ini
+```
+include_path = ".... vendor/zendframework/zendframework1/library"
+```
+
+#### Open Server user path.txt (или windows PATH)
+```
+... vendor/bin
+```
+
+#### ZF1 Tool CLI
+- копируем из `.... vendor/zendframework/zendframework1/bin` -> `.... vendor/bin`

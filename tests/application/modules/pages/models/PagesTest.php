@@ -24,7 +24,8 @@ class Application_Model_PagesTest extends Zend_Test_PHPUnit_ControllerTestCase
 
     public function testPagesIsEmptyAtConstruct()
     {
-        $this->assertType('Pages_Model_PageEntries', $this->_gb);
+        //$this->assertType('Pages_Model_PageEntries', $this->_gb);
+        $this->assertInstanceOf('Pages_Model_PageEntries', $this->_gb);
         $this->assertFalse($this->_gb->hasEntries());
         $this->assertSame(0, count($this->_gb->getEntries()));
         $this->assertSame(0, count($this->_gb));
