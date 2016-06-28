@@ -77,12 +77,12 @@ class ManufactureCategoriesController extends BaseController
             $this->setUploadImage($categories);
 
             $markdown = $dataPage['contentMarkdown'];
-            $context_html = \Michelf\Markdown::defaultTransform($markdown);
+            $context_html = Michelf\MarkdownExtra::defaultTransform($markdown);
             $categories->setContentHtml($context_html);
 
             $this->_modelMapper->save($categories);
 
-            $this->_redirector->gotoUrlAndExit($this->_request->getParam('currentUrl'));
+            $this->_redirector->gotoUrlAndExit('/manufacture/'.$categories->getPath());
         }
 
         parent::editAction();

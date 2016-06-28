@@ -17,6 +17,7 @@
  * @link        http://borisguery.github.com/bgylibrary
  */
 require_once 'Zend/Filter/Interface.php';
+
 class Vlmeh_Filter_Slugify implements Zend_Filter_Interface
 {
     const LOWERCASE_NUMBERS_DASHES = '/([^a-z0-9]|-)+/';

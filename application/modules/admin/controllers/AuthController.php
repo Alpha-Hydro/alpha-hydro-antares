@@ -6,6 +6,11 @@ class AuthController extends Zend_Controller_Action
      * @var Zend_Controller_Action_Helper_Redirector
      */
     protected $_redirector = null;
+    
+    /**
+     * @var Zend_Controller_Request_Http
+    */
+    protected $_hostHttp = null;
 
     protected $_curUrl = null;
 
@@ -13,8 +18,8 @@ class AuthController extends Zend_Controller_Action
     {
         $this->_redirector = $this->_helper->getHelper('Redirector');
 
-        $hostHttp = new Zend_Controller_Request_Http();
-        $this->_curUrl = $hostHttp->getRequestUri();
+        $this->_hostHttp = new Zend_Controller_Request_Http();
+        $this->_curUrl = $this->_hostHttp->getRequestUri();
     }
 
     public function indexAction()
@@ -78,7 +83,7 @@ class AuthController extends Zend_Controller_Action
 
     public function logoutAction()
     {
-        $url = explode('.', $this->_request->getServer('HTTP_HOST'), 2);
+        $url = explode('.', $this->_hostHttp->getServer('HTTP_HOST'), 2);
 
 
         // уничтожаем информацию об авторизации пользователя

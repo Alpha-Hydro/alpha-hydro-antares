@@ -86,7 +86,7 @@ class OilController extends BaseController
             $this->setUploadImage($item);
 
             if($markdown = $dataPage['contentMarkdown']){
-                $context_html = \Michelf\Markdown::defaultTransform($markdown);
+                $context_html = Michelf\MarkdownExtra::defaultTransform($markdown);
                 $item->setContentHtml($context_html);
             }
 

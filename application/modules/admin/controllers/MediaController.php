@@ -33,6 +33,11 @@ class MediaController extends BaseController
      */
     protected $_forms = array();
 
+    /**
+     * @var Zend_Controller_Action_Helper_Redirector
+     */
+    protected $_redirector = null;
+
     public function init()
     {
         $this->_count_item_on_page = 10;
@@ -41,7 +46,7 @@ class MediaController extends BaseController
         $this->_model = new Media_Model_Media();
         $this->_modelCategoriesMapper = new Media_Model_Mapper_MediaCategories();
         $this->_forms['edit'] = new Admin_Form_MediaEdit();
-
+        $this->_redirector = $this->_helper->getHelper('Redirector');
     }
 
     public function indexAction()
@@ -78,6 +83,37 @@ class MediaController extends BaseController
                 $form->setDefault($element->getName(), '/files/images/product/2012-05-22_foto_nv.jpg');
             }
         }
+    }
+
+    public function editAction()
+    {
+        if($this->_request->getParam('dataPage')){
+            $dataPage = $this->_request->getParam('dataPage');
+            $id = $this->_request->getParam('id');
+
+            $item = $this->_modelMapper->find($id, $this->_model);
+            $item->setOptions($dataPage);
+
+            $categories = $this->_modelCategoriesMapper
+                ->find($item->getCategoryId(), new Media_Model_MediaCategories());
+
+            $fullPath = $categories->getPath().'/'.$item->getPath();
+            $item->setFullPath($fullPath);
+
+            $this->setUploadImage($item);
+
+            $markdown = $dataPage['contentMarkdown'];
+            $context_html = Michelf\MarkdownExtra::defaultTransform($markdown);
+            $item->setContentHtml($context_html);
+
+            Zend_Debug::dump($item);
+
+            $this->_modelMapper->save($item);
+
+            $this->_redirector->gotoUrlAndExit('/media/'.$item->getFullPath());
+        }
+
+        parent::editAction();
     }
 
     public function sectionAction()

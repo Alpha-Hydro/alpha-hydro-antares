@@ -17,7 +17,6 @@ class Pages_IndexController extends Zend_Controller_Action
 
     public function init()
     {
-
         $this->setPageDefaultPath('home');
 
         $this->_pagesMapper = new Pages_Model_Mapper_Pages();

@@ -312,7 +312,8 @@ class Catalog_ProductsController extends Zend_Controller_Action
      */
     public function transformSku($sku)
     {
-        $hostName = $this->_request->getServer('HTTP_HOST');
+        $hostHttp = new Zend_Controller_Request_Http();
+        $hostName = $hostHttp->getServer('HTTP_HOST');
         if(in_array($hostName, $this->_aHostName) && $sku[0] === 'A'){
             $sku = substr($sku, 1);
         }

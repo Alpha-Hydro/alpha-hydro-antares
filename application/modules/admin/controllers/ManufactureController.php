@@ -85,18 +85,24 @@ class ManufactureController extends BaseController
             $dataPage = $this->_request->getParam('dataPage');
             $id = $this->_request->getParam('id');
 
-            $categories = $this->_modelMapper->find($id, $this->_model);
-            $categories->setOptions($dataPage);
+            $item = $this->_modelMapper->find($id, $this->_model);
+            $item->setOptions($dataPage);
 
-            $this->setUploadImage($categories);
+            $categories = $this->_modelCategoriesMapper
+                ->find($item->getCategoryId(), new Manufacture_Model_ManufactureCategories());
+
+            $fullPath = $categories->getPath().'/'.$item->getPath();
+            $item->setFullPath($fullPath);
+
+            $this->setUploadImage($item);
 
             $markdown = $dataPage['contentMarkdown'];
-            $context_html = \Michelf\Markdown::defaultTransform($markdown);
-            $categories->setContentHtml($context_html);
+            $context_html = Michelf\MarkdownExtra::defaultTransform($markdown);
+            $item->setContentHtml($context_html);
 
-            $this->_modelMapper->save($categories);
+            $this->_modelMapper->save($item);
 
-            $this->_redirector->gotoUrlAndExit($this->_request->getParam('currentUrl'));
+            $this->_redirector->gotoUrlAndExit('/manufacture/'.$item->getFullPath());
         }
 
         parent::editAction();

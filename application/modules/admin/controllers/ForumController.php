@@ -131,7 +131,7 @@ class ForumController extends BaseController
 
         $markdown = $this->_request->getParam('contentMarkdown');
         if($markdown && $markdown != ''){
-            $context_html = \Michelf\Markdown::defaultTransform($markdown);
+            $context_html = Michelf\MarkdownExtra::defaultTransform($markdown);
 
             $item->setContent($context_html);
             $item->setContentMarkdown($markdown);
@@ -160,7 +160,7 @@ class ForumController extends BaseController
 
         $markdown = $this->_request->getParam('contentMarkdown');
         if($markdown && $markdown != ''){
-            $context_html = \Michelf\Markdown::defaultTransform($markdown);
+            $context_html = Michelf\MarkdownExtra::defaultTransform($markdown);
 
             $item->setContent($context_html);
             $item->setContentMarkdown($markdown);

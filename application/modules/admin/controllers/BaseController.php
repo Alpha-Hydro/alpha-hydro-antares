@@ -57,6 +57,21 @@ class BaseController extends Zend_Controller_Action
      */
     protected $_upload_path = null;
 
+    /**
+     * @var Zend_Controller_Request_Http
+     */
+    protected $_hostHttp = null;
+
+    /**
+     * @var null
+     */
+    protected $_redirectUrl = null;
+
+    public function preDispatch()
+    {
+        $this->_hostHttp = new Zend_Controller_Request_Http();
+    }
+
     public function indexAction()
     {
         $cache = Zend_Registry::get('cache');
@@ -96,6 +111,9 @@ class BaseController extends Zend_Controller_Action
         $this->view->assign('pages', $pageItems);
     }
 
+    /**
+     * @throws Zend_Navigation_Exception
+     */
     public function listAction()
     {
         $editUrlOptions = array(
@@ -126,11 +144,15 @@ class BaseController extends Zend_Controller_Action
         return;
     }
 
+    /**
+     * @throws Zend_Form_Exception
+     * @throws Zend_Navigation_Exception
+     */
     public function addAction()
     {
         $form = $this->getForm('edit');
 
-        $url = $this->_request->getServer('HTTP_REFERER');
+        $url = $this->_hostHttp->getServer('HTTP_REFERER');
         $form->addElement('hidden','currentUrl');
         $element = $form->getElement('currentUrl');
         $element->setValue($url);
@@ -148,15 +170,15 @@ class BaseController extends Zend_Controller_Action
             }
         }
 
-        if ($this->getRequest()->isPost()){
-            if ($form->isValid($this->_request->getPost())){
+        if ($this->_hostHttp->isPost()){
+            if ($form->isValid($this->_hostHttp->getPost())){
                 $item = $this->saveFormData($form);
 
                 $this->clearCache($this->_getNamespace());
                 $this->getRedirector()->gotoUrlAndExit($this->_request->getParam('currentUrl'));
             }
 
-            $form->setDefaults($this->_request->getPost());
+            $form->setDefaults($this->_hostHttp->getPost());
         }
 
         $config = array(
@@ -173,6 +195,11 @@ class BaseController extends Zend_Controller_Action
         ));
     }
 
+    /**
+     * @throws Zend_Controller_Action_Exception
+     * @throws Zend_Form_Exception
+     * @throws Zend_Navigation_Exception
+     */
     public function editAction()
     {
         $itemId = $this->_request->getParam('id');
@@ -189,7 +216,7 @@ class BaseController extends Zend_Controller_Action
 
         $form = $this->getForm('edit');
 
-        $url = $this->_request->getServer('HTTP_REFERER');
+        $url = $this->_hostHttp->getServer('HTTP_REFERER');
         $form->addElement('hidden','currentUrl');
         $element = $form->getElement('currentUrl');
         $element->setValue($url);
@@ -210,9 +237,9 @@ class BaseController extends Zend_Controller_Action
             }
         }
 
-        if ($this->getRequest()->isPost()){
+        if ($this->_hostHttp->isPost()){
 
-            if ($form->isValid($this->getRequest()->getPost())) {
+            if ($form->isValid($this->_hostHttp->getPost())) {
                 $item = $this->saveFormData($form);
 
                 $this->clearCache($this->_getNamespace());
@@ -237,6 +264,9 @@ class BaseController extends Zend_Controller_Action
         ));
     }
 
+    /**
+     * @throws Zend_Controller_Action_Exception
+     */
     public function deleteAction()
     {
         $itemId = $this->_request->getParam('id');
@@ -255,10 +285,13 @@ class BaseController extends Zend_Controller_Action
         
         $this->clearCache($this->_getNamespace());
 
-        $url = $this->_request->getServer('HTTP_REFERER');
+        $url = $this->getRedirectUrl();
         $this->getRedirector()->gotoUrlAndExit($url);
     }
 
+    /**
+     * @throws Zend_Controller_Action_Exception
+     */
     public function enableAction()
     {
         $itemId = $this->_request->getParam('id');
@@ -277,11 +310,13 @@ class BaseController extends Zend_Controller_Action
 
         $this->clearCache($this->_getNamespace());
 
-        $url = $this->_request->getServer('HTTP_REFERER');
+        $url = $this->getRedirectUrl();
         $this->getRedirector()->gotoUrlAndExit($url);
-
     }
 
+    /**
+     * @return mixed
+     */
     public function jsonAction()
     {
         $id = $this->_request->getParam('id');
@@ -648,10 +683,44 @@ class BaseController extends Zend_Controller_Action
 
     public function seoAction()
     {
-        // action body
+        $itemId = $this->_request->getParam('id');
+
+        if(is_null($itemId))
+            $this->getRedirector()->gotoSimpleAndExit('index');
+
+        $item = $this->getModelMapper()->find($itemId, $this->getModel());
+
+        if(is_null($item))
+            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+        if($this->_request->getParam('dataFormSeo')){
+            $item->setOptions($this->_request->getParam('dataFormSeo'));
+            $this->getModelMapper()->save($item);
+        }
+
+        $this->_redirector->gotoUrlAndExit($this->_request->getParam('currentUrl'));
     }
 
+    /**
+     * @param null $redirectUrl
+     * @return BaseController
+     */
+    public function setRedirectUrl($redirectUrl)
+    {
+        $this->_redirectUrl = $redirectUrl;
+        return $this;
+    }
 
+    /**
+     * @return null
+     */
+    public function getRedirectUrl()
+    {
+        if(is_null($this->_redirectUrl)){
+            $this->_redirectUrl = $this->_hostHttp->getServer('HTTP_REFERER');
+        }
+        return $this->_redirectUrl;
+    }
 }
 
 

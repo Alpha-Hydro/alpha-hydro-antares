@@ -6,8 +6,12 @@ import Col from "react-bootstrap/lib/Col";
 import FormGroup from "react-bootstrap/lib/FormGroup";
 import FormControl from "react-bootstrap/lib/FormControl";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
+import InputGroup from "react-bootstrap/lib/InputGroup";
+import Button from "react-bootstrap/lib/Button";
+import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 import ImagesUpload from "./../../utils/ImagesUpload";
+import Slugify from "./../../utils/slugifyHelper";
 
 export default class MediaCategoriesFormEdit extends React.Component{
 	constructor(props){
@@ -32,6 +36,14 @@ export default class MediaCategoriesFormEdit extends React.Component{
 		};
 	}
 
+	generatePathFromTitle(){
+		var title = this.state.title;
+		Slugify.getSlugify(title)
+			.then(function (path) {
+				this.setState({path: path});
+			}.bind(this));
+	}
+
 	render(){
 		const imgSrc = this.state.uploadPath + this.state.image;
 
@@ -52,6 +64,24 @@ export default class MediaCategoriesFormEdit extends React.Component{
 								onChange={this.handleChange('title').bind(this)}
 								required
 							/>
+						</FormGroup>
+						<FormGroup>
+							<ControlLabel>Url</ControlLabel>
+							<InputGroup>
+								<InputGroup.Button>
+									<Button bsStyle="primary" onClick={this.generatePathFromTitle.bind(this)}>
+										<Glyphicon glyph="refresh" />
+									</Button>
+								</InputGroup.Button>
+								<FormControl
+									type="text"
+									value={this.state.path}
+									placeholder="Url"
+									name="dataPage[path]"
+									onChange={this.handleChange('path').bind(this)}
+									required
+								/>
+							</InputGroup>
 						</FormGroup>
 						<FormGroup>
 							<ControlLabel>Краткое описание</ControlLabel>

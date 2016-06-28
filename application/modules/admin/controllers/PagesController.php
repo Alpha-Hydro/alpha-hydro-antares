@@ -64,11 +64,29 @@ class PagesController extends BaseController
 
     public function editAction()
     {
-        parent::editAction();
+        $id = $this->_request->getParam('id');
+        $page = $this->_modelMapper->find($id, new Pages_Model_Pages());
 
-        $page = $this->_modelMapper->find($this->_request->getParam('id'), new Pages_Model_Pages());
         if(is_null($page))
             $this->_redirector->gotoSimpleAndExit('index');
+
+        if($this->_request->getParam('dataPage')){
+            $dataPage = $this->_request->getParam('dataPage');
+
+            $page->setOptions($dataPage);
+
+            $this->setUploadImage($page);
+
+            $markdown = $dataPage['contentMarkdown'];
+            $context_html = Michelf\MarkdownExtra::defaultTransform($markdown);
+            $page->setContentHtml($context_html);
+
+            $this->_modelMapper->save($page);
+
+            $this->_redirector->gotoUrlAndExit($this->_request->getParam('currentUrl'));
+        }
+
+        parent::editAction();
 
         $config = array(
             Zend_Navigation_Page_Mvc::factory(array(
@@ -106,13 +124,13 @@ class PagesController extends BaseController
 
     public function disabledAction()
     {
-        $this->forward('enable');
+        parent::enableAction();
     }
 
 
     public function enabledAction()
     {
-        $this->forward('enable');
+        parent::enableAction();
     }
 }
 

@@ -62,15 +62,17 @@ class OilCategoriesController extends BaseController
             $categories = $this->_modelMapper->find($id, $this->_model);
             $categories->setOptions($dataPage);
 
+            $categories->setFullPath($dataPage['path']);
+
             $this->setUploadImage($categories);
 
             $markdown = $dataPage['contentMarkdown'];
-            $context_html = \Michelf\Markdown::defaultTransform($markdown);
+            $context_html = Michelf\MarkdownExtra::defaultTransform($markdown);
             $categories->setContentHtml($context_html);
 
             $this->_modelMapper->save($categories);
 
-            $this->getRedirector()->gotoUrlAndExit($this->_request->getParam('currentUrl'));
+            $this->getRedirector()->gotoUrlAndExit('/oil/'.$categories->getFullPath());
         }
 
         parent::editAction();

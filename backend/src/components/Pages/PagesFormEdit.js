@@ -53,17 +53,6 @@ export default class PagesFormEdit extends React.Component{
 							/>
 						</FormGroup>
 						<FormGroup>
-							<ControlLabel>Url страницы</ControlLabel>
-							<FormControl
-								type="text"
-								value={this.state.path}
-								placeholder="Url страницы"
-								name="dataPage[path]"
-								onChange={this.handleChange('path').bind(this)}
-								required
-							/>
-						</FormGroup>
-						<FormGroup>
 							<ControlLabel>Краткое описание</ControlLabel>
 							<FormControl
 								componentClass="textarea"

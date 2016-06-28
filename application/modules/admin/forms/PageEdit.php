@@ -40,10 +40,16 @@ class Admin_Form_PageEdit extends Twitter_Bootstrap_Form_Vertical
             'data-slugify'  => 'path',
         ));
 
-        $this->addElement('text', 'path', array(
+        /*$this->addElement('text', 'path', array(
             'label'         => 'Url страницы',
             'placeholder'   => 'Url страницы',
             'required'      => true,
+        ));*/
+
+        $this->addElement('select', 'path', array(
+            'label'         => 'Модуль',
+            'required'      => true,
+            'multiOptions' => $this->getModuleArray(),
         ));
 
         $this->addElement('textarea', 'description', array(
@@ -151,6 +157,28 @@ class Admin_Form_PageEdit extends Twitter_Bootstrap_Form_Vertical
             'buttonType'    => 'success',
             'ignore' => true,
         ));
+    }
+
+    public function getModuleArray()
+    {
+        $pagesMapper = new Pages_Model_Mapper_Pages();
+        $select = $pagesMapper->getDbTable()->select();
+        $select->where('deleted != ?', 1)
+            ->where('active != ?', 0)
+            ->order('sorting ASC');
+
+        $moduleArray = array();
+
+        $modules = $pagesMapper->fetchAll();
+
+        if(!empty($modules)){
+            /**@var $module Pages_Model_Pages*/
+            foreach ($modules as $module) {
+                $moduleArray[$module->getPath()] = $module->getPath();
+            }
+        }
+
+        return $moduleArray;
     }
 
 }

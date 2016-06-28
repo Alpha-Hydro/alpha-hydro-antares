@@ -62,23 +62,13 @@ class MediaCategoriesController extends BaseController
 
             $this->setUploadImage($categories);
 
-            /*$markdown = $dataPage['contentMarkdown'];
-            $context_html = \Michelf\Markdown::defaultTransform($markdown);
-            $categories->setContentHtml($context_html);*/
-
             $this->_modelMapper->save($categories);
 
-            $this->getRedirector()->gotoUrlAndExit($this->_request->getParam('currentUrl'));
+            $this->getRedirector()->gotoUrlAndExit('/media/'.$categories->getPath());
         }
+        
         parent::editAction();
     }
-
-    public function seoAction()
-    {
-        // action body
-    }
-
-
 }
 
 
