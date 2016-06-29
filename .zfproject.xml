@@ -7,9 +7,6 @@
         <applicationConfigFile type="ini"/>
       </configsDirectory>
       <controllersDirectory>
-        <controllerFile controllerName="Index">
-          <actionMethod actionName="index"/>
-        </controllerFile>
         <controllerFile controllerName="Error"/>
         <controllerFile controllerName="Webhook">
           <actionMethod actionName="index"/>
@@ -24,6 +21,9 @@
           <actionMethod actionName="index"/>
         </controllerFile>
         <controllerFile controllerName="Base">
+          <actionMethod actionName="index"/>
+        </controllerFile>
+        <controllerFile controllerName="Index">
           <actionMethod actionName="index"/>
         </controllerFile>
       </controllersDirectory>
@@ -1184,6 +1184,9 @@
             <controllerFile controllerName="Contacts">
               <actionMethod actionName="index"/>
             </controllerFile>
+            <controllerFile controllerName="Home">
+              <actionMethod actionName="index"/>
+            </controllerFile>
           </controllersDirectory>
           <formsDirectory enabled="false"/>
           <layoutsDirectory enabled="false">
@@ -1208,6 +1211,9 @@
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Contacts">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Home">
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
@@ -1339,6 +1345,9 @@
             <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Base">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Index">
             <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>

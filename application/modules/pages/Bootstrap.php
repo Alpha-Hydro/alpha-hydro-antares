@@ -8,6 +8,18 @@
  */
 class Pages_Bootstrap extends Zend_Application_Module_Bootstrap
 {
+    public function _initPlugins()
+    {
+        $this->bootstrap('frontController');
+
+        $pluginsLoader = new Zend_Loader_PluginLoader();
+        $pluginsLoader->addPrefixPath("Plugin", APPLICATION_PATH.'/plugins');
+        $pluginsLoader->load("PageModule");
+
+        if($pluginsLoader->isLoaded('PageModule'))
+            Zend_Controller_Front::getInstance()->registerPlugin(new Plugin_PageModule());
+    }
+
     public function _initRoute(){
 
         $front = Zend_Controller_Front::getInstance();

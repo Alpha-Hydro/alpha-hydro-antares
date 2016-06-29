@@ -9,9 +9,15 @@ class Catalog_CategoriesController extends Zend_Controller_Action
      */
     protected $_auth = null;
 
+    /**
+     * @var Zend_Controller_Action_Helper_Redirector
+     */
+    protected $_redirector = null;
+
     public function init()
     {
         $request = $this->getRequest();
+        $this->_redirector = $this->_helper->getHelper('Redirector');
         $this->_fullPath =  $request->getParam('fullPath');
         $this->_auth = Zend_Auth::getInstance()->hasIdentity();
     }
@@ -26,12 +32,24 @@ class Catalog_CategoriesController extends Zend_Controller_Action
 
         if(is_null($category)) {
             //throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
-            $this->forward(
-                'view',
-                'products'
-            );
+            $this->forward('view', 'products');
             return;
         }
+
+        if($category->getDeleted() === '1'){
+            if (!Zend_Auth::getInstance()->hasIdentity())
+                throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+            $this->_redirector->gotoRouteAndExit(array(
+                'module' => 'admin',
+                'controller' => 'pages',
+                'action' => 'index'
+            ),'adminEdit', true);
+        }
+
+        if($category->getActive() === '0'
+            && !Zend_Auth::getInstance()->hasIdentity())
+            throw new Zend_Controller_Action_Exception("Раздел временно не доступен", 500);
 
 
         $current_category_id = $category->getId();

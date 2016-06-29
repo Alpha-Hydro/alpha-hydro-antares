@@ -34,6 +34,7 @@ class AdminBootstrap extends Zend_Application_Bootstrap_Bootstrap
         $view->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8');
         
         $view->addBasePath(APPLICATION_PATH."/modules/admin/views/");
+        $view->addBasePath(APPLICATION_PATH."/modules/default/views/");
         $view->addScriptPath(APPLICATION_PATH."/layouts/scripts/");
         $view->auth = Zend_Auth::getInstance()->hasIdentity();
     }

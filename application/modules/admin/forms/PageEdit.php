@@ -40,18 +40,18 @@ class Admin_Form_PageEdit extends Twitter_Bootstrap_Form_Vertical
             'data-slugify'  => 'path',
         ));
 
-        /*$this->addElement('text', 'path', array(
+        $this->addElement('text', 'path', array(
             'label'         => 'Url страницы',
             'placeholder'   => 'Url страницы',
             'required'      => true,
-        ));*/
+        ));
 
-        $this->addElement('select', 'path', array(
+        /*$this->addElement('select', 'path', array(
             'label'         => 'Модуль',
             'required'      => true,
             'multiOptions' => $this->getModuleArray(),
         ));
-
+        */
         $this->addElement('textarea', 'description', array(
             'label'         => 'Краткое описание страницы',
             'placeholder'   => 'Краткое описание страницы',

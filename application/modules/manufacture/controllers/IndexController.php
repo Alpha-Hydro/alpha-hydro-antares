@@ -21,8 +21,6 @@ class Manufacture_IndexController extends Zend_Controller_Action
 
     /**
      * @var Zend_Controller_Action_Helper_Redirector
-     * 
-     *
      */
     protected $_redirector = null;
 
@@ -61,8 +59,6 @@ class Manufacture_IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $request = $this->getRequest();
-
         $page = $this->pageModule();
 
         if(!is_null($this->getRequest()->getParam('json'))
@@ -237,7 +233,7 @@ class Manufacture_IndexController extends Zend_Controller_Action
 
         if(is_null($page))
             throw new Zend_Controller_Action_Exception("Раздел '".$pageModulePath."' не добален в таблицу 'Pages'", 404);
-
+        
         return $page;
     }
 

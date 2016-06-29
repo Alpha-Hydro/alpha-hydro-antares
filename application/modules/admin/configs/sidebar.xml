@@ -433,6 +433,14 @@
                     <resource>search</resource>
                     <route>adminEdit</route>
                 </search>
+                <add>
+                    <label>Добавить раздел</label>
+                    <module>admin</module>
+                    <controller>pages</controller>
+                    <action>add</action>
+                    <resourse>pages</resourse>
+                    <route>adminEdit</route>
+                </add>
             </pages>
         </modules>
         <trash>
