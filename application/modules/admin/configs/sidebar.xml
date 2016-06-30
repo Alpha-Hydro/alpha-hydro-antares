@@ -434,11 +434,12 @@
                     <route>adminEdit</route>
                 </search>
                 <add>
-                    <label>Добавить раздел</label>
+                    <label>... добавить раздел</label>
                     <module>admin</module>
                     <controller>pages</controller>
                     <action>add</action>
                     <resourse>pages</resourse>
+                    <privilege>add</privilege>
                     <route>adminEdit</route>
                 </add>
             </pages>

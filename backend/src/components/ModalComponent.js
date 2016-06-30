@@ -18,6 +18,7 @@ export default class ModalComponent extends React.Component{
 				case "disabled": return {style: 'primary', text: 'Скрыть'};
 				case "enabled": return {style: 'success', text: 'Показать'};
 				case "delete": return {style: 'danger', text: 'Удалить'};
+				case "recover": return {style: 'success', text: 'Восстановить'};
 				default: return {style: 'success', text: 'Сохранить'};
 
 		}};

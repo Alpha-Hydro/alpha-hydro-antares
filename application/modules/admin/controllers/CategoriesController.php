@@ -13,7 +13,6 @@ class CategoriesController extends BaseController
 
     /**
      * @var Catalog_Model_Mapper_Categories
-     *
      */
     protected $_modelMapper = null;
 
@@ -24,19 +23,16 @@ class CategoriesController extends BaseController
 
     /**
      * @var Zend_Form[]
-     *
      */
     protected $_forms = array();
 
     /**
      * @var Zend_Controller_Request_Abstract
-     *
      */
     protected $_request = null;
 
     /**
      * @var Zend_Controller_Action_Helper_Redirector
-     *
      */
     protected $_redirector = null;
 
@@ -258,16 +254,19 @@ class CategoriesController extends BaseController
         if($this->_request->isPost()) {
             $url = $this->_request->getParam('currentUrl');
 
-            if ($this->_request->getParam('action') === 'delete') {
-                $category
-                    ->setDeleted(1)
-                    ->setModDate(date("Y-m-d H:i:s"));
-                $this->_modelMapper->save($category);
-            }
+            $deleted = ($category->getDeleted() != 0)?0:1;
+            $category->setDeleted($deleted);
+            
+            $this->_modelMapper->save($category);
 
             $this->clearCache('CatalogCategories');
             $this->_redirector->gotoUrlAndExit($url);
         }
+    }
+
+    public function recoverAction()
+    {
+        $this->deleteAction();
     }
 
     public function jsonAction()
@@ -333,12 +332,10 @@ class CategoriesController extends BaseController
         if($this->_request->isPost()) {
             $url = $this->_request->getParam('currentUrl');
 
-            if ($this->_request->getParam('action') === 'disabled') {
-                $category
-                    ->setModDate(date("Y-m-d H:i:s"))
-                    ->setActive(0);
-                $this->_modelMapper->save($category);
-            }
+            $enabled = ($category->getActive() != 0)?0:1;
+            $category->setActive($enabled);
+
+            $this->_modelMapper->save($category);
 
             $this->clearCache('CatalogCategories');
             $this->_redirector->gotoUrlAndExit($url);
@@ -347,35 +344,15 @@ class CategoriesController extends BaseController
 
     public function enabledAction()
     {
-        $categoryId = $this->_request->getParam('id');
-
-        if(is_null($categoryId))
-            $this->_redirector->gotoSimpleAndExit('index');
-
-        $category = $this->_modelMapper->find($categoryId, new Catalog_Model_Categories());
-
-        if(is_null($category))
-            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
-
-        if($this->_request->isPost()) {
-            $url = $this->_request->getParam('currentUrl');
-
-            if ($this->_request->getParam('action') === 'enabled') {
-                $category
-                    ->setActive(1)
-                    ->setModDate(date("Y-m-d H:i:s"));
-                $this->_modelMapper->save($category);
-            }
-            $this->clearCache('CatalogCategories');
-            $this->_redirector->gotoUrlAndExit($url);
-        }
+        $this->disabledAction();
     }
 
     /**
      * @param $id
      * @return array
      */
-    public function breadcrumbs($id){
+    public function breadcrumbs($id)
+    {
         $entries = $this->_modelMapper->fetchTreeParentCategories($id);
         $breadcrumbs = array();
         foreach ($entries as $entry) {
@@ -495,17 +472,6 @@ class CategoriesController extends BaseController
 
         return $uploadFile;
     }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
 

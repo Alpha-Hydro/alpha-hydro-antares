@@ -23,19 +23,24 @@ export default class ItemButtonsComponent extends React.Component{
 	hideModal() {
 		this.setState({show: false});
 	}
-	
-	handlerClickButton(action, title){
+
+	componentWillMount(){
 		var controller = this.props.dataItem.controller,
-			id = this.props.dataItem.id;
+				id = this.props.dataItem.id;
 		dataHelpers.getDataInfo(controller, id)
 			.then(function(dataInfo){
 				this.setState({
-					data: dataInfo,
-					action: action,
-					title: title,
-					show: true
+					data: dataInfo
 				});
 			}.bind(this));
+	}
+	
+	handlerClickButton(action, title){
+		this.setState({
+			action: action,
+			title: title,
+			show: true
+		});
 	}
 
 	render() {
@@ -49,7 +54,8 @@ export default class ItemButtonsComponent extends React.Component{
 				role: "manager",
 				title:"Редактировать"
 			},
-			{	icon: "trash",
+			{	
+				icon: "trash",
 				enable: !this.props.dataItem.deleted,
 				action: "delete",
 				role: "admin",
@@ -58,20 +64,20 @@ export default class ItemButtonsComponent extends React.Component{
 			{
 				icon: "open",
 				enable: this.props.dataItem.deleted,
-				action: "delete",
+				action: "recover",
 				role: "admin",
-				title:"Востановить"
+				title:"Восcтановить"
 			},
 			{
 				icon: "eye-close",
-				enable: this.props.dataItem.active,
+				enable: this.props.dataItem.active && !this.props.dataItem.deleted,
 				action: "disabled",
 				role: "admin",
 				title:"Скрыть"
 			},
 			{
 				icon: "eye-open",
-				enable: !this.props.dataItem.active,
+				enable: !this.props.dataItem.active && !this.props.dataItem.deleted,
 				action: "enabled",
 				role: "admin",
 				title:"Показать"

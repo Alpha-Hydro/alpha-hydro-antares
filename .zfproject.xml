@@ -354,6 +354,7 @@
               <actionMethod actionName="delete"/>
               <actionMethod actionName="disabled"/>
               <actionMethod actionName="enabled"/>
+              <actionMethod actionName="recover"/>
             </controllerFile>
             <controllerFile controllerName="Products">
               <actionMethod actionName="index"/>
@@ -716,6 +717,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="MediaCategories">
                 <viewScriptFile forActionName="seo"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Categories">
+                <viewScriptFile forActionName="recover"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>

@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by Alpha-Hydro.
+ *  @link http://www.alpha-hydro.com
+ *  @author Vladimir Mikhaylov <admin@alpha-hydro.com>
+ *  @copyright Copyright (c) 2016, Alpha-Hydro
+ */
 
 class Catalog_Model_Mapper_Products
 {
@@ -24,7 +30,7 @@ class Catalog_Model_Mapper_Products
     }
 
     /**
-     * @return Model_DbTable_Products
+     * @return Catalog_Model_DbTable_Products
      */
     public function getDbTable()
     {

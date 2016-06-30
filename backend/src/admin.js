@@ -17,36 +17,36 @@ if(adminPanel)
 if(document.querySelector('.itemButtonsComponent')){
 	const itemButtonsComponents = [].slice.call(document.querySelectorAll('.itemButtonsComponent'));
 	itemButtonsComponents.forEach(function (item) {
-		var dataItem = {
+		/*var dataItem = {
 			controller: item.getAttribute('data-controller'),
 			id: item.getAttribute('data-id'),
 			active: item.getAttribute('data-active'),
 			deleted: item.getAttribute('data-deleted')
-		};
+		};*/
 		ReactDOM.render(<ItemButtonsComponent dataItem = {item.dataset}/>, item);
 	});
 }
 
-var dataItem;
+//var dataItem;
 const categoriesAddButtton = document.getElementById('categoriesAddButtton');
 if (categoriesAddButtton){
-	dataItem = {
+	/*dataItem = {
 		controller: categoriesAddButtton.dataset.controller,
 		id: categoriesAddButtton.dataset.id,
 		action: categoriesAddButtton.dataset.action,
 		title: categoriesAddButtton.dataset.title
-	};
+	};*/
 	ReactDOM.render(<CategoriesAddButton dataItem = {categoriesAddButtton.dataset}/>, categoriesAddButtton);
 }
 
 const itemAddButtton = document.getElementById('itemAddButtton');
 if (itemAddButtton){
-	dataItem = {
+	/*dataItem = {
 		controller: itemAddButtton.dataset.controller,
 		categoryId: itemAddButtton.dataset.categoryid,
 		action: itemAddButtton.dataset.action,
 		title: itemAddButtton.dataset.title
-	};
+	};*/
 	ReactDOM.render(<ItemAddButton dataItem = {itemAddButtton.dataset}/>, itemAddButtton);
 }
 

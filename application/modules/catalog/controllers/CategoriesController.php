@@ -42,9 +42,10 @@ class Catalog_CategoriesController extends Zend_Controller_Action
 
             $this->_redirector->gotoRouteAndExit(array(
                 'module' => 'admin',
-                'controller' => 'pages',
-                'action' => 'index'
-            ),'adminEdit', true);
+                'controller' => 'categories',
+                'action' => 'index',
+                'parent_id' => $category->getParentId()
+            ),'adminCategoriesEdit', true);
         }
 
         if($category->getActive() === '0'

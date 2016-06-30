@@ -50,11 +50,41 @@ export default class PanelButtonsComponent extends React.Component{
 		const bsStyle = (this.props.bsstyle)?this.props.bsstyle:'link';
 
 		const Buttons = [
-			{icon: "pencil", enable: true,action: "edit", role: "manager", title:"Редактировать"},
-			{icon: "tags", enable: true, action: "seo", role: "admin", title:"Мета теги"},
-			{icon: "trash", enable: this.state.data.role === 'admin', action: "delete", role: "admin", title:"Удалить"},
-			{icon: "eye-close", enable: this.state.data.active !=0, action: "disabled", role: "admin", title:"Скрыть"},
-			{icon: "eye-open", enable: this.state.data.active !=1, action: "enabled", role: "admin", title:"Показать"}
+			{
+				icon: "pencil",
+				enable: true,
+				action: "edit",
+				role: "manager",
+				title:"Редактировать"
+			},
+			{
+				icon: "tags",
+				enable: true,
+				action: "seo",
+				role: "admin",
+				title:"Мета теги"
+			},
+			{
+				icon: "trash",
+				enable: true,
+				action: "delete",
+				role: "admin",
+				title:"Удалить"
+			},
+			{
+				icon: "eye-close",
+				enable: this.state.data.active,
+				action: "disabled",
+				role: "admin",
+				title:"Скрыть"
+			},
+			{
+				icon: "eye-open",
+				enable: !this.state.data.active,
+				action: "enabled",
+				role: "admin",
+				title:"Показать"
+			}
 		].map((button, i) =>
 			button.enable && <ButtonComponent
 				key={i}

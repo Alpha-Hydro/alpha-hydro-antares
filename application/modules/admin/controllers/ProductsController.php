@@ -92,14 +92,19 @@ class ProductsController extends BaseController
 
     public function indexAction()
     {
-        //Zend_Debug::dump($this->_request->getParams());
+        $cache = Zend_Registry::get('cache');
 
         $select = $this->_modelMapper->getDbTable()->select();
         $select->order('sorting ASC');
 
         if($this->_request->getParam('category_id')){
-            $pageItems = $this->_modelCategoriesMapper
-                ->fetchProductsRel($this->_request->getParam('category_id'), $select);
+            $cacheName = 'Admin_CatalogProductsList_'.$this->_request->getParam('category_id');
+            if(!$pageItems = $cache->load($cacheName)){
+                $pageItems = $this->_modelCategoriesMapper
+                    ->fetchProductsRel($this->_request->getParam('category_id'), $select);
+
+                $cache->save($pageItems, $cacheName, array('admin','Catalog', 'CatalogProductsList'));
+            }
 
             $category = $this->_modelCategoriesMapper
                 ->find(
@@ -108,7 +113,12 @@ class ProductsController extends BaseController
                 );
         }
         else{
-            $pageItems = $this->_modelMapper->fetchAll($select);
+            $cacheName = 'Admin_CatalogProductsList_All';
+            if(!$pageItems = $cache->load($cacheName)) {
+                $pageItems = $this->_modelMapper->fetchAll($select);
+
+                $cache->save($pageItems, $cacheName, array('admin','Catalog', 'CatalogProductsList'));
+            }
         }
 
         if(!empty($pageItems))
@@ -120,8 +130,6 @@ class ProductsController extends BaseController
             $this->view->categoryName = $category->getName().' - ';
             $this->view->current_category = $category->getId();
         }
-
-
     }
 
     public function jsonAction()
