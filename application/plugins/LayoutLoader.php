@@ -1,11 +1,10 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: mvl
- * Date: 18.08.2015
- * Time: 11:55
+ * Created by Alpha-Hydro.
+ *  @link http://www.alpha-hydro.com
+ *  @author Vladimir Mikhaylov <admin@alpha-hydro.com>
+ *  @copyright Copyright (c) 2016, Alpha-Hydro
  */
-
 
 class Plugin_LayoutLoader extends Zend_Controller_Plugin_Abstract
 {

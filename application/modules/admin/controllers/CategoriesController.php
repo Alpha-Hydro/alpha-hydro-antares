@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by Alpha-Hydro.
+ *  @link http://www.alpha-hydro.com
+ *  @author Vladimir Mikhaylov <admin@alpha-hydro.com>
+ *  @copyright Copyright (c) 2016, Alpha-Hydro
+ */
 
 include_once 'BaseController.php';
 
@@ -259,6 +265,7 @@ class CategoriesController extends BaseController
                 $this->_modelMapper->save($category);
             }
 
+            $this->clearCache('CatalogCategories');
             $this->_redirector->gotoUrlAndExit($url);
         }
     }
@@ -306,6 +313,7 @@ class CategoriesController extends BaseController
                 $this->_modelMapper->save($category);
             }
 
+            $this->clearCache('CatalogCategories');
             $this->_redirector->gotoUrlAndExit($url);
         }
     }
@@ -331,6 +339,8 @@ class CategoriesController extends BaseController
                     ->setActive(0);
                 $this->_modelMapper->save($category);
             }
+
+            $this->clearCache('CatalogCategories');
             $this->_redirector->gotoUrlAndExit($url);
         }
     }
@@ -356,6 +366,7 @@ class CategoriesController extends BaseController
                     ->setModDate(date("Y-m-d H:i:s"));
                 $this->_modelMapper->save($category);
             }
+            $this->clearCache('CatalogCategories');
             $this->_redirector->gotoUrlAndExit($url);
         }
     }

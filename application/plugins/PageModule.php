@@ -1,11 +1,11 @@
 <?php
-
 /**
- * Created by PhpStorm.
- * User: mvl
- * Date: 29.06.2016
- * Time: 16:22
+ * Created by Alpha-Hydro.
+ *  @link http://www.alpha-hydro.com
+ *  @author Vladimir Mikhaylov <admin@alpha-hydro.com>
+ *  @copyright Copyright (c) 2016, Alpha-Hydro
  */
+
 class Plugin_PageModule extends Zend_Controller_Plugin_Abstract
 {
     public function preDispatch(Zend_Controller_Request_Abstract $request)
