@@ -86,11 +86,12 @@ class PipelinePropertyValueController extends Zend_Controller_Action
                             'propertyValue' => $newPropertyValue->getValue()
                         );
                     }
-
                 }
             }
             else {
-                $alert = '<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4>Cвойство '.$request->getParam('newPropertyName').' уже существует.</h4>Выберите из списка и добавьте значение или измените зачение существующего свойства.</div>';
+                $alert = '<div class="alert alert-danger" role="alert">
+                            <h4 class="text-center">Cвойство <a href="/admin/pipeline-property/">"'.$request->getParam('newPropertyName').'"</a> уже существует.</h4>
+                          </div>';
                 $dataResponse['errorMessage'] = $alert;
             }
         }

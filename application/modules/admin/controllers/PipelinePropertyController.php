@@ -3,11 +3,17 @@
 class PipelinePropertyController extends Zend_Controller_Action
 {
 
+    /**
+     * @var Zend_Controller_Action_Helper_Redirector
+     */
+    protected $_redirector = null;
+
     protected $_count_item_on_page = null;
 
     public function init()
     {
         $this->_count_item_on_page = 10;
+        $this->_redirector = $this->_helper->getHelper('Redirector');
     }
 
     public function indexAction()
@@ -16,8 +22,7 @@ class PipelinePropertyController extends Zend_Controller_Action
 
         $pipelinePropertyMapper = new Pipeline_Model_Mapper_PipelineProperty();
         $select = $pipelinePropertyMapper->getDbTable()->select();
-        $select->where('deleted != ?', 1)
-            ->order('sorting ASC');
+        $select->order('sorting ASC');
 
         $pipelineProperties = $pipelinePropertyMapper->fetchAll($select);
 
@@ -40,32 +45,6 @@ class PipelinePropertyController extends Zend_Controller_Action
         }
 
         $this->view->pages = $pipelineProperties;
-
-        $config = array(
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Категории',
-                'module' => 'admin',
-                'controller' => 'pipeline-categories',
-                'resource' => 'pipeline-categories',
-            )),
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Товары',
-                'module' => 'admin',
-                'controller' => 'pipeline',
-                'resource' => 'pipeline',
-            )),
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Добавить свойство',
-                'module' => 'admin',
-                'controller' => 'pipeline-property',
-                'action' => 'add',
-                'resource' => 'pipeline-property',
-            )),
-        );
-
-        $containerNav = new Zend_Navigation($config);
-
-        $this->view->container_nav = $containerNav;
     }
 
     public function addAction()
@@ -90,7 +69,11 @@ class PipelinePropertyController extends Zend_Controller_Action
 
                 $pipelinePropertyMapper->save($pipelineProperty);
 
-                return $this->_helper->redirector('index');
+                $this->_redirector->gotoRouteAndExit(array(
+                    'module' => 'admin',
+                    'controller' => 'pipeline-property',
+                    'action' => 'index'
+                ), 'adminEdit', true);
             }
         }
 
@@ -98,16 +81,10 @@ class PipelinePropertyController extends Zend_Controller_Action
 
         $config = array(
             Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Добавить свойство',
-                'module' => 'admin',
-                'controller' => 'pipeline-property',
-                'action' => 'add',
-                'resource' => 'pipeline-property',
-            )),
-            Zend_Navigation_Page_Mvc::factory(array(
                 'label' => 'Отменить',
                 'module' => 'admin',
                 'controller' => 'pipeline-property',
+                'route' => 'adminEdit',
                 'resource' => 'pipeline-property',
             )),
         );
@@ -123,7 +100,11 @@ class PipelinePropertyController extends Zend_Controller_Action
         $itemId = $request->getParam('id');
 
         if(is_null($itemId))
-            return $this->_helper->redirector('index');
+            $this->_redirector->gotoRouteAndExit(array(
+                'module' => 'admin',
+                'controller' => 'pipeline-property',
+                'action' => 'index'
+            ), 'adminEdit', true);
 
         $pipelinePropertyMapper = new Pipeline_Model_Mapper_PipelineProperty();
         $pipelineProperty = $pipelinePropertyMapper->find($itemId, new Pipeline_Model_PipelineProperty());
@@ -146,7 +127,11 @@ class PipelinePropertyController extends Zend_Controller_Action
 
                 $pipelinePropertyMapper->save($pipelineProperty);
 
-                return $this->_helper->redirector('index');
+                $this->_redirector->gotoRouteAndExit(array(
+                    'module' => 'admin',
+                    'controller' => 'pipeline-property',
+                    'action' => 'index'
+                ), 'adminEdit', true);
             }
 
             $form->setDefaults($request->getPost());
@@ -157,26 +142,10 @@ class PipelinePropertyController extends Zend_Controller_Action
 
         $config = array(
             Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Добавить свойство',
-                'module' => 'admin',
-                'controller' => 'pipeline-property',
-                'action' => 'add',
-                'resource' => 'pipeline-property',
-            )),
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Удалить свойство',
-                'module' => 'admin',
-                'controller' => 'pipeline-property',
-                'action' => 'delete',
-                'resource' => 'pipeline-property',
-                'params' => array(
-                    'id' => $itemId,
-                ),
-            )),
-            Zend_Navigation_Page_Mvc::factory(array(
                 'label' => 'Отменить',
                 'module' => 'admin',
                 'controller' => 'pipeline-property',
+                'route' => 'adminEdit',
                 'resource' => 'pipeline-property',
             )),
         );
@@ -192,7 +161,11 @@ class PipelinePropertyController extends Zend_Controller_Action
         $itemId = $request->getParam('id');
 
         if(is_null($itemId))
-            return $this->_helper->redirector('index');
+            $this->_redirector->gotoRouteAndExit(array(
+                'module' => 'admin',
+                'controller' => 'pipeline-property',
+                'action' => 'index'
+            ), 'adminEdit', true);
 
         $pipelinePropertyMapper = new Pipeline_Model_Mapper_PipelineProperty();
         $pipelineProperty = $pipelinePropertyMapper->find($itemId, new Pipeline_Model_PipelineProperty());
@@ -200,16 +173,51 @@ class PipelinePropertyController extends Zend_Controller_Action
         if(is_null($pipelineProperty))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
-        $pipelineProperty->setDeleted(1);
+        $deleted = ($pipelineProperty->getDeleted() != 0)?0:1;
+
+        $pipelineProperty->setDeleted($deleted);
         $pipelinePropertyMapper->save($pipelineProperty);
 
-        return $this->_helper->redirector('index');
+        $this->_redirector->gotoRouteAndExit(array(
+            'module' => 'admin',
+            'controller' => 'pipeline-property',
+            'action' => 'index'
+        ), 'adminEdit', true);
+    }
 
+    public function enableAction()
+    {
+        $request = $this->getRequest();
+        $itemId = $request->getParam('id');
+
+        if(is_null($itemId))
+            $this->_redirector->gotoRouteAndExit(array(
+                'module' => 'admin',
+                'controller' => 'pipeline-property',
+                'action' => 'index'
+            ), 'adminEdit', true);
+
+        $pipelinePropertyMapper = new Pipeline_Model_Mapper_PipelineProperty();
+        $pipelineProperty = $pipelinePropertyMapper->find($itemId, new Pipeline_Model_PipelineProperty());
+
+        if(is_null($pipelineProperty))
+            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+        $active = ($pipelineProperty->getActive() != 0)?0:1;
+
+        $pipelineProperty->setActive($active);
+        $pipelinePropertyMapper->save($pipelineProperty);
+
+        $this->_redirector->gotoRouteAndExit(array(
+            'module' => 'admin',
+            'controller' => 'pipeline-property',
+            'action' => 'index'
+        ), 'adminEdit', true);
     }
 
     /**
      * @param null $count_item_on_page
-     * @return Admin_PipelinePropertyController
+     * @return PipelinePropertyController
      */
     public function setCountItemOnPage($count_item_on_page)
     {

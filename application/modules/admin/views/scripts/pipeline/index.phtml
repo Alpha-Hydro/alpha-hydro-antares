@@ -48,11 +48,16 @@ $this->secondary_text = $this->categoryName.'Список товаров';
         <?php endforeach;?>
     </table>
     <?= $this->render('components/_paginator.phtml')?>
-<?php else:?>
-    <div class="text-center">
-        <a href="<?=$this->url(
-            array('module'=>'admin', 'controller' => 'pipeline', 'action' => 'add'),
-            false,true
-        )?>" class="btn btn-success">Добавить товар</a>
-    </div>
 <?php endif;?>
+<div class="pull-left">
+    <a href="<?=$this->url(
+        array(
+            'module'=>'admin',
+            'controller' => 'pipeline',
+            'action' => 'add',
+            'id' => $this->category_id
+        ),
+        false,true
+    )?>" class="btn btn-default">Добавить товар</a>
+</div>
+<?= $this->render('components/_paginator.phtml')?>

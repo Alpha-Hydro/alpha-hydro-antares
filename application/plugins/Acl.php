@@ -30,7 +30,7 @@ class Plugin_Acl extends Zend_Controller_Plugin_Abstract {
 
         // если пользователь не допущен до данного ресурса (controller),
         // то отсылаем его на страницу авторизации
-        if (!$this->_acl->isAllowed($role, $controller))
+        if (!$this->_acl->isAllowed($role, $controller, $action))
             $request->setModuleName('admin')
                 ->setControllerName('auth')
                 ->setActionName('index');

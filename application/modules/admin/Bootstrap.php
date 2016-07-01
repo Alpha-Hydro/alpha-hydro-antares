@@ -41,9 +41,6 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         $acl->addResource(new Zend_Acl_Resource('index'));
 
         $acl->addResource(new Zend_Acl_Resource('pages'));
-//        $acl->addResource(new Zend_Acl_Resource('pages:add', 'pages'));
-//        $acl->addResource(new Zend_Acl_Resource('pages:delete', 'pages'));
-//        $acl->addResource(new Zend_Acl_Resource('pages:enable', 'pages'));
 
         $acl->addResource(new Zend_Acl_Resource('catalog'));
         $acl->addResource(new Zend_Acl_Resource('categories'));
@@ -51,8 +48,7 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
 
         $acl->addResource(new Zend_Acl_Resource('manufacture'));
         $acl->addResource(new Zend_Acl_Resource('manufacture-categories'));
-//        $acl->addResource(new Zend_Acl_Resource('manufacture-categories:add','manufacture-categories'));
-        
+
         $acl->addResource(new Zend_Acl_Resource('pipeline'));
         $acl->addResource(new Zend_Acl_Resource('pipeline-categories'));
         $acl->addResource(new Zend_Acl_Resource('pipeline-property'));
@@ -90,13 +86,7 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         $acl->addRole('admin', 'guest');
 
         $acl->deny();
-        $acl->allow('guest', 'auth');
-        /*$acl->allow('guest', array(
-                'auth',
-                'error',
-                'index',
-                )
-            );*/
+        $acl->allow('guest', array('auth', 'error'));
         $acl->allow('manager', array(
             'index',
             'pages',
@@ -108,12 +98,12 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
             'pipeline-categories',
             'pipeline-property',
             'oil',
+            'oil-categories',
             'forum',
             'media',
             'media-categories'
-        ));
-        $acl->deny(null, null, 'add');
-        
+        ), array('index', 'list', 'edit', 'json'));
+
         $acl->allow('admin');
 
 

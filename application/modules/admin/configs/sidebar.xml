@@ -26,6 +26,7 @@
                         <id>1</id>
                     </params>
                     <resource>pages</resource>
+                    <privilege>edit</privilege>
                     <route>adminEdit</route>
                 </home>
                 <catalog>
@@ -33,6 +34,7 @@
                     <module>admin</module>
                     <controller>categories</controller>
                     <resource>categories</resource>
+                    <privilege>index</privilege>
                     <route>adminCategoriesEdit</route>
                     <pages>
                         <category_list>
@@ -41,6 +43,7 @@
                             <controller>categories</controller>
                             <action>list</action>
                             <resourse>categories</resourse>
+                            <privilege>list</privilege>
                             <route>adminEdit</route>
                         </category_list>
                     </pages>
@@ -50,6 +53,7 @@
                     <module>admin</module>
                     <controller>manufacture-categories</controller>
                     <resource>manufacture-categories</resource>
+                    <privilege>index</privilege>
                     <route>adminEdit</route>
                     <pages>
                         <index>
@@ -127,6 +131,7 @@
                     <module>admin</module>
                     <controller>pipeline-categories</controller>
                     <resource>pipeline-categories</resource>
+                    <privilege>index</privilege>
                     <route>adminEdit</route>
                     <pages>
                         <index>
@@ -227,6 +232,7 @@
                     <module>admin</module>
                     <controller>oil-categories</controller>
                     <resource>oil-categories</resource>
+                    <privilege>index</privilege>
                     <route>adminEdit</route>
                     <pages>
                         <index>
@@ -264,6 +270,7 @@
                             <controller>oil</controller>
                             <action>edit</action>
                             <resourse>oil</resourse>
+                            <privilege>edit</privilege>
                             <route>adminEdit</route>
                         </edit>
                         <categories>
@@ -304,6 +311,7 @@
                     <module>admin</module>
                     <controller>forum</controller>
                     <resource>forum</resource>
+                    <privilege>index</privilege>
                     <route>adminEdit</route>
                     <pages>
                         <edit>
@@ -324,6 +332,7 @@
                     <module>admin</module>
                     <controller>media-categories</controller>
                     <resource>media</resource>
+                    <privilege>index</privilege>
                     <route>adminEdit</route>
                     <pages>
                         <index>
@@ -413,6 +422,7 @@
                         <id>2</id>
                     </params>
                     <resource>pages</resource>
+                    <privilege>edit</privilege>
                     <route>adminEdit</route>
                 </about>
                 <contact>
@@ -424,6 +434,7 @@
                         <id>3</id>
                     </params>
                     <resource>pages</resource>
+                    <privilege>edit</privilege>
                     <route>adminEdit</route>
                 </contact>
                 <search>
@@ -433,7 +444,7 @@
                     <resource>search</resource>
                     <route>adminEdit</route>
                 </search>
-                <add>
+               <!-- <add>
                     <label>... добавить раздел</label>
                     <module>admin</module>
                     <controller>pages</controller>
@@ -441,7 +452,7 @@
                     <resourse>pages</resourse>
                     <privilege>add</privilege>
                     <route>adminEdit</route>
-                </add>
+                </add>-->
             </pages>
         </modules>
         <trash>

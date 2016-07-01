@@ -44,95 +44,52 @@ class PipelineCategoriesController extends BaseController
 
         $config = array(
             Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Добавить категорию',
-                'module' => 'admin',
-                'controller' => 'pipeline-categories',
-                'action' => 'add',
-                'resource' => 'pipeline-categories',
+                'label' => 'На сайт',
+                'uri' => '/pipeline/'
             )),
         );
-
         $containerNav = new Zend_Navigation($config);
 
-        $this->view->container_nav = $containerNav;
+        $editUrlOptions = array(
+            'module' => 'admin',
+            'controller' => 'pages',
+            'action' => 'edit',
+            'id' => $this->getPageModule('pipeline')->getId(),
+        );
+
+        $this->view->assign(array(
+            'editUrlOptions' => $editUrlOptions,
+            'container_nav' => $containerNav
+        ));
     }
     
-    public function addAction()
-    {
-        $form = $this->_forms['edit'];
-
-        $form->setDefaults(array(
-            'sorting'       => 0,
-            'active'        => 1,
-            'deleted'       => 0,
-            'parentId'      => 0,
-        ));
-
-        parent::addAction();
-
-        $config = array(
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Добавить категорию',
-                'module' => 'admin',
-                'controller' => 'pipeline-categories',
-                'action' => 'add',
-                'resource' => 'pipeline-categories',
-            )),
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Отменить',
-                'module' => 'admin',
-                'controller' => 'pipeline-categories',
-                'resource' => 'pipeline-categories',
-            )),
-        );
-
-        $containerNav = new Zend_Navigation($config);
-
-        $this->view->container_nav = $containerNav;
-    }
-
     public function editAction()
     {
+        if($this->_request->getParam('dataPage')){
+            $dataPage = $this->_request->getParam('dataPage');
+            $id = $this->_request->getParam('id');
+
+            $categories = $this->_modelMapper->find($id, $this->_model);
+            $categories->setOptions($dataPage);
+
+            $categories->setFullPath($dataPage['path']);
+
+            $this->setUploadImage($categories);
+
+            $markdown = $dataPage['contentMarkdown'];
+            $context_html = Michelf\MarkdownExtra::defaultTransform($markdown);
+            $categories->setContentHtml($context_html);
+
+            $this->_modelMapper->save($categories);
+
+            $this->_redirector->gotoUrlAndExit('/pipeline/'.$categories->getPath());
+        }
+
         parent::editAction();
-
-        /*$config = array(
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Добавить категорию',
-                'module' => 'admin',
-                'controller' => 'pipeline-categories',
-                'action' => 'add',
-                'resource' => 'pipeline-categories',
-            )),
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Удалить',
-                'module' => 'admin',
-                'controller' => 'pipeline-categories',
-                'action' => 'delete',
-                'resource' => 'pipeline-categories',
-                'params' => array(
-                    'id' => $itemId,
-                ),
-            )),
-            Zend_Navigation_Page_Uri::factory(array(
-                'label' => 'Посмотреть на сайте',
-                'uri' => '/pipeline/'.$page->getFullPath().'/',
-            )),
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Отменить',
-                'module' => 'admin',
-                'controller' => 'pipeline-categories',
-                'resource' => 'pipeline-categories',
-            )),
-        );
-
-        $containerNav = new Zend_Navigation($config);
-
-        $this->view->container_nav = $containerNav;*/
     }
 
     public function saveFormData(Zend_Form $form)
     {
-        
         $item = $this->_model;
         $item->setOptions($form->getValues());
 
@@ -153,9 +110,7 @@ class PipelineCategoriesController extends BaseController
         }
 
         $this->setMetaData($item);
-
-        //Zend_Debug::dump($item);
-
+        
         $this->getModelMapper()->save($item);
 
 

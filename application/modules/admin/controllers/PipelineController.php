@@ -51,48 +51,24 @@ class PipelineController extends BaseController
 
     public function indexAction()
     {
+        if($this->_request->getParam('category_id')){
+            $category = $this->_modelCategoriesMapper
+                ->find(
+                    $this->_request->getParam('category_id'),
+                    new Pipeline_Model_PipelineCategories());
+
+            $category && $this->view->assign('categoryName', $category->getTitle().' - ');
+            $this->view->assign('category_id', $this->_request->getParam('category_id'));
+        }
+
         parent::indexAction();
-
-        if($this->_request->getParam('category_id'))
-            $this->view->categoryName = $this->_modelCategoriesMapper
-                    ->find(
-                        $this->_request->getParam('category_id'),
-                        new Pipeline_Model_PipelineCategories())
-                    ->getTitle().' - ';
-
-        $config = array(
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Категории',
-                'module' => 'admin',
-                'controller' => 'pipeline-categories',
-                'resource' => 'pipeline-categories',
-            )),
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Свойства товаров',
-                'module' => 'admin',
-                'controller' => 'pipeline-property',
-                'resource' => 'pipeline-property',
-            )),
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Добавить товар',
-                'module' => 'admin',
-                'controller' => 'pipeline',
-                'action' => 'add',
-                'resource' => 'pipeline',
-                'params' => array('id' => $this->_request->getParam('category_id'))
-            )),
-        );
-
-        $containerNav = new Zend_Navigation($config);
-
-        $this->view->container_nav = $containerNav;
     }
 
     public function addAction()
     {
-        $form = $this->_forms['edit'];
-
         parent::addAction();
+
+        $form = $this->_forms['edit'];
 
         $form->setDefaults(array(
             'sorting'       => 0,
@@ -108,131 +84,24 @@ class PipelineController extends BaseController
         $imageTablePrepend = '<button type="button" class="btn btn-default" id="imageTableLoadBtn"><span class="glyphicon glyphicon-save"></span></button>';
         $imageTableElement->setAttrib('prepend_btn', $imageTablePrepend);
 
-
-        /*if ($this->getRequest()->isPost()){
-            if ($form->isValid($this->_request->getPost())){
-
-                $itemSaveForm = $this->saveFormData($form);
-
-                $item = $this->_modelMapper->find($itemSaveForm->getId(), $this->_model);
-
-                $categoryId = ($this->_request->getParam('category_id'))
-                    ?$this->_request->getParam('category_id')
-                    :$item->getCategoryId();
-
-                $category = $this->_modelCategoriesMapper->find($categoryId, new Pipeline_Model_PipelineCategories());
-                $fullPath = ($category)
-                    ?$category->getPath().'/'.$item->getPath()
-                    :$item->getPath();
-
-                $item->setFullPath($fullPath);
-
-                $this->_modelMapper->save($item);
-
-                $this->_redirector->gotoRouteAndExit(array(
-                    'module' => 'admin',
-                    'controller' => 'pipeline-categories',
-                    'action' => 'list',
-                    'id'=>$item->getCategoryId()
-                ), 'adminEdit', true);
-            }
-
-            $form->setDefaults($this->_request->getPost());
-        }
-
-        $this->view->form = $form;*/
-
-        $config = array(
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Категории',
-                'module' => 'admin',
-                'controller' => 'pipeline-categories',
-                'resource' => 'pipeline-categories',
-            )),
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Свойства товаров',
-                'module' => 'admin',
-                'controller' => 'pipeline-property',
-                'resource' => 'pipeline-property',
-            )),
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Отменить',
-                'module' => 'admin',
-                'controller' => 'pipeline',
-                'resource' => 'pipeline',
-            )),
-        );
-
-        $containerNav = new Zend_Navigation($config);
-
-        $this->view->container_nav = $containerNav;
     }
 
     public function editAction()
     {
-
-        $form = $this->_forms['edit'];
-
         parent::editAction();
 
+        $form = $this->_forms['edit'];
         $imageTableElement = $form->getElement('imageTable');
         $imageTablePrepend = '<button type="button" class="btn btn-default" id="imageTableLoadBtn"><span class="glyphicon glyphicon-save"></span></button>';
         $imageTableValue = $imageTableElement->getValue();
 
         if(!is_null($imageTableValue)){
             $imageTablePrepend .= '<a href="'.$imageTableValue.'" class="btn btn-default" target="_blank"><span class="glyphicon glyphicon-eye-open"></span></a>';
-            $imageTablePrepend .= '<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span></button>';
+            //$imageTablePrepend .= '<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span></button>';
         }
         $imageTableElement->setAttrib('prepend_btn', $imageTablePrepend);
 
-
         $this->setViewPipelineProperties();
-
-        $config = array(
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Категории',
-                'module' => 'admin',
-                'controller' => 'pipeline-categories',
-                'resource' => 'pipeline-categories',
-            )),
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Свойства товаров',
-                'module' => 'admin',
-                'controller' => 'pipeline-property',
-                'resource' => 'pipeline-property',
-            )),
-            /*Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Добавить',
-                'module' => 'admin',
-                'controller' => 'pipeline',
-                'action' => 'add',
-                'resource' => 'pipeline',
-            )),
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Удалить',
-                'module' => 'admin',
-                'controller' => 'pipeline',
-                'action' => 'delete',
-                'resource' => 'pipeline',
-                'params' => array(
-                    'id' => $itemId,
-                ),
-            )),
-            Zend_Navigation_Page_Uri::factory(array(
-                'label' => 'Посмотреть на сайте',
-                'uri' => '/pipeline/'.$pipeline->getFullPath(),
-            )),
-            Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Отменить',
-                'module' => 'admin',
-                'controller' => 'pipeline',
-                'resource' => 'pipeline',
-            )),*/
-        );
-
-        $containerNav = new Zend_Navigation($config);
-
-        $this->view->container_nav = $containerNav;
     }
 
     public function selectAddPropertyAction()
@@ -266,7 +135,11 @@ class PipelineController extends BaseController
     {
         $itemId = $this->_request->getParam('id');
 
-        $pipelineProperties = $this->_modelMapper->fetchPropertyRel($itemId);
+        $propertyMapper = new Pipeline_Model_Mapper_PipelineProperty();
+        $select = $propertyMapper->getDbTable()->select();
+        $select->where('active != ?', 0)->where('deleted != ?', 1)->order('sorting ASC');
+
+        $pipelineProperties = $this->_modelMapper->fetchPropertyRel($itemId, $select);
 
         if(!empty($pipelineProperties)){
             $propertyValuesMapper = new Pipeline_Model_Mapper_PipelinePropertyValues();

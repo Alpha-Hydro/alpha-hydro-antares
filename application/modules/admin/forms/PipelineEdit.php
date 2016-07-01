@@ -87,8 +87,8 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
         $this->addElement($imageTable);
 
         $this->addElement('text', 'imageTable', array(
-            'label'         => 'Таблица',
-            'placeholder'   => 'Таблица размеров',
+            'label'         => 'ГОСТ / Стандарт (*.pdf)',
+            'placeholder'   => 'ГОСТ (Стандарт) *.pdf',
             'class'         => '',
         ));
 

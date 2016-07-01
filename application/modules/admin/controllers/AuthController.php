@@ -26,7 +26,11 @@ class AuthController extends Zend_Controller_Action
     {
         // проверяем, авторизирован ли пользователь
         if (Zend_Auth::getInstance()->hasIdentity()) {
+            Zend_Debug::dump($this->_request->getParams());
             // если да, то делаем редирект, чтобы исключить многократную авторизацию
+            if($this->_request->getParam('currentUrl'))
+                $this->_redirector->gotoUrlAndExit($this->_request->getParam('currentUrl'));
+
             $this->_redirector->gotoSimpleAndExit('index', 'index');
         }
 
@@ -72,7 +76,7 @@ class AuthController extends Zend_Controller_Action
                     // Используем библиотечный helper для редиректа
                     // на текущий url
                     $this->_redirector->gotoUrlAndExit($this->_curUrl);
-                    return;
+                    //return;
 
                 } else {
                     $this->view->assign('errMessage', 'Вы ввели неверное имя пользователя или неверный пароль');

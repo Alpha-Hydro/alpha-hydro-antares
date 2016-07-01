@@ -50,7 +50,6 @@ class ManufactureController extends BaseController
 
     public function indexAction()
     {
-
         if($this->_request->getParam('category_id')){
             $category = $this->_modelCategoriesMapper
                 ->find(
