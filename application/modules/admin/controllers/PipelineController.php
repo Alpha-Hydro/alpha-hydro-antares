@@ -31,6 +31,8 @@ class PipelineController extends BaseController
 
     protected $_count_item_on_page = null;
 
+    protected $_upload_path = null;
+
     public function init()
     {
         $this->_modelMapper = new Pipeline_Model_Mapper_Pipeline();
@@ -47,6 +49,8 @@ class PipelineController extends BaseController
             ->initContext('html');
 
         $this->_count_item_on_page = 10;
+
+        $this->_upload_path = '/upload/pipeline/items/';
     }
 
     public function indexAction()
@@ -88,6 +92,31 @@ class PipelineController extends BaseController
 
     public function editAction()
     {
+        if($this->_request->getParam('dataPage')){
+            $dataPage = $this->_request->getParam('dataPage');
+            $id = $this->_request->getParam('id');
+
+            $item = $this->_modelMapper->find($id, $this->_model);
+            $item->setOptions($dataPage);
+
+            $category = $this->_modelCategoriesMapper->find($item->getCategoryId(), new Pipeline_Model_PipelineCategories());
+            $fullPath = ($category)
+                ?$category->getPath().'/'.$item->getPath()
+                :$item->getPath();
+
+            $item->setFullPath($fullPath);
+
+            $this->setUploadImage($item);
+
+            $markdown = $dataPage['contentMarkdown'];
+            $context_html = Michelf\MarkdownExtra::defaultTransform($markdown);
+            $item->setContentHtml($context_html);
+
+            $this->_modelMapper->save($item);
+
+            $this->_redirector->gotoUrlAndExit('/pipeline/'.$item->getFullPath());
+        }
+
         parent::editAction();
 
         $form = $this->_forms['edit'];

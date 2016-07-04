@@ -5,7 +5,7 @@ import ButtonGroup from "react-bootstrap/lib/ButtonGroup";
 import PanelButtonsComponent from "./components/PanelButtonsComponent";
 import ItemButtonsComponent from "./components/ItemButtonsComponent";
 import CategoriesAddButton from "./components/Catalog/Categories/CategoriesAddButton";
-import ItemAddButton from "./components/Catalog/Products/ProductAddButton";
+import ProductAddButton from "./components/Catalog/Products/ProductAddButton";
 import ProductPropertyEditButton from "./components/Catalog/ProductProperties/ProductPropertyEditButton";
 import ProductModificationEditButton from "./components/Catalog/ProductModificatons/ProductModificationEditButton";
 import ProductModificationPropertyEditButton from "./components/Catalog/ProductModificatons/ProductModificationPropertyEditButton";
@@ -39,15 +39,15 @@ if (categoriesAddButtton){
 	ReactDOM.render(<CategoriesAddButton dataItem = {categoriesAddButtton.dataset}/>, categoriesAddButtton);
 }
 
-const itemAddButtton = document.getElementById('itemAddButtton');
-if (itemAddButtton){
+const productAddButtton = document.getElementById('itemAddButtton');
+if (productAddButtton){
 	/*dataItem = {
 		controller: itemAddButtton.dataset.controller,
 		categoryId: itemAddButtton.dataset.categoryid,
 		action: itemAddButtton.dataset.action,
 		title: itemAddButtton.dataset.title
 	};*/
-	ReactDOM.render(<ItemAddButton dataItem = {itemAddButtton.dataset}/>, itemAddButtton);
+	ReactDOM.render(<ProductAddButton dataItem = {productAddButtton.dataset}/>, productAddButtton);
 }
 
 var productId;

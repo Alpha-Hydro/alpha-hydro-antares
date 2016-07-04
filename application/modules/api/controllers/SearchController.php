@@ -37,7 +37,7 @@ class Api_SearchController extends Zend_Controller_Action
             $products && $jsonData = $products;
         }
 
-        $this->_helper->json->sendJson();
+        $this->_helper->json->sendJson($jsonData);
     }
 
 

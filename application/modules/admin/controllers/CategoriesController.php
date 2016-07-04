@@ -108,6 +108,13 @@ class CategoriesController extends BaseController
 
     public function listAction()
     {
+
+        $this->view->assign(array(
+            'breadcrumbs' => $this->containerNavigation($this->_request->getParam('id')),
+            'current_category' =>$this->_request->getParam('id')
+        ));
+
+
         $editUrlOptions = array(
             'module' => 'admin',
             'controller' => 'pages',

@@ -6,7 +6,7 @@ import Button from "react-bootstrap/lib/Button";
 import ProductFormAdd from "./ProductFormAdd";
 import dataHelpers from "../../../utils/getDataHelper";
 
-export default class ItemAddButton extends React.Component{
+export default class ProductAddButton extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
@@ -23,8 +23,8 @@ export default class ItemAddButton extends React.Component{
 		this.setState({show: false});
 	}
 
-	componentWillMount(){
-		let	categoryId = this.props.dataItem.categoryId;
+	componentDidMount(){
+		let	categoryId = this.props.dataItem.categoryid;
 		dataHelpers.getCategoryInfo(categoryId)
 			.then(function(dataCategoryInfo){
 				this.setState({

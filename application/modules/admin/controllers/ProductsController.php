@@ -268,6 +268,56 @@ class ProductsController extends BaseController
 
     public function addAction()
     {
+        if($this->_request->isPost()){
+            $url = $this->_request->getParam('currentUrl');
+
+            if($this->_request->getParam('dataFormProducts')){
+                $dataProducts = $this->_request->getParam('dataFormProducts');
+                //основные - sku, name, description, note, sorting, path
+                $product = new Catalog_Model_Products($dataProducts);
+                //modDate, order
+                $product
+                    ->setMetaTitle($dataProducts['name'])
+                    ->setMetaDescription($dataProducts['description'])
+                    ->setMetaKeywords($dataProducts['name'])
+                    ->setOrder($dataProducts['sorting'])
+                    ->setActive(1)
+                    ->setDeleted(0)
+                    ->setAddDate(date("Y-m-d H:i:s"))
+                    ->setModDate(date("Y-m-d H:i:s"));
+
+                $this->_modelMapper->save($product);
+
+                $productId = $this->_modelMapper->getDbTable()->getAdapter()->lastInsertId();
+
+                $categoriesMapperXref = new Catalog_Model_Mapper_CategoriesXref();
+                $categoriesMapperXref->save(
+                    new Catalog_Model_CategoriesXref(
+                        array(
+                            'productId' => $productId,
+                            'categoryId' => $this->_request->getParam('categoryId')
+                        )
+                    )
+                );
+
+                $product = $this->_modelMapper->find($productId, $this->_model);
+
+                $upload_path = '/upload/products/'.$product->getId().'/';
+
+                $product->setUploadPath($upload_path);
+                $this->_uploadImage($product, $upload_path, 'fileLoadImage', 'image');
+
+                $product->setUploadPathDraft($upload_path);
+                $this->_uploadImage($product, $upload_path, 'fileLoadDraft', 'draft');
+
+                $this->_modelMapper->save($product);
+
+                $url = '/catalog/'.$product->getFullPath();
+            }
+
+            $this->_redirector->gotoUrlAndExit($url);
+        }
+
         Zend_Debug::dump($this->_request->getParams());
     }
 
@@ -642,7 +692,49 @@ class ProductsController extends BaseController
         return $uploadFile;
     }
 
+    /**
+     * @param $item Catalog_Model_Products
+     * @param $uploadPath
+     * @param string $uploadName
+     * @param string $collTableName
+     * @return mixed
+     * @throws Exception
+     * @throws Zend_File_Transfer_Exception
+     * @internal param string $upload_path
+     */
+    protected function _uploadImage($item, $uploadPath, $uploadName = 'fileLoad', $collTableName = 'image')
+    {
+        $upload = new Zend_File_Transfer_Adapter_Http();
 
+        if($upload->isUploaded()){
+            $destinationPath = APPLICATION_ROOT.$uploadPath;
+
+            if(!file_exists($destinationPath))
+                mkdir($destinationPath, 0755, true);
+
+            $imageFile = $upload->getFileInfo($uploadName);
+            $imagePath = $destinationPath.'/'.$imageFile[$uploadName]['name'];
+            $imagePath = iconv('utf-8', 'cp1251', $imagePath);
+
+            $upload->addValidator('Size', false, 1024000)
+                ->addValidator('Extension', false, 'jpg,png,gif,svg');
+
+            try {
+                $upload->addFilter('Rename', array('target' => $imagePath,
+                    'overwrite' => true));
+                $upload->receive();
+                $item->setOptions(array(
+                    $collTableName => $imageFile[$uploadName]['name']
+                ));
+            }
+            catch (Zend_File_Transfer_Exception $e)
+            {
+                throw new Exception('Bad image data: '.$e->getMessage());
+            }
+        }
+
+        return $item;
+    }
 }
 
 

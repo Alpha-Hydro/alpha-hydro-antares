@@ -8,7 +8,6 @@ import FormControl from "react-bootstrap/lib/FormControl";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
 import HelpBlock from "react-bootstrap/lib/HelpBlock";
 
-
 import ImagesUpload from "./../../../utils/ImagesUpload";
 import Slugify from "./../../../utils/slugifyHelper";
 
@@ -19,6 +18,7 @@ export default class ProductFormAdd extends React.Component{
 			sku: '',
 			name : '',
 			path: '',
+			fullPath: '',
 			description: '',
 			contentMarkdown: '',
 			contentHtml: '',
@@ -53,6 +53,7 @@ export default class ProductFormAdd extends React.Component{
 					var path = result.path;
 					this.setState({
 						path: path,
+						fullPath: this.props.data.fullPath + '/' + path,
 						error: false,
 						errorHelp: 'Error.'
 					}, input.setCustomValidity(''));
@@ -127,6 +128,10 @@ export default class ProductFormAdd extends React.Component{
 						<input type="hidden"
 									 name="dataFormProducts[path]"
 									 value={this.state.path}
+						/>
+						<input type="hidden"
+									 name="dataFormProducts[fullPath]"
+									 value={this.state.fullPath}
 						/>
 						<input type="hidden"
 									 name="categoryId"

@@ -4,6 +4,7 @@ var helpers = {
 	getCategoryInfo: function(id){
 		return axios.get("/api/categories/get/" + id + "/")
 			.then(function (response) {
+				console.log(response.data);
 				return response.data;
 			})
 			.catch(function (response) {

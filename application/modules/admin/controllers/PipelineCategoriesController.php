@@ -26,6 +26,8 @@ class PipelineCategoriesController extends BaseController
 
     protected $_count_item_on_page = null;
 
+    protected $_upload_path = null;
+
     public function init()
     {
         $this->_count_item_on_page = 10;
@@ -35,6 +37,8 @@ class PipelineCategoriesController extends BaseController
         $this->_forms['edit'] = new Admin_Form_PipelineCategoriesEdit();
 
         $this->_redirector = $this->_helper->getHelper('Redirector');
+
+        $this->_upload_path = '/upload/pipeline/category/';
 
     }
 
