@@ -26,6 +26,7 @@ class Plugin_Redirect extends Zend_Controller_Plugin_Abstract
         if($request->getParam('fullPath'))
             $this->validatePath($request->getParam('fullPath'));
 
+
         if($request->getModuleName() === 'admin' || $request->getModuleName() === 'utils')
             $this->redirectAdmin();
     }

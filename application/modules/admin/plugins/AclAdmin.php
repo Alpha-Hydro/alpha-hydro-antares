@@ -15,9 +15,10 @@ class Plugin_AclAdmin extends Zend_Controller_Plugin_Abstract {
 
     public function preDispatch(Zend_Controller_Request_Abstract $request) {
 
-        $module = $request->getModuleName();
+        //$module = $request->getModuleName();
+        $defaultModule = Zend_Controller_Front::getInstance()->getDefaultModule();
 
-		if ($module == 'admin'){
+		if ($defaultModule != 'default'){
 
             // получаем имя controller
             $controller = $request->getControllerName();
