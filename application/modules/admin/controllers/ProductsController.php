@@ -259,6 +259,9 @@ class ProductsController extends BaseController
                 }
 
                 $this->_modelMapper->save($product);
+
+                /*Zend_Debug::dump($upload->isUploaded('fileLoadImage'));
+                Zend_Debug::dump($upload->isUploaded('fileLoadDraft'));*/
             }
 
             //Zend_Debug::dump($product);
@@ -299,41 +302,71 @@ class ProductsController extends BaseController
                         )
                     )
                 );
-
+                
                 $product = $this->_modelMapper->find($productId, $this->_model);
 
-                $upload_path = '/upload/products/'.$product->getId().'/';
+                $upload = new Zend_File_Transfer();
+                $uploadPath = '/upload/products/'.$product->getId().'/';
 
-                $product->setUploadPath($upload_path);
-                $this->_uploadImage($product, $upload_path, 'fileLoadImage', 'image');
+                //image
+                if($upload->isUploaded('fileLoadImage')){
+                    $imageFile = $this->_uploadFiles($productId, $upload, 'fileLoadImage');
+                    $product
+                        ->setUploadPath($uploadPath)
+                        ->setImage($imageFile['fileLoadImage']['name']);
+                }
 
-                $product->setUploadPathDraft($upload_path);
-                $this->_uploadImage($product, $upload_path, 'fileLoadDraft', 'draft');
+                //draft
+                if($upload->isUploaded('fileLoadDraft')){
+                    $imageFile = $this->_uploadFiles($productId, $upload, 'fileLoadDraft');
+                    $product
+                        ->setUploadPathDraft($uploadPath)
+                        ->setDraft($imageFile['fileLoadDraft']['name']);
+                }
 
                 $this->_modelMapper->save($product);
 
                 $url = '/catalog/'.$product->getFullPath();
             }
 
+            $this->clearCache('CatalogProductsList');
             $this->_redirector->gotoUrlAndExit($url);
         }
 
-        Zend_Debug::dump($this->_request->getParams());
-    }
-
-    public function seoAction()
-    {
-        Zend_Debug::dump($this->_request->getParams());
+        //Zend_Debug::dump($this->_request->getParams());
     }
 
     public function deleteAction()
     {
-        Zend_Debug::dump($this->_request->getParams());
+        $productId = $this->_request->getParam('id');
+        $category = $this->_modelMapper->findCategoryRel($productId, new Catalog_Model_Categories());
+
+        $this->setRedirectUrl('/catalog/'.$category->getFullPath());
+        $this->clearCache('CatalogProductsList');
+
+        parent::deleteAction();
     }
+
+    public function recoverAction()
+    {
+        $this->setRedirectUrl('/catalog/'.
+            $this->_modelMapper
+                ->find(
+                     $this->_request->getParam('id'),
+                     $this->_model
+                )
+            ->getFullPath()
+        );
+        parent::deleteAction();
+    }
+
 
     public function disabledAction()
     {
-        Zend_Debug::dump($this->_request->getParams());
+        $this->setRedirectUrl($this->_request->getParam('currentUrl'));
+        $this->clearCache('CatalogProductsList');
+        parent::enableAction();
+        //Zend_Debug::dump($this->_request->getParams());
     }
 
     public function enabledAction()
@@ -673,13 +706,9 @@ class ProductsController extends BaseController
      */
     protected function _uploadFiles($id, Zend_File_Transfer $upload, $uploadName = 'fileLoad')
     {
-        $moduleFolder = UPLOAD_DIR . '/products';
-        if (!file_exists($moduleFolder))
-            mkdir($moduleFolder, 0755);
-
-        $destinationPath = $moduleFolder . '/' . $id;
+        $destinationPath = UPLOAD_DIR . '/products/' . $id;
         if (!file_exists($destinationPath))
-            mkdir($destinationPath, 0755);
+            mkdir($destinationPath, 0755, true);
 
 
         $upload->setDestination($destinationPath)

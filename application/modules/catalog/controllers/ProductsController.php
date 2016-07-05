@@ -35,22 +35,19 @@ class Catalog_ProductsController extends Zend_Controller_Action
         $this->setCurrentCategory($category);
 
         $current_category_id = $category->getId();
-        $this->view->adminPath = 'categories/list/'.$current_category_id;
 
         $productsMapper = new Catalog_Model_Mapper_Products();
-        $select = $productsMapper->getDbTable()
-            ->select()
-            ->where('active != ?', 0)
-            ->order('sorting ASC');
+        $select = $productsMapper->getDbTable()->select();
+
+        if(!Zend_Auth::getInstance()->hasIdentity())
+            $select->where('delete != ?', 1)
+                ->where('active != ?', 0)
+                ->order('sorting ASC');
 
         $entries = $categories->fetchProductsRel($current_category_id, $select);
 
         if(!empty($entries))
             $this->view->entries = $entries;
-
-        $this->view->full_path_category = $this->getFullPath();
-        $this->view->title = $category->getName();
-        $this->view->current_category = $current_category_id;
 
         if($category->getMetaDescription() != ''){
             $meta_description = $category->getMetaDescription();
@@ -68,7 +65,6 @@ class Catalog_ProductsController extends Zend_Controller_Action
 
             $meta_description = implode(", ", array_reverse($aDescription));
         }
-        $this->view->meta_description = $meta_description;
 
         if($category->getMetaKeywords() != ''){
             $meta_keywords = $category->getMetaKeywords();
@@ -86,7 +82,17 @@ class Catalog_ProductsController extends Zend_Controller_Action
             $aKeywords[] = $category->getName();
             $meta_keywords = implode(", ", array_reverse($aKeywords));
         }
-        $this->view->meta_keywords = $meta_keywords;
+
+        $this->view->assign(
+            array(
+                'adminPath' => 'categories/list/'.$current_category_id,
+                'full_path_category' => $this->getFullPath(),
+                'title' => $category->getName(),
+                'current_category' => $current_category_id,
+                'meta_description' => $meta_description,
+                'meta_keywords' => $meta_keywords
+            )
+        );
     }
 
     /**
@@ -114,6 +120,8 @@ class Catalog_ProductsController extends Zend_Controller_Action
 
         $categoryRel = $products->findCategoryRel($product->getId(), new Catalog_Model_Categories());
         $this->setCurrentCategory($categoryRel);
+
+        $this->view->draftImage = $product->getDraft();
 
         if(!is_null($product->getAImages())){
             $draftImages = unserialize($product->getAImages());
@@ -170,6 +178,7 @@ class Catalog_ProductsController extends Zend_Controller_Action
         else{
             $aKeywords = array();
             if(!empty($modifications)){
+                /**@var $modification Catalog_Model_Subproducts*/
                 foreach ($modifications as $modification) {
                     $sku = $modification->getSku();
                     $aKeywords[] = str_replace('A', '', $sku);

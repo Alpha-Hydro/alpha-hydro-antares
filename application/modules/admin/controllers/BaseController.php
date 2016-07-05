@@ -295,6 +295,11 @@ class BaseController extends Zend_Controller_Action
         $this->getRedirector()->gotoUrlAndExit($url);
     }
 
+    public function recoverAction()
+    {
+        $this->deleteAction();
+    }
+
     /**
      * @throws Zend_Controller_Action_Exception
      */
@@ -317,6 +322,8 @@ class BaseController extends Zend_Controller_Action
         $this->clearCache($this->_getNamespace());
 
         $url = $this->getRedirectUrl();
+
+        //Zend_Debug::dump($this->_getNamespace());
         $this->getRedirector()->gotoUrlAndExit($url);
     }
 
