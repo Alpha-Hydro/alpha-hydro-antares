@@ -40,10 +40,10 @@ class Catalog_ProductsController extends Zend_Controller_Action
         $select = $productsMapper->getDbTable()->select();
 
         if(!Zend_Auth::getInstance()->hasIdentity())
-            $select->where('delete != ?', 1)
-                ->where('active != ?', 0)
-                ->order('sorting ASC');
+            $select->where('deleted != ?', 1)
+                ->where('active != ?', 0);
 
+        $select->order('sorting ASC');
         $entries = $categories->fetchProductsRel($current_category_id, $select);
 
         if(!empty($entries))
@@ -117,9 +117,14 @@ class Catalog_ProductsController extends Zend_Controller_Action
             return;
         }
 
-
         $categoryRel = $products->findCategoryRel($product->getId(), new Catalog_Model_Categories());
         $this->setCurrentCategory($categoryRel);
+        $this->view->assign(array(
+            'current_category' => $categoryRel->getId()
+        ));
+
+        if(($product->getActive() == 0 || $product->getDeleted() == 1) && !Zend_Auth::getInstance()->hasIdentity())
+            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
         $this->view->draftImage = $product->getDraft();
 
@@ -150,9 +155,9 @@ class Catalog_ProductsController extends Zend_Controller_Action
         $subproductParams = new Catalog_Model_Mapper_SubproductParams();
         $select = $subproductParams->getDbTable()->select()->order('order ASC');
         $subproductProperty = $products->findSubproductParams($product->getId(), $select);
-        if(!empty($subproductProperty)){
-            $this->view->subproductProperty = $subproductProperty;
-        }
+        if(!empty($subproductProperty))
+            $this->view->assign('subproductProperty', $subproductProperty);
+
 
         if($product->getMetaDescription() != ''){
             $meta_description = $product->getMetaDescription();
@@ -195,7 +200,6 @@ class Catalog_ProductsController extends Zend_Controller_Action
             'product' => $product,
             'title' => $this->transformSku($product->getSku()),
             'secondaryHeader' => $product->getName(),
-            'current_category' => $categoryRel->getId(),
             'adminPath' => 'categories/list/'.$categoryRel->getId(),
             'meta_description' => $meta_description,
             'meta_keywords' => $meta_keywords,
