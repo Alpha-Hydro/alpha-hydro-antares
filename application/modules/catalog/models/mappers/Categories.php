@@ -240,7 +240,7 @@ class Catalog_Model_Mapper_Categories
      */
     public function fetchTreeSubCategories($id = null)
     {
-        $cache = Zend_Registry::get('cache');
+        //$cache = Zend_Registry::get('cache');
 
         //$cache->remove('treeCategories');
 
@@ -259,7 +259,7 @@ class Catalog_Model_Mapper_Categories
             return null;
 
 
-        if(!$result = $cache->load('treeCategories')) {
+        //if(!$result = $cache->load('treeCategories')) {
             $result = array();
             foreach ($entries as $entry) {
                 $id = $entry->id;
@@ -279,8 +279,8 @@ class Catalog_Model_Mapper_Categories
 
                 $result[] = $entry;
             }
-            $cache->save($result, 'treeCategories');
-        }
+            //$cache->save($result, 'treeCategories');
+        //}
 
         return $result;
     }
@@ -291,7 +291,7 @@ class Catalog_Model_Mapper_Categories
      */
     public function fetchTreeSubCategoriesInArray($id = null)
     {
-        $cache = Zend_Registry::get('cache');
+        //$cache = Zend_Registry::get('cache');
 
         //$cache->remove('treeCategoriesArray');
 
@@ -310,7 +310,7 @@ class Catalog_Model_Mapper_Categories
             return null;
 
 
-        if(!$result = $cache->load('treeCategoriesArray')) {
+        //if(!$result = $cache->load('treeCategoriesArray')) {
             $result = array();
             foreach ($entries as $entry) {
                 $id = $entry->id;
@@ -332,8 +332,8 @@ class Catalog_Model_Mapper_Categories
 
                 $result[] = $data;
             }
-            $cache->save($result, 'treeCategoriesArray');
-        }
+            //$cache->save($result, 'treeCategoriesArray');
+        //}
 
         return $result;
     }
