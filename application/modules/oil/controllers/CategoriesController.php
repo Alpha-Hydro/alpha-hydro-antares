@@ -68,6 +68,17 @@ class Oil_CategoriesController extends Zend_Controller_Action
             return;
         }
 
+        if(Zend_Auth::getInstance()->hasIdentity()){
+            $this->_request->setParams(array(
+                'dataItem' => array(
+                    'controller' => 'oil-categories',
+                    'id' => $category->getId(),
+                    'active' => $category->getActive(),
+                    'deleted' => $category->getDeleted()
+                )
+            ));
+        }
+
         $current_category_id = $category->getId();
         $this->view->category = $category;
         $this->view->title = $category->getTitle();
@@ -79,6 +90,17 @@ class Oil_CategoriesController extends Zend_Controller_Action
 
                 $this->forward('json', 'oil-categories', 'admin', array('id' => $current_category_id));
                 return;
+            }
+
+            if(Zend_Auth::getInstance()->hasIdentity()){
+                $this->_request->setParams(array(
+                    'dataItem' => array(
+                        'controller' => 'oil-categories',
+                        'id' => $category->getId(),
+                        'active' => $category->getActive(),
+                        'deleted' => $category->getDeleted()
+                    )
+                ));
             }
 
             $select = $this->_categoryMapper->getDbTable()->select();

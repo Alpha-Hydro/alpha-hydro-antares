@@ -72,6 +72,17 @@ class Manufacture_IndexController extends Zend_Controller_Action
             return;
         }
 
+        if(Zend_Auth::getInstance()->hasIdentity()){
+            $this->_request->setParams(array(
+                'dataItem' => array(
+                    'controller' => 'pages',
+                    'id' => $page->getId(),
+                    'active' => $page->getActive(),
+                    'deleted' => $page->getDeleted()
+                )
+            ));
+        }
+
         $this->view->page = $page;
 
         $meta_title = (!$page->getMetaTitle())
@@ -110,6 +121,17 @@ class Manufacture_IndexController extends Zend_Controller_Action
 
             $this->forward('json', 'manufacture-categories', 'admin', array('id' => $manufactureCategory->getId()));
             return;
+        }
+
+        if(Zend_Auth::getInstance()->hasIdentity()){
+            $this->_request->setParams(array(
+                'dataItem' => array(
+                    'controller' => 'manufacture-categories',
+                    'id' => $manufactureCategory->getId(),
+                    'active' => $manufactureCategory->getActive(),
+                    'deleted' => $manufactureCategory->getDeleted()
+                )
+            ));
         }
 
         $this->view->category = $manufactureCategory;
@@ -165,6 +187,17 @@ class Manufacture_IndexController extends Zend_Controller_Action
 
             $this->forward('json', 'manufacture', 'admin', array('id' => $manufacture->getId()));
             return;
+        }
+
+        if(Zend_Auth::getInstance()->hasIdentity()){
+            $this->_request->setParams(array(
+                'dataItem' => array(
+                    'controller' => 'manufacture',
+                    'id' => $manufacture->getId(),
+                    'active' => $manufacture->getActive(),
+                    'deleted' => $manufacture->getDeleted()
+                )
+            ));
         }
 
         $this->view->manufacture = $manufacture;

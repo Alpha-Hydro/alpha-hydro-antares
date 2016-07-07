@@ -29,7 +29,7 @@ export default class PanelButtonsComponent extends React.Component{
 		return this.roles.indexOf(role);
 	}
 
-	componentDidMount(){
+	componentWillMount(){
 		dataHelpers.getPageInfo()
 			.then(function(pageInfo){
 				this.setState({
@@ -48,7 +48,6 @@ export default class PanelButtonsComponent extends React.Component{
 
 	render() {
 		const bsStyle = (this.props.bsstyle)?this.props.bsstyle:'link';
-
 		const Buttons = [
 			{
 				icon: "pencil",

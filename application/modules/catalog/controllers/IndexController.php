@@ -70,9 +70,11 @@ class Catalog_IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
+        $pageCatalog = $this->pageModule();
+
         if(!is_null($this->getRequest()->getParam('json'))
             && Zend_Auth::getInstance()->hasIdentity()){
-            $pageCatalog = $this->pageModule();
+
 
             $id = ($this->getRequest()->getParam('json') != '')
                 ?$this->getRequest()->getParam('json')
@@ -80,6 +82,17 @@ class Catalog_IndexController extends Zend_Controller_Action
 
             $this->forward('json', 'pages', 'admin', array('id' => $id));
             return;
+        }
+
+        if(Zend_Auth::getInstance()->hasIdentity()){
+            $this->_request->setParams(array(
+                'dataItem' => array(
+                    'controller' => 'pages',
+                    'id' => $pageCatalog->getId(),
+                    'active' => $pageCatalog->getActive(),
+                    'deleted' => $pageCatalog->getDeleted()
+                )
+            ));
         }
     }
 

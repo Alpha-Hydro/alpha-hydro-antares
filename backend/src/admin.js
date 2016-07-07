@@ -12,7 +12,7 @@ import ProductModificationPropertyEditButton from "./components/Catalog/ProductM
 
 const adminPanel = document.getElementById('admin-panel');
 if(adminPanel)
-	ReactDOM.render(<PanelButtonsComponent bsClass="btn-group-lg btn-group"/>, adminPanel);
+	ReactDOM.render(<PanelButtonsComponent bsClass="btn-group-lg btn-group" dataItem = {adminPanel.dataset}/>, adminPanel);
 
 if(document.querySelector('.itemButtonsComponent')){
 	const itemButtonsComponents = [].slice.call(document.querySelectorAll('.itemButtonsComponent'));

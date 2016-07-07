@@ -57,9 +57,10 @@ class Oil_IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
+        $page = $this->pageModule();
+
         if(!is_null($this->_request->getParam('json'))
             && Zend_Auth::getInstance()->hasIdentity()){
-            $page = $this->pageModule();
 
             $id = ($this->_request->getParam('json') != '')
                 ?$this->_request->getParam('json')
@@ -69,6 +70,16 @@ class Oil_IndexController extends Zend_Controller_Action
             return;
         }
 
+        if(Zend_Auth::getInstance()->hasIdentity()){
+            $this->_request->setParams(array(
+                'dataItem' => array(
+                    'controller' => 'pages',
+                    'id' => $page->getId(),
+                    'active' => $page->getActive(),
+                    'deleted' => $page->getDeleted()
+                )
+            ));
+        }
     }
 
     public function setCategories()

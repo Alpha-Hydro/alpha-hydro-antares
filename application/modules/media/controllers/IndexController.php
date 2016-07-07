@@ -32,9 +32,8 @@ class Media_IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $mediaCategoryMapper = new Media_Model_Mapper_MediaCategories();
-
         $request = $this->getRequest();
+        $mediaCategoryMapper = new Media_Model_Mapper_MediaCategories();
 
         if($request->getParam('fullPath')){
             $mediaCategory = $mediaCategoryMapper
@@ -58,6 +57,17 @@ class Media_IndexController extends Zend_Controller_Action
             return;
         }
 
+        if(Zend_Auth::getInstance()->hasIdentity()){
+            $pageItem = $mediaCategoryMapper->find($mediaCategoryId, new Media_Model_MediaCategories());
+            $this->_request->setParams(array(
+                'dataItem' => array(
+                    'controller' => 'media-categories',
+                    'id' => $pageItem->getId(),
+                    'active' => $pageItem->getActive(),
+                    'deleted' => $pageItem->getDeleted()
+                )
+            ));
+        }
 
         $mediaMapper = new Media_Model_Mapper_Media();
         $select = $mediaMapper->getDbTable()->select();
@@ -132,6 +142,17 @@ class Media_IndexController extends Zend_Controller_Action
 
             $this->forward('json', 'media', 'admin', array('id' => $mediaItem->getId()));
             return;
+        }
+
+        if(Zend_Auth::getInstance()->hasIdentity()){
+            $this->_request->setParams(array(
+                'dataItem' => array(
+                    'controller' => 'media',
+                    'id' => $mediaItem->getId(),
+                    'active' => $mediaItem->getActive(),
+                    'deleted' => $mediaItem->getDeleted()
+                )
+            ));
         }
 
         $mediaCategoryMapper = new Media_Model_Mapper_MediaCategories();

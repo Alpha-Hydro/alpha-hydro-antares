@@ -44,9 +44,10 @@ class Pipeline_IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
+        $page = $this->pageModule();
+
         if(!is_null($this->getRequest()->getParam('json'))
             && Zend_Auth::getInstance()->hasIdentity()){
-            $page = $this->pageModule();
 
             if ($page){
                 $id = ($this->getRequest()->getParam('json') != '')
@@ -56,8 +57,17 @@ class Pipeline_IndexController extends Zend_Controller_Action
                 $this->forward('json', 'pages', 'admin', array('id' => $id));
                 return;
             }
+        }
 
-
+        if(Zend_Auth::getInstance()->hasIdentity()){
+            $this->_request->setParams(array(
+                'dataItem' => array(
+                    'controller' => 'pages',
+                    'id' => $page->getId(),
+                    'active' => $page->getActive(),
+                    'deleted' => $page->getDeleted()
+                )
+            ));
         }
     }
 

@@ -62,6 +62,17 @@ class Pipeline_PipelineController extends Zend_Controller_Action
             return;
         }
 
+        if(Zend_Auth::getInstance()->hasIdentity()){
+            $this->_request->setParams(array(
+                'dataItem' => array(
+                    'controller' => 'pipeline',
+                    'id' => $pipeline->getId(),
+                    'active' => $pipeline->getActive(),
+                    'deleted' => $pipeline->getDeleted()
+                )
+            ));
+        }
+
         $categoriesMapper = new Pipeline_Model_Mapper_PipelineCategories();
         $category = $categoriesMapper->find($pipeline->getCategoryId(), new Pipeline_Model_PipelineCategories());
 

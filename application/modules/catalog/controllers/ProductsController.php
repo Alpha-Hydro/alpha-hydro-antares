@@ -6,6 +6,12 @@ class Catalog_ProductsController extends Zend_Controller_Action
     protected $_fullPath = null;
     protected $_currentCategory = null;
 
+    /**
+     * @var Zend_Controller_Action_Helper_Redirector
+     *
+     */
+    protected $_redirector = null;
+
     protected $_aHostName = array(
         'alfa-hydro.loc',
         'alfa-hydro.com',
@@ -15,6 +21,7 @@ class Catalog_ProductsController extends Zend_Controller_Action
     {
         $request = $this->getRequest();
         $this->_fullPath =  $request->getParam('fullPath');
+        $this->_redirector = $this->_helper->getHelper('Redirector');
     }
 
     /**
@@ -116,18 +123,23 @@ class Catalog_ProductsController extends Zend_Controller_Action
             $this->forward('json', 'products', 'admin', array('id' => $product->getId()));
             return;
         }
-
+        
         $categoryRel = $products->findCategoryRel($product->getId(), new Catalog_Model_Categories());
         $this->setCurrentCategory($categoryRel);
-        $this->view->assign(array(
-            'current_category' => $categoryRel->getId()
-        ));
 
-        if(($product->getActive() == 0 || $product->getDeleted() == 1) && !Zend_Auth::getInstance()->hasIdentity())
-            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+        if($product->getDeleted() == 1){
+            if(!Zend_Auth::getInstance()->hasIdentity())
+                throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
-        $this->view->draftImage = $product->getDraft();
+            $this->_redirector->gotoRouteAndExit(array(
+                'module' => 'admin',
+                'controller' => 'categories',
+                'action' => 'list',
+                'id' => $categoryRel->getId()
+            ), 'adminEdit', true);
+        }
 
+       $this->view->draftImage = $product->getDraft();
         if(!is_null($product->getAImages())){
             $draftImages = unserialize($product->getAImages());
             if(!empty($draftImages))
@@ -197,6 +209,7 @@ class Catalog_ProductsController extends Zend_Controller_Action
         }
 
         $this->view->assign(array(
+            'current_category' => $categoryRel->getId(),
             'product' => $product,
             'title' => $this->transformSku($product->getSku()),
             'secondaryHeader' => $product->getName(),
@@ -204,6 +217,27 @@ class Catalog_ProductsController extends Zend_Controller_Action
             'meta_description' => $meta_description,
             'meta_keywords' => $meta_keywords,
         ));
+
+        if($product->getActive() == 0
+            && !Zend_Auth::getInstance()->hasIdentity()){
+            $this->view->assign(array(
+                'breadcrumbs' => true,
+                'sidebar_headers' => true,
+                //'secondaryHeader' => null,
+            ));
+            throw new Zend_Controller_Action_Exception("Товар временно не доступен", 500);
+        }
+
+        if(Zend_Auth::getInstance()->hasIdentity()){
+            $this->_request->setParams(array(
+                'dataItem' => array(
+                    'controller' => 'products',
+                    'id' => $product->getId(),
+                    'active' => $product->getActive(),
+                    'deleted' => $product->getDeleted()
+                )
+            ));
+        }
     }
 
     public function printAction()

@@ -20,6 +20,8 @@ class Catalog_CategoriesController extends Zend_Controller_Action
         $this->_redirector = $this->_helper->getHelper('Redirector');
         $this->_fullPath =  $request->getParam('fullPath');
         $this->_auth = Zend_Auth::getInstance()->hasIdentity();
+        
+        
     }
 
     public function indexAction()
@@ -34,6 +36,17 @@ class Catalog_CategoriesController extends Zend_Controller_Action
             //throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
             $this->forward('view', 'products');
             return;
+        }
+
+        if(Zend_Auth::getInstance()->hasIdentity()){
+            $this->_request->setParams(array(
+                'dataItem' => array(
+                    'controller' => 'categories',
+                    'id' => $category->getId(),
+                    'active' => $category->getActive(),
+                    'deleted' => $category->getDeleted()
+                )
+            ));
         }
 
         if($category->getDeleted() === '1'){

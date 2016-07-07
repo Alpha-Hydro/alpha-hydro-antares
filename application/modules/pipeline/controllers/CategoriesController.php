@@ -55,6 +55,17 @@ class Pipeline_CategoriesController extends Zend_Controller_Action
                 return;
             }
 
+            if(Zend_Auth::getInstance()->hasIdentity()){
+                $this->_request->setParams(array(
+                    'dataItem' => array(
+                        'controller' => 'pipeline-categories',
+                        'id' => $category->getId(),
+                        'active' => $category->getActive(),
+                        'deleted' => $category->getDeleted()
+                    )
+                ));
+            }
+
             $select = $categoriesMapper->getDbTable()->select();
             $select->where('parent_id = ?', $current_category_id)
                 ->where('deleted != ?', 1)

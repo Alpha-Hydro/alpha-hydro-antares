@@ -33,7 +33,16 @@ class Pages_StaticPageController extends Zend_Controller_Action
             return;
         }
 
-
+        if(Zend_Auth::getInstance()->hasIdentity()){
+            $this->_request->setParams(array(
+                'dataItem' => array(
+                    'controller' => 'pages',
+                    'id' => $this->getPage()->getId(),
+                    'active' => $this->getPage()->getActive(),
+                    'deleted' => $this->getPage()->getDeleted()
+                )
+            ));
+        }
 
         if($this->getPage()->getDeleted() === '1'){
             if (!Zend_Auth::getInstance()->hasIdentity())

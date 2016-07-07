@@ -20,9 +20,10 @@ class Forum_IndexController extends Zend_Controller_Action
 
         $request = $this->getRequest();
 
+        $page = $this->pageModule();
+
         if(!is_null($request->getParam('json'))
             && Zend_Auth::getInstance()->hasIdentity()){
-            $page = $this->pageModule();
 
             $id = ($request->getParam('json') != '')
                 ?$this->getRequest()->getParam('json')
@@ -30,6 +31,17 @@ class Forum_IndexController extends Zend_Controller_Action
 
             $this->forward('json', 'pages', 'admin', array('id' => $id));
             return;
+        }
+
+        if(Zend_Auth::getInstance()->hasIdentity()){
+            $this->_request->setParams(array(
+                'dataItem' => array(
+                    'controller' => 'pages',
+                    'id' => $page->getId(),
+                    'active' => $page->getActive(),
+                    'deleted' => $page->getDeleted()
+                )
+            ));
         }
 
         $form_ask = new Forum_Form_ForumAsk();

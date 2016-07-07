@@ -87,6 +87,17 @@ class Oil_OilController extends Zend_Controller_Action
             return;
         }
 
+        if(Zend_Auth::getInstance()->hasIdentity()){
+            $this->_request->setParams(array(
+                'dataItem' => array(
+                    'controller' => 'oil',
+                    'id' => $pageItem->getId(),
+                    'active' => $pageItem->getActive(),
+                    'deleted' => $pageItem->getDeleted()
+                )
+            ));
+        }
+
         $category = $this->_categoriesMapper
             ->find($pageItem->getCategoryId(), new Oil_Model_OilCategories());
 
