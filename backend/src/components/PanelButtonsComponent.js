@@ -30,10 +30,12 @@ export default class PanelButtonsComponent extends React.Component{
 	}
 
 	componentWillMount(){
-		dataHelpers.getPageInfo()
-			.then(function(pageInfo){
+		var controller = this.props.dataItem.controller;
+		var id = this.props.dataItem.id;
+		dataHelpers.getDataInfo(controller, id)
+			.then(function(dataInfo){
 				this.setState({
-					data: pageInfo
+					data: dataInfo
 				});
 			}.bind(this));
 	}
@@ -65,21 +67,28 @@ export default class PanelButtonsComponent extends React.Component{
 			},
 			{
 				icon: "trash",
-				enable: true,
+				enable: !this.props.dataItem.deleted,
 				action: "delete",
 				role: "admin",
 				title:"Удалить"
 			},
 			{
+				icon: "open",
+				enable: this.props.dataItem.deleted,
+				action: "recover",
+				role: "admin",
+				title:"Восcтановить"
+			},
+			{
 				icon: "eye-close",
-				enable: this.state.data.active,
+				enable: this.props.dataItem.active && !this.props.dataItem.deleted,
 				action: "disabled",
 				role: "admin",
 				title:"Скрыть"
 			},
 			{
 				icon: "eye-open",
-				enable: !this.state.data.active,
+				enable: !this.props.dataItem.active && !this.props.dataItem.deleted,
 				action: "enabled",
 				role: "admin",
 				title:"Показать"

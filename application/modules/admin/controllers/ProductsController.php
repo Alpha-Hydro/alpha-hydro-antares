@@ -371,7 +371,10 @@ class ProductsController extends BaseController
 
     public function enabledAction()
     {
-        Zend_Debug::dump($this->_request->getParams());
+        $this->setRedirectUrl($this->_request->getParam('currentUrl'));
+        $this->clearCache('CatalogProductsList');
+        parent::enableAction();
+        //Zend_Debug::dump($this->_request->getParams());
     }
 
     public function propertyAction()
