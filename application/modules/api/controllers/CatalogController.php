@@ -39,6 +39,12 @@ class Api_CatalogController extends Zend_Controller_Action
     public function indexAction()
     {
         $jsonData = $this->_request->getParams();
+
+        return $this->_helper->json->sendJson($jsonData);
+    }
+
+    public function nomenclature1cAction()
+    {
         $id = ($this->_request->getParam('id'))?$this->_request->getParam('id'):0;
 
         $cache = Zend_Registry::get('cache');
@@ -49,38 +55,62 @@ class Api_CatalogController extends Zend_Controller_Action
             $cache->save($treeCategories, $cacheName, array('api','Catalog', 'treeCategoriesArray'));
         }
 
-        $result = array();
-        $art = 00001;
-        foreach ($treeCategories as $category) {
-            $categories = $this->getIteratorArray($category, $art++);
-            $result[] = $categories;
-        }
-
-        //Zend_Debug::dump($this->getSectionsArray());
-        return $this->_helper->json->sendJson($treeCategories);
+        return $this->_helper->json->sendJson($this->getElementsGroup($treeCategories));
     }
 
-    public function getIteratorArray(&$array, $art)
+    public function getElementsGroup($subCategories)
     {
-        $result = array(
-            'id' => $array['id'],
-            'group' => $array['parent_id'],
-            'artikul' => '', //sprintf("%05d", $art++),
-            'name' => $array['name'],
-        );
+        $result = array();
+        foreach ($subCategories as $groups) {
+            $result[] = array(
+                'id' => $groups['id'],
+                'group' => $groups['parent_id'],
+                'artikul' => '', //sprintf("%05d", $art++),
+                'name' => $groups['name'],
+                'elements' => (is_array($groups['subCategories']))
+                    ?$this->getElementsGroup($groups['subCategories'])
+                    :$this->getElementsProducts($groups['id'])
+            );
+        }
+        return $result;
+    }
 
-        $subCategories = $array['subCategories'];
-        if(is_array($subCategories)){
-            foreach ($subCategories as $children) {
-                $result['elements'] = $this->getIteratorArray($children, $art++);
-            }
+    public function getElementsProducts($id_group)
+    {
+        $cache = Zend_Registry::get('cache');
+        $cacheName = 'categoryProducts_'.$id_group;
+
+        $select = $this->_modelProductsMapper->getDbTable()->select()
+            ->where('deleted != ?', 1)
+            ->where('active != ?', 0)
+            ->order('sorting ASC');
+
+        if(!$products = $cache->load($cacheName)){
+            $products = $this->_modelCategoriesMapper->fetchProductsRel($id_group, $select);
+            $cache->save($products, $cacheName, array('api','Catalog', 'categoryProducts'));
         }
 
-        if(0 != count($array['countProducts']) && $subCategories == null)
-            $result['elements'] = $array['countProducts'];
+        $result = array();
+        if($products){
+            /**@var $product Catalog_Model_Products*/
+            foreach ($products as $product) {
+                $result[] = array(
+                    'id' => $product->getId(),
+                    'group' => $id_group,
+                    'artikul' => $product->getSku(),
+                    'name' => $product->getName(),
+                );
+            }
+        }
 
         return $result;
     }
 
 }
+
+
+
+
+
+
 

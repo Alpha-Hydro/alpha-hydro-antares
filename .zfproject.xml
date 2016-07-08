@@ -1257,6 +1257,9 @@
             </controllerFile>
             <controllerFile controllerName="Catalog">
               <actionMethod actionName="index"/>
+              <actionMethod actionName="1c"/>
+              <actionMethod actionName="nomenclature"/>
+              <actionMethod actionName="nomenclature1c"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory enabled="false"/>
@@ -1305,6 +1308,15 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Catalog">
                 <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Catalog">
+                <viewScriptFile forActionName="1c"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Catalog">
+                <viewScriptFile forActionName="nomenclature"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Catalog">
+                <viewScriptFile forActionName="nomenclature1c"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
