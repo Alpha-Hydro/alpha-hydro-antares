@@ -1,4 +1,37 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>CacheManager</b> and script/action name <b>index</b></p>
-</div>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Наименование тега кеша</th>
+        <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php if(0 != count($this->cacheTags)):?>
+    <?php foreach ($this->cacheTags as $key => $cacheTag):?>
+        <tr>
+            <td><?=$key+1?></td>
+            <td><?=$cacheTag?></td>
+            <td>
+                <a class="btn btn-default" href="<?=$this->url(array(
+                    'module' => 'utils',
+                    'controller' => 'cache-manager',
+                    'action' => 'clear-tag',
+                    'tag' => $cacheTag,
+                ))?>" role="button">Очистить</a>
+            </td>
+        </tr>
+    <?php endforeach;?>
+        <tr>
+            <td colspan="2"></td>
+            <td>
+                <a class="btn btn-default" href="<?=$this->url(array(
+                    'module' => 'utils',
+                    'controller' => 'cache-manager',
+                    'action' => 'clear-all',
+                ))?>" role="button">Очистить все</a>
+            </td>
+        </tr>
+    <?php endif;?>
+    </tbody>
+</table>

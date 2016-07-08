@@ -22,11 +22,7 @@ class Api_CatalogController extends Zend_Controller_Action
      * @var Catalog_Model_Products
      */
     protected $_modelProducts = null;
-
-    /**
-     * @var Zend_Db_Table_Select
-     */
-    protected $_select = null;
+    
 
     public function init()
     {
@@ -53,6 +49,7 @@ class Api_CatalogController extends Zend_Controller_Action
         $select = $this->_modelCategoriesMapper->getDbTable()->select()->order('sorting ASC');
 
         if(!$treeCategories = $cache->load($cacheName)){
+            ini_set('max_execution_time', 900);
             $treeCategories = $this->_modelCategoriesMapper->fetchTreeSubCategoriesInArray($id, $select);
             $cache->save($treeCategories, $cacheName, array('api','Catalog', 'treeCategoriesArray'));
         }
@@ -86,6 +83,7 @@ class Api_CatalogController extends Zend_Controller_Action
             ->order('sorting ASC');
 
         if(!$products = $cache->load($cacheName)){
+            ini_set('max_execution_time', 900);
             $products = $this->_modelCategoriesMapper->fetchProductsRel($id_group, $select);
             $cache->save($products, $cacheName, array('api','Catalog', 'categoryProducts'));
         }
