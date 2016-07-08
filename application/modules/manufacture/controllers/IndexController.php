@@ -134,8 +134,23 @@ class Manufacture_IndexController extends Zend_Controller_Action
             ));
         }
 
+        if($manufactureCategory->getDeleted() === '1'){
+            if (!Zend_Auth::getInstance()->hasIdentity())
+                throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+            $this->_redirector->gotoRouteAndExit(array(
+                'module' => 'admin',
+                'controller' => 'manufacture-categories',
+                'action' => 'index'
+            ),'adminEdit', true);
+        }
+
         $this->view->category = $manufactureCategory;
         $this->view->adminPath = 'manufacture-categories/list/'.$manufactureCategory->getId();
+
+        if($manufactureCategory->getActive() === '0'
+            && !Zend_Auth::getInstance()->hasIdentity())
+            throw new Zend_Controller_Action_Exception("Раздел временно не доступен", 500);
 
         $manufactureItems = $manufactureCategoriesMapper->fetchManufactureRel($manufactureCategory->getId());
 

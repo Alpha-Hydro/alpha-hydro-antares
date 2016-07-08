@@ -115,9 +115,11 @@ class Catalog_IndexController extends Zend_Controller_Action
 
     public function articlesAction()
     {
-        $this->view->title = 'Справочный материал';
+        $title = 'Справочный материал';
+        
+        $this->view->title = $title;
         $this->view->renderPage = '/components/_articles.phtml';
-        $this->view->meta_title = $this->view->title.'. '. $this->pageModule()->getTitle().'.';
+        $this->view->meta_title = $title.'. '. $this->pageModule()->getTitle().'.';
 
         if($this->_request->getParam('path')){
 
@@ -131,10 +133,8 @@ class Catalog_IndexController extends Zend_Controller_Action
 
             $this->view->title = $mediaItem->getName();
             $this->view->mediaItem = $mediaItem;
-            $this->view->meta_title = $this->view->title.'. Справочный материал. '.$this->pageModule()->getTitle().'.';
+            $this->view->meta_title = $title.'. Справочный материал. '.$this->pageModule()->getTitle().'.';
         }
-
-        $this->view->headTitle($this->view->meta_title);
     }
 }
 

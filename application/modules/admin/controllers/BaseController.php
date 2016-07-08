@@ -117,9 +117,6 @@ class BaseController extends Zend_Controller_Action
         $this->view->assign('pages', $pageItems);
     }
 
-    /**
-     * @throws Zend_Navigation_Exception
-     */
     public function listAction()
     {
         $editUrlOptions = array(
@@ -150,10 +147,6 @@ class BaseController extends Zend_Controller_Action
         return;
     }
 
-    /**
-     * @throws Zend_Form_Exception
-     * @throws Zend_Navigation_Exception
-     */
     public function addAction()
     {
         $form = $this->getForm('edit');
@@ -201,11 +194,6 @@ class BaseController extends Zend_Controller_Action
         ));
     }
 
-    /**
-     * @throws Zend_Controller_Action_Exception
-     * @throws Zend_Form_Exception
-     * @throws Zend_Navigation_Exception
-     */
     public function editAction()
     {
         $itemId = $this->_request->getParam('id');
@@ -270,9 +258,6 @@ class BaseController extends Zend_Controller_Action
         ));
     }
 
-    /**
-     * @throws Zend_Controller_Action_Exception
-     */
     public function deleteAction()
     {
         $itemId = $this->_request->getParam('id');
@@ -300,9 +285,11 @@ class BaseController extends Zend_Controller_Action
         $this->deleteAction();
     }
 
-    /**
-     * @throws Zend_Controller_Action_Exception
-     */
+    public function deletedAction()
+    {
+        $this->deleteAction();
+    }
+
     public function enableAction()
     {
         $itemId = $this->_request->getParam('id');
@@ -327,9 +314,16 @@ class BaseController extends Zend_Controller_Action
         $this->getRedirector()->gotoUrlAndExit($url);
     }
 
-    /**
-     * @return mixed
-     */
+    public function disabledAction()
+    {
+        $this->enableAction();
+    }
+
+    public function disableAction()
+    {
+        $this->enableAction();
+    }
+
     public function jsonAction()
     {
         $id = $this->_request->getParam('id');
@@ -346,6 +340,26 @@ class BaseController extends Zend_Controller_Action
         }
 
         return $this->_helper->json->sendJson($jsonData);
+    }
+
+    public function seoAction()
+    {
+        $itemId = $this->_request->getParam('id');
+
+        if(is_null($itemId))
+            $this->getRedirector()->gotoSimpleAndExit('index');
+
+        $item = $this->getModelMapper()->find($itemId, $this->getModel());
+
+        if(is_null($item))
+            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+        if($this->_request->getParam('dataFormSeo')){
+            $item->setOptions($this->_request->getParam('dataFormSeo'));
+            $this->getModelMapper()->save($item);
+        }
+
+        $this->_redirector->gotoUrlAndExit($this->_request->getParam('currentUrl'));
     }
 
     /**
@@ -692,26 +706,6 @@ class BaseController extends Zend_Controller_Action
         $page = $pagesMapper->findByPath($pageModulePath, new Pages_Model_Pages());
 
         return $page;
-    }
-
-    public function seoAction()
-    {
-        $itemId = $this->_request->getParam('id');
-
-        if(is_null($itemId))
-            $this->getRedirector()->gotoSimpleAndExit('index');
-
-        $item = $this->getModelMapper()->find($itemId, $this->getModel());
-
-        if(is_null($item))
-            throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
-
-        if($this->_request->getParam('dataFormSeo')){
-            $item->setOptions($this->_request->getParam('dataFormSeo'));
-            $this->getModelMapper()->save($item);
-        }
-
-        $this->_redirector->gotoUrlAndExit($this->_request->getParam('currentUrl'));
     }
 
     /**
