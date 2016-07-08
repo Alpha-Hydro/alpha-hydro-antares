@@ -50,8 +50,10 @@ class Api_CatalogController extends Zend_Controller_Action
         $cache = Zend_Registry::get('cache');
         $cacheName = 'treeCategoriesArray_'.$id;
 
+        $select = $this->_modelCategoriesMapper->getDbTable()->select()->order('sorting ASC');
+
         if(!$treeCategories = $cache->load($cacheName)){
-            $treeCategories = $this->_modelCategoriesMapper->fetchTreeSubCategoriesInArray($id);
+            $treeCategories = $this->_modelCategoriesMapper->fetchTreeSubCategoriesInArray($id, $select);
             $cache->save($treeCategories, $cacheName, array('api','Catalog', 'treeCategoriesArray'));
         }
 
@@ -81,8 +83,6 @@ class Api_CatalogController extends Zend_Controller_Action
         $cacheName = 'categoryProducts_'.$id_group;
 
         $select = $this->_modelProductsMapper->getDbTable()->select()
-            ->where('deleted != ?', 1)
-            ->where('active != ?', 0)
             ->order('sorting ASC');
 
         if(!$products = $cache->load($cacheName)){

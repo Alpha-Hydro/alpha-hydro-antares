@@ -287,9 +287,10 @@ class Catalog_Model_Mapper_Categories
 
     /**
      * @param null $id
+     * @param Zend_Db_Table_Select $select
      * @return array|false|mixed|null
      */
-    public function fetchTreeSubCategoriesInArray($id = null)
+    public function fetchTreeSubCategoriesInArray($id = null, Zend_Db_Table_Select $select = null)
     {
         //$cache = Zend_Registry::get('cache');
 
@@ -297,13 +298,7 @@ class Catalog_Model_Mapper_Categories
 
         if(is_null($id))
             $id = 0;
-
-        $select = $this->getDbTable()->select()
-            ->where('deleted != ?', 1)
-            ->where('active != ?', 0)
-            ->order('sorting ASC');
-
-
+        
         $entries = $this->fetchSubCategoriesRel($id, $select);
 
         if(0 == count($entries))
