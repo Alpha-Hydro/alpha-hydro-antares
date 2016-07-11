@@ -23,13 +23,13 @@ export default class CategoryReplaceComponent extends React.Component {
 		this.selectCategory = this.selectCategory.bind(this);
 	}
 
-	componentWillMount(){
+	/*componentWillMount(){
 		var parentId = (this.props.currentCategory.parentId)?this.props.currentCategory.parentId:'0';
 		this.setState({
 			currentCategory: this.props.currentCategory,
 			parentId: parentId
 		});
-	}
+	}*/
 
 	close() {
 		this.setState({ showModal: false });
@@ -37,11 +37,13 @@ export default class CategoryReplaceComponent extends React.Component {
 
 	open() {
 		var id = this.props.currentCategory.id;
+		var parentId = this.props.currentCategory.parentId;
 
 		categoryHelpers.getCurrentGategoryList(id)
 			.then(function(categoryList){
 				this.setState({
 					categoryList: categoryList,
+					parentId: parentId,
 					showModal: true
 				});
 			}.bind(this));
