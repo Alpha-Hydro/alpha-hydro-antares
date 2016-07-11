@@ -9,6 +9,7 @@ import ProductAddButton from "./components/Catalog/Products/ProductAddButton";
 import ProductPropertyEditButton from "./components/Catalog/ProductProperties/ProductPropertyEditButton";
 import ProductModificationEditButton from "./components/Catalog/ProductModificatons/ProductModificationEditButton";
 import ProductModificationPropertyEditButton from "./components/Catalog/ProductModificatons/ProductModificationPropertyEditButton";
+import ProductPassportPdf from "./components/Catalog/Products/ProductPassportPdf";
 
 const adminPanel = document.getElementById('admin-panel');
 if(adminPanel)
@@ -71,4 +72,12 @@ if (productModificationEdit){
 			<ProductModificationPropertyEditButton productId = {productId} bsStyle="primary"/>
 		</ButtonGroup>
 		, productModificationEdit);
+}
+
+const passportPdf = document.getElementById('passport-pdf');
+if (passportPdf){
+	productId = passportPdf.getAttribute('data-id');
+	ReactDOM.render(
+		<ProductPassportPdf productId = {productId}/>
+		, passportPdf);
 }

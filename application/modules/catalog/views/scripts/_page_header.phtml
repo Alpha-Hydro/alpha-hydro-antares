@@ -6,9 +6,10 @@
                 <h1 class = "h3 secondary-header"><?=$this->title;?>
                     <small><?=$this->secondaryHeader;?></small>
                 </h1>
-                <?php if($this->product && $this->product->active != '0'):?>
+                <?php if($this->product && $this->product->getActive() != '0'):?>
                     <div class="pull-right print">
-                        <a class="alpha-icon-print" href="<?= $this->url(array('fullPath' => $this->product->fullPath), 'printPdf', true, false) ?>" target="_blank">Печать</a>
+                        <div id="passport-pdf" class="inline mr2" data-id="<?=$this->product->getId()?>">Паспорт</div>
+                        <a class="alpha-icon-print" href="<?= $this->url(array('fullPath' => $this->product->getFullPath()), 'printPdf', true, false) ?>" target="_blank">Печать</a>
                     </div>
                 <?php endif;?>
             <?php else: ?>

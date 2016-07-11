@@ -3,7 +3,6 @@ import React from "react";
 import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
-
 import ProductModifications from "./ProductModifications";
 
 export default class ProductModificationEditButton extends React.Component{
