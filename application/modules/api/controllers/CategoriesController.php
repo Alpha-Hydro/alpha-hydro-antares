@@ -8,12 +8,12 @@ class Api_CategoriesController extends Api_BaseController
     /**
      * @var Catalog_Model_Mapper_Categories
      */
-    protected $_modelMapper;
+    protected $_modelMapper = null;
 
     /**
      * @var Catalog_Model_Categories
      */
-    protected $_model;
+    protected $_model = null;
 
     public function init()
     {
@@ -51,6 +51,8 @@ class Api_CategoriesController extends Api_BaseController
         $jsonData = array();
 
         if(isset($id)){
+            $parent_id = 0;
+
             if($id != 0){
                 $category = $this->_modelMapper->find($id, new Catalog_Model_Categories());
                 $parent_id = $category->getParentId();
@@ -58,16 +60,20 @@ class Api_CategoriesController extends Api_BaseController
                 if($this->_request->getParam('children'))
                     $parent_id = $category->getId();
             }
-            else{
-                $parent_id = 0;
-            }
+
+            $cache = Zend_Registry::get('cache');
+            $cacheName = 'ListCategoriesObj_'.$parent_id;
 
             $select = $this->_modelMapper->getDbTable()->select();
             $select->where('parent_id = ?', $parent_id)
                 ->order('sorting ASC');
 
-            $entries = $this->_modelMapper->fetchAll($select);
-            if(!is_null($entries)){
+            if(!$entries = $cache->load($cacheName)){
+                $entries = $this->_modelMapper->fetchAll($select);
+                $cache->save($entries, $cacheName, array('api','Categories', 'listCategoriesObj'));
+            }
+
+            if(!empty($entries)){
                 /** @var Catalog_Model_Categories $entry */
                 foreach ($entries as $entry) {
                     $categoryInfo = array(
@@ -85,6 +91,43 @@ class Api_CategoriesController extends Api_BaseController
         return $this->_helper->json->sendJson($jsonData);
     }
 
+    public function treeListAction()
+    {
+        $id = ($this->_request->getParam('id'))?$this->_request->getParam('id'):0;
+
+        $cache = Zend_Registry::get('cache');
+        $cacheName = 'treeCategoriesObj_'.$id;
+
+        $select = $this->_modelMapper->getDbTable()->select()->order('sorting ASC');
+
+        if(!$treeCategories = $cache->load($cacheName)){
+            ini_set('max_execution_time', 900);
+            $treeCategories = $this->_modelMapper->fetchTreeSubCategories($id, $select, false);
+            $cache->save($treeCategories, $cacheName, array('api','Catalog', 'treeCategoriesObj'));
+        }
+
+        return $this->_helper->json->sendJson($this->getListTreeCategories($treeCategories));
+    }
+
+    public function getListTreeCategories($categories)
+    {
+        $result = array();
+        /**@var $category Catalog_Model_Categories*/
+        foreach ($categories as $category) {
+            $result[] = array(
+                'id' => $category->getId(),
+                'parentId' => $category->getParentId(),
+                'name' => $category->getName(),
+                'active' => $category->getActive(),
+                'deleted' => $category->getDeleted(),
+                'subCategories' => (is_array($category->getSubCategories()))
+                    ?$this->getListTreeCategories($category->getSubCategories())
+                    :null
+            );
+        }
+        return $result;
+    }
+
     protected function _countSubCategories($id)
     {
         $select = $this->_modelMapper->getDbTable()->select();
@@ -96,7 +139,8 @@ class Api_CategoriesController extends Api_BaseController
         return count($entries);
     }
 
-    public function breadcrumbs($id){
+    public function breadcrumbs($id)
+    {
         $entries = $this->_modelMapper->fetchTreeParentCategories($id);
         $breadcrumbs = array();
         foreach ($entries as $entry) {
@@ -114,6 +158,8 @@ class Api_CategoriesController extends Api_BaseController
 
         return $treeCategories;
     }
-
+    
 }
+
+
 

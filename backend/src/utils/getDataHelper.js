@@ -33,7 +33,7 @@ var helpers = {
 	},
 
 	getCategoryProductModification: function (id) {
-		return axios.get("/admin/products/modification/?id=" + id)
+		return axios.get("/api/products/modifications/?id=" + id)
 			.then(function (response) {
 				return response.data;
 			})

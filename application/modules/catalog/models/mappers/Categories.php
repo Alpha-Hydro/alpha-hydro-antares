@@ -236,9 +236,11 @@ class Catalog_Model_Mapper_Categories
 
     /**
      * @param null $id
+     * @param Zend_Db_Table_Select $select
+     * @param bool $countProducts
      * @return array|false|mixed|null
      */
-    public function fetchTreeSubCategories($id = null)
+    public function fetchTreeSubCategories($id = null, Zend_Db_Table_Select $select = null, $countProducts = true)
     {
         //$cache = Zend_Registry::get('cache');
 
@@ -246,12 +248,6 @@ class Catalog_Model_Mapper_Categories
 
         if(is_null($id))
             $id = 0;
-
-        $select = $this->getDbTable()->select()
-            ->where('deleted != ?', 1)
-            ->where('active != ?', 0)
-            ->order('sorting ASC');
-
 
         $entries = $this->fetchSubCategoriesRel($id, $select);
 
@@ -264,14 +260,16 @@ class Catalog_Model_Mapper_Categories
             foreach ($entries as $entry) {
                 $id = $entry->id;
 
-                $productMapper = new Catalog_Model_Mapper_Products();
-                $selectProduct = $productMapper->getDbTable()->select()
-                    ->where('deleted != ?', 1)
-                    ->where('active != ?', 0)
-                    ->order('sorting ASC');
-                $products = $this->fetchProductsRel($id, $selectProduct);
-                if(!is_null($products))
-                    $entry->setCountProducts(count($products));
+                if($countProducts){
+                    $productMapper = new Catalog_Model_Mapper_Products();
+                    $selectProduct = $productMapper->getDbTable()->select()
+                        ->where('deleted != ?', 1)
+                        ->where('active != ?', 0)
+                        ->order('sorting ASC');
+                    $products = $this->fetchProductsRel($id, $selectProduct);
+                    if(!is_null($products))
+                        $entry->setCountProducts(count($products));
+                }
 
                 $subCategories = $this->fetchSubCategoriesRel($id, $select);
                 if(!is_null($subCategories))
