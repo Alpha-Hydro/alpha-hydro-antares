@@ -12,7 +12,7 @@
                              data-id="<?=$this->product->getId()?>"
                              data-name="<?=$this->product->getName()?>"
                              data-sku="<?=$this->product->getSku()?>"
-                        >Паспорт</div>
+                        ></div>
                         <a class="alpha-icon-print" href="<?= $this->url(array('fullPath' => $this->product->getFullPath()), 'printPdf', true, false) ?>" target="_blank">Печать</a>
                     </div>
                 <?php endif;?>

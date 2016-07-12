@@ -758,9 +758,71 @@ class ProductsController extends BaseController
 
     public function passportAction()
     {
-        Zend_Debug::dump($this->_request->getParams());
-    }
+        //Zend_Debug::dump($this->_request->getParams());
 
+        $product = $this->_modelMapper->find($this->_request->getParam('id'), $this->_model);
+
+        if(!$product)
+            throw new Zend_Exception("Такого товара нет", 404 );
+        
+        $modificationsId = $this->_request->getParam('modifications');
+        $modifications = array();
+
+        if($modificationsId && !empty($modificationsId)){
+            $select = $this->_subproductsModelMapper->getDbTable()->select();
+            $select
+                ->where('id IN (?)', $modificationsId)
+                ->order('order ASC');
+            $modifications = $this->_subproductsModelMapper->fetchAll($select);
+        }
+        
+        $propertiesProduct = $this->_modelMapper->findProductParams($this->_request->getParam('id'));
+
+        $select = $this->_subproductsParamsMapper->getDbTable()->select()->order('order ASC');
+        $modificationsProperty = $this->_modelMapper->findSubproductParams($product->getId(), $select);
+
+        $modificationsTableHead = '';
+        if(!empty($modificationsProperty)){
+            
+        }
+
+        //Zend_Debug::dump($modificationsProperty);
+
+        $pdf = new Admin_Model_PassportPdf();
+
+        // set document information
+        $pdf->SetAuthor('Альфа Гидро');
+        $pdf->SetTitle('Паспорт');
+        $pdf->SetSubject('Паспорт');
+        $pdf->SetKeywords('Паспорт, PDF');
+
+        $pdf->SetFont('', '', 12, '', true);
+
+        // Set Product
+        $pdf->setProduct($product);
+
+        // Set Modifications
+        $pdf->setAModificationsProduct($modifications);
+        
+        // Set PropertiesProduct
+        $pdf->setPropertiesProduct($propertiesProduct);
+
+        $pdf->AddPage();
+
+        $pdf->showName()
+            ->showModificationsList()
+            ->showImages()
+            ->showProperty()
+            ->showGarant('ГАРАНТИЙНЫЕ ОБЯЗАТЕЛЬСТВА', 'Компания гарантирует работоспособность указанных изделий в течение 1 (года) с момента изготовления. При обнаружении скрытого дефекта в период гарантийного срока фирма обязуется безвозмездно заменить изделие. Организация не несет ответственности за убытки, причиненные неисправностью установленного изделия. Гарантия не распространяется на изделия неправильно установленные или поврежденные механическими и химическими воздействиями, а так же, эксплуатируемыми в условиях не соответствующих указанным в настоящем паспорте.')
+        ;
+
+        $pdf->Output();
+
+        $this->getResponse()
+            ->setHeader('Content-Type', 'application/pdf');
+        $this->_helper->layout()->disableLayout();
+        
+    }
 
 }
 
