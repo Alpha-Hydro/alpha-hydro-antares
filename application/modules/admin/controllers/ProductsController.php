@@ -7,61 +7,51 @@ class ProductsController extends BaseController
 
     /**
      * @var Catalog_Model_Mapper_Products
-     *
      */
     protected $_modelMapper = null;
 
     /**
      * @var Catalog_Model_Products
-     *
      */
     protected $_model = null;
 
     /**
      * @var Catalog_Model_Mapper_Categories
-     *
      */
     protected $_modelCategoriesMapper = null;
 
     /**
      * @var Catalog_Model_Categories
-     *
      */
     protected $_categoriesModel = null;
 
     /**
      * @var Catalog_Model_Mapper_ProductParams
-     *
      */
     protected $_paramsMapper = null;
 
     /**
      * @var Catalog_Model_Mapper_Subproducts
-     *
      */
     protected $_subproductsModelMapper = null;
 
     /**
      * @var Catalog_Model_Mapper_SubproductParams
-     *
      */
     protected $_subproductsParamsMapper = null;
 
     /**
      * @var Catalog_Model_Mapper_SubproductParamsValues
-     *
      */
     protected $_subproductParamsValuesMapper = null;
 
     /**
      * @var Zend_Controller_Request_Abstract
-     *
      */
     protected $_request = null;
 
     /**
      * @var Zend_Controller_Action_Helper_Redirector
-     *
      */
     protected $_redirector = null;
 
@@ -69,7 +59,6 @@ class ProductsController extends BaseController
      * @var null
      */
     protected $_count_item_on_page = null;
-
 
     public function init()
     {
@@ -359,7 +348,6 @@ class ProductsController extends BaseController
         );
         parent::deleteAction();
     }
-
 
     public function disabledAction()
     {
@@ -767,7 +755,16 @@ class ProductsController extends BaseController
 
         return $item;
     }
+
+    public function passportAction()
+    {
+        Zend_Debug::dump($this->_request->getParams());
+    }
+
+
 }
+
+
 
 
 

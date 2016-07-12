@@ -76,8 +76,7 @@ if (productModificationEdit){
 
 const passportPdf = document.getElementById('passport-pdf');
 if (passportPdf){
-	productId = passportPdf.getAttribute('data-id');
 	ReactDOM.render(
-		<ProductPassportPdf productId = {productId}/>
+		<ProductPassportPdf dataItem = {passportPdf.dataset}/>
 		, passportPdf);
 }

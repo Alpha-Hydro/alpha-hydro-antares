@@ -8,7 +8,11 @@
                 </h1>
                 <?php if($this->product && $this->product->getActive() != '0'):?>
                     <div class="pull-right print">
-                        <div id="passport-pdf" class="inline mr2" data-id="<?=$this->product->getId()?>">Паспорт</div>
+                        <div id="passport-pdf" class="inline mr2"
+                             data-id="<?=$this->product->getId()?>"
+                             data-name="<?=$this->product->getName()?>"
+                             data-sku="<?=$this->product->getSku()?>"
+                        >Паспорт</div>
                         <a class="alpha-icon-print" href="<?= $this->url(array('fullPath' => $this->product->getFullPath()), 'printPdf', true, false) ?>" target="_blank">Печать</a>
                     </div>
                 <?php endif;?>
