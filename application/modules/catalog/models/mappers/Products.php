@@ -227,7 +227,7 @@ class Catalog_Model_Mapper_Products
     /**
      * @param $id
      * @param Zend_Db_Table_Select|null $select
-     * @return array|null
+     * @return Catalog_Model_Subproducts[]|null
      * @throws Zend_Db_Table_Exception
      * @throws Zend_Db_Table_Row_Exception
      */

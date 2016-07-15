@@ -24,7 +24,7 @@ class Catalog_Model_Mapper_SubproductParamsValues
     }
 
     /**
-     * @return Model_DbTable_SubproductParamsValues
+     * @return Catalog_Model_DbTable_SubproductParamsValues
      */
     public function getDbTable()
     {

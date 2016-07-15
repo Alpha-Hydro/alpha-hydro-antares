@@ -150,7 +150,7 @@ class Catalog_Model_Mapper_Subproducts
 
     /**
      * @param $id
-     * @return array|null
+     * @return Catalog_Model_SubproductParamsValues[]|null
      * @throws Zend_Db_Table_Exception
      */
     public function findSubProductParamValue($id)

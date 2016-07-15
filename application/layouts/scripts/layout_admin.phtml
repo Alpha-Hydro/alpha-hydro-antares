@@ -18,7 +18,10 @@ echo $this->doctype();
     echo $this->headLink();
 
     $this->headScript()
-        ->appendFile('/js/admin.min.js');
+        ->appendFile('/js/admin.min.js')
+        ->appendFile('/js/manifest.min.js')
+        ->appendFile('/js/vendor.min.js')
+        ->appendFile('/js/backend.min.js');
     ?>
 </head>
 <body>

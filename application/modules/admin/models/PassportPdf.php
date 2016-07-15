@@ -28,6 +28,9 @@ class Admin_Model_PassportPdf extends TCPDF
 
     protected $_last_page_flag = false;
 
+    protected $_modification_table_head = null;
+
+    protected $_modification_table_body = null;
 
     public function __construct()
     {
@@ -198,15 +201,42 @@ class Admin_Model_PassportPdf extends TCPDF
 
     /**
      * Таблица параметров выбранных модификаций
-     *
-     * @param $html
      * @return $this
      */
-    public function showModificatonTable($html)
+    public function showModificatonTable()
     {
-        $this->SetFont('','',8);
-        $this->writeHTML($html, true, false, true, false, '');
-        //$this->Ln();
+        $html = <<<EOD
+<style>
+.modification{
+	max-width: 650px;
+	font-size: 8pt;
+	background-color: #aaa;
+	text-align: center;
+}
+th, td{
+	background-color: #fff;
+	vertical-align: middle;
+}
+th{
+    background-color: #F9F9F9;
+}
+
+</style>
+<table cellspacing="1" cellpadding="5" width="600px" class="modification">
+	<thead>
+		{$this->getModificationTableHead()}
+	</thead>
+	<tbody>
+	   {$this->getModificationTableBody()}
+	</tbody>
+</table>
+EOD;
+
+        if(0 != count($this->getAModificationsProduct())){
+            $this->SetFont('','',8);
+            $this->writeHTML($html, true, false, true, false, '');
+            //$this->Ln();
+        }
 
         return $this;
     }
@@ -319,6 +349,42 @@ class Admin_Model_PassportPdf extends TCPDF
     public function getPropertiesProduct()
     {
         return $this->_propertiesProduct;
+    }
+
+    /**
+     * @param null $modification_table_head
+     * @return Admin_Model_PassportPdf
+     */
+    public function setModificationTableHead($modification_table_head)
+    {
+        $this->_modification_table_head = $modification_table_head;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getModificationTableHead()
+    {
+        return $this->_modification_table_head;
+    }
+
+    /**
+     * @param null $modification_table_body
+     * @return Admin_Model_PassportPdf
+     */
+    public function setModificationTableBody($modification_table_body)
+    {
+        $this->_modification_table_body = $modification_table_body;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getModificationTableBody()
+    {
+        return $this->_modification_table_body;
     }
 
 }
