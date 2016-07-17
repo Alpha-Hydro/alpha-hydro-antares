@@ -54,14 +54,16 @@ exports.minify = function() {
 	};
 };
 
-exports.optimise = function() {
+exports.optimiseBuild = function() {
 	return {
+        watch: false,
 		plugins: [
 			new webpack.optimize.DedupePlugin(),
 			new webpack.optimize.OccurrenceOrderPlugin()
 		]
 	};
 };
+
 
 exports.setFreeVariable = function(key, value) {
 	const env = {};

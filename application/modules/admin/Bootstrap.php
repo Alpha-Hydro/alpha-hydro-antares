@@ -8,6 +8,10 @@
  */
 class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
 {
+    protected function _init(){
+        Zend_Controller_Front::getInstance()->setDefaultModule('admin');
+    }
+
     protected function _initPlugins()
     {
         $this->bootstrap('frontController');
@@ -15,6 +19,7 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         $pluginsLoader = new Zend_Loader_PluginLoader();
         $pluginsLoader->addPrefixPath('Plugin', $this->getResourceLoader()->getBasePath().'/plugins');
         $pluginsLoader->load("AclAdmin");
+        //$pluginsLoader->load("Acl");
 
         $pluginsLoader->addPrefixPath('Plugin', APPLICATION_PATH.'/plugins');
         $pluginsLoader->load("LayoutLoader");

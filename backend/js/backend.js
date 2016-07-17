@@ -1,2 +1,2 @@
-webpackJsonp([2,0],{0:function(n,e,t){var d=t(223);document.body.appendChild(d())},223:function(n,e){n.exports=function(){var n=document.createElement("div");return n.id="adminAuth",n}}});
+webpackJsonp([2,0],{0:function(t,n,e){"use strict";var c=e(223);document.body.appendChild(c())},223:function(t,n){"use strict";t.exports=function(){var t=document.createElement("div");return t.id="adminAuth",t}}});
 //# sourceMappingURL=backend.js.map

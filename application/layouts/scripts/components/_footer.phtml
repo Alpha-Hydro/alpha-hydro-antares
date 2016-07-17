@@ -15,9 +15,12 @@ $aHostName = array(
         <div>Zend Framework v.<?=Zend_Version::VERSION?></div>
     </div>
     <?php if(!in_array($host, $aHostName)):?>
-    <div class="admin">
-        <div><!--noindex--><a href="http://admin.<?=$host?>" class="btn btn-alpha default" rel="nofollow">Вход</a><!--/noindex--></div>
-    </div>
+        <!--noindex-->
+        <div class="admin">
+            <div><a href="http://admin.<?=$host?>" class="btn btn-alpha default" rel="nofollow">Вход</a></div>
+        </div>
+        <!--<div id="modalAuth"></div>-->
     <?=$this->render("components/_admin_auth.phtml");?>
+        <!--/noindex-->
     <?php endif;?>
 </div>

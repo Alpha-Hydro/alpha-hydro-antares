@@ -46,6 +46,17 @@
                             <privilege>list</privilege>
                             <route>adminEdit</route>
                         </category_list>
+                        <edit>
+                            <label>Каталог</label>
+                            <module>admin</module>
+                            <controller>pages</controller>
+                            <action>edit</action>
+                            <params>
+                                <id>2</id>
+                            </params>
+                            <resource>pages</resource>
+                            <route>adminEdit</route>
+                        </edit>
                     </pages>
                 </catalog>
                 <manufacture>
@@ -70,7 +81,7 @@
                                     <controller>pages</controller>
                                     <action>edit</action>
                                     <params>
-                                        <id>4</id>
+                                        <id>3</id>
                                     </params>
                                     <resource>pages</resource>
                                     <route>adminEdit</route>
@@ -127,7 +138,7 @@
                     </pages>
                 </manufacture>
                 <pipeline>
-                    <label>Трубопроводная арматура</label>
+                    <label>Детали трубопровода</label>
                     <module>admin</module>
                     <controller>pipeline-categories</controller>
                     <resource>pipeline-categories</resource>
@@ -143,12 +154,12 @@
                             <route>adminEdit</route>
                             <pages>
                                 <edit>
-                                    <label>Трубопроводная арматура</label>
+                                    <label>Детали трубопровода</label>
                                     <module>admin</module>
                                     <controller>pages</controller>
                                     <action>edit</action>
                                     <params>
-                                        <id>6</id>
+                                        <id>4</id>
                                     </params>
                                     <resource>pages</resource>
                                     <route>adminEdit</route>
@@ -249,7 +260,7 @@
                                     <controller>pages</controller>
                                     <action>edit</action>
                                     <params>
-                                        <id>7</id>
+                                        <id>5</id>
                                     </params>
                                     <resource>pages</resource>
                                     <route>adminEdit</route>
@@ -320,7 +331,7 @@
                             <controller>pages</controller>
                             <action>edit</action>
                             <params>
-                                <id>8</id>
+                                <id>6</id>
                             </params>
                             <resource>pages</resource>
                             <route>adminEdit</route>
@@ -349,7 +360,7 @@
                                     <controller>pages</controller>
                                     <action>edit</action>
                                     <params>
-                                        <id>9</id>
+                                        <id>7</id>
                                     </params>
                                     <resource>pages</resource>
                                     <route>adminEdit</route>
@@ -419,7 +430,7 @@
                     <controller>pages</controller>
                     <action>edit</action>
                     <params>
-                        <id>2</id>
+                        <id>8</id>
                     </params>
                     <resource>pages</resource>
                     <privilege>edit</privilege>
@@ -431,7 +442,7 @@
                     <controller>pages</controller>
                     <action>edit</action>
                     <params>
-                        <id>3</id>
+                        <id>9</id>
                     </params>
                     <resource>pages</resource>
                     <privilege>edit</privilege>

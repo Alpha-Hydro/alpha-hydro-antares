@@ -22,7 +22,8 @@ const common = merge(
 			extensions: ['', '.js', '.jsx']
 		},
 		plugins: [
-		]
+		],
+		watch: true
 	},
 	parts.setFreeVariable(
 		'process.env.NODE_ENV',
@@ -33,7 +34,7 @@ const common = merge(
 		entries: Object.keys(pkg.dependencies)
 	}),
 	parts.loadJSX(PATHS.app),
-	parts.optimise(),
+	//parts.optimiseBuild(),
 	parts.minify()
 );
 

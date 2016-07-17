@@ -8,8 +8,8 @@
   },
   "scripts": {
     "start": "webpack-dev-server",
-    "public": "node_modules/.bin/webpack --progress",
-    "backend": "node_modules/.bin/webpack --progress",
+    "public": "node_modules/.bin/webpack",
+    "backend": "node_modules/.bin/webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
