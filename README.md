@@ -10,6 +10,11 @@
 - admin -> /backend
 - old -> /frontend
 
+#### Composer
+```
+/opt/alt/php54/usr/bin/php ../composer.phar install
+```
+
 ## Настройка локального окружения
 
 #### Composer

@@ -97,12 +97,4 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         Zend_Db_Table_Abstract::setDefaultMetadataCache($cache); //cache database table schemata metadata for faster SQL queries
         Zend_Registry::set('cache',$cache);
     }
-
-    function _initLogger() {
-        $this->_logger = new Zend_Log();
-        $this->_logger->addWriter(new Zend_Log_Writer_Stream('php://output'));
-        //$this->_logger->addWriter(new Zend_Log_Writer_Firebug());
-
-        Zend_Registry::set('Log', $this->_logger);
-    }
 }
