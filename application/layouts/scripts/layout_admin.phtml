@@ -19,9 +19,9 @@ echo $this->doctype();
 
     $this->headScript()
         ->appendFile('/js/admin.min.js')
-        ->appendFile('/js/manifest.min.js')
-        ->appendFile('/js/vendor.min.js')
-        ->appendFile('/js/backend.min.js');
+        ->appendFile('/js/manifest.js')
+        ->appendFile('/js/vendor.js')
+        ->appendFile('/js/backend.js');
     ?>
 </head>
 <body>
@@ -37,24 +37,8 @@ echo $this->doctype();
         <div class="layout-footer"></div>
     </div>
     <?= $this->render("components/_footer.phtml")?>
-    <!--<div class="container-fluid">
-        <div class="row">
-            <div class="col-md-11">
-                <div class="container mb4">
-                    <?/*= $this->render('_module_admin.phtml') */?>
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div id="admin-panel"></div>
-            </div>
-        </div>
-    </div>-->
-    <div id="modal" class="my-div"></div>
-    <!--<div id="pageData"></div>-->
-    <?/*= $this->render("components/_admin_auth.phtml");*/?>
+    <div id="issueModal"></div>
     <?= $this->headScript();?>
-<?php /*Zend_Debug::dump($this->paramsPage());*/?>
-
 </body>
 </html>
 <!--layout_admin-->

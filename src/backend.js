@@ -1,3 +1,7 @@
-var component = require('./components/component');
+import React from "react";
+import ReactDOM from "react-dom";
 
-document.body.appendChild(component());
+import IssueModalForm from "./components/IssueModalForm";
+
+const issueModal = document.getElementById('issueModal');
+issueModal && ReactDOM.render(<IssueModalForm/>, issueModal);

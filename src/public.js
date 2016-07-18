@@ -7,7 +7,7 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import AdminModalAuth from "./components/AdminModalAuth"
+import AdminModalAuth from "./components/AdminModalAuth";
 
 const modalAuth = document.getElementById('modalAuth');
 modalAuth && ReactDOM.render(<AdminModalAuth/>, modalAuth);
