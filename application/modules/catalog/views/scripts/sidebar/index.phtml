@@ -26,7 +26,7 @@
                     </ul>
                 <?php endif; ?>
             <?php else: ?>
-                <?=$entry->name?>
+                <span><?=$entry->name?></span>
                 <?php $productsCategory = $this->getProductsCategory($entry->id); ?>
                 <?php if(!empty($productsCategory)):?>
                     <ul class="list-group sidebar-submenu products">

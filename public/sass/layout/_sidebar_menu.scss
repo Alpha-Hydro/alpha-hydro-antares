@@ -13,6 +13,7 @@ $menu-line-height: 40px;
     text-decoration: none;
     display: block;
     position: relative;
+    padding: 10px 15px;
   }
   .sidebar-heading{
     background-color: lighten($alpha-gray-lighter, 3%);
@@ -38,6 +39,10 @@ $menu-line-height: 40px;
       background-color: $alpha-gray-dark;
       color: #FFFFFF;
       cursor: default;
+      >span{
+        display: block;
+        padding: 10px 15px;
+      }
       >a{
         color: #ffffff;
       }
@@ -83,5 +88,8 @@ $menu-line-height: 40px;
         }
       }
     }
+  }
+  .list-group-item{
+    padding: 0;
   }
 }

@@ -21,7 +21,7 @@ var helpers = {
 
 	newIssue: function (data) {
 		var instance = axios.create({
-			headers: {'Authorization': 'token 43109f7f778a69682dc4cee2abcc105878ba2d16'}
+			headers: {'Authorization': 'Basic YWxwaGFIeWRybzpOUW45ZlF2VUpYa2o='}
 		});
 
 		return instance.post("https://api.github.com/repos/Alpha-Hydro/alpha-hydro-antares/issues", data)
