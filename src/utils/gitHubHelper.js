@@ -15,20 +15,22 @@ var helpers = {
 			})
 			.catch(function (response) {
 				console.log(response);
+				return "error";
 			});
 	},
 
 	newIssue: function (data) {
 		var instance = axios.create({
-			headers: {'Authorization': 'token 30d23e53874d5420d710a1b664449c474b174bd4'}
+			headers: {'Authorization': 'token 43109f7f778a69682dc4cee2abcc105878ba2d16'}
 		});
 
 		return instance.post("https://api.github.com/repos/Alpha-Hydro/alpha-hydro-antares/issues", data)
 			.then(function (response) {
-				return response.data;
+				return response;
 			})
 			.catch(function (response) {
 				console.log(response);
+				return "error";
 			});
 	}
 };
