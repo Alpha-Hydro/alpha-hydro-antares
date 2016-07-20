@@ -29,7 +29,7 @@ export default class PanelButtonsComponent extends React.Component{
 		return this.roles.indexOf(role);
 	}
 
-	componentDidMount(){
+	componentWillMount(){
 		var controller = this.props.dataItem.controller;
 		var id = this.props.dataItem.id;
 		dataHelpers.getDataInfo(controller, id)
@@ -64,34 +64,6 @@ export default class PanelButtonsComponent extends React.Component{
 				action: "seo",
 				role: "admin",
 				title:"Мета теги"
-			},
-			{
-				icon: "trash",
-				enable: !this.props.dataItem.deleted,
-				action: "delete",
-				role: "admin",
-				title:"Удалить"
-			},
-			{
-				icon: "open",
-				enable: this.props.dataItem.deleted,
-				action: "recover",
-				role: "admin",
-				title:"Восcтановить"
-			},
-			{
-				icon: "eye-close",
-				enable: this.props.dataItem.active && !this.props.dataItem.deleted,
-				action: "disabled",
-				role: "admin",
-				title:"Скрыть"
-			},
-			{
-				icon: "eye-open",
-				enable: !this.props.dataItem.active && !this.props.dataItem.deleted,
-				action: "enabled",
-				role: "admin",
-				title:"Показать"
 			},
 			{
 				icon: "comment",

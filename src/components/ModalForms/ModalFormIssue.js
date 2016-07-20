@@ -8,9 +8,6 @@
 import React from "react";
 import gitHubHelper from "../../utils/gitHubHelper";
 
-import Modal from "react-bootstrap/lib/Modal";
-import Button from "react-bootstrap/lib/Button";
-import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import FormGroup from "react-bootstrap/lib/FormGroup";
 import FormControl from "react-bootstrap/lib/FormControl";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
@@ -19,7 +16,6 @@ export default class IssueModalForm extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			showModal: false,
 			title: '',
 			body: '',
 			responseMessage: ''
@@ -42,18 +38,6 @@ export default class IssueModalForm extends React.Component{
 		}
 	}
 
-	showModal() {
-		this.setState({showModal: true});
-	}
-
-	hideModal() {
-		this.setState({
-			showModal: false,
-			title: document.location.href,
-			body: ''
-		});
-	}
-
 	handleChange(key){
 		return (e) => {
 			var data = {};
@@ -62,23 +46,15 @@ export default class IssueModalForm extends React.Component{
 		};
 	}
 
-	sendIssue(){
-		var data = {"title": this.state.title, "body": this.state.body, "labels": ["design"]};
-		console.log(data);
-		gitHubHelper.newIssue(data)
-			.then(function(dataInfo){
-				console.log(dataInfo);
-				this.setState({
-					responseMessage: (dataInfo.status == 201 && dataInfo.statusText == 'Created')
-						? 'Сообщение об ошибке создано. Благодарю за помощь. В ближайшее время ошибка будет исправлена!'
-						: 'Сообщение не отправлено. Ошибка сервера. Обратитесь к администратору.'
-				})
-			}.bind(this));
+	onSubmit(e){
+		e.preventDefault();
+		var data = {"title": this.state.title, "body": this.state.body, "labels": ["bug"]};
+		this.props.handleSubmit(data);
 	}
 
 	render(){
 		return(
-			<form>
+			<form id="formModal" onSubmit={this.onSubmit.bind(this)}>
 				<FormGroup>
 					<ControlLabel>Заголовок (url страницы)</ControlLabel>
 					<FormControl

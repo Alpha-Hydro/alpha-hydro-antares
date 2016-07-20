@@ -6,8 +6,6 @@
  */
 
 import React from "react";
-import Alert from "react-bootstrap/lib/Alert";
-import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 export default class ModalFormDelete extends React.Component{
 

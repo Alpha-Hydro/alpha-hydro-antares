@@ -8,8 +8,10 @@
   },
   "scripts": {
     "start": "webpack-dev-server",
-    "public": "node_modules/.bin/webpack",
-    "backend": "node_modules/.bin/webpack",
+    "public:dev": "node_modules/.bin/webpack --watch",
+    "public:build": "node_modules/.bin/webpack",
+    "backend:dev": "node_modules/.bin/webpack --watch",
+    "backend:build": "node_modules/.bin/webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

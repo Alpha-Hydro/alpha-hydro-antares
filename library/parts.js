@@ -113,3 +113,16 @@ exports.loadJSX = function(paths) {
 		}
 	};
 };
+
+exports.enableReactPerformanceTools = function() {
+	return {
+		module: {
+			loaders: [
+				{
+					test: require.resolve('react'),
+					loader: 'expose?React'
+				}
+			]
+		}
+	};
+};

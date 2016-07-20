@@ -17,24 +17,29 @@ const PATHS = {
 
 const common = merge(
 	{
-		devtool: 'source-map',
 		resolve: {
 			extensions: ['', '.js', '.jsx']
 		},
-		plugins: [
-		],
-		watch: true
 	},
-	parts.setFreeVariable(
+	/*parts.setFreeVariable(
 		'process.env.NODE_ENV',
 		'production'
-	),
+	),*/
 	parts.extractBundle({
 		name: 'vendor',
 		entries: Object.keys(pkg.dependencies)
 	}),
-	parts.loadJSX(PATHS.app),
+	parts.loadJSX(PATHS.app)
 	//parts.optimiseBuild(),
+	//parts.minify()
+);
+
+const build = merge(
+	parts.setFreeVariable(
+		'process.env.NODE_ENV',
+		'production'
+	),
+	parts.optimiseBuild(),
 	parts.minify()
 );
 
@@ -42,8 +47,24 @@ var config;
 
 // Detect how npm is run and branch based on that
 switch(TARGET) {
-	case 'public':
+	case 'public:build':
+		config = merge(common,
+			{
+				devtool: 'source-map',
+				entry: {
+					public: path.join(PATHS.app, 'public.js')
+				},
+				output: {
+					path: PATHS.public,
+					filename: '[name].js'
+				}
+			},
+			build
+		);
+		break;
+	case 'public:dev':
 		config = merge(common, {
+			devtool: 'eval-source-map',
 			entry: {
 				public: path.join(PATHS.app, 'public.js')
 			},
@@ -53,8 +74,24 @@ switch(TARGET) {
 			}
 		});
 		break;
-	case 'backend':
+	case 'backend:build':
+		config = merge(common,
+			{
+				devtool: 'source-map',
+				entry: {
+					backend: path.join(PATHS.app, 'backend.js')
+				},
+				output: {
+					path: PATHS.backend,
+					filename: '[name].js'
+				}
+			},
+			build
+		);
+		break;
+	case 'backend:dev':
 		config = merge(common, {
+			devtool: 'eval-source-map',
 			entry: {
 				backend: path.join(PATHS.app, 'backend.js')
 			},

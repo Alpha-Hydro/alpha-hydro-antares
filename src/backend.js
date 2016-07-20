@@ -13,11 +13,11 @@ import ProductModificationEditButton from "./components/Catalog/ProductModificat
 import ProductModificationPropertyEditButton from "./components/Catalog/ProductModificatons/ProductModificationPropertyEditButton";
 import ProductPassportPdf from "./components/Catalog/Products/ProductPassportPdf";
 
-const issueModal = document.getElementById('issueModal');
+/*const issueModal = document.getElementById('issueModal');
 issueModal && ReactDOM.render(
 	<IssueModalForm/>,
 	issueModal
-);
+);*/
 
 const adminPanel = document.getElementById('admin-panel');
 adminPanel && ReactDOM.render(

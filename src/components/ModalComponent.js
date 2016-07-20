@@ -12,11 +12,39 @@ import ModalFormDisabled from "./ModalForms/ModalFormDisabled";
 import ModalFormEnable from "./ModalForms/ModalFormEnable";
 import ModalFormIssue from "./ModalForms/ModalFormIssue";
 
+import gitHubHelper from "../utils/gitHubHelper";
 
 export default class ModalComponent extends React.Component{
+	constructor(props){
+		super(props);
+		this.state = {
+			showBtnSubmit: true,
+			responseMessage: '',
+			textCloseBtn: 'Отмена'
+		}
+	}
 
 	hideModal() {
 		this.props.hide()
+	}
+
+	sendIssue(data){
+		gitHubHelper.newIssue(data)
+			.then(function(dataInfo){
+				console.log(dataInfo);
+				this.setState({
+					showBtnSubmit: false,
+					textCloseBtn: 'OK',
+					responseMessage: {
+						text: (dataInfo.status == 201)
+							? 'Сообщение принял. Буду исправлять.'
+							: 'Сообщение не отправлено. Обратитесь к администратору.',
+						style: (dataInfo.status == 201)
+							? 'success'
+							: 'danger',
+					}
+				})
+			}.bind(this));
 	}
 
 	btnSubmit(){
@@ -33,14 +61,30 @@ export default class ModalComponent extends React.Component{
 
 	modalForm(){
 		switch (this.props.action) {
-			case "edit":  return <ModalFormsEdit {...this.props}/>;
-			case "seo": 	return <ModalFormSeo {...this.props}/>;
-			case "add": 	return <ModalFormsAdd {...this.props}/>;
-			case "delete": return <ModalFormDelete {...this.props}/>;
-			case "recover": return <ModalFormRecover {...this.props}/>;
-			case "disabled": return <ModalFormDisabled {...this.props}/>;
-			case "enabled": return <ModalFormEnable {...this.props}/>;
-			case "issue": return <ModalFormIssue {...this.props}/>;
+			case "edit":
+				return <ModalFormsEdit {...this.props}/>;
+				break;
+			case "seo":
+				return <ModalFormSeo {...this.props}/>;
+				break;
+			case "add":
+				return <ModalFormsAdd {...this.props}/>;
+				break;
+			case "delete":
+				return <ModalFormDelete {...this.props}/>;
+				break;
+			case "recover":
+				return <ModalFormRecover {...this.props}/>;
+				break;
+			case "disabled":
+				return <ModalFormDisabled {...this.props}/>;
+				break;
+			case "enabled":
+				return <ModalFormEnable {...this.props}/>;
+				break;
+			case "issue":
+				return <ModalFormIssue {...this.props} handleSubmit = {this.sendIssue.bind(this)}/>;
+				break;
 		}
 	};
 
@@ -70,8 +114,9 @@ export default class ModalComponent extends React.Component{
 					{this.modalForm()}
 				</Modal.Body>
 				<Modal.Footer>
-					<Button onClick={this.hideModal.bind(this)}>Отмена</Button>
-					{this.btnSubmit()}
+					{this.state.responseMessage && <h5 className={"pull-left text-" + this.state.responseMessage.style}>{this.state.responseMessage.text}</h5>}
+					<Button onClick={this.hideModal.bind(this)}>{this.state.textCloseBtn}</Button>
+					{this.state.showBtnSubmit && this.btnSubmit()}
 				</Modal.Footer>
 			</Modal>
 		);
