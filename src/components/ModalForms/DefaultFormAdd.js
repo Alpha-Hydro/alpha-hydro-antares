@@ -64,7 +64,6 @@ export default class DefaultFormAdd extends React.Component{
 						<input type="hidden"
 									 name="dataPage[path]"
 									 value={this.state.path}
-									 required
 						/>
 						<FormGroup>
 							<ControlLabel>Краткое описание</ControlLabel>

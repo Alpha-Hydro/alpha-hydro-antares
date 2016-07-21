@@ -96,6 +96,7 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         $acl->allow('guest', array('auth', 'error'));
         $acl->allow('manager', array(
             'index',
+            'home',
             'pages',
             'categories',
             'products',
@@ -106,7 +107,7 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
             'pipeline-property',
             'oil',
             'oil-categories',
-            'forum',
+            //'forum',
             'media',
             'media-categories'
         ), array('index', 'list', 'edit', 'json'));

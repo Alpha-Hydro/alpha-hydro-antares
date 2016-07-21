@@ -6,6 +6,8 @@
  */
 
 import React from "react";
+import Modal from "react-bootstrap/lib/Modal";
+import Button from "react-bootstrap/lib/Button";
 import gitHubHelper from "../../utils/gitHubHelper";
 
 import FormGroup from "react-bootstrap/lib/FormGroup";
@@ -20,6 +22,10 @@ export default class IssueModalForm extends React.Component{
 			body: '',
 			responseMessage: ''
 		}
+	}
+
+	hideModal() {
+		this.props.hide()
 	}
 
 	componentWillMount(){
@@ -54,29 +60,47 @@ export default class IssueModalForm extends React.Component{
 
 	render(){
 		return(
-			<form id="formModal" onSubmit={this.onSubmit.bind(this)}>
-				<FormGroup>
-					<ControlLabel>Заголовок (url страницы)</ControlLabel>
-					<FormControl
-						type="text"
-						placeholder="Название ошибки"
-						name="title"
-						value={this.state.title}
-						onChange={this.handleChange('title').bind(this)}
-					/>
-				</FormGroup>
-				<FormGroup>
-					<ControlLabel>Описание ошибки</ControlLabel>
-					<FormControl
-						componentClass="textarea"
-						placeholder="Описание ошибки"
-						name="body"
-						value={this.state.body}
-						onChange={this.handleChange('body').bind(this)}
-						rows="8"
-					/>
-				</FormGroup>
-			</form>
+		<Modal
+			show={this.props.show}
+			onHide={this.hideModal.bind(this)}
+		>
+			<Modal.Header closeButton>
+				<Modal.Title id="contained-modal-title-lg" className="h3">
+					{(!this.props.data.title)?this.props.data.name:this.props.data.title}
+					<small className="block">{this.props.title}</small>
+				</Modal.Title>
+			</Modal.Header>
+			<Modal.Body>
+				<form id="formModal" onSubmit={this.onSubmit.bind(this)}>
+					<FormGroup>
+						<ControlLabel>Заголовок (url страницы)</ControlLabel>
+						<FormControl
+							type="text"
+							placeholder="Название ошибки"
+							name="title"
+							value={this.state.title}
+							onChange={this.handleChange('title').bind(this)}
+						/>
+					</FormGroup>
+					<FormGroup>
+						<ControlLabel>Описание ошибки</ControlLabel>
+						<FormControl
+							componentClass="textarea"
+							placeholder="Описание ошибки"
+							name="body"
+							value={this.state.body}
+							onChange={this.handleChange('body').bind(this)}
+							rows="8"
+						/>
+					</FormGroup>
+				</form>
+			</Modal.Body>
+			<Modal.Footer>
+				<Button onClick={this.hideModal.bind(this)}>{this.state.textCloseBtn}</Button>
+				<Button form="formModal" bsStyle="primary" type="submit">Отправить</Button>
+			</Modal.Footer>
+		</Modal>
+
 		);
 	}
 }

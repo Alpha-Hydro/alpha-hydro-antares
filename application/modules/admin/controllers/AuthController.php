@@ -24,15 +24,17 @@ class AuthController extends Zend_Controller_Action
 
     public function indexAction()
     {
+        //!!! ЗАЦИКЛИВАЕТ ПЕРЕАДРЕСАЦИЮ ЕСЛИ ПОЛЬЗОВАТЕЛЬ АВТОРИЗОВАН
+        // И НЕ ДОПУЩЕН ДО РЕСУРСА
         // проверяем, авторизирован ли пользователь
-        if (Zend_Auth::getInstance()->hasIdentity()) {
+        /*if (Zend_Auth::getInstance()->hasIdentity()) {
             Zend_Debug::dump($this->_request->getParams());
             // если да, то делаем редирект, чтобы исключить многократную авторизацию
             if($this->_request->getParam('currentUrl'))
                 $this->_redirector->gotoUrlAndExit($this->_request->getParam('currentUrl'));
 
             $this->_redirector->gotoSimpleAndExit('index', 'index');
-        }
+        }*/
 
         $this->_helper->layout->setLayout('layout_auth');
         // создаём форму и передаём её во view
@@ -83,6 +85,9 @@ class AuthController extends Zend_Controller_Action
                 }
             }
         }
+
+        if(Zend_Auth::getInstance()->hasIdentity() && $this->getParam('forbiddenResource'))
+            $this->view->assign('forbiddenResource', $this->getParam('forbiddenResource'));
     }
 
     public function logoutAction()

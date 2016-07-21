@@ -38,15 +38,7 @@ class AdminBootstrap extends Zend_Application_Bootstrap_Bootstrap
         $view->addScriptPath(APPLICATION_PATH."/layouts/scripts/");
         $view->auth = Zend_Auth::getInstance()->hasIdentity();
     }
-    
 
-    protected function _initPlugins() {
-        $this->bootstrap('frontController');
-
-        $pluginsLoader = new Zend_Loader_PluginLoader();
-        $pluginsLoader->addPrefixPath("Plugin", APPLICATION_PATH.'/plugins');
-        $pluginsLoader->load("Acl");
-    }
 
     public function _initCache()
     {

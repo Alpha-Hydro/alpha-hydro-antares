@@ -39,7 +39,12 @@ class Plugin_AclAdmin extends Zend_Controller_Plugin_Abstract {
                 $request
                     ->setModuleName('admin')
                     ->setControllerName('auth')
-                    ->setActionName('index');
+                    ->setActionName('index')
+                    ->setParam('forbiddenResource', array(
+                        'controller' => $controller,
+                        'action' => $action
+                    ))
+                ;
 
         }
 

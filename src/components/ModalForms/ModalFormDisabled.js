@@ -12,6 +12,14 @@ import Alert from "react-bootstrap/lib/Alert";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
 export default class ModalFormDisabled extends React.Component{
+	constructor(props){
+		super(props);
+	}
+
+	hideModal() {
+		this.props.hide()
+	}
+
 	render(){
 		return (
 			<Modal
@@ -40,7 +48,7 @@ export default class ModalFormDisabled extends React.Component{
 					</form>
 				</Modal.Body>
 				<Modal.Footer>
-					<Button onClick={this.hideModal.bind(this)}>{this.state.textCloseBtn}</Button>
+					<Button onClick={this.hideModal.bind(this)}>Отмена</Button>
 					<Button form="formModal" bsStyle="primary" type="submit">Скрыть</Button>
 				</Modal.Footer>
 			</Modal>
