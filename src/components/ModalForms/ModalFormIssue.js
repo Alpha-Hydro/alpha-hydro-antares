@@ -8,11 +8,12 @@
 import React from "react";
 import Modal from "react-bootstrap/lib/Modal";
 import Button from "react-bootstrap/lib/Button";
-import gitHubHelper from "../../utils/gitHubHelper";
-
 import FormGroup from "react-bootstrap/lib/FormGroup";
 import FormControl from "react-bootstrap/lib/FormControl";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
+
+import ModalResponseMessage from "./ModalResponseMessage";
+import gitHubHelper from "../../utils/gitHubHelper";
 
 export default class IssueModalForm extends React.Component{
 	constructor(props){
@@ -20,12 +21,25 @@ export default class IssueModalForm extends React.Component{
 		this.state = {
 			title: '',
 			body: '',
-			responseMessage: ''
+			showMessage: false,
+			textMessage: '',
+			titleMessage: 'Alert',
+			typeMessage: 'default'
 		}
 	}
 
 	hideModal() {
-		this.props.hide()
+		this.props.hide();
+		this.setState({
+			title: document.location.href,
+			body: ''
+		});
+	}
+
+	hideMessage() {
+		this.setState({
+			showMessage: false
+		});
 	}
 
 	componentWillMount(){
@@ -52,54 +66,77 @@ export default class IssueModalForm extends React.Component{
 		};
 	}
 
-	onSubmit(e){
-		e.preventDefault();
+	sendIssue(){
 		var data = {"title": this.state.title, "body": this.state.body, "labels": ["bug"]};
-		this.props.handleSubmit(data);
+		console.log(data);
+		this.hideModal();
+		this.setState({
+			showMessage: true,
+			textMessage: 'Сообщение об ошибке создано.',
+		});
+		/*gitHubHelper.newIssue(data)
+			.then(function(dataInfo){
+				console.log(dataInfo);
+				this.setState({
+					textMessage: (dataInfo.status == 201 && dataInfo.statusText == 'Created')
+						? 'Сообщение об ошибке создано. Благодарю за помощь. В ближайшее время ошибка будет исправлена!'
+						: 'Сообщение не отправлено. Ошибка сервера. Обратитесь к администратору.'
+				});
+				this.hideModal();
+			}.bind(this));*/
 	}
 
 	render(){
 		return(
-		<Modal
-			show={this.props.show}
-			onHide={this.hideModal.bind(this)}
-		>
-			<Modal.Header closeButton>
-				<Modal.Title id="contained-modal-title-lg" className="h3">
-					{(!this.props.data.title)?this.props.data.name:this.props.data.title}
-					<small className="block">{this.props.title}</small>
-				</Modal.Title>
-			</Modal.Header>
-			<Modal.Body>
-				<form id="formModal" onSubmit={this.onSubmit.bind(this)}>
-					<FormGroup>
-						<ControlLabel>Заголовок (url страницы)</ControlLabel>
-						<FormControl
-							type="text"
-							placeholder="Название ошибки"
-							name="title"
-							value={this.state.title}
-							onChange={this.handleChange('title').bind(this)}
-						/>
-					</FormGroup>
-					<FormGroup>
-						<ControlLabel>Описание ошибки</ControlLabel>
-						<FormControl
-							componentClass="textarea"
-							placeholder="Описание ошибки"
-							name="body"
-							value={this.state.body}
-							onChange={this.handleChange('body').bind(this)}
-							rows="8"
-						/>
-					</FormGroup>
-				</form>
-			</Modal.Body>
-			<Modal.Footer>
-				<Button onClick={this.hideModal.bind(this)}>{this.state.textCloseBtn}</Button>
-				<Button form="formModal" bsStyle="primary" type="submit">Отправить</Button>
-			</Modal.Footer>
-		</Modal>
+			<div>
+				<Modal
+					show={this.props.show}
+					onHide={this.hideModal.bind(this)}
+				>
+					<Modal.Header closeButton>
+						<Modal.Title id="contained-modal-title-lg" className="h3">
+							{(!this.props.data.title)?this.props.data.name:this.props.data.title}
+							<small className="block">{this.props.title}</small>
+						</Modal.Title>
+					</Modal.Header>
+					<Modal.Body>
+						<form>
+							<FormGroup>
+								<ControlLabel>Заголовок (url страницы)</ControlLabel>
+								<FormControl
+									type="text"
+									placeholder="Название ошибки"
+									name="title"
+									value={this.state.title}
+									onChange={this.handleChange('title').bind(this)}
+								/>
+							</FormGroup>
+							<FormGroup>
+								<ControlLabel>Описание ошибки</ControlLabel>
+								<FormControl
+									componentClass="textarea"
+									placeholder="Описание ошибки"
+									name="body"
+									value={this.state.body}
+									onChange={this.handleChange('body').bind(this)}
+									rows="8"
+								/>
+							</FormGroup>
+						</form>
+					</Modal.Body>
+					<Modal.Footer>
+						<Button onClick={this.hideModal.bind(this)}>Отмена</Button>
+						<Button bsStyle="primary" onClick={this.sendIssue.bind(this)}>Отправить</Button>
+					</Modal.Footer>
+				</Modal>
+				<ModalResponseMessage
+					showMessage={this.state.showMessage}
+					hideMessage={this.hideMessage.bind(this)}
+					title={this.state.titleMessage}
+					type={this.state.typeMessage}
+					text={this.state.textMessage}
+				/>
+			</div>
 
 		);
 	}

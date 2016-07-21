@@ -107,7 +107,7 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
             'pipeline-property',
             'oil',
             'oil-categories',
-            //'forum',
+            'forum',
             'media',
             'media-categories'
         ), array('index', 'list', 'edit', 'json'));

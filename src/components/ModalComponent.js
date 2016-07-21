@@ -12,24 +12,6 @@ import ModalFormIssue from "./ModalForms/ModalFormIssue";
 import gitHubHelper from "../utils/gitHubHelper";
 
 export default class ModalComponent extends React.Component{
-	sendIssue(data){
-		gitHubHelper.newIssue(data)
-			.then(function(dataInfo){
-				console.log(dataInfo);
-				this.setState({
-					showBtnSubmit: false,
-					textCloseBtn: 'OK',
-					responseMessage: {
-						text: (dataInfo.status == 201)
-							? 'Сообщение принял. Буду исправлять.'
-							: 'Сообщение не отправлено. Обратитесь к администратору.',
-						style: (dataInfo.status == 201)
-							? 'success'
-							: 'danger',
-					}
-				})
-			}.bind(this));
-	}
 
 	render() {
 		const modalForm = () => {
