@@ -24,7 +24,8 @@ export default class IssueModalForm extends React.Component{
 			showMessage: false,
 			textMessage: '',
 			titleMessage: 'Alert',
-			typeMessage: 'default'
+			typeMessage: 'success',
+			sizeMessage: 'default'
 		}
 	}
 
@@ -69,21 +70,27 @@ export default class IssueModalForm extends React.Component{
 	sendIssue(){
 		var data = {"title": this.state.title, "body": this.state.body, "labels": ["bug"]};
 		console.log(data);
-		this.hideModal();
-		this.setState({
-			showMessage: true,
-			textMessage: 'Сообщение об ошибке создано.',
-		});
-		/*gitHubHelper.newIssue(data)
+		gitHubHelper.newIssue(data)
 			.then(function(dataInfo){
 				console.log(dataInfo);
-				this.setState({
-					textMessage: (dataInfo.status == 201 && dataInfo.statusText == 'Created')
-						? 'Сообщение об ошибке создано. Благодарю за помощь. В ближайшее время ошибка будет исправлена!'
-						: 'Сообщение не отправлено. Ошибка сервера. Обратитесь к администратору.'
-				});
-				this.hideModal();
-			}.bind(this));*/
+				if(dataInfo.status == 201 && dataInfo.statusText == 'Created'){
+					this.hideModal();
+					this.setState({
+						showMessage: true,
+						titleMessage: 'Сообщение отправлено.',
+						textMessage: 'Ваше сообщение об ошибке создано. Благодарю за помощь. В ближайшее время ошибка будет исправлена!',
+					});
+				}
+				else{
+					this.setState({
+						showMessage: true,
+						typeMessage: 'danger',
+						titleMessage: 'Ошибка!',
+						textMessage: 'Сообщение не отправлено. Ошибка сервера. Обратитесь к администратору.',
+						sizeMessage: 'small'
+					});
+				}
+			}.bind(this));
 	}
 
 	render(){
@@ -135,6 +142,7 @@ export default class IssueModalForm extends React.Component{
 					title={this.state.titleMessage}
 					type={this.state.typeMessage}
 					text={this.state.textMessage}
+					size={this.state.sizeMessage}
 				/>
 			</div>
 

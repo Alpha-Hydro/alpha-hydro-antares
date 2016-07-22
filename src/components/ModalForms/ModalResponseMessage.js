@@ -20,15 +20,15 @@ export default class ModalResponseMessage extends React.Component{
 
 	render(){
 		return(
-			<Modal show={this.props.showMessage} onHide={this.hideModal.bind(this)} bsSize="small">
-				<Modal.Header closeButton>
+			<Modal show={this.props.showMessage} onHide={this.hideModal.bind(this)} bsSize={this.props.size}>
+				<Modal.Header closeButton className={'mb0 alert alert-'+this.props.type}>
 					<Modal.Title>{this.props.title}</Modal.Title>
 				</Modal.Header>
-				<Modal.Body>
+				<Modal.Body className="text-center">
 					{this.props.text}
 				</Modal.Body>
 				<Modal.Footer>
-					<Button onClick={this.hideModal.bind(this)} bsStyle="success">OK</Button>
+					<Button onClick={this.hideModal.bind(this)}>OK</Button>
 				</Modal.Footer>
 			</Modal>
 		)

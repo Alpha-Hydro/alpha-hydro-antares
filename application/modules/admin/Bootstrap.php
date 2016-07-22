@@ -109,7 +109,8 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
             'oil-categories',
             'forum',
             'media',
-            'media-categories'
+            'media-categories',
+            'search'
         ), array('index', 'list', 'edit', 'json'));
 
         $acl->allow('admin');
