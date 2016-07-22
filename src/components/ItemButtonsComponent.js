@@ -7,7 +7,6 @@ import ModalComponent from "./ModalComponent";
 export default class ItemButtonsComponent extends React.Component{
 	constructor(props){
 		super(props);
-		this.roles = ['manager', 'admin'];
 		this.state = {
 			show: false,
 			action: '',
@@ -43,6 +42,7 @@ export default class ItemButtonsComponent extends React.Component{
 		});
 	}
 
+
 	render() {
 		const bsStyle = (this.props.dataItem.bsstyle)?this.props.dataItem.bsstyle:'default';
 
@@ -51,40 +51,52 @@ export default class ItemButtonsComponent extends React.Component{
 				icon: "edit",
 				enable: true,
 				action: "edit",
-				role: "manager",
+				role: ['manager', 'admin'],
 				title:"Редактировать"
 			},
-			{	
+			{
 				icon: "trash",
 				enable: !this.props.dataItem.deleted,
 				action: "delete",
-				role: "admin",
+				role: ['admin'],
 				title:"Удалить"
 			},
 			{
 				icon: "open",
 				enable: this.props.dataItem.deleted,
 				action: "recover",
-				role: "admin",
+				role: ['admin'],
 				title:"Восcтановить"
 			},
 			{
 				icon: "eye-close",
 				enable: this.props.dataItem.active && !this.props.dataItem.deleted,
 				action: "disabled",
-				role: "admin",
+				role: ['admin'],
 				title:"Скрыть"
 			},
 			{
 				icon: "eye-open",
 				enable: !this.props.dataItem.active && !this.props.dataItem.deleted,
 				action: "enabled",
-				role: "admin",
+				role: ['admin'],
 				title:"Показать"
 			}
-		].map((button, i) =>
-			button.enable && <ButtonComponent key={i} bsStyle={bsStyle} eventClick={this.handlerClickButton.bind(this)} action={button.action} icon={button.icon} title={button.title}/>
-		);
+		]
+			/*.filter(
+				(button) => button.enable && button.role.indexOf(this.props.dataItem.role) != -1
+			)*/
+			.map(
+				(button, i) => button.enable && <ButtonComponent
+					key={i}
+					bsStyle={bsStyle}
+					eventClick={this.handlerClickButton.bind(this)}
+					action={button.action}
+					icon={button.icon}
+					title={button.title}
+					disabled={!(button.role.indexOf(this.props.dataItem.role) != -1)}/>
+			);
+
 
 		return (
 			<div className="btn-group btn-group-sm">

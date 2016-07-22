@@ -73,7 +73,9 @@ export default class ModificationBodyTableRow extends React.Component{
 					<Button
 						bsSize="small"
 						bsStyle="danger"
-						onClick={this.open.bind(this)}>
+						onClick={this.open.bind(this)}
+						disabled={this.props.role != 'admin'}
+					>
 						<Glyphicon glyph="trash"/>
 					</Button>
 					<Modal

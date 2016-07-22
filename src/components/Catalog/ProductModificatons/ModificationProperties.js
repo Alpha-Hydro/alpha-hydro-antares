@@ -90,6 +90,7 @@ export default class ModificationProperties extends React.Component{
 						handleChange={this.handleChange.bind(this)}
 						handleDelete={this.handleDelete.bind(this)}
 						handleAdd={this.handleAdd.bind(this)}
+						role={this.props.role}
 					/>
 				</Modal.Body>
 

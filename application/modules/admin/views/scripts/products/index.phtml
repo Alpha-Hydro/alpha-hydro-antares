@@ -50,6 +50,7 @@ $this->secondary_text = $this->categoryName.'Список товаров';
                          data-controller="products"
                          data-active="<?=($page->getActive() != 0)?true:false?>"
                          data-deleted="<?=($page->getDeleted() != 0)?true:false?>"
+                         data-role="<?=$this->identity->role?>"
                     ></div>
                 </td>
             </tr>
@@ -63,6 +64,7 @@ $this->secondary_text = $this->categoryName.'Список товаров';
      data-controller = "products"
      data-action="add"
      data-title="Добавить новый продукт"
+     data-role="<?=$this->identity->role?>"
 ></div>
 
 <?= $this->render('components/_paginator.phtml')?>

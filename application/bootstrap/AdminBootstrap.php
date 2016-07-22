@@ -37,6 +37,7 @@ class AdminBootstrap extends Zend_Application_Bootstrap_Bootstrap
         $view->addBasePath(APPLICATION_PATH."/modules/default/views/");
         $view->addScriptPath(APPLICATION_PATH."/layouts/scripts/");
         $view->auth = Zend_Auth::getInstance()->hasIdentity();
+        $view->identity = Zend_Auth::getInstance()->getStorage()->read();
     }
 
 

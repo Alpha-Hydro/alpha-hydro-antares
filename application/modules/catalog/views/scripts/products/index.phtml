@@ -46,6 +46,7 @@ $this->sidebar_headers = true;
                              data-active="<?=($entry->getActive() != 0)?true:false?>"
                              data-deleted="<?=($entry->getDeleted() != 0)?true:false?>"
                              data-bsStyle="primary"
+                             data-role="<?=$this->identity->role?>"
                         ></div>
                     </div>
                     <h2 class="h4">
@@ -83,6 +84,7 @@ $this->sidebar_headers = true;
                  data-controller = "products"
                  data-action="add"
                  data-title="Добавить новый продукт"
+                 data-role="<?=$this->identity->role?>"
             ></div>
         </div>
     <?php endif;?>

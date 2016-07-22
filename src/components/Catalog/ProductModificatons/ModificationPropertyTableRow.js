@@ -57,7 +57,7 @@ export default class ModificationPropertyTableRow extends  React.Component{
 					</FormGroup>
 				</td>
 				<td>
-					<Button bsStyle="danger" onClick={this.open.bind(this)}>
+					<Button bsStyle="danger" onClick={this.open.bind(this)} disabled={this.props.role != 'admin'}>
 						<Glyphicon glyph="trash"/>
 					</Button>
 

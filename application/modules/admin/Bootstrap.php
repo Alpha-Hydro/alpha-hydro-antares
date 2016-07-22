@@ -111,7 +111,22 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
             'media',
             'media-categories',
             'search'
-        ), array('index', 'list', 'edit', 'json'));
+        ), array(
+            'index',
+            'list',
+            'edit',
+            'json',
+            'get',
+            'property',
+            'modifications',
+            'modification-edit',
+            'modification-property-edit',
+            'category',
+            'slugify',
+            'slugify-product-sku',
+            'property-edit',
+            'view'
+        ));
 
         $acl->allow('admin');
 

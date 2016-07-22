@@ -53,12 +53,14 @@ $this->secondary_text = 'Список категорий';
                          data-controller="categories"
                          data-active="<?=($page->getActive() != 0)?true:false?>"
                          data-deleted="<?=($page->getDeleted() != 0)?true:false?>"
+                         data-role="<?=$this->identity->role?>"
                     ></div>
                 </td>
             </tr>
         <?php endforeach;?>
     </table>
 <?php endif;?>
+
 <div id="categoriesAddButtton"
      class="pull-left"
      data-id="<?=$this->current_category?>"
@@ -66,4 +68,5 @@ $this->secondary_text = 'Список категорий';
      data-action="add"
      data-title="Добавить категорию"
 ></div>
+
 <?= $this->render('components/_paginator.phtml')?>

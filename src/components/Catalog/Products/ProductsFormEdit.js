@@ -201,6 +201,7 @@ export default class ProductsFormEdit extends React.Component{
 									buttonText="Ствойства товара"
 									bsStyle="primary"
 									className="pull-right"
+									role={this.props.data.role}
 								/>
 							</Col>
 							<Col md={3}>
@@ -209,6 +210,7 @@ export default class ProductsFormEdit extends React.Component{
 									buttonText="Модификации товара"
 									bsStyle="primary"
 									className="pull-right"
+									role={this.props.data.role}
 
 								/>
 							</Col>
@@ -218,6 +220,7 @@ export default class ProductsFormEdit extends React.Component{
 									buttonText="Свойства модификаций"
 									bsStyle="primary"
 									className="pull-right"
+									role={this.props.data.role}
 								/>
 							</Col>
 						</Row>
