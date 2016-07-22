@@ -23,6 +23,7 @@ $this->sidebar_headers = true;
                          data-id="<?=$entry->id?>"
                          data-controller="categories"
                          data-active="<?=($entry->active != 0)?true:false?>"
+                         data-role="<?=$this->identity->role?>"
                     ></div>
                 </div>
             <?php endif;?>
