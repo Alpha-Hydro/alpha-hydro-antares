@@ -20,6 +20,7 @@
                          data-id="<?=$entry->id?>"
                          data-controller="categories"
                          data-active="<?=($entry->active != 0)?true:false?>"
+                         data-role="<?=$this->identity->role?>"
                     ></div>
                 </div>
             <?php endif;?>
@@ -28,11 +29,12 @@
     <?php if($this->auth):?>
         <div class="col-md-3 text-center">
             <div class="catalog-add-button">
-                <div id="addButtonComponent"
+                <div id="categoriesAddButtton"
                      data-id="0"
                      data-controller = "categories"
                      data-action="add"
                      data-title="Добавить категорию"
+                     data-role="<?=$this->identity->role?>"
                 ></div>
             </div>
         </div>

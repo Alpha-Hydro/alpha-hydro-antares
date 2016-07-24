@@ -1,0 +1,1 @@
+ALTER TABLE subproducts ADD deleted INT DEFAULT 0 NOT NULL;

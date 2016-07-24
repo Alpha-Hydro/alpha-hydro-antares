@@ -13,7 +13,7 @@
                              data-name="<?=$this->product->getName()?>"
                              data-sku="<?=$this->product->getSku()?>"
                         ></div>
-                        <a class="alpha-icon-print" href="<?= $this->url(array('fullPath' => $this->product->getFullPath()), 'printPdf', true, false) ?>" target="_blank">Печать</a>
+                        <a class="alpha-icon-print" href="<?= $this->url(array('fullPath' => $this->product->getFullPath()), 'printPdf', true, false) ?>" target="_blank" rel="noopener">Печать</a>
                     </div>
                 <?php endif;?>
             <?php else: ?>

@@ -152,6 +152,7 @@ class Admin_Model_PassportPdf extends TCPDF
      */
     public function showImages()
     {
+        $y = $this->y;
         if($this->getProduct()->getImage()){
             //$this->SetXY($this->x, $this->y);
             $image_file = APPLICATION_ROOT . $this->getProduct()->getUploadPath() . $this->getProduct()->getImage();
@@ -161,7 +162,7 @@ class Admin_Model_PassportPdf extends TCPDF
 
         if($this->getProduct()->getDraft()){
             $image_draft_file = APPLICATION_ROOT  . $this->getProduct()->getUploadPathDraft() . $this->getProduct()->getDraft();
-            $this->SetX($this->x + 50);
+            $this->SetXY($this->x + 50, $y);
             $this->Image($image_draft_file,$this->x,$this->y, '', 45,'','','',true,190);
             $this->SetY($this->getImageRBY());
         }
