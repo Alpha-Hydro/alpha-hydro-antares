@@ -3,7 +3,6 @@ var AdminAuth = (function () {
         var _this = this;
         this.handle = function (e) {
             var self = _this;
-            console.log(window.location.hostname + window.location.pathname + window.location.search);
             if (e.altKey && e.keyCode == 120) {
                 window.location.href = 'http://admin.' + window.location.hostname + window.location.pathname + window.location.search;
             }
