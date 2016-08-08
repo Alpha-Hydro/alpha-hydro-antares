@@ -18,6 +18,7 @@ $menu-line-height: 40px;
   .sidebar-heading{
     background-color: lighten($alpha-gray-lighter, 3%);
     .badge{
+      margin-top: 12px;
       display: none;
       @include transition(all 0.2s ease-in-out 0s);
     }
