@@ -42,10 +42,12 @@ $this->secondary_text = 'Статические страницы';
         </tr>
     <?php endforeach;?>
 </table>
+
 <div class="pull-left">
     <a href="<?=$this->url(
         array('module'=>'admin', 'controller' => 'pages', 'action' => 'add'),
         false,true
-    )?>" class="btn btn-default">Добавить раздел</a>
+    )?>" class="btn btn-default <?=($this->identity->role != 'admin')?'disabled':''?>">Добавить раздел</a>
 </div>
+
 <?= $this->render('components/_paginator.phtml')?>

@@ -1,3 +1,9 @@
+<?php
+$this->headScript()
+    ->prependFile('//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js')
+    ->prependFile('//code.jquery.com/jquery-1.11.3.min.js');
+?>
+
 <form action="" id="itemEdit" enctype="multipart/form-data" method="post">
     <div class="row">
         <div class="col-md-3">
@@ -18,7 +24,9 @@
     <ul class="nav nav-tabs nav-justified mtb2"  role="tablist">
         <li role="presentation" class="active"><a href="#fieldset-desc" aria-controls="fieldset-desc" role="tab" data-toggle="tab">Основные</a></li>
         <li role="presentation"><a href="#fieldset-seo" aria-controls="fieldset-seo" role="tab" data-toggle="tab">SEO</a></li>
+        <?php if($this->identity->role === 'admin'):?>
         <li role="presentation"><a href="#fieldset-additionally" aria-controls="fieldset-additionally" role="tab" data-toggle="tab">Дополнительно</a></li>
+        <?php endif;?>
     </ul>
     <div class="tab-content">
         <?= $this->form->desc?>

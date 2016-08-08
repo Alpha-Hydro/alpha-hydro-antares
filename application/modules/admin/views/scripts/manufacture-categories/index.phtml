@@ -58,6 +58,6 @@ $this->secondary_text = 'Список категорий';
     <a href="<?=$this->url(
         array('module'=>'admin', 'controller' => 'manufacture-categories', 'action' => 'add'),
         false,true
-    )?>" class="btn btn-default">Добавить категорию</a>
+    )?>" class="btn btn-default <?=($this->identity->role != 'admin')?'disabled':''?>">Добавить категорию</a>
 </div>
 <?= $this->render('components/_paginator.phtml')?>

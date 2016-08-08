@@ -57,7 +57,7 @@ $this->secondary_text = $this->categoryName.'Список товаров';
             'id' => $this->category_id
             ),
         false,true
-    )?>" class="btn btn-default">Добавить товар</a>
+    )?>" class="btn btn-default <?=($this->identity->role != 'admin')?'disabled':''?>">Добавить товар</a>
 </div>
 <?= $this->render('components/_paginator.phtml')?>
 

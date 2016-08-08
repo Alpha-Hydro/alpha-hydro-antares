@@ -1,3 +1,4 @@
+<?php $auth = $this->identity->role;?>
 <div class="btn-group btn-group-sm" role="group">
     <a href="<?=$this->url(array(
         'module' => 'admin',
@@ -16,7 +17,7 @@
             'action' => 'delete',
             'id'=>$this->item_id),
             'adminEdit', true, false);?>"
-           class="btn btn-default"
+           class="btn btn-default <?=($auth != 'admin')?'disabled':''?>"
            title="Удалить">
             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
         </a>
@@ -26,7 +27,7 @@
             'action' => 'enable',
             'id'=>$this->item_id),
             'adminEdit', true, false);?>"
-           class="btn btn-<?=($this->active)?'default':'primary'?>"
+           class="btn btn-<?=($this->active)?'default':'primary'?> <?=($auth != 'admin')?'disabled':''?>"
            title="<?=($this->active)?'скрыть':'показать'?>">
             <span class="glyphicon glyphicon-eye-<?=($this->active)?'close':'open'?>" aria-hidden="true"></span>
         </a>
@@ -37,7 +38,7 @@
             'action' => 'delete',
             'id'=>$this->item_id),
             'adminEdit', true, false);?>"
-           class="btn btn-default"
+           class="btn btn-default <?=($auth != 'admin')?'disabled':''?>"
            title="Восстановить">
             <span class="glyphicon glyphicon-open" aria-hidden="true"></span>
         </a>

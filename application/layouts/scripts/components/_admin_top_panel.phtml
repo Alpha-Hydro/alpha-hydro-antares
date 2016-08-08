@@ -6,12 +6,12 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <ul class="nav navbar-nav navbar-left">
                     <li><a href="/admin/<?=$this->adminPath?>">Advanced Admin</a></li>
                 </ul>
             </div>
-            <div class="col-md-8 text-center">
+            <div class="col-md-4 text-center">
                 <?php if($action != 'articles'):?>
                     <div
                         id="admin-panel"
@@ -22,7 +22,7 @@
                     ></div>
                 <?php endif;?>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <?php $this->navbarRightMenu();?>
             </div>
         </div>
