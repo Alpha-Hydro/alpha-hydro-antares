@@ -97,6 +97,8 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         $acl->allow('manager', array(
             'index',
             'home',
+            'contacts',
+            'about',
             'pages',
             'categories',
             'products',
