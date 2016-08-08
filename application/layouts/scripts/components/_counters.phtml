@@ -3,7 +3,7 @@
     (function (d, w, c) {
         (w[c] = w[c] || []).push(function() {
             try {
-                w.yaCounter30986941 = new Ya.Metrika({id:30986941,
+                w.yaCounter<?=$this->yaCounters()?> = new Ya.Metrika({id:<?=$this->yaCounters()?>,
                     accurateTrackBounce:true});
             } catch(e) { }
         });
@@ -20,7 +20,7 @@
         } else { f(); }
     })(document, window, "yandex_metrika_callbacks");
 </script>
-<noscript><div><img src="//mc.yandex.ru/watch/30986941" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<noscript><div><img src="//mc.yandex.ru/watch/<?=$this->yaCounters()?>" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
 
 <!-- Google Analytics counter -->
