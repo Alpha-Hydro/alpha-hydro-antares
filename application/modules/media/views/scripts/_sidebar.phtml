@@ -11,8 +11,8 @@
                     <a href="<?=$this->url(array(
                         'fullPath' => $category->getPath(),
                     ), 'media', true, false)?>"><?=$this->escape($category->getName())?></a>
-                    <?php else: ?>
-                    <?=$this->escape($category->getName())?>
+                <?php else: ?>
+                    <span><?=$this->escape($category->getName())?></span>
                 <?php endif; ?>
             </li>
         <?php endforeach;?>
