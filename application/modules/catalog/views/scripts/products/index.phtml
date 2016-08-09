@@ -11,7 +11,7 @@ $this->breadcrumbs = true;
 $this->sidebar_headers = true;
 ?>
 
-<?php if($category && $category->getContentHtml()):?>
+<?php if($category && $category->getContentHtml() != ''):?>
     <div class="col-md-12">
         <?php if($category->getImage()):?>
         <div class="thumbnail pull-right ml2 mb1">
