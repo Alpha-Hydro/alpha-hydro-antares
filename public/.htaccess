@@ -1,8 +1,8 @@
-Deny from 95.31.130.9
-##AddHandler x-httpd-php53 .php
-AddDefaultCharset UTF-8
-
 Options +FollowSymlinks
+
+DirectoryIndex index.php
+
+AddDefaultCharset UTF-8
 
 RewriteEngine On
 
@@ -13,17 +13,20 @@ RewriteEngine On
 		Header append Vary: Accept-Encoding
 	</FilesMatch>
 	<FilesMatch "\.(ico|jpe?g|png|gif|swf)$">
-        Header set Cache-Control "public"
+        Header set Cache-Control "public, max-age=2592000, must-revalidate"
     </FilesMatch>
     <FilesMatch "\.(css)$">
-        Header set Cache-Control "public"
+        Header set Cache-Control "public, max-age=2592000, must-revalidate"
     </FilesMatch>
     <FilesMatch "\.(js)$">
-        Header set Cache-Control "private"
+        Header set Cache-Control "private, max-age=2592000, must-revalidate"
     </FilesMatch>
-    <FilesMatch "\.(x?html?|php)$">
-        Header set Cache-Control "private, must-revalidate"
+    <FilesMatch "\.(p?html?|php)$">
+        Header set Cache-Control "private, max-age=2592000, must-revalidate"
     </FilesMatch>
+#    <FilesMatch "\.(ogg|ogv|svg|svgz|eot|otf|woff|mp4|ttf|rss|atom|jpg|jpeg|gif|png|ico|zip|tgz|gz|rar|bz2|doc|xls|exe|ppt|tar|mid|midi|wav|bmp|rtf)$">
+#        Header set Cache-Control "max-age=2592000, must-revalidate"
+#    </FilesMatch>
 </IfModule>
 
 <IfModule mod_expires.c>
@@ -61,15 +64,20 @@ RewriteEngine On
 </ifModule>
 
 # Редирект с www на /
+RewriteCond %{HTTP_HOST} !^www\.alfa-hydro\.loc$ [NC]
 RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteCond %{REQUEST_URI} !^/robots\.txt$ [NC]
+RewriteCond %{REQUEST_URI} !^/yandex\_(.+)\.html$ [NC]
 RewriteRule ^ http://%1%{REQUEST_URI} [R=301,L]
 
 # Редирект с внешних доменов на alpha-hydro.com
-# RewriteCond %{HTTP_HOST} ^alpha-hydro\.ru$ [OR]
+RewriteCond %{HTTP_HOST} ^alpha-hydro\.ru$ [OR]
 RewriteCond %{HTTP_HOST} ^4494944\.ru$ [OR]
 RewriteCond %{HTTP_HOST} ^4494944\.org$ [OR]
 RewriteCond %{HTTP_HOST} ^alfa-hydro\.ru$ [OR]
-RewriteCond %{HTTP_HOST} ^alfa-hydro\.com$ [NC]
+RewriteCond %{HTTP_HOST} ^alfa-hydro\.com$
+RewriteCond %{REQUEST_URI} !^/robots\.txt$
+RewriteCond %{REQUEST_URI} !^/yandex\_(.+)\.html$ [NC]
 RewriteRule ^ http://alpha-hydro.com%1%{REQUEST_URI} [R=301,L]
 
 # Обязательный слеш в конце пути
@@ -84,8 +92,3 @@ RewriteCond %{REQUEST_FILENAME} -l [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^.*$ - [NC,L]
 RewriteRule ^.*$ index.php [NC,L]
-
-#php_flag xdebug.profiler_enable Off
-#php_value xdebug.profiler_output_dir "/var/www/hansa-flex"
-
-#AddDefaultCharset Off
