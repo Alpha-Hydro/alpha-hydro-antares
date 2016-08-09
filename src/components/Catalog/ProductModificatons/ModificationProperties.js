@@ -18,7 +18,7 @@ export default class ModificationProperties extends React.Component{
 	}
 
 	componentWillMount(){
-		dataHelpers.getCategoryProductModification(this.props.productId)
+		dataHelpers.getCategoryProductModification(this.props.id)
 			.then(function (response) {
 				this.setState({columns: response.columns});
 			}.bind(this));
@@ -54,7 +54,7 @@ export default class ModificationProperties extends React.Component{
 	}
 
 	onCancel(){
-		dataHelpers.getCategoryProductModification(this.props.productId)
+		dataHelpers.getCategoryProductModification(this.props.id)
 			.then(function (response) {
 				this.setState({columns: response.columns, deleted: []}, () => {
 					this.props.hideModal();
@@ -85,7 +85,7 @@ export default class ModificationProperties extends React.Component{
 
 				<Modal.Body>
 					<ModificationPropertiesTable
-						productId={this.props.productId}
+						productId={this.props.id}
 						dataTable={this.state.columns}
 						handleChange={this.handleChange.bind(this)}
 						handleDelete={this.handleDelete.bind(this)}

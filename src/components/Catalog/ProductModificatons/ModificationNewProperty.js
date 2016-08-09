@@ -9,7 +9,7 @@ export default class ModificationNewProperty extends React.Component{
 		super(props);
 		this.state = {
 			id: 'new',
-			productId: this.props.productId,
+			productId: this.props.id,
 			order: '',
 			name: ''
 		}
@@ -28,7 +28,7 @@ export default class ModificationNewProperty extends React.Component{
 		if(newProperty.order && newProperty.name){
 			this.setState({
 				id: 'new',
-				productId: this.props.productId,
+				productId: this.props.id,
 				order: '',
 				name: ''
 			}, () => {this.props.handleAdd(newProperty)});

@@ -90,7 +90,7 @@ export default class ItemButtonsComponent extends React.Component{
 				(button, i) => button.enable && <ButtonComponent
 					key={i}
 					bsStyle={bsStyle}
-					eventClick={this.handlerClickButton.bind(this)}
+					onClick={this.handlerClickButton.bind(this)}
 					action={button.action}
 					icon={button.icon}
 					title={button.title}

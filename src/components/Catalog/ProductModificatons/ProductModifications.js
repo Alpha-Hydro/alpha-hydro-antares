@@ -19,7 +19,7 @@ export default class ProductModifications extends React.Component{
 	}
 	
 	componentWillMount(){
-		dataHelpers.getCategoryProductModification(this.props.productId)
+		dataHelpers.getCategoryProductModification(this.props.id)
 			.then(function (response) {
 				this.setState({
 					columns: response.columns,
@@ -59,7 +59,7 @@ export default class ProductModifications extends React.Component{
 	}
 
 	onCancel(){
-		dataHelpers.getCategoryProductModification(this.props.productId)
+		dataHelpers.getCategoryProductModification(this.props.id)
 			.then(function (response) {
 				this.setState({
 					columns: response.columns,
@@ -96,7 +96,7 @@ export default class ProductModifications extends React.Component{
 
 				<Modal.Body>
 					<ProductModificationsTable
-						productId={this.props.productId}
+						productId={this.props.id}
 						columns={this.state.columns}
 						rows={this.state.rows}
 						handleChange={this.handleChange.bind(this)}

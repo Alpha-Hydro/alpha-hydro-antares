@@ -19,7 +19,7 @@ export default class ProductPropertyEditButton extends React.Component{
 	}
 
 	componentWillMount(){
-		dataHelpers.getCategoryProductProperties(this.props.productId)
+		dataHelpers.getCategoryProductProperties(this.props.id)
 			.then(function (response) {
 				this.setState({properties:response})
 			}.bind(this));
@@ -76,7 +76,7 @@ export default class ProductPropertyEditButton extends React.Component{
 	}
 
 	onCancel(){
-		dataHelpers.getCategoryProductProperties(this.props.productId)
+		dataHelpers.getCategoryProductProperties(this.props.id)
 			.then(function (response) {
 				this.setState({
 					properties:response,

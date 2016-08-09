@@ -37,7 +37,6 @@ export default class ProductAddButton extends React.Component{
 		return (
 			<div>
 				<Button
-					{...this.props}
 					onClick={this.showModal.bind(this)}
 					disabled={this.props.dataItem.role != 'admin'}>
 					{this.props.dataItem.title}

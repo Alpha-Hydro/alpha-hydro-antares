@@ -5,7 +5,7 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 export default class ButtonComponent extends React.Component{
 
 	handlerClick(e){
-		this.props.eventClick(this.props.action, this.props.title);
+		this.props.onClick(this.props.action, this.props.title);
 	}
 
   render(){

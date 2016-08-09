@@ -37,10 +37,8 @@ export default class CategoriesAddButton extends React.Component{
 		return (
 			<div>
 				<Button
-					{...this.props}
 					onClick={this.showModal.bind(this)}
-					disabled={this.props.dataItem.role != 'admin'}
-				>
+					disabled={this.props.dataItem.role != 'admin'}>
 					{this.props.dataItem.title}
 				</Button>
 				<Modal

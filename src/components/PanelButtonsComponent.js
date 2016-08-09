@@ -76,7 +76,7 @@ export default class PanelButtonsComponent extends React.Component{
 			button.enable && <ButtonComponent
 				key={i}
 				bsStyle={bsStyle}
-				eventClick={this.handlerClickButton.bind(this)}
+				onClick={this.handlerClickButton.bind(this)}
 				action={button.action}
 				icon={button.icon}
 				title={button.title}
@@ -85,7 +85,7 @@ export default class PanelButtonsComponent extends React.Component{
 
 		return (
 			<div>
-				<ButtonGroup {...this.props}>
+				<ButtonGroup bsClass={this.props.bsClass}>
 					{Buttons}
 				</ButtonGroup>
 				<ModalComponent

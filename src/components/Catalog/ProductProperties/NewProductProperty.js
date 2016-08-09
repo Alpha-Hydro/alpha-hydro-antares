@@ -9,7 +9,7 @@ export default class NewProductProperty extends React.Component{
 		super(props);
 		this.state = {
 			id: 'new',
-			productId: props.productId,
+			productId: props.id,
 			order: '',
 			name: '',
 			value: ''

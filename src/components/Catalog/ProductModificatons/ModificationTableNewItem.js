@@ -12,7 +12,7 @@ export default class ModificationTableNewItem extends React.Component{
 		this.state = {
 			item: {
 				id: 'new',
-				parentId: props.productId,
+				parentId: props.id,
 				sku: '',
 				order: ''
 			},

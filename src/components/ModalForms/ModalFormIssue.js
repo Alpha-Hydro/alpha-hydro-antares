@@ -15,24 +15,27 @@ import ControlLabel from "react-bootstrap/lib/ControlLabel";
 import ModalResponseMessage from "./ModalResponseMessage";
 import gitHubHelper from "../../utils/gitHubHelper";
 
-export default class IssueModalForm extends React.Component{
+export default class ModalFormIssue extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
+			url: '',
 			title: '',
 			body: '',
+			label: '',
 			showMessage: false,
 			textMessage: '',
 			titleMessage: 'Alert',
 			typeMessage: 'success',
-			sizeMessage: 'default'
+			sizeMessage: 'lg'
 		}
 	}
 
 	hideModal() {
 		this.props.hide();
 		this.setState({
-			title: document.location.href,
+			url: document.location.href,
+			title: '',
 			body: ''
 		});
 	}
@@ -45,7 +48,7 @@ export default class IssueModalForm extends React.Component{
 
 	componentWillMount(){
 		this.setState({
-			title: document.location.href
+			url: document.location.href
 		});
 	}
 
@@ -68,7 +71,10 @@ export default class IssueModalForm extends React.Component{
 	}
 
 	sendIssue(){
-		var data = {"title": this.state.title, "body": this.state.body, "labels": ["bug"]};
+		var data = {
+			"title": this.state.title,
+			"body": '## ' + this.state.url + '\n\n' + this.state.body,
+			"labels": [(this.state.label)?this.state.label:'ошибка']};
 		console.log(data);
 		gitHubHelper.newIssue(data)
 			.then(function(dataInfo){
@@ -77,7 +83,7 @@ export default class IssueModalForm extends React.Component{
 					this.hideModal();
 					this.setState({
 						showMessage: true,
-						titleMessage: 'Сообщение отправлено.',
+						titleMessage: 'Сообщение #' + dataInfo.data.number +'.',
 						textMessage: 'Ваше сообщение об ошибке создано. Благодарю за помощь. В ближайшее время ошибка будет исправлена!',
 					});
 				}
@@ -109,7 +115,7 @@ export default class IssueModalForm extends React.Component{
 					<Modal.Body>
 						<form>
 							<FormGroup>
-								<ControlLabel>Заголовок (url страницы)</ControlLabel>
+								<ControlLabel>Название ошибки</ControlLabel>
 								<FormControl
 									type="text"
 									placeholder="Название ошибки"
@@ -117,6 +123,20 @@ export default class IssueModalForm extends React.Component{
 									value={this.state.title}
 									onChange={this.handleChange('title').bind(this)}
 								/>
+							</FormGroup>
+							<FormGroup>
+								<ControlLabel>Тип ошибки</ControlLabel>
+								<FormControl
+									componentClass="select"
+									placeholder="select"
+									name="label"
+									onChange={this.handleChange('label').bind(this)}>
+									<option value="select">...</option>
+									<option value="ошибка">ошибка</option>
+									<option value="доработка">доработка</option>
+									<option value="enhancement">предложение</option>
+									<option value="question">вопрос</option>
+								</FormControl>
 							</FormGroup>
 							<FormGroup>
 								<ControlLabel>Описание ошибки</ControlLabel>

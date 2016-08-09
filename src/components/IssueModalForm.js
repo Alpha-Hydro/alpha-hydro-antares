@@ -49,7 +49,8 @@ export default class IssueModalForm extends React.Component{
 	hideModal() {
 		this.setState({
 			showModal: false,
-			title: document.location.href,
+			url: document.location.href,
+			title: '',
 			body: ''
 		});
 	}
@@ -80,7 +81,17 @@ export default class IssueModalForm extends React.Component{
 		const modalBody = (!this.state.responseMessage)
 			?	<form>
 					<FormGroup>
-						<ControlLabel>Заголовок (url страницы)</ControlLabel>
+						<ControlLabel>Url страницы</ControlLabel>
+						<FormControl
+							type="text"
+							placeholder="Url страницы"
+							name="url"
+							value={this.state.url}
+							onChange={this.handleChange('url').bind(this)}
+						/>
+					</FormGroup>
+					<FormGroup>
+						<ControlLabel>Заголовок ошибки</ControlLabel>
 						<FormControl
 							type="text"
 							placeholder="Название ошибки"
@@ -88,6 +99,13 @@ export default class IssueModalForm extends React.Component{
 							value={this.state.title}
 							onChange={this.handleChange('title').bind(this)}
 						/>
+					</FormGroup>
+					<FormGroup>
+						<ControlLabel>Select</ControlLabel>
+						<FormControl componentClass="select" placeholder="select">
+							<option value="select">select</option>
+							<option value="other">...</option>
+						</FormControl>
 					</FormGroup>
 					<FormGroup>
 						<ControlLabel>Описание ошибки</ControlLabel>
