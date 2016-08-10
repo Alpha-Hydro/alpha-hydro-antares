@@ -22,7 +22,7 @@ class Api_CatalogController extends Zend_Controller_Action
      * @var Catalog_Model_Products
      */
     protected $_modelProducts = null;
-    
+
 
     public function init()
     {
@@ -95,20 +95,49 @@ class Api_CatalogController extends Zend_Controller_Action
                 $result[] = array(
                     'id' => $product->getId(),
                     'group' => $id_group,
-                    'artikul' => $product->getSku(),
-                    'name' => $product->getName(),
+                    'artikul' => '',
+                    'name' => $product->getName().' ('.$product->getSku().')',
+                    'elements' => $this->getElementsModifications($product),
                 );
+
+                //$result = array_merge($result, $this->getElementsModifications($product));
+
+                //$result[$product->getId()] = $this->getElementsModifications($product);
             }
         }
 
         return $result;
     }
 
+    /**
+     * @param Catalog_Model_Products $product
+     * @return array
+     */
+    public function getElementsModifications(Catalog_Model_Products $product){
+        $cache = Zend_Registry::get('cache');
+        $cacheName = 'productModifications_'.$product->getId();
+
+        $result = array();
+        //$group = $this->_modelProductsMapper->findCategoryRel($product->getId(), $this->_modelCategories);
+
+        if(!$modifications = $cache->load($cacheName)){
+            ini_set('max_execution_time', 900);
+            $modifications = $this->_modelProductsMapper->findSubproductsRel($product->getId());
+            $cache->save($modifications, $cacheName, array('api','Catalog', 'productModifications'));
+        }
+
+
+        if($modifications){
+            foreach ($modifications as $modification) {
+                $result[] = array(
+                    'id' => $modification->getId(),
+                    'group' => $product->getId(),
+                    'artikul' => str_replace(' ','',$modification->getSku()),
+                    'name' => $modification->getSku(),
+                );
+            }
+        }
+
+        return $result;
+    }
 }
-
-
-
-
-
-
-
