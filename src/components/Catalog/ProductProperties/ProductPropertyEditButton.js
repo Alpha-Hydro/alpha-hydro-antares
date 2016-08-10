@@ -92,7 +92,7 @@ export default class ProductPropertyEditButton extends React.Component{
 				<Button
 					{...this.props}
 					onClick={this.open.bind(this)} >
-					{(!this.props.buttonText)?<Glyphicon glyph="pencil" />:this.props.buttonText}
+					{(!this.props.title)?<Glyphicon glyph="pencil" />:this.props.title}
 				</Button>
 				<Modal
 					dialogClassName="modal-lg"

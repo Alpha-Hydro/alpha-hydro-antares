@@ -96,7 +96,7 @@ export default class ProductModifications extends React.Component{
 
 				<Modal.Body>
 					<ProductModificationsTable
-						productId={this.props.id}
+						id={this.props.id}
 						columns={this.state.columns}
 						rows={this.state.rows}
 						handleChange={this.handleChange.bind(this)}

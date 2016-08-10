@@ -27,7 +27,7 @@ export default class ProductModificationPropertyEditButton extends React.Compone
 				<Button
 					{...this.props}
 					onClick={this.openModificationPropertiesTable.bind(this)} >
-					{(!this.props.buttonText)?<Glyphicon glyph="cog" />:this.props.buttonText}
+					{(!this.props.title)?<Glyphicon glyph="cog" />:this.props.title}
 					<ModificationProperties
 						{...this.props}
 						showModal={this.state.showModificationPropertiesTable}

@@ -91,7 +91,7 @@ switch(TARGET) {
 		break;
 	case 'backend:dev':
 		config = merge(common, {
-			devtool: 'eval-source-map',
+			devtool: 'inline-source-map',
 			entry: {
 				backend: path.join(PATHS.app, 'backend.js')
 			},

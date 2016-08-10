@@ -27,7 +27,7 @@ export default class ProductModificationEditButton extends React.Component{
 				<Button
 					{...this.props}
 					onClick={this.openModificationTable.bind(this)}	>
-					{(!this.props.buttonText)?<Glyphicon glyph="pencil" />:this.props.buttonText}
+					{(!this.props.title)?<Glyphicon glyph="pencil" />:this.props.title}
 					<ProductModifications
 						{...this.props}
 						showModal={this.state.showModificationTable}

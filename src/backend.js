@@ -49,7 +49,8 @@ const productPropertyEdit = document.getElementById('product-property-edit');
 if (productPropertyEdit){
 	productId = productPropertyEdit.getAttribute('data-id');
 	ReactDOM.render(<ProductPropertyEditButton
-		id = {productId}
+		role = {productPropertyEdit.getAttribute('role')}
+		id = {productPropertyEdit.getAttribute('data-id')}
 		bsStyle="primary"
 		bsSize="small"
 		className="pull-right"
@@ -61,8 +62,14 @@ if (productModificationEdit){
 	productId = productModificationEdit.getAttribute('data-id');
 	ReactDOM.render(
 		<ButtonGroup className="pull-right"	bsSize="small">
-			<ProductModificationEditButton id = {productId} bsStyle="primary"/>
-			<ProductModificationPropertyEditButton id = {productId} bsStyle="primary"/>
+			<ProductModificationEditButton
+				id = {productId}
+				bsStyle="primary"
+				role = {productPropertyEdit.getAttribute('role')}/>
+			<ProductModificationPropertyEditButton
+				id = {productId}
+				bsStyle="primary"
+				role = {productPropertyEdit.getAttribute('role')}/>
 		</ButtonGroup>
 		, productModificationEdit);
 }

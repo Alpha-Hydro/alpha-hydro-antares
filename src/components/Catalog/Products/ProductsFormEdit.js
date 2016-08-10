@@ -197,8 +197,8 @@ export default class ProductsFormEdit extends React.Component{
 							</Col>
 							<Col md={3}>
 								<ProductPropertyEditButton
-									productId={this.props.data.id}
-									buttonText="Ствойства товара"
+									id={this.props.data.id}
+									title="Ствойства товара"
 									bsStyle="primary"
 									className="pull-right"
 									role={this.props.data.role}
@@ -206,8 +206,8 @@ export default class ProductsFormEdit extends React.Component{
 							</Col>
 							<Col md={3}>
 								<ProductModificationEditButton
-									productId={this.props.data.id}
-									buttonText="Модификации товара"
+									id={this.props.data.id}
+									title="Модификации товара"
 									bsStyle="primary"
 									className="pull-right"
 									role={this.props.data.role}
@@ -216,8 +216,8 @@ export default class ProductsFormEdit extends React.Component{
 							</Col>
 							<Col md={3}>
 								<ProductModificationPropertyEditButton
-									productId={this.props.data.id}
-									buttonText="Свойства модификаций"
+									id={this.props.data.id}
+									title="Свойства модификаций"
 									bsStyle="primary"
 									className="pull-right"
 									role={this.props.data.role}

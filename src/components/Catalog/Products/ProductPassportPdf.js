@@ -88,7 +88,7 @@ export default class ProductPassportPdf extends React.Component{
 				</Modal.Header>
 
 				<Modal.Body>
-					<form id="print-passport" name="modification" method="post" enctype="multipart/form-data" action={'/admin/products/passport/'+this.props.dataItem.id} target="_blank" rel="noopener">
+					<form id="print-passport" name="modification" method="post" encType="multipart/form-data" action={'/admin/products/passport/'+this.props.dataItem.id} target="_blank" rel="noopener">
 						<Table striped bordered hover className="text-size-small text-center">
 							<thead>
 								{this.headTable()}

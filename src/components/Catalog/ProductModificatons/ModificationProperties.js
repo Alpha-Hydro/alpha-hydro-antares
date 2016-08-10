@@ -85,7 +85,7 @@ export default class ModificationProperties extends React.Component{
 
 				<Modal.Body>
 					<ModificationPropertiesTable
-						productId={this.props.id}
+						id={this.props.id}
 						dataTable={this.state.columns}
 						handleChange={this.handleChange.bind(this)}
 						handleDelete={this.handleDelete.bind(this)}

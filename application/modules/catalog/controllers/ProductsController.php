@@ -155,7 +155,7 @@ class Catalog_ProductsController extends Zend_Controller_Action
 
         $subproducts = new Catalog_Model_Mapper_Subproducts();
         $select = $subproducts->getDbTable()->select()
-            //->where('deleted != ?', 1)
+            ->where('deleted != ?', 1)
             ->order('order ASC');
         $modifications = $products->findSubproductsRel($product->getId(), $select);
 
