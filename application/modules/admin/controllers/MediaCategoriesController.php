@@ -20,11 +20,18 @@ class MediaCategoriesController extends BaseController
      */
     protected $_forms = array();
 
+    /**
+     * @var null
+     *
+     */
+    protected $_upload_path = null;
+
     public function init()
     {
         $this->_modelMapper = new Media_Model_Mapper_MediaCategories();
         $this->_model = new Media_Model_MediaCategories();
         $this->_forms['edit'] = new Admin_Form_MediaCategoriesEdit();
+        $this->_upload_path = '/upload/media/categories/';
     }
 
     public function indexAction()

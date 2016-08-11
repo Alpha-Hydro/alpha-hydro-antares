@@ -30,12 +30,19 @@ class PagesController extends BaseController
      */
     protected $_forms = array();
 
+    /**
+     * @var null
+     *
+     */
+    protected $_upload_path = null;
+
 
     public function init()
     {
         $this->_modelMapper = new Pages_Model_Mapper_Pages();
         $this->_model = new Pages_Model_Pages();
         $this->_forms['edit'] = new Admin_Form_PageEdit();
+        $this->_upload_path = '/upload/pages/';
 
         $this->_redirector = $this->_helper->getHelper('Redirector');
     }
@@ -78,6 +85,7 @@ class PagesController extends BaseController
 
         if(is_null($page))
             $this->_redirector->gotoSimpleAndExit('index');
+
 
         if($this->_request->getParam('dataPage')){
             $dataPage = $this->_request->getParam('dataPage');

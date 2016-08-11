@@ -16,16 +16,11 @@ class OilController extends BaseController
     /**
      * @var Oil_Model_Oil
      *
-     *
-     *
      */
     protected $_model = null;
 
     /**
      * @var Oil_Model_Mapper_OilCategories
-     *
-     *
-     *
      *
      */
     protected $_modelCategoriesMapper = null;
@@ -33,19 +28,24 @@ class OilController extends BaseController
     /**
      * @var Zend_Form[];
      *
-     *
-     *
      */
     protected $_forms = array();
 
     /**
      * @var Zend_Controller_Action_Helper_Redirector
      *
-     *
-     *
      */
     protected $_redirector = null;
 
+    /**
+     * @var null
+     *
+     */
+    protected $_upload_path = null;
+
+    /**
+     * @var null
+     */
     protected $_count_item_on_page = null;
 
     public function init()
@@ -54,6 +54,7 @@ class OilController extends BaseController
         $this->_model = new Oil_Model_Oil();
         $this->_modelCategoriesMapper = new Oil_Model_Mapper_OilCategories();
         $this->_forms['edit'] = new Admin_Form_OilEdit();
+        $this->_upload_path = '/upload/oil/items/';
 
         $this->_count_item_on_page = 10;
         $this->_redirector = $this->_helper->getHelper('Redirector');

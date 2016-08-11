@@ -34,6 +34,12 @@ class MediaController extends BaseController
     protected $_forms = array();
 
     /**
+     * @var null
+     *
+     */
+    protected $_upload_path = null;
+
+    /**
      * @var Zend_Controller_Action_Helper_Redirector
      */
     protected $_redirector = null;
@@ -46,6 +52,8 @@ class MediaController extends BaseController
         $this->_model = new Media_Model_Media();
         $this->_modelCategoriesMapper = new Media_Model_Mapper_MediaCategories();
         $this->_forms['edit'] = new Admin_Form_MediaEdit();
+        $this->_upload_path = '/upload/media/items/';
+
         $this->_redirector = $this->_helper->getHelper('Redirector');
     }
 

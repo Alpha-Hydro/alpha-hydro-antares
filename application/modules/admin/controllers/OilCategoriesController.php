@@ -20,12 +20,18 @@ class OilCategoriesController extends BaseController
      */
     protected $_forms = array();
 
+    /**
+     * @var null
+     *
+     */
+    protected $_upload_path = null;
+
     public function init()
     {
         $this->_modelMapper = new Oil_Model_Mapper_OilCategories();
         $this->_model = new Oil_Model_OilCategories();
         $this->_forms['edit'] = new Admin_Form_OilCategoriesEdit();
-
+        $this->_upload_path = '/upload/oil/categories/';
     }
 
     public function indexAction()
