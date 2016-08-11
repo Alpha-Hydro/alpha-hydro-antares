@@ -48,6 +48,15 @@ $menu-line-height: 40px;
         color: #ffffff;
       }
     }
+    &.sidebar-item-hidden{
+      background-color: #FFFFFF;
+      >a{
+        opacity: .5;
+      }
+      >.sidebar-submenu{
+        opacity: .5;
+      }
+    }
     &:hover{
       background-color: $alpha-gray-dark;
       > a{

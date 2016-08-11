@@ -7,7 +7,7 @@
 <ul class="list-group sidebar crop-bottom-shadow">
     <?php if($this->headers) echo $this->sidebarHeading($this->current_category);?>
     <?php foreach ($this->sidebar_item as $entry): ?>
-        <li class="list-group-item sidebar-item <?=($entry->id != $currentCategoryId)?'':'sidebar-item-current';?>">
+        <li class="list-group-item sidebar-item <?=($entry->id != $currentCategoryId)?'':'sidebar-item-current';?> <?=($entry->active != 0)?'':'sidebar-item-hidden';?> ">
             <?php if($entry->id != $currentCategoryId):?>
                 <a href="<?=$this->url(array('fullPath'=>$entry->fullPath),'catalog', true, false)?>"><?=$entry->name?></a>
                 <?php $subCategories = $this->getSubCategories($entry->id); ?>

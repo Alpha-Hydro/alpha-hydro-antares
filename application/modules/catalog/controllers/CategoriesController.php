@@ -20,8 +20,6 @@ class Catalog_CategoriesController extends Zend_Controller_Action
         $this->_redirector = $this->_helper->getHelper('Redirector');
         $this->_fullPath =  $request->getParam('fullPath');
         $this->_auth = Zend_Auth::getInstance()->hasIdentity();
-        
-        
     }
 
     public function indexAction()

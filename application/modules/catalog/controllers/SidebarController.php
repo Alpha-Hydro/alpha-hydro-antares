@@ -3,9 +3,23 @@
 class Catalog_SidebarController extends Zend_Controller_Action
 {
     protected $_current_category_id = 0;
+
+    /**
+     * @var Catalog_Model_Categories
+     */
     protected $_current_category = null;
+
+    /**
+     * @var Catalog_Model_Categories
+     */
     protected $_parent_category = null;
+
     protected $_show_headers = false;
+
+    /**
+     * @var Zend_Auth
+     */
+    protected $_auth = null;
 
 
     public function init()
@@ -24,6 +38,8 @@ class Catalog_SidebarController extends Zend_Controller_Action
             $this->_current_category = $categories->find($this->getCurrentCategoryId(), new Catalog_Model_Categories());
             $this->_parent_category = $categories->find($this->_current_category->getParentId(), new Catalog_Model_Categories());
         }
+
+        $this->_auth = Zend_Auth::getInstance()->hasIdentity();
     }
 
     public function indexAction()
@@ -52,8 +68,10 @@ class Catalog_SidebarController extends Zend_Controller_Action
 
         $select = $categories->getDbTable()->select();
         $select->where('parent_id = ?', $category_id)
-            ->where('active != ?', 0)
+            ->where('deleted != ?', 1)
             ->order('sorting ASC');
+
+        if(!$this->_auth) $select->where('active != ?', 0);
 
         $entries = $categories->fetchAll($select);
 
@@ -61,7 +79,7 @@ class Catalog_SidebarController extends Zend_Controller_Action
     }
 
     /**
-     * @return null
+     * @return Catalog_Model_Categories
      */
     public function getCurrentCategory()
     {
