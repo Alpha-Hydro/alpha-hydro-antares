@@ -34,4 +34,5 @@ class ImageLoader {
         return reader.readAsDataURL(event.target.files[0]);
     }
 }
+
 export = ImageLoader;

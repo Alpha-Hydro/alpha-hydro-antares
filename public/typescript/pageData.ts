@@ -1,5 +1,4 @@
-/// <reference path="jquery.d.ts" />
-
+/// <reference path="../../src/libs/jquery.d.ts" />
 class PageData{
 
     constructor (public controllerAdmin:string,public modelOptions:any){}

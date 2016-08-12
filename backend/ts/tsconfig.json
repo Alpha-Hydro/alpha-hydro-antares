@@ -3,13 +3,10 @@
     "module": "amd",
     "removeComments": true,
     "outDir": "../js",
-    "sourceMap": true
+    "sourceMap": true,
+    "outFile": "../js/adminPublic.js"
   },
   "files": [
-    "adminPublic.ts",
-    "catalog.min.ts",
-    "pipelinePropertyEdit.ts",
-    "search.ts"
-
+    "adminPublic.ts"
   ]
 }

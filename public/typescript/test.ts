@@ -1,5 +1,6 @@
-/// <reference path="jquery.d.ts" />
-/// <reference path="classie.d.ts" />
+/// <reference path="../../src/libs/jquery.d.ts" />
+/// <reference path="../../src/libs/bootstrap.d.ts" />
+/// <reference path="../../src/libs/classie.d.ts" />
 
 class Table {
     constructor(public className: string){}

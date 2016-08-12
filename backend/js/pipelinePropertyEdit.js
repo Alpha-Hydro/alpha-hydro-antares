@@ -42,7 +42,7 @@ var PipelineEdit = (function () {
         this.rowFooter = this.table.querySelector('tfoot').querySelector('tr');
         this.current = 0;
         this.response = null;
-        this._init();
+        this.table && this._init();
     }
     PipelineEdit.prototype._init = function () {
         var self = this;

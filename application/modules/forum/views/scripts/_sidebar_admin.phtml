@@ -9,7 +9,7 @@
                     'section' => 'question'
                 ), 'forum', true, false)?>">Вопросы и запросы</a>
                 <?php else: ?>
-            Вопросы и запросы
+                <span>Вопросы и запросы</span>
             <?php endif; ?>
         </li>
         <li class="list-group-item sidebar-item <?=($this->category != 'review')?'':'sidebar-item-current';?>">
@@ -18,7 +18,7 @@
                     'section' => 'review'
                 ), 'forum', true, false)?>">Отзывы и предложения</a>
             <?php else: ?>
-                Отзывы и предложения
+                <span>Отзывы и предложения</span>
             <?php endif; ?>
         </li>
         <li class="list-group-item sidebar-item <?=($this->category != 'gravamen')?'':'sidebar-item-current';?>">
@@ -27,7 +27,7 @@
                     'section' => 'gravamen'
                 ), 'forum', true, false)?>">Книга жалоб</a>
             <?php else: ?>
-                Книга жалоб
+                <span>Книга жалоб</span>
             <?php endif; ?>
         </li>
     </ul>

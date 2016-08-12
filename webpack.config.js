@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const merge = require('webpack-merge');
 const validate = require('webpack-validator');
 
-const parts = require('./library/parts');
+const parts = require('./src/libs/parts');
 const pkg = require('./package.json');
 
 const TARGET = process.env.npm_lifecycle_event;

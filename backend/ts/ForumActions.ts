@@ -1,11 +1,9 @@
-/// <reference path="../../public/typescript/jquery.d.ts" />
-/// <reference path="../../public/typescript/classie.d.ts" />
-/// <reference path="../../public/typescript/bootstrap.d.ts" />
+/// <reference path="../../src/libs/jquery.d.ts" />
+/// <reference path="../../src/libs/bootstrap.d.ts" />
 
 class ForumActions{
     itemId:number;
     action:string;
-
     btnGroups:any;
 
     modal:any;
@@ -147,4 +145,4 @@ class ForumActions{
     }
 }
 
-var forum = new ForumActions();
+export = ForumActions;

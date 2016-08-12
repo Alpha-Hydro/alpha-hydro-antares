@@ -1,6 +1,5 @@
-/// <reference path="jquery.d.ts" />
-/// <reference path="bootstrap.d.ts" />
-
+/// <reference path="../../src/libs/jquery.d.ts" />
+/// <reference path="../../src/libs/bootstrap.d.ts" />
 class AdminAuth {
     modalAuth:Element;
     constructor(){

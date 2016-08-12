@@ -1,6 +1,6 @@
-/// <reference path="../../public/typescript/jquery.d.ts" />
-/// <reference path="../../public/typescript/classie.d.ts" />
-/// <reference path="../../public/typescript/bootstrap.d.ts" />
+/// <reference path="../../src/libs/jquery.d.ts" />
+/// <reference path="../../src/libs/bootstrap.d.ts" />
+/// <reference path="../../src/libs/classie.d.ts" />
 
 class PipelineEdit {
     table:any;
@@ -9,6 +9,7 @@ class PipelineEdit {
     rowFooter: any;
     current: number;
     response: any;
+
     constructor(public tableId: string){
         this.table = document.getElementById(this.tableId);
         this.itemId = this.table.dataset.itemid;
@@ -17,7 +18,7 @@ class PipelineEdit {
         this.current = 0;
         this.response = null;
 
-        this._init();
+        this.table && this._init();
     }
 
     _init(){
