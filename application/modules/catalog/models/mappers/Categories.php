@@ -290,10 +290,6 @@ class Catalog_Model_Mapper_Categories
      */
     public function fetchTreeSubCategoriesInArray($id = null, Zend_Db_Table_Select $select = null)
     {
-        //$cache = Zend_Registry::get('cache');
-
-        //$cache->remove('treeCategoriesArray');
-
         if(is_null($id))
             $id = 0;
         
@@ -302,8 +298,6 @@ class Catalog_Model_Mapper_Categories
         if(0 == count($entries))
             return null;
 
-
-        //if(!$result = $cache->load('treeCategoriesArray')) {
             $result = array();
             foreach ($entries as $entry) {
                 $id = $entry->id;
@@ -325,8 +319,6 @@ class Catalog_Model_Mapper_Categories
 
                 $result[] = $data;
             }
-            //$cache->save($result, 'treeCategoriesArray');
-        //}
 
         return $result;
     }

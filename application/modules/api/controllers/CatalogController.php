@@ -23,6 +23,8 @@ class Api_CatalogController extends Zend_Controller_Action
      */
     protected $_modelProducts = null;
 
+    protected $_idGroup = null;
+
 
     public function init()
     {
@@ -30,6 +32,8 @@ class Api_CatalogController extends Zend_Controller_Action
         $this->_modelCategoriesMapper = new Catalog_Model_Mapper_Categories();
         $this->_modelProducts = new Catalog_Model_Products();
         $this->_modelProductsMapper = new Catalog_Model_Mapper_Products();
+
+        $this->_idGroup = ($this->_request->getParam('id'))?$this->_request->getParam('id'):0;
     }
 
     public function indexAction()
@@ -41,7 +45,7 @@ class Api_CatalogController extends Zend_Controller_Action
 
     public function nomenclature1cAction()
     {
-        $id = ($this->_request->getParam('id'))?$this->_request->getParam('id'):0;
+        $id = $this->_idGroup;
 
         $cache = Zend_Registry::get('cache');
         $cacheName = 'treeCategoriesArray_'.$id;
@@ -54,7 +58,26 @@ class Api_CatalogController extends Zend_Controller_Action
             $cache->save($treeCategories, $cacheName, array('api','Catalog', 'treeCategoriesArray'));
         }
 
-        return $this->_helper->json->sendJson($this->getElementsGroup($treeCategories));
+        if($id != 0){
+            $result = $this->getTopElementsGroup($id, $treeCategories);
+        }
+        else{
+            $result = $this->getElementsGroup($treeCategories);
+        }
+
+        return $this->_helper->json->sendJson($result);
+    }
+
+    public function getTopElementsGroup($id, &$treeCategories)
+    {
+        $group = $this->_modelCategoriesMapper->find($id, new Catalog_Model_Categories());
+        return $result = array(
+            'id' => $id,
+            'group' => $group->getParentId(),
+            'artikul' => '',
+            'name' => $group->getName(),
+            'elements' => $this->getElementsGroup($treeCategories)
+        );
     }
 
     public function getElementsGroup($subCategories)
