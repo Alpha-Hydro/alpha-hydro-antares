@@ -18,3 +18,4 @@ new ImageLoader('imageTableLoadBtn', 'imageTableLoadFile', 'imageTable');
 new Slugify('.slugify');
 new SelectCategory('categoryId', 'path', 'fullPath');
 new SelectMediaSectionSite('.select-feedback');
+new ForumActions();

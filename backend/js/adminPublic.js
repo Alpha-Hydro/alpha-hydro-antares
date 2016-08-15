@@ -267,7 +267,7 @@ define("ForumActions", ["require", "exports"], function (require, exports) {
     }());
     return ForumActions;
 });
-define("adminPublic", ["require", "exports", "ImageLoader", "Slugify", "SelectCategory", "SelectMediaSectionSite"], function (require, exports, ImageLoader, Slugify, SelectCategory, SelectMediaSectionSite) {
+define("adminPublic", ["require", "exports", "ImageLoader", "Slugify", "SelectCategory", "SelectMediaSectionSite", "ForumActions"], function (require, exports, ImageLoader, Slugify, SelectCategory, SelectMediaSectionSite, ForumActions) {
     "use strict";
     var formItemEdit = document.getElementById('itemEdit');
     var saveFormItemEdit = document.getElementById('saveItemEdit');
@@ -280,5 +280,6 @@ define("adminPublic", ["require", "exports", "ImageLoader", "Slugify", "SelectCa
     new Slugify('.slugify');
     new SelectCategory('categoryId', 'path', 'fullPath');
     new SelectMediaSectionSite('.select-feedback');
+    new ForumActions();
 });
 //# sourceMappingURL=adminPublic.js.map

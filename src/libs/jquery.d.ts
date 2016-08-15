@@ -701,4 +701,3 @@ interface JQuery {
 
 declare var jQuery: JQueryStatic;
 declare var $: JQueryStatic;
-

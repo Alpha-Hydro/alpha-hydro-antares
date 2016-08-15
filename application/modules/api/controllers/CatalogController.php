@@ -73,10 +73,10 @@ class Api_CatalogController extends Zend_Controller_Action
         $group = $this->_modelCategoriesMapper->find($id, new Catalog_Model_Categories());
         return $result = array(
             'id' => $id,
-            'group' => $group->getParentId(),
-            'artikul' => '',
-            'name' => $group->getName(),
-            'elements' => $this->getElementsGroup($treeCategories)
+            //'group' => $group->getParentId(),
+            //'artikul' => '',
+            'nm' => $group->getName(),
+            'el' => $this->getElementsGroup($treeCategories)
         );
     }
 
@@ -86,10 +86,10 @@ class Api_CatalogController extends Zend_Controller_Action
         foreach ($subCategories as $groups) {
             $result[] = array(
                 'id' => $groups['id'],
-                'group' => $groups['parent_id'],
-                'artikul' => '', //sprintf("%05d", $art++),
-                'name' => $groups['name'],
-                'elements' => (is_array($groups['subCategories']))
+                //'group' => $groups['parent_id'],
+                //'artikul' => '', //sprintf("%05d", $art++),
+                'nm' => $groups['name'],
+                'el' => (is_array($groups['subCategories']))
                     ?$this->getElementsGroup($groups['subCategories'])
                     :$this->getElementsProducts($groups['id'])
             );
@@ -116,11 +116,11 @@ class Api_CatalogController extends Zend_Controller_Action
             /**@var $product Catalog_Model_Products*/
             foreach ($products as $product) {
                 $result[] = array(
-                    'id' => $product->getId(),
-                    'group' => $id_group,
-                    'artikul' => '',
-                    'name' => $product->getName().' ('.$product->getSku().')',
-                    'elements' => $this->getElementsModifications($product),
+                    'id' => $product->getId().'t',
+                    //'group' => $id_group,
+                    //'artikul' => '',
+                    'nm' => $product->getName().' ('.$product->getSku().')',
+                    'el' => $this->getElementsModifications($product),
                 );
 
                 //$result = array_merge($result, $this->getElementsModifications($product));
@@ -153,10 +153,11 @@ class Api_CatalogController extends Zend_Controller_Action
         if($modifications){
             foreach ($modifications as $modification) {
                 $result[] = array(
-                    'id' => $modification->getId(),
-                    'group' => $product->getId(),
-                    'artikul' => str_replace(' ','',$modification->getSku()),
-                    'name' => $modification->getSku(),
+                    //'id' => $modification->getId(),
+                    //'group' => $product->getId(),
+                    //'artikul' => str_replace(' ','',$modification->getSku()),
+                    'id' => str_replace(' ','',$modification->getSku()),
+                    'nm' => $modification->getSku(),
                 );
             }
         }
