@@ -1265,6 +1265,7 @@
               <actionMethod actionName="1c"/>
               <actionMethod actionName="nomenclature"/>
               <actionMethod actionName="nomenclature1c"/>
+              <actionMethod actionName="xml1c"/>
             </controllerFile>
             <controllerFile controllerName="Products">
               <actionMethod actionName="index"/>
@@ -1335,6 +1336,9 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Products">
                 <viewScriptFile forActionName="modifications"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Catalog">
+                <viewScriptFile forActionName="xml1c"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>

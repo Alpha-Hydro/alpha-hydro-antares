@@ -23,8 +23,10 @@ class Api_CatalogController extends Zend_Controller_Action
      */
     protected $_modelProducts = null;
 
+    /**
+     * @var null
+     */
     protected $_idGroup = null;
-
 
     public function init()
     {
@@ -45,27 +47,111 @@ class Api_CatalogController extends Zend_Controller_Action
 
     public function nomenclature1cAction()
     {
-        $id = $this->_idGroup;
+        $treeCategories = $this->_getTreeCategoriesArray();
 
-        $cache = Zend_Registry::get('cache');
-        $cacheName = 'treeCategoriesArray_'.$id;
-
-        $select = $this->_modelCategoriesMapper->getDbTable()->select()->order('sorting ASC');
-
-        if(!$treeCategories = $cache->load($cacheName)){
-            ini_set('max_execution_time', 900);
-            $treeCategories = $this->_modelCategoriesMapper->fetchTreeSubCategoriesInArray($id, $select);
-            $cache->save($treeCategories, $cacheName, array('api','Catalog', 'treeCategoriesArray'));
-        }
-
-        if($id != 0){
-            $result = $this->getTopElementsGroup($id, $treeCategories);
+        if($this->_idGroup != 0){
+            $result = $this->getTopElementsGroup($this->_idGroup, $treeCategories);
         }
         else{
             $result = $this->getElementsGroup($treeCategories);
         }
 
         return $this->_helper->json->sendJson($result);
+    }
+
+    public function xml1cAction()
+    {
+        $treeCategories = $this->_getTreeCategories();
+
+        // XML-related routine
+        $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><root/>');
+
+        if($this->_idGroup != 0){
+            $this->genTopXmlGroup($xml, $treeCategories, $this->_idGroup);
+        }
+        else{
+            $this->getXmlGroup($xml, $treeCategories);
+        }
+
+        $output = $xml->saveXML();
+
+        // Both layout and view renderer should be disabled
+        Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer')->setNoRender(true);
+        Zend_Layout::getMvcInstance()->disableLayout();
+
+        // Set up headers and body
+        $this->_response->setHeader('Content-Type', 'text/xml; charset=utf-8')
+            ->setBody($output);
+    }
+
+    /**
+     * @param SimpleXMLElement $xml
+     * @param $data Catalog_Model_Categories[]
+     * @param $id
+     * @return SimpleXMLElement
+     */
+    public function genTopXmlGroup(SimpleXMLElement $xml, $data, $id)
+    {
+        $element = $xml->addChild('item');
+        $element->addAttribute('id', $id);
+        $element->addAttribute('name', $this->_modelCategoriesMapper->find($id, new Catalog_Model_Categories())->getName());
+
+        $this->getXmlGroup($element, $data);
+
+        return $xml;
+    }
+
+    /**
+     * @param SimpleXMLElement $xml
+     * @param $data Catalog_Model_Categories[]
+     * @return SimpleXMLElement
+     */
+    public function getXmlGroup(SimpleXMLElement $xml, $data)
+    {
+        foreach ($data as $item) {
+            $group = $xml->addChild('item');
+            $group->addAttribute('id', $item->getId());
+            $group->addAttribute('name', $item->getName());
+
+            if(is_array($item->getSubCategories())){
+                $this->getXmlGroup($group, $item->getSubCategories());
+            }
+            else{
+                $this->getXmlProducts($group, $item->getId());
+            }
+        }
+
+        return $xml;
+    }
+
+    public function getXmlProducts(SimpleXMLElement $group, $id_group)
+    {
+        $products = $this->_getCategoryProducts($id_group);
+        if($products){
+            foreach ($products as $product) {
+                $xml = $group->addChild('item');
+                $xml->addAttribute('id', $product->getId().'t');
+                $xml->addAttribute('name', $product->getName().' ('.$product->getSku().')');
+                $this->getXmlModifications($xml, $product->getId());
+            }
+        }
+
+        return $group;
+    }
+
+    public function getXmlModifications(SimpleXMLElement $product, $id_product)
+    {
+        $modifications = $this->_getProductModifications($id_product);
+
+        if($modifications){
+            foreach ($modifications as $modification) {
+                $xml = $product->addChild('item');
+                $xml->addAttribute('id', str_replace(' ','',$modification->getSku()));
+                $xml->addAttribute('name', $modification->getSku());
+            }
+        }
+
+        return $product;
     }
 
     public function getTopElementsGroup($id, &$treeCategories)
@@ -99,17 +185,7 @@ class Api_CatalogController extends Zend_Controller_Action
 
     public function getElementsProducts($id_group)
     {
-        $cache = Zend_Registry::get('cache');
-        $cacheName = 'categoryProducts_'.$id_group;
-
-        $select = $this->_modelProductsMapper->getDbTable()->select()
-            ->order('sorting ASC');
-
-        if(!$products = $cache->load($cacheName)){
-            ini_set('max_execution_time', 900);
-            $products = $this->_modelCategoriesMapper->fetchProductsRel($id_group, $select);
-            $cache->save($products, $cacheName, array('api','Catalog', 'categoryProducts'));
-        }
+        $products = $this->_getCategoryProducts($id_group);
 
         $result = array();
         if($products){
@@ -122,10 +198,6 @@ class Api_CatalogController extends Zend_Controller_Action
                     'nm' => $product->getName().' ('.$product->getSku().')',
                     'el' => $this->getElementsModifications($product),
                 );
-
-                //$result = array_merge($result, $this->getElementsModifications($product));
-
-                //$result[$product->getId()] = $this->getElementsModifications($product);
             }
         }
 
@@ -137,18 +209,9 @@ class Api_CatalogController extends Zend_Controller_Action
      * @return array
      */
     public function getElementsModifications(Catalog_Model_Products $product){
-        $cache = Zend_Registry::get('cache');
-        $cacheName = 'productModifications_'.$product->getId();
-
         $result = array();
-        //$group = $this->_modelProductsMapper->findCategoryRel($product->getId(), $this->_modelCategories);
 
-        if(!$modifications = $cache->load($cacheName)){
-            ini_set('max_execution_time', 900);
-            $modifications = $this->_modelProductsMapper->findSubproductsRel($product->getId());
-            $cache->save($modifications, $cacheName, array('api','Catalog', 'productModifications'));
-        }
-
+        $modifications = $this->_getProductModifications($product->getId());
 
         if($modifications){
             foreach ($modifications as $modification) {
@@ -163,5 +226,86 @@ class Api_CatalogController extends Zend_Controller_Action
         }
 
         return $result;
+    }
+
+    /**
+     * @return array|false|mixed|null
+     */
+    private function _getTreeCategoriesArray()
+    {
+        $id = $this->_idGroup;
+
+        $cache = Zend_Registry::get('cache');
+        $cacheName = 'treeCategoriesArray_'.$id;
+
+        $select = $this->_modelCategoriesMapper->getDbTable()->select()->order('sorting ASC');
+
+        if(!$treeCategories = $cache->load($cacheName)){
+            ini_set('max_execution_time', 900);
+            $treeCategories = $this->_modelCategoriesMapper->fetchTreeSubCategoriesInArray($id, $select);
+            $cache->save($treeCategories, $cacheName, array('api','Catalog', 'treeCategoriesArray'));
+        }
+
+        return $treeCategories;
+    }
+
+    /**
+     * @return Catalog_Model_Categories[]|null
+     */
+    private function _getTreeCategories()
+    {
+        $id = $this->_idGroup;
+
+        $cache = Zend_Registry::get('cache');
+        $cacheName = 'treeCategories_'.$id;
+
+        $select = $this->_modelCategoriesMapper->getDbTable()->select()->order('sorting ASC');
+
+        if(!$treeCategories = $cache->load($cacheName)){
+            ini_set('max_execution_time', 900);
+            $treeCategories = $this->_modelCategoriesMapper->fetchTreeSubCategories($id, $select);
+            $cache->save($treeCategories, $cacheName, array('api','Catalog', 'treeCategories'));
+        }
+
+        return $treeCategories;
+    }
+
+    /**
+     * @param $id_group
+     * @return Catalog_Model_Products[]|null
+     */
+    private function _getCategoryProducts($id_group)
+    {
+        $cache = Zend_Registry::get('cache');
+        $cacheName = 'categoryProducts_'.$id_group;
+
+        $select = $this->_modelProductsMapper->getDbTable()->select()
+            ->order('sorting ASC');
+
+        if(!$products = $cache->load($cacheName)){
+            ini_set('max_execution_time', 900);
+            $products = $this->_modelCategoriesMapper->fetchProductsRel($id_group, $select);
+            $cache->save($products, $cacheName, array('api','Catalog', 'categoryProducts'));
+        }
+
+        return $products;
+    }
+
+    /**
+     * @param $id_product
+     * @return Catalog_Model_Subproducts[]|null
+     */
+    private function _getProductModifications($id_product)
+    {
+        $cache = Zend_Registry::get('cache');
+        $cacheName = 'productModifications_'.$id_product;
+
+        if(!$modifications = $cache->load($cacheName)){
+            ini_set('max_execution_time', 900);
+            $modifications = $this->_modelProductsMapper->findSubproductsRel($id_product);
+            $cache->save($modifications, $cacheName, array('api','Catalog', 'productModifications'));
+        }
+
+        return $modifications;
     }
 }
