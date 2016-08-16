@@ -29,7 +29,8 @@ const common = merge(
 		name: 'vendor',
 		entries: Object.keys(pkg.dependencies)
 	}),
-	parts.loadJSX(PATHS.app)
+	parts.loadJSX(PATHS.app),
+	parts.loadTS(PATHS.app)
 	//parts.optimiseBuild(),
 	//parts.minify()
 );

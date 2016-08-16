@@ -2,7 +2,6 @@ import ImageLoader = require('./ImageLoader');
 import Slugify = require('./Slugify');
 import SelectCategory = require('./SelectCategory');
 import SelectMediaSectionSite = require('./SelectMediaSectionSite');
-import ForumActions = require('./ForumActions');
 
 //show save form button
 const formItemEdit:HTMLElement = document.getElementById('itemEdit');
@@ -18,4 +17,3 @@ new ImageLoader('imageTableLoadBtn', 'imageTableLoadFile', 'imageTable');
 new Slugify('.slugify');
 new SelectCategory('categoryId', 'path', 'fullPath');
 new SelectMediaSectionSite('.select-feedback');
-new ForumActions();

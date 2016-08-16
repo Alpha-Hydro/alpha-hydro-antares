@@ -2,9 +2,8 @@
   "compilerOptions": {
     "module": "amd",
     "removeComments": true,
-    "outDir": "../js",
     "sourceMap": true,
-    "outFile": "../js/adminPublic.js"
+    "out": "../js/adminPublic.js"
   },
   "files": [
     "adminPublic.ts"

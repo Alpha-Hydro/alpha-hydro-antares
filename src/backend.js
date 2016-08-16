@@ -5,6 +5,8 @@ import ButtonGroup from "react-bootstrap/lib/ButtonGroup";
 
 import IssueModalForm from "./components/IssueModalForm";
 
+import ForumActions from "./ts/ForumActions"
+
 import PanelButtonsComponent from "./components/PanelButtonsComponent";
 import ItemButtonsComponent from "./components/ItemButtonsComponent";
 import CategoriesAddButton from "./components/Catalog/Categories/CategoriesAddButton";
@@ -19,6 +21,13 @@ issueModal && ReactDOM.render(
 	<IssueModalForm/>,
 	issueModal
 );*/
+
+/*$(() => {
+	$(document.body).html(test("World"));
+});*/
+
+//console.log(test("World"));
+let forumActions = ForumActions;
 
 const adminPanel = document.getElementById('admin-panel');
 adminPanel && ReactDOM.render(

@@ -124,6 +124,11 @@ class Api_CatalogController extends Zend_Controller_Action
         return $xml;
     }
 
+    /**
+     * @param SimpleXMLElement $group
+     * @param $id_group
+     * @return SimpleXMLElement
+     */
     public function getXmlProducts(SimpleXMLElement $group, $id_group)
     {
         $products = $this->_getCategoryProducts($id_group);
@@ -139,6 +144,11 @@ class Api_CatalogController extends Zend_Controller_Action
         return $group;
     }
 
+    /**
+     * @param SimpleXMLElement $product
+     * @param $id_product
+     * @return SimpleXMLElement
+     */
     public function getXmlModifications(SimpleXMLElement $product, $id_product)
     {
         $modifications = $this->_getProductModifications($id_product);
@@ -154,6 +164,11 @@ class Api_CatalogController extends Zend_Controller_Action
         return $product;
     }
 
+    /**
+     * @param $id
+     * @param $treeCategories
+     * @return array
+     */
     public function getTopElementsGroup($id, &$treeCategories)
     {
         $group = $this->_modelCategoriesMapper->find($id, new Catalog_Model_Categories());
@@ -166,6 +181,10 @@ class Api_CatalogController extends Zend_Controller_Action
         );
     }
 
+    /**
+     * @param $subCategories
+     * @return array
+     */
     public function getElementsGroup($subCategories)
     {
         $result = array();
@@ -183,13 +202,16 @@ class Api_CatalogController extends Zend_Controller_Action
         return $result;
     }
 
+    /**
+     * @param $id_group
+     * @return array
+     */
     public function getElementsProducts($id_group)
     {
         $products = $this->_getCategoryProducts($id_group);
 
         $result = array();
         if($products){
-            /**@var $product Catalog_Model_Products*/
             foreach ($products as $product) {
                 $result[] = array(
                     'id' => $product->getId().'t',

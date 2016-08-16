@@ -119,18 +119,14 @@ exports.loadTS = function(paths) {
 		module: {
 			loaders: [
 				{
-					test: /\.ts$/,
-					// Enable caching for improved performance during development
-					// It uses default OS directory by default. If you need
-					// something more custom, pass a path to it.
-					// I.e., babel?cacheDirectory=<path>
-					loaders: ['ts-loader?cacheDirectory'],
-					// Parse only app files! Without this it will go through
-					// the entire project. In addition to being slow,
-					// that will most likely result in an error.
+					test: /\.tsx?$/,
+					loaders: ['ts-loader'],
 					include: paths
 				}
 			]
+		},
+		resolve: {
+			extensions: ['', '.ts']
 		}
 	};
 };
