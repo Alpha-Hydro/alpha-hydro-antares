@@ -19,6 +19,7 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         $pluginsLoader = new Zend_Loader_PluginLoader();
         $pluginsLoader->addPrefixPath('Plugin', $this->getResourceLoader()->getBasePath().'/plugins');
         $pluginsLoader->load("AclAdmin");
+        $pluginsLoader->load("SessionAdmin");
         //$pluginsLoader->load("Acl");
 
         $pluginsLoader->addPrefixPath('Plugin', APPLICATION_PATH.'/plugins');
@@ -194,32 +195,15 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
 
     public function _initAutoloader()
     {
-        /*$loader = Zend_Loader_Autoloader::getInstance();
-        $loader->registerNamespace('Admin_');*/
-
-        /*$loader = new Zend_Application_Module_Autoloader(array(
+        $loader = new Zend_Application_Module_Autoloader(array(
             'namespace' => 'Admin',
             'basePath'  => APPLICATION_PATH . '/modules/admin',
         ));
 
         $loader->addResourceType('Admin',APPLICATION_PATH . '/modules/admin/controllers/', 'Admin');
 
-        return $loader;*/
+        return $loader;
     }
-
-    /*protected function _initNavigation()
-    {
-        $layout = Zend_Layout::getMvcInstance();
-        $view = $layout->getView();
-
-        $config = new Zend_Config_Xml(APPLICATION_PATH.'/modules/admin/configs/sidebar.xml', 'navbar');
-        $container = new Zend_Navigation($config);
-        $view->navigation($container);
-
-        $config = new Zend_Config_Xml(APPLICATION_PATH.'/modules/admin/configs/sidebar.xml', 'sidebar');
-        $container = new Zend_Navigation($config);
-        $view->navigation($container);
-    }*/
 
     /*protected function _initForceSSL() {
         if($_SERVER['SERVER_PORT'] != '443') {
