@@ -13,12 +13,10 @@ class Plugin_SessionAdmin extends Zend_Controller_Plugin_Abstract
         //check whether the client is authenticated
         if (Zend_Auth::getInstance()->hasIdentity()) {
 
-            /*ini_set("session.gc_maxlifetime", 3600);
+            ini_set("session.gc_maxlifetime", 3600);
             ini_set("session.cookie_lifetime", 3600);
 
-            return;*/
-
-            Zend_Debug::dump(Zend_Auth::getInstance()->getStorage()->read());
+            return;
         }
     }
 }

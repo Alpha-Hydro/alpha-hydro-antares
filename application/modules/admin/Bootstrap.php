@@ -19,7 +19,7 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         $pluginsLoader = new Zend_Loader_PluginLoader();
         $pluginsLoader->addPrefixPath('Plugin', $this->getResourceLoader()->getBasePath().'/plugins');
         $pluginsLoader->load("AclAdmin");
-        $pluginsLoader->load("SessionAdmin");
+        //$pluginsLoader->load("SessionAdmin");
         //$pluginsLoader->load("Acl");
 
         $pluginsLoader->addPrefixPath('Plugin', APPLICATION_PATH.'/plugins');

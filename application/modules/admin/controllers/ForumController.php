@@ -353,7 +353,7 @@ class ForumController extends BaseController
 
     /**
      * @param null $currentUrl
-     * @return Admin_ForumController
+     * @return ForumController
      */
     public function setCurrentUrl($currentUrl)
     {
