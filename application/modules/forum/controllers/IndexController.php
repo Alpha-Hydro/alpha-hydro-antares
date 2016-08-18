@@ -121,6 +121,8 @@ class Forum_IndexController extends Zend_Controller_Action
                 $forumMapper = new Forum_Model_Mapper_Forum();
                 $forumMapper->save($newPost);
 
+                $this->clearCache('forum');
+
                 //Письмо администратору
                 $this->sendAdminMail($newPost);
 
@@ -362,6 +364,20 @@ class Forum_IndexController extends Zend_Controller_Action
         if(is_null($this->_count_item_on_page))
             $this->_count_item_on_page = 10;
         return $this->_count_item_on_page;
+    }
+
+    /**
+     * @param $tag string
+     * @throws Zend_Exception
+     *
+     */
+    public function clearCache($tag)
+    {
+        $cache = Zend_Registry::get('cache');
+        $cache->clean(
+            Zend_Cache::CLEANING_MODE_MATCHING_TAG,
+            array($tag)
+        );
     }
 
 }
