@@ -9,6 +9,7 @@ import ForumActions from "./ts/ForumActions"
 
 import PanelButtonsComponent from "./components/PanelButtonsComponent";
 import ItemButtonsComponent from "./components/ItemButtonsComponent";
+import ForumButtonsComponent from "./components/ForumButtonComponent";
 import CategoriesAddButton from "./components/Catalog/Categories/CategoriesAddButton";
 import ProductAddButton from "./components/Catalog/Products/ProductAddButton";
 import ProductPropertyEditButton from "./components/Catalog/ProductProperties/ProductPropertyEditButton";
@@ -39,6 +40,13 @@ if(document.querySelector('.itemButtonsComponent')){
 	const itemButtonsComponents = [].slice.call(document.querySelectorAll('.itemButtonsComponent'));
 	itemButtonsComponents.forEach(function (item) {
 		ReactDOM.render(<ItemButtonsComponent dataItem = {item.dataset}/>, item);
+	});
+}
+
+if(document.querySelector('.forumButtonComponent')){
+	const forumButtonsComponents = [].slice.call(document.querySelectorAll('.forumButtonComponent'));
+	forumButtonsComponents.forEach(function (item) {
+		ReactDOM.render(<ForumButtonsComponent dataItem = {item.dataset}/>, item);
 	});
 }
 

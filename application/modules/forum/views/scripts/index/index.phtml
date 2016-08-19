@@ -18,6 +18,14 @@ $this->sidebar_headers = false;
                     <small class="pull-right"><?=$noReply->getCategory();?></small>
                 </div>
                 <div class="topic-content"><?=$noReply->getContent()?></div>
+                <?php if($this->auth):?>
+                    <div class="forumButtonComponent text-right"
+                         data-id="<?=$noReply->getId()?>"
+                         data-role="<?=$this->identity->role?>"
+                         data-question="true"
+                         data-delete="<?=$this->identity->role != 'admin'?>"
+                    ></div>
+                <?php endif;?>
             </div>
         </div>
     <?php endforeach;?>
@@ -34,6 +42,14 @@ $this->sidebar_headers = false;
                     <small class="pull-right"><?=$itemQuestion->getCategory();?></small>
                 </div>
                 <div class="topic-content"><?=$itemQuestion->getContent()?></div>
+                <?php if($this->auth):?>
+                    <div class="forumButtonComponent text-right"
+                         data-id="<?=$itemQuestion->getId()?>"
+                         data-role="<?=$this->identity->role?>"
+                         data-question="true"
+                         data-delete="<?=$this->identity->role != 'admin'?>"
+                    ></div>
+                <?php endif;?>
             </div>
             <?php foreach ($forumItems['reply'] as $itemsReply):?>
                 <div class="topic-reply">
@@ -42,6 +58,12 @@ $this->sidebar_headers = false;
                         <small><em> - <?=date("d.m.Y", strtotime($itemsReply->getTimestamp()));?> г.</em></small>
                     </div>
                     <div class="topic-content"><?=$itemsReply->getContent()?></div>
+                    <?php if($this->auth && ($this->identity->email == $itemsReply->getEmail() || $this->identity->role == 'admin')):?>
+                        <div class="forumButtonComponent text-right"
+                             data-id="<?=$itemsReply->getId()?>"
+                             data-replace="true"
+                        ></div>
+                    <?php endif;?>
                 </div>
             <?php endforeach; ?>
         </div>

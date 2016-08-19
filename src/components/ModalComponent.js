@@ -9,8 +9,6 @@ import ModalFormDisabled from "./ModalForms/ModalFormDisabled";
 import ModalFormEnable from "./ModalForms/ModalFormEnable";
 import ModalFormIssue from "./ModalForms/ModalFormIssue";
 
-import gitHubHelper from "../utils/gitHubHelper";
-
 export default class ModalComponent extends React.Component{
 
 	render() {
