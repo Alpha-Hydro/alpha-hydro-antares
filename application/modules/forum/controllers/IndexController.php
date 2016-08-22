@@ -126,7 +126,7 @@ class Forum_IndexController extends Zend_Controller_Action
                 $this->sendAdminMail($newPost);
 
                 //Письмо пользователю
-                //$this->sendUserMail($newPost);
+                $this->sendUserMail($newPost);
 
                 $error = false;
                 $message .= 'Ваше сообщение успешно отправлено.' . "<br/>";
