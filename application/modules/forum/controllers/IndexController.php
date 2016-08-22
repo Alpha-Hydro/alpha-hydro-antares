@@ -148,7 +148,8 @@ class Forum_IndexController extends Zend_Controller_Action
     public function sendAdminMail(Forum_Model_Forum $post)
     {
         $mailToAdmin = new Zend_Mail("UTF-8");
-        $mailToAdmin->setFrom($post->getEmail(), $post->getAuthor());
+        //$mailToAdmin->setFrom($post->getEmail(), $post->getAuthor());
+        $mailToAdmin->setFrom("info@alpha-hydro.com", "ALPHA-HYDRO info");
         $mailToAdmin->setSubject('Новое сообщение с форума ALPHA-HYDRO');
 
         $textHtml = '<h1>'.$post->getCategory().'</h1>';
@@ -158,14 +159,14 @@ class Forum_IndexController extends Zend_Controller_Action
         $mailToAdmin->setBodyHtml($textHtml);
         $mailToAdmin->addTo("admin@alpha-hydro.com", "ALPHA-HYDRO info");
         //$mailToAdmin->addTo("info@alpha-hydro.com", "ALPHA-HYDRO info");
-        $mailToAdmin->addBcc(array(
+        /*$mailToAdmin->addBcc(array(
             //"fra@alpha-hydro.com",
             //"kma@alpha-hydro.com",
             //"admin@alpha-hydro.com",
             //"admin@alpha-hydro.com",
             "vladmeh@gmail.com",
             "mvl@alpha-hydro.com")
-        );
+        );*/
         $mailToAdmin->send();
 
         return $this;
