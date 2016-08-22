@@ -158,13 +158,13 @@ class Forum_IndexController extends Zend_Controller_Action
         $mailToAdmin->setBodyHtml($textHtml);
         $mailToAdmin->addTo("admin@alpha-hydro.com", "ALPHA-HYDRO info");
         //$mailToAdmin->addTo("info@alpha-hydro.com", "ALPHA-HYDRO info");
-        $mailToAdmin->addBcc(array(
+        /*$mailToAdmin->addBcc(array(
             //"fra@alpha-hydro.com",
             //"kma@alpha-hydro.com",
             //"admin@alpha-hydro.com",
             "vlmeh@mail.ru",
                 )
-        );
+        );*/
         $mailToAdmin->send();
 
         return $this;
