@@ -126,7 +126,7 @@ class Forum_IndexController extends Zend_Controller_Action
                 $this->sendAdminMail($newPost);
 
                 //Письмо пользователю
-                $this->sendUserMail($newPost);
+                //$this->sendUserMail($newPost);
 
                 $error = false;
                 $message .= 'Ваше сообщение успешно отправлено.' . "<br/>";
@@ -147,6 +147,9 @@ class Forum_IndexController extends Zend_Controller_Action
 
     public function sendAdminMail(Forum_Model_Forum $post)
     {
+        $tr = new Zend_Mail_Transport_Smtp('mail.russ-call.ru');
+        Zend_Mail::setDefaultTransport($tr);
+
         $mailToAdmin = new Zend_Mail("UTF-8");
         //$mailToAdmin->setFrom($post->getEmail(), $post->getAuthor());
         $mailToAdmin->setFrom("info@alpha-hydro.com", "ALPHA-HYDRO info");
