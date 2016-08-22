@@ -158,13 +158,12 @@ class Forum_IndexController extends Zend_Controller_Action
         $mailToAdmin->setBodyHtml($textHtml);
         $mailToAdmin->addTo("admin@alpha-hydro.com", "ALPHA-HYDRO info");
         //$mailToAdmin->addTo("info@alpha-hydro.com", "ALPHA-HYDRO info");
-        /*$mailToAdmin->addBcc(array(
+        $mailToAdmin->addBcc(array(
             //"fra@alpha-hydro.com",
             //"kma@alpha-hydro.com",
             //"admin@alpha-hydro.com",
-            "vlmeh@mail.ru",
-                )
-        );*/
+            "mvl@alpha-hydro.com")
+        );
         $mailToAdmin->send();
 
         return $this;
@@ -184,7 +183,6 @@ class Forum_IndexController extends Zend_Controller_Action
 
         $mailToUser->setBodyHtml($textHtml);
         $mailToUser->addTo($post->getEmail(), $post->getAuthor());
-        //$mailToUser->addTo($form_ask->getValue('email'), $newPost->getAuthor());
         $mailToUser->send();
 
         return $this;
@@ -194,8 +192,6 @@ class Forum_IndexController extends Zend_Controller_Action
     {
         $form = new Forum_Form_ForumAsk();
         $captcha = $form->getElement('captcha')->getCaptcha();
-
-        //Zend_Debug::dump($captcha);
 
         $data = array();
 
