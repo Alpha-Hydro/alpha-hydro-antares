@@ -162,6 +162,8 @@ class Forum_IndexController extends Zend_Controller_Action
             //"fra@alpha-hydro.com",
             //"kma@alpha-hydro.com",
             //"admin@alpha-hydro.com",
+            //"admin@alpha-hydro.com",
+            "vladmeh@gmail.com",
             "mvl@alpha-hydro.com")
         );
         $mailToAdmin->send();
