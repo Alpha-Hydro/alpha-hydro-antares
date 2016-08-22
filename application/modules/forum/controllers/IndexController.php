@@ -147,8 +147,6 @@ class Forum_IndexController extends Zend_Controller_Action
 
     public function sendAdminMail(Forum_Model_Forum $post)
     {
-        $tr = new Zend_Mail_Transport_Smtp('mail.russ-call.ru');
-
         $mailToAdmin = new Zend_Mail("UTF-8");
         //$mailToAdmin->setFrom($post->getEmail(), $post->getAuthor());
         $mailToAdmin->setFrom("info@alpha-hydro.com", "ALPHA-HYDRO info");
@@ -169,7 +167,7 @@ class Forum_IndexController extends Zend_Controller_Action
             "vladmeh@gmail.com",
             "mvl@alpha-hydro.com")
         );*/
-        $mailToAdmin->send($tr);
+        $mailToAdmin->send();
 
         return $this;
     }
