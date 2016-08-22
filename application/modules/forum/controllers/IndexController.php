@@ -41,7 +41,6 @@ class Forum_IndexController extends Zend_Controller_Action
         $ajaxContext = $this->_helper->getHelper('AjaxContext');
         $ajaxContext
             ->addActionContext('ask', 'html')
-            ->addActionContext('refresh-captcha', 'json')
             ->initContext('html');
 
         $this->view->adminPath = 'forum/';
@@ -157,12 +156,14 @@ class Forum_IndexController extends Zend_Controller_Action
         $textHtml .= '<p>Автор: '.$post->getAuthor().' ('.$post->getEmail().')</p>';
 
         $mailToAdmin->setBodyHtml($textHtml);
-//        $mailToAdmin->addTo("admin@alpha-hydro.com", "ALPHA-HYDRO info");
-        $mailToAdmin->addTo("info@alpha-hydro.com", "ALPHA-HYDRO info");
+        $mailToAdmin->addTo("admin@alpha-hydro.com", "ALPHA-HYDRO info");
+        //$mailToAdmin->addTo("info@alpha-hydro.com", "ALPHA-HYDRO info");
         $mailToAdmin->addBcc(array(
-            "fra@alpha-hydro.com",
-            "kma@alpha-hydro.com",
-            "admin@alpha-hydro.com")
+            //"fra@alpha-hydro.com",
+            //"kma@alpha-hydro.com",
+            //"admin@alpha-hydro.com",
+            "vlmeh@mail.ru",
+                )
         );
         $mailToAdmin->send();
 
@@ -193,6 +194,8 @@ class Forum_IndexController extends Zend_Controller_Action
     {
         $form = new Forum_Form_ForumAsk();
         $captcha = $form->getElement('captcha')->getCaptcha();
+
+        //Zend_Debug::dump($captcha);
 
         $data = array();
 
