@@ -145,26 +145,36 @@ class Forum_IndexController extends Zend_Controller_Action
         }
     }
 
+    /**
+     * Функция настроена для отправки сообщений через mail.russ-call.ru
+     * ИСПРАВЛЯТЬ ОСТОРОЖНО! Может не досьтавляться почта или сообщения
+     * пойдут в спам
+     *
+     * @param Forum_Model_Forum $post
+     * @return $this
+     */
     public function sendAdminMail(Forum_Model_Forum $post)
     {
         $mailToAdmin = new Zend_Mail("utf-8");
         //$mailToAdmin->setFrom($post->getEmail(), $post->getAuthor());
         $mailToAdmin->setFrom("info@alpha-hydro.com", "Alpha-Hydro");
-        $mailToAdmin->setSubject("Новое сообщение с форума");
+        $mailToAdmin->setSubject("Alpha-Hydro.Forum.");
         $mailToAdmin->setReturnPath("info@alpha-hydro.com");
 
-        $textHtml = '<h1>'.$post->getCategory().'</h1>';
-        $textHtml .= '<p>Сообщение: '.$post->getContent().'</p>';
-        $textHtml .= '<p>Автор: '.$post->getAuthor().' ('.$post->getEmail().')</p>';
+        $textHtml = '<p>Автор: '.$post->getAuthor().' ('.$post->getEmail().')</p>';
+        $textHtml .= '<p>Категория: '.$post->getCategory().'</p>';
+        $textHtml .= '<p><b>Сообщение:</b></p>';
+        $textHtml .= $post->getContent();
 
         $mailToAdmin->setBodyHtml($textHtml);
-        //$mailToAdmin->addTo("admin@alpha-hydro.com", "info");
+        //$mailToAdmin->addTo("admin@alpha-hydro.com", "Alpha-Hydro");
         $mailToAdmin->addTo("info@alpha-hydro.com", "Alpha-Hydro");
         $mailToAdmin->addBcc(array(
                 "fra@alpha-hydro.com",
                 "kma@alpha-hydro.com",
                 "admin@alpha-hydro.com")
         );
+        //$mailToAdmin->addBcc('mvl@alpha-hydro.com');
         $mailToAdmin->send();
 
         return $this;
@@ -174,7 +184,7 @@ class Forum_IndexController extends Zend_Controller_Action
     {
         $to  = 'admin@alpha-hydro.com';
 
-        $subject = 'Новое сообщение с форума';
+        $subject = 'Alpha-Hydro Forum.';
 
         $message = '<p>Автор: '.$post->getAuthor().' ('.$post->getEmail().')</p>';
         $message .= '<p>Категория: '.$post->getCategory().'</p>';
