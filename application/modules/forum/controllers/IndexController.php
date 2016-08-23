@@ -147,27 +147,49 @@ class Forum_IndexController extends Zend_Controller_Action
 
     public function sendAdminMail(Forum_Model_Forum $post)
     {
-        $mailToAdmin = new Zend_Mail("UTF-8");
+        $mailToAdmin = new Zend_Mail("utf-8");
         //$mailToAdmin->setFrom($post->getEmail(), $post->getAuthor());
-        $mailToAdmin->setFrom("info@alpha-hydro.com", "ALPHA-HYDRO info");
-        $mailToAdmin->setSubject('Новое сообщение с форума ALPHA-HYDRO');
+        $mailToAdmin->setFrom("info@alpha-hydro.com", "Alpha-Hydro");
+        $mailToAdmin->setSubject("Новое сообщение с форума");
+        $mailToAdmin->setReturnPath("info@alpha-hydro.com");
 
         $textHtml = '<h1>'.$post->getCategory().'</h1>';
         $textHtml .= '<p>Сообщение: '.$post->getContent().'</p>';
         $textHtml .= '<p>Автор: '.$post->getAuthor().' ('.$post->getEmail().')</p>';
 
         $mailToAdmin->setBodyHtml($textHtml);
-        $mailToAdmin->addTo("admin@alpha-hydro.com", "ALPHA-HYDRO info");
-        //$mailToAdmin->addTo("info@alpha-hydro.com", "ALPHA-HYDRO info");
-        /*$mailToAdmin->addBcc(array(
-            //"fra@alpha-hydro.com",
-            //"kma@alpha-hydro.com",
-            //"admin@alpha-hydro.com",
-            //"admin@alpha-hydro.com",
-            "vladmeh@gmail.com",
-            "mvl@alpha-hydro.com")
-        );*/
+        //$mailToAdmin->addTo("admin@alpha-hydro.com", "info");
+        $mailToAdmin->addTo("info@alpha-hydro.com", "Alpha-Hydro");
+        $mailToAdmin->addBcc(array(
+                "fra@alpha-hydro.com",
+                "kma@alpha-hydro.com",
+                "admin@alpha-hydro.com")
+        );
         $mailToAdmin->send();
+
+        return $this;
+    }
+
+    public function sendTestMail(Forum_Model_Forum $post)
+    {
+        $to  = 'admin@alpha-hydro.com';
+
+        $subject = 'Новое сообщение с форума';
+
+        $message = '<p>Автор: '.$post->getAuthor().' ('.$post->getEmail().')</p>';
+        $message .= '<p>Категория: '.$post->getCategory().'</p>';
+        $message .= '<p>Сообщение: '.$post->getContent().'</p>';
+
+        $headers  = 'MIME-Version: 1.0' . "\r\n";
+        $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+
+        $headers .= 'To: Admin <admin@alpha-hydro.com>' . "\r\n";
+        $headers .= 'From: Alpha-Hydro <info@alpha-hydro.com>' . "\r\n";
+        //$headers .= 'Cc: birthdayarchive@example.com' . "\r\n";
+        $headers .= 'Bcc: mvl@alpha-hydro.com' . "\r\n";
+
+
+        mail($to, $subject, $message, $headers, " -f info@alpha-hydro.com");
 
         return $this;
     }
@@ -383,8 +405,3 @@ class Forum_IndexController extends Zend_Controller_Action
     }
 
 }
-
-
-
-
-
