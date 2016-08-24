@@ -147,7 +147,7 @@ class Forum_IndexController extends Zend_Controller_Action
 
     /**
      * Функция настроена для отправки сообщений через mail.russ-call.ru
-     * ИСПРАВЛЯТЬ ОСТОРОЖНО! Может не досьтавляться почта или сообщения
+     * ИСПРАВЛЯТЬ ОСТОРОЖНО! Может не доставляться почта или сообщения
      * пойдут в спам
      *
      * @param Forum_Model_Forum $post
@@ -268,7 +268,7 @@ class Forum_IndexController extends Zend_Controller_Action
 
         if(!$forumItems = $cache->load($cacheName)){
             $forumItems = $this->_modelMapper->fetchAll($select);
-            $cache->save($forumItems, $cacheName, array('forum'));
+            $cache->save($forumItems, $cacheName, array('forum', 'forumQuestions'));
         }
 
         if(!empty($forumItems)){
@@ -284,7 +284,11 @@ class Forum_IndexController extends Zend_Controller_Action
                     ->where('deleted != ?', 1)
                     ->order('timestamp ASC');
 
-                $reply = $this->_modelMapper->fetchAll($select);
+                $cacheName = 'forumItems_reply_'.$forumItem->getId();
+                if(!$reply = $cache->load($cacheName)){
+                    $reply = $this->_modelMapper->fetchAll($select);
+                    $cache->save($reply, $cacheName, array('forum', 'forumReply'));
+                }
 
                 if(0 !== count($reply)){
                     $topic['question'] = $forumItem;

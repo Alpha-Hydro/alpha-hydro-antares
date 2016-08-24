@@ -38,17 +38,12 @@ class ForumController extends BaseController
         $this->_userAuth = Zend_Auth::getInstance()->getIdentity();
         
         $this->setNoReplyForums();
-        $this->setCurrentUrl(
-            ($this->getRequest()->getParam('page'))
-                ?'/admin/forum/?page='.$this->getRequest()->getParam('page')
-                :'/admin/forum'
-            );
-
         $this->view->assign('user', $this->_userAuth);
     }
 
     public function indexAction()
     {
+
         if($this->_request->getParam('page'))
             $this->view->assign('currentPage', $this->_request->getParam('page'));
 
@@ -104,7 +99,9 @@ class ForumController extends BaseController
         $item->setDeleted(1);
         $this->_modelMapper->save($item);
 
-        //$this->_redirector->gotoSimpleAndExit('index',null, null, array('page' => $this->_request->getParam('page')));
+        $cacheName = (!$item->getParentId())?'forumQuestions':'forumReply';
+        $this->clearCache($cacheName);
+
         $this->_redirector->gotoUrlAndExit($this->getCurrentUrl());
     }
 
@@ -141,6 +138,8 @@ class ForumController extends BaseController
             $this->sendReplyMail($quest, $item);
         }
 
+        $this->clearCache('forumReply');
+
         $this->_redirector->gotoUrlAndExit($this->getCurrentUrl());
     }
 
@@ -165,19 +164,27 @@ class ForumController extends BaseController
             $item->setContent($context_html);
             $item->setContentMarkdown($markdown);
 
-            $this->_modelMapper->save($item);
+            $item->setTimestamp(date("Y-m-d H:i:s"));
 
-            if($this->_userAuth->email != $item->getEmail())
+            if($this->_userAuth->email != $item->getEmail()){
+                $item->setAuthor($this->_userAuth->name);
+                $item->setEmail($this->_userAuth->email);
                 $this->sendEditMail($item, $oldContent);
+            }
+
+            $this->_modelMapper->save($item);
         }
+
+        $cacheName = (!$item->getParentId())?'forumQuestions':'forumReply';
+        $this->clearCache($cacheName);
 
         $this->_redirector->gotoUrlAndExit($this->getCurrentUrl());
     }
 
     public function sendEditMail(Forum_Model_Forum $reply, $oldContent)
     {
-        $mail = new Zend_Mail("UTF-8");
-        $mail->setFrom($this->_userAuth->email, "ALPHA-HYDRO admin");
+        $mail = new Zend_Mail("utf-8");
+        $mail->setFrom($this->_userAuth->email, "Alpha-Hydro.Аdmin.");
         $mail->setSubject('Редактирование сообщения на форуме ALPHA-HYDRO');
 
         $textHtml = '<h2>Ваше сообщение было отредактировано админимтратором.</h2>';
@@ -212,9 +219,9 @@ class ForumController extends BaseController
     public function sendReplyMail(Forum_Model_Forum $question, Forum_Model_Forum $reply)
     {
         //Письмо администратору и пользователю
-        $mailToAdmin = new Zend_Mail("UTF-8");
-        $mailToAdmin->setFrom("info@alpha-hydro.com", "ALPHA-HYDRO info");
-        $mailToAdmin->setSubject('Ответ на сообщение с форума ALPHA-HYDRO');
+        $mailToAdmin = new Zend_Mail("utf-8");
+        $mailToAdmin->setFrom("info@alpha-hydro.com", "Alpha-Hydro");
+        $mailToAdmin->setSubject("Alpha-Hydro.Forum.");
 
         $textHtml = '<p><b>Вопрос:</b></p>';
         $textHtml .= '<p>'.$question->getTimestamp().'</p>';
@@ -366,7 +373,24 @@ class ForumController extends BaseController
      */
     public function getCurrentUrl()
     {
+        if(is_null($this->_currentUrl)){
+            $this->_currentUrl = $this->_hostHttp->getServer('HTTP_REFERER');
+        }
         return $this->_currentUrl;
+    }
+
+    /**
+     * @param $tag string
+     * @throws Zend_Exception
+     *
+     */
+    public function clearCache($tag)
+    {
+        $cache = Zend_Registry::get('cache');
+        $cache->clean(
+            Zend_Cache::CLEANING_MODE_MATCHING_TAG,
+            array($tag)
+        );
     }
 
 }

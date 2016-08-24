@@ -8,30 +8,10 @@
 import React from "react";
 import Modal from "react-bootstrap/lib/Modal";
 import Button from "react-bootstrap/lib/Button";
-import FormGroup from "react-bootstrap/lib/FormGroup";
-import FormControl from "react-bootstrap/lib/FormControl";
 
-export default class ForumEdit extends React.Component{
-	constructor(props){
-		super(props);
-		this.state = {
-			replace: (this.props.data.contentMarkdown)?this.props.data.contentMarkdown:this.props.data.content
-		}
-	}
-
+export default class ForumDelete extends React.Component{
 	hideModal() {
 		this.props.hide();
-		this.setState({
-			replace: (this.props.data.contentMarkdown)?this.props.data.contentMarkdown:this.props.data.content
-		});
-	}
-
-	handleChange(key){
-		return (e) => {
-			var data = {};
-			data[key]	= e.target.value;
-			this.setState(data);
-		};
 	}
 
 	render(){
@@ -52,24 +32,15 @@ export default class ForumEdit extends React.Component{
 						method="post"
 						encType="multipart/form-data"
 					>
-						<div className="panel-body pt0">
+						<div dangerouslySetInnerHTML={{__html: this.props.data.content}}/>
+						<div className="text-right">
 							<strong>{this.props.data.author}</strong> - <em>{this.props.data.timestamp}</em>
 						</div>
-						<FormGroup>
-							<FormControl
-								componentClass="textarea"
-								placeholder="Ваш ответ"
-								name="contentMarkdown"
-								value={this.state.replace}
-								onChange={this.handleChange('replace').bind(this)}
-								rows="8"
-							/>
-						</FormGroup>
 					</form>
 				</Modal.Body>
 				<Modal.Footer>
 					<Button onClick={this.hideModal.bind(this)}>Отмена</Button>
-					<Button bsStyle="success" form="formModal" type="submit" disabled={!this.state.replace}>Сохранить</Button>
+					<Button bsStyle="danger" form="formModal" type="submit">Удалить</Button>
 				</Modal.Footer>
 			</Modal>
 		);

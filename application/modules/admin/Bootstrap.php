@@ -129,7 +129,8 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
             'slugify-product-sku',
             'property-edit',
             'view',
-            'passport'
+            'passport',
+            'reply'
         ));
 
         $acl->allow('admin');
