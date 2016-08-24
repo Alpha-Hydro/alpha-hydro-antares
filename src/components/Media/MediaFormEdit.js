@@ -10,6 +10,8 @@ import InputGroup from "react-bootstrap/lib/InputGroup";
 import Button from "react-bootstrap/lib/Button";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
+import DatePicker from "react-bootstrap-date-picker";
+
 import ImagesUpload from "./../../utils/ImagesUpload";
 import Slugify from "./../../utils/slugifyHelper";
 
@@ -19,11 +21,12 @@ export default class MediaFormEdit extends React.Component{
 		this.state = {
 			title : (!props.data.title)?props.data.name:props.data.title,
 			path: props.data.path,
-			description: props.data.description,
+			description: props.data.sContent,
 			contentMarkdown: props.data.contentMarkdown,
 			contentHtml: props.data.contentHtml,
 			sorting: props.data.sorting,
 			uploadPath: (!props.data.uploadPath)?'':props.data.uploadPath,
+			dateTime: props.data.timestamp,
 			image: (!props.data.image)
 				?"/files/images/product/2012-05-22_foto_nv.jpg"
 				:props.data.image
@@ -91,7 +94,7 @@ export default class MediaFormEdit extends React.Component{
 								componentClass="textarea"
 								value={this.state.description}
 								placeholder="Краткое описание"
-								name="dataPage[description]"
+								name="dataPage[sContent]"
 								onChange={this.handleChange('description').bind(this)}
 								rows="4"
 							/>
@@ -119,11 +122,16 @@ export default class MediaFormEdit extends React.Component{
 									required
 								/>
 							</FormGroup>
+							<FormGroup>
+								<ControlLabel>Дата статьи</ControlLabel>
+								<DatePicker
+									value={this.state.dateTime}
+									name="dataPage[timestamp]"
+									onChange={this.handleChange('dateTime').bind(this)}
+									calendarPlacement="top"
+								/>
+							</FormGroup>
 						</div>
-						<input type="hidden"
-									 name="dataPage[contentHtml]"
-									 value={this.state.contentHTML}
-						/>
 					</Col>
 				</Row>
 			</Grid>
