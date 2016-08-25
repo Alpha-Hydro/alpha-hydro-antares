@@ -2,6 +2,8 @@
 $this->headScript()
     ->prependFile('//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js')
     ->prependFile('//code.jquery.com/jquery-1.11.3.min.js');
+
+$currentUrl = Zend_Controller_Front::getInstance()->getRequest()->getServer('REDIRECT_URL');
 ?>
 
 <form action="" id="itemEdit" enctype="multipart/form-data" method="post">
@@ -33,4 +35,5 @@ $this->headScript()
         <?= $this->form->seo?>
         <?= $this->form->additionally?>
     </div>
+    <!--<input name="currentUrl" type="hidden" value="<?/*=$currentUrl*/?>">-->
 </form>

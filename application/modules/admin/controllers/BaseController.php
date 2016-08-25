@@ -210,10 +210,9 @@ class BaseController extends Zend_Controller_Action
 
         $form = $this->getForm('edit');
 
-        $url = $this->_hostHttp->getServer('HTTP_REFERER');
         $form->addElement('hidden','currentUrl');
         $element = $form->getElement('currentUrl');
-        $element->setValue($url);
+        $element->setValue($this->_hostHttp->getServer('REDIRECT_URL'));
         $form->getDisplayGroup('basic')->addElement($element);
 
         $dataPage = $page->getOptions();
@@ -243,10 +242,12 @@ class BaseController extends Zend_Controller_Action
             $form->setDefaults($form->getValues());
         }
 
+        $colsTable = $this->getModelMapper()->getDbTable()->info('cols');
+        $uri = (in_array('full_path', $colsTable))?$page->getFullPath():$page->getPath();
         $config = array(
             Zend_Navigation_Page_Mvc::factory(array(
-                'label' => 'Отменить',
-                'uri' => $url
+                'label' => 'На сайт',
+                'uri' => '/'.strtolower($this->getNameModule()).'/'.$uri.'/'
             )),
         );
         $containerNav = new Zend_Navigation($config);

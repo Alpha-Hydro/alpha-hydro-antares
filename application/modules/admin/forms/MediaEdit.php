@@ -90,12 +90,19 @@ class Admin_Form_MediaEdit extends Twitter_Bootstrap_Form_Vertical
             'rows'          => '8',
         ));
 
+        $this->addElement('text', 'timestamp', array(
+            'label'         => 'Дата статьи',
+            'placeholder'   => 'Дата',
+            'pattern'       => "[0-9]{4}\-[0-9]{2}\-[0-9]{2}"
+        ));
+
         $this->addElement('hidden', 'content');
 
         $this->addDisplayGroup(
             array(
                 'sContent',
                 'contentMarkdown',
+                'timestamp',
                 'content'
             ),
             'desc',

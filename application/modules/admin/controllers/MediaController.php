@@ -114,8 +114,6 @@ class MediaController extends BaseController
             $context_html = Michelf\MarkdownExtra::defaultTransform($markdown);
             $item->setContentHtml($context_html);
 
-            Zend_Debug::dump($item);
-
             $this->_modelMapper->save($item);
 
             $this->_redirector->gotoUrlAndExit('/media/'.$item->getFullPath());

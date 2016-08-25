@@ -19,7 +19,7 @@ export default class MediaFormEdit extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			title : (!props.data.title)?props.data.name:props.data.title,
+			title : props.data.name,
 			path: props.data.path,
 			description: props.data.sContent,
 			contentMarkdown: props.data.contentMarkdown,
@@ -65,7 +65,7 @@ export default class MediaFormEdit extends React.Component{
 								type="text"
 								value={this.state.title}
 								placeholder="Заголовок"
-								name="dataPage[title]"
+								name="dataPage[name]"
 								onChange={this.handleChange('title').bind(this)}
 								required
 							/>
@@ -112,7 +112,16 @@ export default class MediaFormEdit extends React.Component{
 						</FormGroup>
 						<div className="form-inline">
 							<FormGroup>
-								<ControlLabel className="mr2">Сортировка</ControlLabel>
+								<ControlLabel className="mr2">Дата статьи</ControlLabel>
+								<DatePicker
+									value={this.state.dateTime}
+									name="dataPage[timestamp]"
+									onChange={this.handleChange('dateTime').bind(this)}
+									calendarPlacement="top"
+								/>
+							</FormGroup>
+							<FormGroup>
+								<ControlLabel className="mlr2">Сортировка</ControlLabel>
 								<FormControl
 									type="number"
 									min="0"
@@ -120,15 +129,6 @@ export default class MediaFormEdit extends React.Component{
 									name="dataPage[sorting]"
 									onChange={this.handleChange('sorting').bind(this)}
 									required
-								/>
-							</FormGroup>
-							<FormGroup>
-								<ControlLabel>Дата статьи</ControlLabel>
-								<DatePicker
-									value={this.state.dateTime}
-									name="dataPage[timestamp]"
-									onChange={this.handleChange('dateTime').bind(this)}
-									calendarPlacement="top"
 								/>
 							</FormGroup>
 						</div>
