@@ -130,7 +130,9 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
             'property-edit',
             'view',
             'passport',
-            'reply'
+            'reply',
+            'articles',
+            'categories'
         ));
 
         $acl->allow('admin');

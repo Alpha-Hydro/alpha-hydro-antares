@@ -109,8 +109,8 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
             'label'         => 'Наименование товара',
             'placeholder'   => 'Наименование товара',
             'required'      => true,
-            'class'         => 'slugify',
-            'data-slugify'  => 'path',
+            //'class'         => 'onchangeSlugify',
+            //'data-slugify'  => 'path',
         ));
 
         $this->addElement('select', 'categoryId', array(
@@ -120,18 +120,19 @@ class Admin_Form_PipelineEdit extends Twitter_Bootstrap_Form_Vertical
             'multiOptions' => $this->getCategoryArray(),
         ));
 
-
+        $refreshPath = '<button type="button" class="refreshSlugify btn btn-default" data-slugify="path" data-sourse="title"><span class="glyphicon glyphicon-refresh"></span></button>';
         $this->addElement('text', 'path', array(
             'label'         => 'Url страницы',
             'placeholder'   => 'Url страницы',
             'required'      => true,
+            'prepend_btn'   => $refreshPath
         ));
 
         $this->addDisplayGroup(
             array(
                 'title',
-                'categoryId',
                 'path',
+                'categoryId',
                 'fullPath',
                 'id',
             ),

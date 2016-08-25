@@ -3,7 +3,7 @@
     "module": "amd",
     "removeComments": true,
     "sourceMap": true,
-    "out": "../js/adminPublic.js"
+    "outFile": "../js/adminPublic.js"
   },
   "files": [
     "adminPublic.ts"

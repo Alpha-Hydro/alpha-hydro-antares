@@ -140,7 +140,7 @@ class BaseController extends Zend_Controller_Action
         $containerNav = new Zend_Navigation($config);
         $this->view->assign(array(
             'editUrlOptions' => $editUrlOptions,
-            'container_nav' => $containerNav
+            'container_nav' => $containerNav,
         ));
 
         $this->forward('index', strtolower($this->getNameModule()), 'admin', array('category_id' => $this->_getParam('id')));
@@ -233,7 +233,7 @@ class BaseController extends Zend_Controller_Action
         if ($this->_hostHttp->isPost()){
 
             if ($form->isValid($this->_hostHttp->getPost())) {
-                $item = $this->saveFormData($form);
+                $this->saveFormData($form);
 
                 $this->clearCache($this->_getNamespace());
                 $this->getRedirector()->gotoUrlAndExit($this->_request->getParam('currentUrl'));

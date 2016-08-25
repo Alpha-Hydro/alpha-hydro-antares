@@ -78,7 +78,9 @@ class PagesController extends BaseController
 
     public function editAction()
     {
-        $this->_forms['edit']->removeElement('path');
+
+        if(Zend_Auth::getInstance()->getIdentity()->role != 'admin')
+            $this->_forms['edit']->removeElement('path');
 
         $id = $this->_request->getParam('id');
         $page = $this->_modelMapper->find($id, new Pages_Model_Pages());

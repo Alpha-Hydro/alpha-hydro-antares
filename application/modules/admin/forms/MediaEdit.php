@@ -6,7 +6,8 @@ class Admin_Form_MediaEdit extends Twitter_Bootstrap_Form_Vertical
     public function init()
     {
         $this->addElement('hidden', 'id');
-        $this->addElement('hidden', 'path');
+        $this->addElement('hidden', 'fullPath');
+        //$this->addElement('hidden', 'path');
 
         $image = new Zend_Form_Element_File('imageLoadFile');
         $image
@@ -49,28 +50,36 @@ class Admin_Form_MediaEdit extends Twitter_Bootstrap_Form_Vertical
             'multiOptions' => $this->getCategoryArray(),
         ));
 
+        $this->addElement('text', 'name', array(
+            'label'         => 'Заголовок',
+            'placeholder'   => 'Заголовок статьи',
+            'required'      => true,
+//            'class'         => 'slugify',
+//            'data-slugify'  => 'path',
+        ));
+
+        $refreshPath = '<button type="button" class="refreshSlugify btn btn-default" data-slugify="path" data-sourse="name">
+                            <span class="glyphicon glyphicon-refresh"></span>
+                        </button>';
+
+        $this->addElement('text', 'path', array(
+            'label'         => 'Url',
+            'placeholder'   => 'Url',
+            'required'      => true,
+            'prepend_btn'   => $refreshPath
+        ));
+
         $this->addElement('select', 'sectionSiteId', array(
             'label'     => 'Привязать к разделу сайта',
             'multiOptions' => $this->getSectionSiteArray(),
         ));
 
-
-        $this->addElement('text', 'name', array(
-            'label'         => 'Заголовок',
-            'placeholder'   => 'Заголовок статьи',
-            'required'      => true,
-            'class'         => 'slugify',
-            'data-slugify'  => 'path',
-        ));
-
-        $this->addElement('hidden', 'fullPath');
-
         $this->addDisplayGroup(
             array(
                 'categoryId',
                 'name',
-                'sectionSiteId',
                 'path',
+                'sectionSiteId',
                 'fullPath',
                 'id',
             ),

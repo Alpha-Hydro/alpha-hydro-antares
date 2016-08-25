@@ -102,16 +102,15 @@ class PipelineCategoriesController extends BaseController
             $item->setContentHtml($context_html);
         }
 
-        if(!$this->_request->getParam('fullPath')){
-            $fullPath = $this->_request->getParam('path');
 
-            if($this->_request->getParam('parentId') != 0){
-                $parentCategory = $this->_modelMapper->find($this->_request->getParam('parentId'), new Pipeline_Model_PipelineCategories());
-                if($parentCategory)
-                    $fullPath = $parentCategory->getFullPath();
-            }
-            $item->setFullPath($fullPath);
+        $fullPath = $this->_request->getParam('path');
+
+        if($this->_request->getParam('parentId') != 0){
+            $parentCategory = $this->_modelMapper->find($this->_request->getParam('parentId'), new Pipeline_Model_PipelineCategories());
+            if($parentCategory)
+                $fullPath = $parentCategory->getFullPath();
         }
+        $item->setFullPath($fullPath);
 
         $this->setMetaData($item);
         

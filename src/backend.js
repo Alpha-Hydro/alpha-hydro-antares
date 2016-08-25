@@ -1,11 +1,11 @@
-import $ from "jquery";
 import React from "react";
 import ReactDOM from "react-dom";
 import ButtonGroup from "react-bootstrap/lib/ButtonGroup";
 
 import IssueModalForm from "./components/IssueModalForm";
 
-import ForumActions from "./ts/ForumActions"
+import ForumActions from "./ts/ForumActions";
+import Slugify from "./ts/Slugify";
 
 import PanelButtonsComponent from "./components/PanelButtonsComponent";
 import ItemButtonsComponent from "./components/ItemButtonsComponent";
@@ -23,12 +23,13 @@ issueModal && ReactDOM.render(
 	issueModal
 );*/
 
-/*$(() => {
-	$(document.body).html(test("World"));
-});*/
-
-//console.log(test("World"));
 let forumActions = ForumActions;
+
+let onchangeSlugify = new Slugify('.onchangeSlugify');
+onchangeSlugify.onchange();
+
+let refreshSlugify = new Slugify('.refreshSlugify');
+refreshSlugify.refresh();
 
 const adminPanel = document.getElementById('admin-panel');
 adminPanel && ReactDOM.render(

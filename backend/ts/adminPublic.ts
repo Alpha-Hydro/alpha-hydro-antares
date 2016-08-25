@@ -1,5 +1,4 @@
 import ImageLoader = require('./ImageLoader');
-import Slugify = require('./Slugify');
 import SelectCategory = require('./SelectCategory');
 import SelectMediaSectionSite = require('./SelectMediaSectionSite');
 
@@ -14,6 +13,5 @@ formItemEdit && formItemEdit.addEventListener('change', () => {
 new ImageLoader('imageLoad', 'imageLoadFile', 'imageLoad');
 new ImageLoader('imageDraftLoad', 'imageDraftLoadFile', 'imageDraftLoad');
 new ImageLoader('imageTableLoadBtn', 'imageTableLoadFile', 'imageTable');
-new Slugify('.slugify');
 new SelectCategory('categoryId', 'path', 'fullPath');
 new SelectMediaSectionSite('.select-feedback');

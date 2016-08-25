@@ -45,14 +45,19 @@ class Admin_Form_ManufactureCategoriesEdit extends Twitter_Bootstrap_Form_Vertic
             'label'         => 'Заголовок страницы',
             'placeholder'   => 'Заголовок страницы',
             'required'      => true,
-            'class'         => 'slugify',
-            'data-slugify'  => 'path',
+//            'class'         => 'slugify',
+//            'data-slugify'  => 'path',
         ));
+
+        $refreshPath = '<button type="button" class="refreshSlugify btn btn-default" data-slugify="path" data-sourse="title">
+                            <span class="glyphicon glyphicon-refresh"></span>
+                        </button>';
 
         $this->addElement('text', 'path', array(
             'label'         => 'Url страницы',
             'placeholder'   => 'Url страницы',
             'required'      => true,
+            'prepend_btn'   => $refreshPath
         ));
 
         $this->addDisplayGroup(
