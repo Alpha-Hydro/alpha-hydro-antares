@@ -17,6 +17,13 @@ class Zend_View_Helper_navbarRightMenu extends Zend_View_Helper_Abstract
                 'label'      => Zend_Auth::getInstance()->getIdentity()->email,
                 'title'      => 'Dashboard',
                 'uri'     => '/admin/',
+                'pages'     => array(
+                    'test' => array(
+                        'label' => 'test',
+                        'title' => 'test',
+                        'uri' => '/'
+                    )
+                ),
             ));
         $view = new Zend_View();
         echo $view->navigation($container)->menu()->setUlClass('nav navbar-nav navbar-right')->render();
