@@ -5,6 +5,7 @@
 
 $this->title = "Разделы сайта";
 $this->secondary_text = 'Статические страницы';
+//Zend_Debug::dump($this->identity->role);
 ?>
 <table class="table table-striped table-bordered">
     <thead>
@@ -37,6 +38,7 @@ $this->secondary_text = 'Статические страницы';
                     'item_id' => $page->getId(),
                     'active' => ($page->getActive() != 0)? true : false,
                     'deleted' => ($page->getDeleted() != 0)? true : false,
+                    'role' => $this->identity->role
                 ))?>
             </td>
         </tr>

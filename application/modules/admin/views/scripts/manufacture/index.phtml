@@ -42,6 +42,7 @@ $this->secondary_text = $this->categoryName.'Список товаров';
                         'item_path' => '/manufacture/'.$page->getFullPath(),
                         'active' => ($page->getActive() != 0)? true : false,
                         'deleted' => ($page->getDeleted() != 0)? true : false,
+                        'role' => $this->identity->role
                     ))?>
                 </td>
             </tr>
