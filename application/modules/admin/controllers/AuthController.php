@@ -94,9 +94,46 @@ class AuthController extends Zend_Controller_Action
 
     public function loginAction()
     {
-        $formData = $this->_request->getPost();
+        $jsonRequest = false;
+        $formData = $this->getRequest()->getPost();
 
-        return $this->_helper->json->sendJson($formData);
+        $form = new Admin_Form_Auth();
+        if ($form->isValid($formData)) {
+
+            // получаем введённые данные
+            $username = $this->getRequest()->getPost('username');
+            $password = $this->getRequest()->getPost('password');
+
+            $authAdapter = new Admin_Model_Auth($username, $password);
+
+            // получаем экземпляр Zend_Auth
+            $auth = Zend_Auth::getInstance();
+
+            // делаем попытку авторизировать пользователя
+            $result = $auth->authenticate($authAdapter);
+
+            //Zend_Debug::dump($this->_curUrl);
+
+            // если авторизация прошла успешно
+            if ($result->isValid()) {
+                // используем адаптер для извлечения оставшихся данных о пользователе
+                //$identity = $authAdapter->getResultRowObject();
+                $identity = $result->getIdentity();
+
+                // получаем доступ к хранилищу данных Zend
+                $authStorage = $auth->getStorage();
+
+                // помещаем туда информацию о пользователе,
+                // чтобы иметь к ним доступ при конфигурировании Acl
+                $authStorage->write($identity);
+
+                $jsonRequest = true;
+                //return;
+
+            }
+        }
+
+        return $this->_helper->json->sendJson($jsonRequest);
     }
 
     public function logoutAction()

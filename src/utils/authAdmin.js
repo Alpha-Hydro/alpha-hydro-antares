@@ -5,51 +5,23 @@
  *  @copyright Copyright (c) 2016, Alpha-Hydro
  */
 
-var axios = require('axios');
-
 var helpers = {
 	login: (data) => {
-		console.log(data);
+		var settings = {
+			async: true,
+			crossDomain: true,
+			url: "http://admin.alpha-hydro.loc/admin/auth/login",
+			method: "POST",
+			headers: {
+				"cache-control": "no-cache",
+				"content-type": "application/x-www-form-urlencoded"
+			},
+			data: data
+		};
 
-		/*var instance = axios.create({
-			headers: {"Content-Type": "application/form-data"}
+		$.ajax(settings).done(function (response) {
+			return response;
 		});
-
-		return instance.post("/admin/auth/login", data)
-			.then(function (response) {
-				console.log(response);
-			})
-			.catch(function (response) {
-				console.log(response);
-				return "error";
-			});*/
-
-		return axios({
-			method: 'post',
-			url: '/admin/auth/login',
-			data: {
-				'firstName': 'Fred',
-				'lastName': 'Flintstone'
-			}
-		})
-			.then(function (response) {
-				console.log(response);
-			})
-			.catch(function (response) {
-				console.log(response);
-				return "error";
-			});
-
-
-		/*return axios.get("/admin/auth/login?username="+data.username+"&password="+data.password)
-			.then(function (response) {
-				console.log(response);
-			})
-			.catch(function (response) {
-				console.log(response);
-				return "error";
-			});*/
 	}
 };
-
 module.exports = helpers;
