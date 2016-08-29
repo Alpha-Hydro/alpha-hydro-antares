@@ -25,6 +25,7 @@ const common = merge(
 		'process.env.NODE_ENV',
 		'production'
 	),*/
+	parts.jQuery(),
 	parts.extractBundle({
 		name: 'vendor',
 		entries: Object.keys(pkg.dependencies)

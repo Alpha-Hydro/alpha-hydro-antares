@@ -62,6 +62,8 @@ class AuthController extends Zend_Controller_Action
                 // делаем попытку авторизировать пользователя
                 $result = $auth->authenticate($authAdapter);
 
+                //Zend_Debug::dump($this->_curUrl);
+
                 // если авторизация прошла успешно
                 if ($result->isValid()) {
                     // используем адаптер для извлечения оставшихся данных о пользователе
@@ -88,6 +90,13 @@ class AuthController extends Zend_Controller_Action
 
         if(Zend_Auth::getInstance()->hasIdentity() && $this->getParam('forbiddenResource'))
             $this->view->assign('forbiddenResource', $this->getParam('forbiddenResource'));
+    }
+
+    public function loginAction()
+    {
+        $formData = $this->_request->getPost();
+
+        return $this->_helper->json->sendJson($formData);
     }
 
     public function logoutAction()

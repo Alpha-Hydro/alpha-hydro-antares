@@ -8,6 +8,13 @@
             <action>logout</action>
             <route>default</route>
         </logout>
+        <login>
+            <label>Другой пользователь</label>
+            <title>Другой пользователь</title>
+            <uri>#</uri>
+            <id>authLogin</id>
+            <class>authLogin</class>
+        </login>
     </nav>
     <admin>
         <dashboard>

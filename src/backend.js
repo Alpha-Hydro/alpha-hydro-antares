@@ -16,12 +16,18 @@ import ProductPropertyEditButton from "./components/Catalog/ProductProperties/Pr
 import ProductModificationEditButton from "./components/Catalog/ProductModificatons/ProductModificationEditButton";
 import ProductModificationPropertyEditButton from "./components/Catalog/ProductModificatons/ProductModificationPropertyEditButton";
 import ProductPassportPdf from "./components/Catalog/Products/ProductPassportPdf";
+import AdminModalAuth from "./components/AdminModalAuth";
 
 /*const issueModal = document.getElementById('issueModal');
 issueModal && ReactDOM.render(
 	<IssueModalForm/>,
 	issueModal
 );*/
+
+let modalAuth = document.getElementById('modalAuth');
+ReactDOM.render(
+	<AdminModalAuth/>, document.getElementById('modalAuth')
+);
 
 let forumActions = ForumActions;
 

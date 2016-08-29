@@ -40,4 +40,6 @@
 <?php $this->headScript()->captureStart() ?>
 var goAdmin = new AdminAuth('<?=$this->adminPath?>');
 <?php $this->headScript()->captureEnd() ?>
+<?php else:?>
+    <div id="modalAuth"></div>
 <?php endif;?>

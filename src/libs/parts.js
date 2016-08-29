@@ -143,3 +143,15 @@ exports.enableReactPerformanceTools = function() {
 		}
 	};
 };
+
+exports.jQuery = function () {
+	return {
+		plugins: [
+			new webpack.ProvidePlugin({
+				jQuery: 'jquery',
+				$: 'jquery',
+				jquery: 'jquery'
+			})
+		]
+	}
+};
