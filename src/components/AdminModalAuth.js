@@ -55,21 +55,23 @@ export default class AdminModalAuth extends React.Component{
     }
 
     sendForm(){
-		var data = {
-			"username": this.state.username,
-			"password": this.state.password
-		};
-		authAdmin.login(data).then((response) => {
-		    console.log(response);
-        });
-        /*if(authAdmin.login(data)){
-            this.hideModal();
-            location.reload(true);
-        }
-        else{
-            this.setState({errorMessage: 'Вы ввели неверное имя пользователя или неверный пароль'})
-        }*/
-
+			var data = {
+				"username": this.state.username,
+				"password": this.state.password
+			};
+			authAdmin.loginAuth(data)
+				.then(function(response){
+					console.log(response);
+					if(response){
+						this.hideModal();
+						location.reload(true);
+					}
+					else{
+						this.setState({
+							errorMessage: 'Вы ввели неверное имя пользователя или неверный пароль'
+						})
+					}
+				}.bind(this));
 	}
 
     render(){

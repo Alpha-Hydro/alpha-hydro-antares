@@ -128,7 +128,6 @@ class AuthController extends Zend_Controller_Action
                 $authStorage->write($identity);
 
                 $jsonRequest = true;
-                //return;
 
             }
         }

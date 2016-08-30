@@ -6,21 +6,17 @@
  */
 
 var helpers = {
-	login: (data) => {
-		var settings = {
-			async: true,
-			crossDomain: true,
-			url: "http://admin.alpha-hydro.loc/admin/auth/login",
-			method: "POST",
-			headers: {
-				"cache-control": "no-cache",
-				"content-type": "application/x-www-form-urlencoded"
+	loginAuth: (data) => {
+		return $.ajax({
+			url: "/admin/auth/login",
+			type: "POST",
+			data: data,
+			success: (data) => {
+				return data;
 			},
-			data: data
-		};
-
-		$.ajax(settings).done(function (response) {
-			return response;
+			error: (xhr, status) => {
+				console.log('error', status);
+			}
 		});
 	}
 };
