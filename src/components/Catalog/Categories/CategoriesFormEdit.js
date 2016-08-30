@@ -14,7 +14,8 @@ import ImagesUpload from "./../../../utils/ImagesUpload";
 import Slugify from "./../../../utils/slugifyHelper";
 import categoryHelpers from "./../../../utils/getDataHelper";
 
-import CategoryReplace from "./CategoryReplaceComponent";
+import CategoryReplaceComponent from "./CategoryReplaceComponent";
+import CategoryReplaceTest from "./CategoryReplaceTest";
 
 export default class CategoriesFormEdit extends React.Component{
 	constructor(props){
@@ -22,8 +23,21 @@ export default class CategoriesFormEdit extends React.Component{
 		this.state = {
 			data: props.data,
 			parentId: props.data.parentId,
+			showReplace : false,
 			categoryInfo: ''
 		}
+	}
+
+	showReplace(){
+		this.setState({
+			showReplace: true
+		})
+	}
+
+	hideReplace(){
+		this.setState({
+			showReplace: false
+		})
 	}
 
 	componentWillMount(){
@@ -129,10 +143,9 @@ export default class CategoriesFormEdit extends React.Component{
 							<ControlLabel>Родительская категория</ControlLabel>
 							<InputGroup>
 								<InputGroup.Button>
-									<CategoryReplace
-										currentCategory={this.state.categoryInfo}
-										selectCategory={this.selectCategory.bind(this)}
-									/>
+									<Button  bsStyle="primary" onClick={this.showReplace.bind(this)}>
+										<Glyphicon glyph="refresh" />
+									</Button>
 								</InputGroup.Button>
 								<FormControl
 									type="text"
@@ -140,6 +153,11 @@ export default class CategoriesFormEdit extends React.Component{
 									readOnly
 								/>
 							</InputGroup>
+							<CategoryReplaceTest
+								show={this.state.showReplace}
+								hide={this.hideReplace.bind(this)}
+								selectId={this.props.data.parentId}
+							/>
 						</FormGroup>
 						<FormGroup>
 							<ControlLabel>Описание категории</ControlLabel>
