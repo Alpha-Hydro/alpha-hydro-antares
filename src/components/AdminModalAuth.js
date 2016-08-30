@@ -11,7 +11,7 @@ import Alert from "react-bootstrap/lib/Alert";
 import authAdmin from "../utils/authAdmin";
 
 export default class AdminModalAuth extends React.Component{
-    constructor(props){
+	constructor(props){
 		super(props);
 		this.state = {
 			showModal: false,
@@ -19,9 +19,9 @@ export default class AdminModalAuth extends React.Component{
 			password: '',
 			errorMessage: ''
 		}
-    }
+  }
 
-    componentWillMount(){
+	componentWillMount(){
 		document.getElementById('menu-authLogin').addEventListener('click', (ev) => {
 			ev.preventDefault();
 			this.showModal();
@@ -36,7 +36,7 @@ export default class AdminModalAuth extends React.Component{
 		};
 	}
 
-	componentDidMount(){
+	/*componentDidMount(){
 		document.onkeydown = (e)=>{
 			if(e.altKey && e.keyCode == 120){
 				this.setState({
@@ -44,7 +44,7 @@ export default class AdminModalAuth extends React.Component{
 				});
 			}
 		}
-	}
+	}*/
 
     showModal() {
         this.setState({showModal: true});
@@ -81,7 +81,7 @@ export default class AdminModalAuth extends React.Component{
 			</Alert>
 		);
 
-        return(
+		return(
 			<Modal show={this.state.showModal} onHide={this.hideModal.bind(this)}>
 				<Modal.Header closeButton>
 						<Modal.Title>Авторизация пользователя</Modal.Title>
@@ -122,6 +122,6 @@ export default class AdminModalAuth extends React.Component{
 					<Button bsStyle="success" onClick={this.sendForm.bind(this)}>Вход</Button>
 				</Modal.Footer>
 			</Modal>
-        );
-    }
+		);
+	}
 }

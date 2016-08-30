@@ -52,16 +52,6 @@ export default class ModalFormIssue extends React.Component{
 		});
 	}
 
-	componentDidMount(){
-		document.onkeydown = (e)=>{
-			if(e.altKey && e.keyCode == 113){
-				this.setState({
-					showModal: true
-				});
-			}
-		}
-	}
-
 	handleChange(key){
 		return (e) => {
 			var data = {};

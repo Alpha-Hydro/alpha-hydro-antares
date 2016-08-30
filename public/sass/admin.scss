@@ -279,3 +279,8 @@ a:hover{
     }
   }
 }
+span{
+  &.divider{
+    display: block;
+  }
+}

@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import ButtonGroup from "react-bootstrap/lib/ButtonGroup";
 
-import IssueModalForm from "./components/IssueModalForm";
+import IssueModalComponent from "./components/IssueModalComponent";
 
 import ForumActions from "./ts/ForumActions";
 import Slugify from "./ts/Slugify";
@@ -18,15 +18,15 @@ import ProductModificationPropertyEditButton from "./components/Catalog/ProductM
 import ProductPassportPdf from "./components/Catalog/Products/ProductPassportPdf";
 import AdminModalAuth from "./components/AdminModalAuth";
 
-/*const issueModal = document.getElementById('issueModal');
-issueModal && ReactDOM.render(
-	<IssueModalForm/>,
-	issueModal
-);*/
+const modalIssue = document.getElementById('modalIssue');
+modalIssue && ReactDOM.render(
+	<IssueModalComponent data={modalIssue.dataset}/>,
+ 	modalIssue
+);
 
-let modalAuth = document.getElementById('modalAuth');
-ReactDOM.render(
-	<AdminModalAuth/>, document.getElementById('modalAuth')
+const modalAuth = document.getElementById('modalAuth');
+modalAuth && ReactDOM.render(
+	<AdminModalAuth/>, modalAuth
 );
 
 let forumActions = ForumActions;

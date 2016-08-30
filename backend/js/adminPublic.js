@@ -89,7 +89,6 @@ define("SelectMediaSectionSite", ["require", "exports"], function (require, expo
         }
         SelectMediaSectionSite.prototype.init = function () {
             var _this = this;
-            console.log(this.selectFeedback);
             var self = this;
             this.selectFeedback.forEach(function (select) {
                 self.selectElement = select.querySelector('select');

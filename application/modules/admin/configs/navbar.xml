@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
     <nav>
+        <login>
+            <label>Другой пользователь</label>
+            <title>Другой пользователь</title>
+            <uri>#</uri>
+            <id>authLogin</id>
+        </login>
+        <separator>
+            <label/>
+            <uri/>
+            <class>divider</class>
+        </separator>
         <logout>
             <label>Выход</label>
             <module>admin</module>
@@ -8,13 +19,6 @@
             <action>logout</action>
             <route>default</route>
         </logout>
-        <login>
-            <label>Другой пользователь</label>
-            <title>Другой пользователь</title>
-            <uri>#</uri>
-            <id>authLogin</id>
-            <class>authLogin</class>
-        </login>
     </nav>
     <admin>
         <dashboard>

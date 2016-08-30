@@ -9,7 +9,6 @@ class SelectMediaSectionSite{
     }
 
     init(){
-        console.log(this.selectFeedback);
         var self:any = this;
         this.selectFeedback.forEach((select: HTMLElement) => {
             self.selectElement = select.querySelector('select');
