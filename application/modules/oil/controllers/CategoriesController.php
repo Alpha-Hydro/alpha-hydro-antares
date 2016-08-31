@@ -10,6 +10,11 @@ class Oil_CategoriesController extends Zend_Controller_Action
     protected $_categoryMapper = null;
 
     /**
+     * @var Oil_Model_Mapper_OilCategories[]
+     */
+    protected $_categories = array();
+
+    /**
      * @var Oil_Model_Mapper_Oil
      */
     protected $_itemMapper = null;
@@ -32,16 +37,19 @@ class Oil_CategoriesController extends Zend_Controller_Action
 
         $select = $this->_categoryMapper->getDbTable()->select();
         $select->where('parent_id = ?', 0)
-            ->where('active != ?', 0)
+            //->where('active != ?', 0)
             ->where('deleted != ?', 1)
             ->order('sorting ASC');
 
-        $categories = $this->_categoryMapper->fetchAll($select);
+        $this->_categories = $this->_categoryMapper->fetchAll($select);
 
-        if(!empty($categories))
-            $this->view->categories = $categories;
+        if(!empty($this->_categories))
+            $this->view->categories = $this->_categories;
 
-        $this->view->adminPath = 'oil-categories/';
+        $this->view->assign(array(
+            'adminPath' => 'oil-categories/',
+            'title' => 'Масла и очистители'
+        ));
     }
 
     public function indexAction()
@@ -79,34 +87,32 @@ class Oil_CategoriesController extends Zend_Controller_Action
             ));
         }
 
-        $current_category_id = $category->getId();
-        $this->view->category = $category;
-        $this->view->title = $category->getTitle();
-        $this->view->adminPath = 'oil-categories/list/'.$category->getId();
+        if($category->getDeleted() != '0'){
+            if (!Zend_Auth::getInstance()->hasIdentity())
+                throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
-        if($current_category_id != 0){
-            if(!is_null($this->getRequest()->getParam('json'))
-                && Zend_Auth::getInstance()->hasIdentity()){
+            $this->_redirector->gotoRouteAndExit(array(
+                'module' => 'admin',
+                'controller' => 'oil-categories',
+                'action' => 'index'
+            ),'adminEdit', true);
+        }
 
-                $this->forward('json', 'oil-categories', 'admin', array('id' => $current_category_id));
-                return;
-            }
+        $this->view->assign(array(
+            'category' => $category,
+            'title' => $category->getTitle(),
+            'adminPath' => 'oil-categories/list/'.$category->getId()
+        ));
 
-            if(Zend_Auth::getInstance()->hasIdentity()){
-                $this->_request->setParams(array(
-                    'dataItem' => array(
-                        'controller' => 'oil-categories',
-                        'id' => $category->getId(),
-                        'active' => $category->getActive(),
-                        'deleted' => $category->getDeleted()
-                    )
-                ));
-            }
+        if($category->getActive() != '1'
+            && !Zend_Auth::getInstance()->hasIdentity())
+            throw new Zend_Controller_Action_Exception("Раздел временно не доступен", 500);
 
+        if($category->getId() != 0){
             $select = $this->_categoryMapper->getDbTable()->select();
-            $select->where('parent_id = ?', $current_category_id)
+            $select->where('parent_id = ?', $category->getId())
                 ->where('deleted != ?', 1)
-                ->where('active != ?', 0)
+                //->where('active != ?', 0)
                 ->order('sorting ASC');
 
             $categories = $this->_categoryMapper->fetchAll($select);

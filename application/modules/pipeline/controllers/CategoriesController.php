@@ -5,24 +5,30 @@ class Pipeline_CategoriesController extends Zend_Controller_Action
 
     protected $_fullPath = null;
 
+    /**
+     * @var Zend_Controller_Action_Helper_Redirector
+     */
+    protected $_redirector = null;
+
+    /**
+     * @var Pipeline_Model_PipelineCategories[]
+     */
+    protected $_categories = array();
+
     public function init()
     {
+        $this->_redirector = new Zend_Controller_Action_Helper_Redirector();
+
         $request = $this->getRequest();
 
         if($request->getParam('fullPath'))
             $this->setFullPath($request->getParam('fullPath'));
 
-        $categoriesMapper = new Pipeline_Model_Mapper_PipelineCategories();
-        $select =  $categoriesMapper->getDbTable()->select();
-        $select->where('parent_id = ?', 0)
-            ->where('active != ?', 0)
-            ->where('deleted != ?', 1)
-            ->order('sorting ASC');
-
-        $categories = $categoriesMapper->fetchAll($select);
-
-        $this->view->categories = $categories;
-        //$this->view->adminPath = 'pipeline-categories/';
+        $this->view->assign(array(
+            'categories' => $this->getCategories(),
+            'title' => 'Детали трубопроводов',
+            'adminPath' => 'pipeline-categories/'
+        ));
     }
 
     public function indexAction()
@@ -41,33 +47,24 @@ class Pipeline_CategoriesController extends Zend_Controller_Action
             return;
         }
 
-        $current_category_id = $category->getId();
-        $this->view->category = $category;
-        $this->view->title = $category->getTitle();
-        $this->view->adminPath = 'pipeline-categories/list/'.$category->getId();
+        $this->getJson($category);
+        $this->setParamsDataItem($category);
+
+        $this->checkDeleted($category);
+
+
+        $this->view->assign(array(
+            'category' => $category,
+            'title' => $category->getTitle(),
+            'adminPath' => 'pipeline-categories/list/'.$category->getId()
+        ));
+
+        $this->checkActive($category);
         
-        if($current_category_id !== 0){
-
-            if(!is_null($this->getRequest()->getParam('json'))
-                && Zend_Auth::getInstance()->hasIdentity()){
-
-                $this->forward('json', 'pipeline-categories', 'admin', array('id' => $current_category_id));
-                return;
-            }
-
-            if(Zend_Auth::getInstance()->hasIdentity()){
-                $this->_request->setParams(array(
-                    'dataItem' => array(
-                        'controller' => 'pipeline-categories',
-                        'id' => $category->getId(),
-                        'active' => $category->getActive(),
-                        'deleted' => $category->getDeleted()
-                    )
-                ));
-            }
+        if($category->getId() !== 0){
 
             $select = $categoriesMapper->getDbTable()->select();
-            $select->where('parent_id = ?', $current_category_id)
+            $select->where('parent_id = ?', $category->getId())
                 ->where('deleted != ?', 1)
                 ->where('active != ?', 0)
                 ->order('sorting ASC');
@@ -78,7 +75,7 @@ class Pipeline_CategoriesController extends Zend_Controller_Action
                 $this->forward('index', 'pipeline');
                 return;
             }
-            $this->view->categories = $categories;
+            $this->view->assign('categories', $categories);
 
         }
         else{
@@ -86,6 +83,78 @@ class Pipeline_CategoriesController extends Zend_Controller_Action
             return;
         }
 
+    }
+
+    /**
+     * @param Pipeline_Model_PipelineCategories $categories
+     * @return $this
+     * @throws Zend_Controller_Action_Exception
+     */
+    public function checkDeleted(Pipeline_Model_PipelineCategories $categories)
+    {
+        if($categories->getDeleted() != '0'){
+            if (!Zend_Auth::getInstance()->hasIdentity())
+                throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+            $this->_redirector->gotoRouteAndExit(array(
+                'module' => 'admin',
+                'controller' => 'pipeline-categories'
+            ),'adminEdit', true);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Pipeline_Model_PipelineCategories $categories
+     * @return $this
+     * @throws Zend_Controller_Action_Exception
+     */
+    public function checkActive(Pipeline_Model_PipelineCategories $categories)
+    {
+        if($categories->getActive() != '1' && !Zend_Auth::getInstance()->hasIdentity()){
+            $this->view->assign(array(
+                'title' => $categories->getTitle(),
+            ));
+            throw new Zend_Controller_Action_Exception("Страница временно не доступна", 403);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Pipeline_Model_PipelineCategories $categories
+     * @return $this
+     */
+    public function getJson(Pipeline_Model_PipelineCategories $categories)
+    {
+        if(!is_null($this->getRequest()->getParam('json'))
+            && Zend_Auth::getInstance()->hasIdentity()){
+
+            $this->forward('json', 'pipeline-categories', 'admin', array('id' => $categories->getId()));
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Pipeline_Model_PipelineCategories $categories
+     * @return $this
+     */
+    public function setParamsDataItem(Pipeline_Model_PipelineCategories $categories)
+    {
+        if(Zend_Auth::getInstance()->hasIdentity()){
+            $this->_request->setParams(array(
+                'dataItem' => array(
+                    'controller' => 'pipeline-categories',
+                    'id' => $categories->getId(),
+                    'active' => $categories->getActive(),
+                    'deleted' => $categories->getDeleted()
+                )
+            ));
+        }
+
+        return $this;
     }
 
     /**
@@ -111,6 +180,34 @@ class Pipeline_CategoriesController extends Zend_Controller_Action
     public function viewAction()
     {
         // action body
+    }
+
+    /**
+     * @param  $categories Pipeline_Model_PipelineCategories[]
+     * @return Pipeline_CategoriesController
+     */
+    public function setCategories($categories)
+    {
+        $this->_categories = $categories;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCategories()
+    {
+        if(0 == count($this->_categories)){
+            $categoriesMapper = new Pipeline_Model_Mapper_PipelineCategories();
+            $select =  $categoriesMapper->getDbTable()->select();
+            $select->where('parent_id = ?', 0)
+                ->where('active != ?', 0)
+                ->where('deleted != ?', 1)
+                ->order('sorting ASC');
+
+            $this->_categories = $categoriesMapper->fetchAll($select);
+        }
+        return $this->_categories;
     }
 
 

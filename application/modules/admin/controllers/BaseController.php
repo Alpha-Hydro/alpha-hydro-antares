@@ -212,7 +212,7 @@ class BaseController extends Zend_Controller_Action
 
         $form->addElement('hidden','currentUrl');
         $element = $form->getElement('currentUrl');
-        $element->setValue($this->_hostHttp->getServer('REDIRECT_URL'));
+        $element->setValue($this->_hostHttp->getServer('REQUEST_URI'));
         $form->getDisplayGroup('basic')->addElement($element);
 
         $dataPage = $page->getOptions();

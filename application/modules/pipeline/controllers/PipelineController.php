@@ -5,10 +5,17 @@ class Pipeline_PipelineController extends Zend_Controller_Action
 
     protected $_fullPath = null;
 
+    /**
+     * @var Zend_Controller_Action_Helper_Redirector
+     */
+    protected $_redirector = null;
+
     public function init()
     {
         $request = $this->getRequest();
         $this->setFullPath($request->getParam('fullPath'));
+
+        $this->_redirector = new Zend_Controller_Action_Helper_Redirector();
     }
 
     public function indexAction()
@@ -55,23 +62,10 @@ class Pipeline_PipelineController extends Zend_Controller_Action
         if(is_null($pipeline))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
-        if(!is_null($this->getRequest()->getParam('json'))
-            && Zend_Auth::getInstance()->hasIdentity()){
+        $this->getJson($pipeline);
+        $this->setParamsDataItem($pipeline);
 
-            $this->forward('json', 'pipeline', 'admin', array('id' => $pipeline->getId()));
-            return;
-        }
-
-        if(Zend_Auth::getInstance()->hasIdentity()){
-            $this->_request->setParams(array(
-                'dataItem' => array(
-                    'controller' => 'pipeline',
-                    'id' => $pipeline->getId(),
-                    'active' => $pipeline->getActive(),
-                    'deleted' => $pipeline->getDeleted()
-                )
-            ));
-        }
+        $this->checkDeleted($pipeline);
 
         $categoriesMapper = new Pipeline_Model_Mapper_PipelineCategories();
         $category = $categoriesMapper->find($pipeline->getCategoryId(), new Pipeline_Model_PipelineCategories());
@@ -86,14 +80,93 @@ class Pipeline_PipelineController extends Zend_Controller_Action
                 $propertyValues = $propertyValuesMapper->findByKey($pipeline->getId(), $property->getId(), new Pipeline_Model_PipelinePropertyValues());
                 $viewProperties[$property->getName()] = $propertyValues;
             }
-            $this->view->properties = $viewProperties;
+            $this->view->assign('properties', $viewProperties);
         }
 
-        $this->view->title = $pipeline->getTitle();
-        $this->view->pipeline = $pipeline;
-        $this->view->category = $category;
-        $this->view->adminPath = 'pipeline/edit/'.$pipeline->getId();
+        $this->view->assign(array(
+            'pipeline' => $pipeline,
+            'category' => $category,
+            'title' => $pipeline->getTitle(),
+            'adminPath' => 'pipeline/edit/'.$pipeline->getId()
+        ));
+
+        $this->checkActive($pipeline);
     }
+
+    /**
+     * @param Pipeline_Model_Pipeline $pageItem
+     * @return $this
+     * @throws Zend_Controller_Action_Exception
+     */
+    public function checkDeleted(Pipeline_Model_Pipeline $pageItem)
+    {
+        if($pageItem->getDeleted() != '0'){
+            if (!Zend_Auth::getInstance()->hasIdentity())
+                throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+            $this->_redirector->gotoRouteAndExit(array(
+                'module' => 'admin',
+                'controller' => 'pipeline-categories',
+                'action' => 'list',
+                'id' => $pageItem->getCategoryId()
+            ),'adminEdit', true);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Pipeline_Model_Pipeline $pageItem
+     * @return $this
+     * @throws Zend_Controller_Action_Exception
+     */
+    public function checkActive(Pipeline_Model_Pipeline $pageItem)
+    {
+        if($pageItem->getActive() != '1' && !Zend_Auth::getInstance()->hasIdentity()){
+            $this->view->assign(array(
+                'title' => $pageItem->getTitle(),
+            ));
+            throw new Zend_Controller_Action_Exception("Страница временно не доступна", 403);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Pipeline_Model_Pipeline $pageItem
+     * @return $this
+     */
+    public function getJson(Pipeline_Model_Pipeline $pageItem)
+    {
+        if(!is_null($this->getRequest()->getParam('json'))
+            && Zend_Auth::getInstance()->hasIdentity()){
+
+            $this->forward('json', 'pipeline', 'admin', array('id' => $pageItem->getId()));
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Pipeline_Model_Pipeline $pageItem
+     * @return $this
+     */
+    public function setParamsDataItem(Pipeline_Model_Pipeline $pageItem)
+    {
+        if(Zend_Auth::getInstance()->hasIdentity()){
+            $this->_request->setParams(array(
+                'dataItem' => array(
+                    'controller' => 'pipeline',
+                    'id' => $pageItem->getId(),
+                    'active' => $pageItem->getActive(),
+                    'deleted' => $pageItem->getDeleted()
+                )
+            ));
+        }
+
+        return $this;
+    }
+
 
     /**
      * @return null

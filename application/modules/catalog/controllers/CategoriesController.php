@@ -20,6 +20,10 @@ class Catalog_CategoriesController extends Zend_Controller_Action
         $this->_redirector = $this->_helper->getHelper('Redirector');
         $this->_fullPath =  $request->getParam('fullPath');
         $this->_auth = Zend_Auth::getInstance()->hasIdentity();
+
+        $this->view->assign(array(
+            'title' => 'Каталог продукции',
+        ));
     }
 
     public function indexAction()
@@ -58,10 +62,6 @@ class Catalog_CategoriesController extends Zend_Controller_Action
                 'parent_id' => $category->getParentId()
             ),'adminCategoriesEdit', true);
         }
-
-        if($category->getActive() === '0'
-            && !Zend_Auth::getInstance()->hasIdentity())
-            throw new Zend_Controller_Action_Exception("Раздел временно не доступен", 500);
 
 
         $current_category_id = $category->getId();
@@ -122,6 +122,17 @@ class Catalog_CategoriesController extends Zend_Controller_Action
             'meta_description' => $this->setMetaDescription($category),
             'meta_keywords' => strtolower($meta_keywords),
         ));
+
+        if($category->getActive() === '0'
+            && !Zend_Auth::getInstance()->hasIdentity()){
+            $this->view->assign(array(
+                'breadcrumbs' => true,
+                'sidebar_headers' => true,
+                //'secondaryHeader' => null,
+            ));
+            throw new Zend_Controller_Action_Exception("Раздел временно не доступен", 403);
+        }
+
     }
 
     /**

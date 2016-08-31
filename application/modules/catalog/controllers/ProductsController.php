@@ -127,7 +127,7 @@ class Catalog_ProductsController extends Zend_Controller_Action
         $categoryRel = $products->findCategoryRel($product->getId(), new Catalog_Model_Categories());
         $this->setCurrentCategory($categoryRel);
 
-        if($product->getDeleted() == 1){
+        if($product->getDeleted() != '0'){
             if(!Zend_Auth::getInstance()->hasIdentity())
                 throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
@@ -218,14 +218,14 @@ class Catalog_ProductsController extends Zend_Controller_Action
             'meta_keywords' => $meta_keywords,
         ));
 
-        if($product->getActive() == 0
+        if($product->getActive() != '1'
             && !Zend_Auth::getInstance()->hasIdentity()){
             $this->view->assign(array(
                 'breadcrumbs' => true,
                 'sidebar_headers' => true,
                 //'secondaryHeader' => null,
             ));
-            throw new Zend_Controller_Action_Exception("Товар временно не доступен", 500);
+            throw new Zend_Controller_Action_Exception("Товар временно не доступен", 403);
         }
 
         if(Zend_Auth::getInstance()->hasIdentity()){

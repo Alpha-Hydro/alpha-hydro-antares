@@ -67,6 +67,7 @@ $this->secondary_text = 'Список категорий';
      data-controller = "categories"
      data-action="add"
      data-title="Добавить категорию"
+     data-role="<?=$this->identity->role?>"
 ></div>
 
 <?= $this->render('components/_paginator.phtml')?>

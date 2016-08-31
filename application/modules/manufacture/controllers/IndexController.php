@@ -33,7 +33,6 @@ class Manufacture_IndexController extends Zend_Controller_Action
     public function init()
     {
         $this->_count_item_on_page = 6;
-        //$this->view->adminPath = 'manufacture';
 
         $this->_pagesMapper = new Pages_Model_Mapper_Pages();
         $this->_redirector = $this->_helper->getHelper('Redirector');
@@ -47,13 +46,15 @@ class Manufacture_IndexController extends Zend_Controller_Action
         $manufactureCategories = $manufactureCategoriesMapper->fetchAll($select);
         $this->setCategories($manufactureCategories);
 
-        $this->view->categories = $this->getCategories();
-
         $this->_authUser = Zend_Auth::getInstance()->getIdentity();
         if(!is_null($this->_authUser))
             $this->view->authUser = $this->_authUser;
 
-        $this->view->adminPath = 'manufacture-categories/';
+        $this->view->assign(array(
+            'categories' => $this->getCategories(),
+            'adminPath' => 'manufacture-categories/',
+            'title' => 'Наше производство'
+        ));
 
     }
 
@@ -134,7 +135,7 @@ class Manufacture_IndexController extends Zend_Controller_Action
             ));
         }
 
-        if($manufactureCategory->getDeleted() === '1'){
+        if($manufactureCategory->getDeleted() != '0'){
             if (!Zend_Auth::getInstance()->hasIdentity())
                 throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
@@ -145,14 +146,24 @@ class Manufacture_IndexController extends Zend_Controller_Action
             ),'adminEdit', true);
         }
 
-        $this->view->category = $manufactureCategory;
-        $this->view->adminPath = 'manufacture-categories/list/'.$manufactureCategory->getId();
+        $this->view->assign(array(
+            'category' => $manufactureCategory,
+            'adminPath' => 'manufacture-categories/list/'.$manufactureCategory->getId(),
+            'title' => $manufactureCategory->getTitle()
+        ));
 
-        if($manufactureCategory->getActive() === '0'
+        if($manufactureCategory->getActive() != '1'
             && !Zend_Auth::getInstance()->hasIdentity())
             throw new Zend_Controller_Action_Exception("Раздел временно не доступен", 500);
 
-        $manufactureItems = $manufactureCategoriesMapper->fetchManufactureRel($manufactureCategory->getId());
+
+        $manufactureMapper = new Manufacture_Model_Mapper_Manufacture();
+        $select = $manufactureMapper->getDbTable()->select()
+            ->where('deleted != ?', 1)
+            ->where('active != ?', 0)
+            ->order('sorting ASC');
+
+        $manufactureItems = $manufactureCategoriesMapper->fetchManufactureRel($manufactureCategory->getId(), $select);
 
         if(!empty($manufactureItems)){
             if(count($manufactureItems) > $this->getCountItemOnPage()){
@@ -215,17 +226,38 @@ class Manufacture_IndexController extends Zend_Controller_Action
             ));
         }
 
-        $this->view->manufacture = $manufacture;
-        $this->view->meta_description = $manufacture->getMetaDescription();
-        $this->view->meta_keywords = $manufacture->getMetaKeywords();
-        $this->view->adminPath = 'manufacture/edit/'.$manufacture->getId();
-
         $manufactureCategoryMapper = new Manufacture_Model_Mapper_ManufactureCategories();
         $manufactureCategory = $manufactureCategoryMapper->find(
             $manufacture->getCategoryId(),
             new Manufacture_Model_ManufactureCategories()
         );
-        $this->view->category = $manufactureCategory;
+
+        if($manufacture->getDeleted() != '0'){
+            if(!Zend_Auth::getInstance()->hasIdentity() && $manufacture->getDeleted() != '0')
+                throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+            $this->_redirector->gotoRouteAndExit(array(
+                'module' => 'admin',
+                'controller' => 'manufacture-categories',
+                'action' => 'list',
+                'id' => $manufactureCategory->getId()
+            ), 'adminEdit', true);
+        }
+
+        $this->view->assign(array(
+            'manufacture' => $manufacture,
+            'meta_description' => $manufacture->getMetaDescription(),
+            'meta_keywords' => $manufacture->getMetaKeywords(),
+            'adminPath' => 'manufacture/edit/'.$manufacture->getId(),
+            'category' => $manufactureCategory,
+        ));
+
+        if($manufacture->getActive() != '1' && !Zend_Auth::getInstance()->hasIdentity()){
+            $this->view->assign(array(
+                'title' => $manufacture->getTitle(),
+            ));
+            throw new Zend_Controller_Action_Exception("Страница временно не доступна", 403);
+        }
     }
 
     /**

@@ -7,21 +7,22 @@ class Media_IndexController extends Zend_Controller_Action
 
     protected $_count_item_on_page = null;
 
+    /**
+     * @var Media_Model_MediaCategories[]
+     */
     protected $_categories = array();
+
+    /**
+     * @var Zend_Controller_Action_Helper_Redirector
+     *
+     */
+    protected $_redirector = null;
 
     public function init()
     {
         $this->_categories_default_id = 2;
         $this->_count_item_on_page = 10;
-
-        $mediaCategoryMapper = new Media_Model_Mapper_MediaCategories();
-        $select = $mediaCategoryMapper->getDbTable()->select();
-        $select
-            ->where('deleted != ?', 1)
-            ->where('active != ?', 0)
-            ->order('sorting ASC');
-        $mediaCategories = $mediaCategoryMapper->fetchAll($select);
-        $this->setCategories($mediaCategories);
+        $this->_redirector = $this->_helper->getHelper('Redirector');
 
         $this->view->assign(array(
             'categories' => $this->getCategories(),
@@ -158,6 +159,23 @@ class Media_IndexController extends Zend_Controller_Action
         $mediaCategoryMapper = new Media_Model_Mapper_MediaCategories();
         $currentCategory = $mediaCategoryMapper->find($mediaItem->getCategoryId(), new Media_Model_MediaCategories());
 
+        if($mediaItem->getDeleted() != '0'){
+            if(!Zend_Auth::getInstance()->hasIdentity() && $mediaItem->getDeleted() != '0')
+                throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+            $this->_redirector->gotoRouteAndExit(array(
+                'module' => 'admin',
+                'controller' => 'media-categories',
+                'action' => 'list',
+                'id' => $currentCategory->getId()
+            ), 'adminEdit', true);
+        }
+
+        $this->view->assign(array(
+            'currentCategory' => $currentCategory,
+            'adminPath' => 'media/edit/'.$mediaItem->getId(),
+        ));
+
         $meta_description =($mediaItem->getMetaDescription() != '')
             ? $mediaItem->getMetaDescription()
             : $mediaItem->getName().'. '.$currentCategory->getName().'. Альфа-Гидро.';
@@ -169,11 +187,16 @@ class Media_IndexController extends Zend_Controller_Action
 
         $this->view->assign(array(
             'mediaItem' => $mediaItem,
-            'currentCategory' => $currentCategory,
             'meta_description' => $meta_description,
             'meta_keywords' => $meta_keywords,
-            'adminPath' => 'media/edit/'.$mediaItem->getId(),
         ));
+
+        if($mediaItem->getActive() != '1' && !Zend_Auth::getInstance()->hasIdentity()){
+            $this->view->assign(array(
+                'title' => $mediaItem->getName(),
+            ));
+            throw new Zend_Controller_Action_Exception("Страница временно не доступна", 403);
+        }
 
     }
 
@@ -234,11 +257,21 @@ class Media_IndexController extends Zend_Controller_Action
     }
 
     /**
-     * @return array
+     * @return Media_Model_MediaCategories[]
      *
      */
     public function getCategories()
     {
+        if(0 == count($this->_categories)){
+            $mediaCategoryMapper = new Media_Model_Mapper_MediaCategories();
+            $select = $mediaCategoryMapper->getDbTable()->select();
+            $select
+                ->where('deleted != ?', 1)
+                ->where('active != ?', 0)
+                ->order('sorting ASC');
+            $this->_categories = $mediaCategoryMapper->fetchAll($select);
+        }
+
         return $this->_categories;
     }
 

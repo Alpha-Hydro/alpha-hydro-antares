@@ -312,28 +312,33 @@ class ProductsController extends BaseController
         $productId = $this->_request->getParam('id');
         $category = $this->_modelMapper->findCategoryRel($productId, new Catalog_Model_Categories());
 
-        $this->setRedirectUrl('/catalog/'.$category->getFullPath());
-        $this->clearCache('CatalogProductsList');
+        //$this->setRedirectUrl('/catalog/'.$category->getFullPath());
+        $this->setRedirectUrl($this->_request->getParam('currentUrl'));
 
+        $this->clearCache('CatalogProductsList');
         parent::deleteAction();
     }
 
     public function recoverAction()
     {
-        $this->setRedirectUrl('/catalog/'.
+        /*$this->setRedirectUrl('/catalog/'.
             $this->_modelMapper
                 ->find(
                      $this->_request->getParam('id'),
                      $this->_model
                 )
             ->getFullPath()
-        );
+        );*/
+        $this->setRedirectUrl($this->_request->getParam('currentUrl'));
+
+        $this->clearCache('CatalogProductsList');
         parent::deleteAction();
     }
 
     public function disabledAction()
     {
         $this->setRedirectUrl($this->_request->getParam('currentUrl'));
+
         $this->clearCache('CatalogProductsList');
         parent::enableAction();
         //Zend_Debug::dump($this->_request->getParams());
@@ -342,6 +347,7 @@ class ProductsController extends BaseController
     public function enabledAction()
     {
         $this->setRedirectUrl($this->_request->getParam('currentUrl'));
+
         $this->clearCache('CatalogProductsList');
         parent::enableAction();
         //Zend_Debug::dump($this->_request->getParams());

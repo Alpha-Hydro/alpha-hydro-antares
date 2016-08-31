@@ -102,7 +102,7 @@ class Admin_Form_MediaEdit extends Twitter_Bootstrap_Form_Vertical
         $this->addElement('text', 'timestamp', array(
             'label'         => 'Дата статьи',
             'placeholder'   => 'Дата',
-            'pattern'       => "[0-9]{4}\-[0-9]{2}\-[0-9]{2}"
+            //'pattern'       => "[0-9]{4}-[0-9]{2}-[0-9]{2}"
         ));
 
         $this->addElement('hidden', 'content');

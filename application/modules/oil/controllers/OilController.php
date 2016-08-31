@@ -80,13 +80,86 @@ class Oil_OilController extends Zend_Controller_Action
         if(is_null($pageItem))
             throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
 
+        $this->getJson($pageItem);
+        $this->setParamsDataItem($pageItem);
+        $this->checkDeleted($pageItem);
+
+        $category = $this->_categoriesMapper
+            ->find($pageItem->getCategoryId(), new Oil_Model_OilCategories());
+
+        $this->setMetaHead($pageItem);
+
+
+        $this->view->assign(array(
+            'category' => $category,
+            'title' => $pageItem->getTitle(),
+            'pageItem' => $pageItem
+        ));
+
+        $this->checkActive($pageItem);
+    }
+
+
+    /**
+     * @param Oil_Model_Oil $pageItem
+     * @return $this
+     * @throws Zend_Controller_Action_Exception
+     */
+    public function checkDeleted(Oil_Model_Oil $pageItem)
+    {
+        if($pageItem->getDeleted() != '0'){
+            if (!Zend_Auth::getInstance()->hasIdentity())
+                throw new Zend_Controller_Action_Exception("Страница не найдена", 404);
+
+            $this->_redirector->gotoRouteAndExit(array(
+                'module' => 'admin',
+                'controller' => 'oil-categories',
+                'action' => 'list',
+                'id' => $pageItem->getCategoryId()
+            ),'adminEdit', true);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Oil_Model_Oil $pageItem
+     * @return $this
+     * @throws Zend_Controller_Action_Exception
+     */
+    public function checkActive(Oil_Model_Oil $pageItem)
+    {
+        if($pageItem->getActive() != '1' && !Zend_Auth::getInstance()->hasIdentity()){
+            $this->view->assign(array(
+                'title' => $pageItem->getTitle(),
+            ));
+            throw new Zend_Controller_Action_Exception("Страница временно не доступна", 403);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Oil_Model_Oil $pageItem
+     * @return $this
+     */
+    public function getJson(Oil_Model_Oil $pageItem)
+    {
         if(!is_null($this->getRequest()->getParam('json'))
             && Zend_Auth::getInstance()->hasIdentity()){
 
             $this->forward('json', 'oil', 'admin', array('id' => $pageItem->getId()));
-            return;
         }
 
+        return $this;
+    }
+
+    /**
+     * @param Oil_Model_Oil $pageItem
+     * @return $this
+     */
+    public function setParamsDataItem(Oil_Model_Oil $pageItem)
+    {
         if(Zend_Auth::getInstance()->hasIdentity()){
             $this->_request->setParams(array(
                 'dataItem' => array(
@@ -98,36 +171,34 @@ class Oil_OilController extends Zend_Controller_Action
             ));
         }
 
-        $category = $this->_categoriesMapper
-            ->find($pageItem->getCategoryId(), new Oil_Model_OilCategories());
-
-        $this->setMetaHead($pageItem);
-
-        $this->view->category = $category;
-        $this->view->title = $pageItem->getTitle();
-        $this->view->pageItem = $pageItem;
-        
+        return $this;
     }
 
     /**
      * @param $pageItem Oil_Model_Oil|Oil_Model_OilCategories
+     * @return $this
      */
     public function setMetaHead($pageItem)
     {
         $meta_title = (!$pageItem->getMetaTitle())
             ? $pageItem->getTitle()
             : $pageItem->getMetaTitle();
-        $this->view->meta_title = $meta_title;
 
         $meta_description = (!$pageItem->getMetaDescription())
             ? $pageItem->getDescription()
             : $pageItem->getMetaDescription();
-        $this->view->meta_description = $meta_description;
 
         $meta_keywords = (!$pageItem->getMetaKeywords())
             ? $pageItem->getMetaTitle()
             : $pageItem->getMetaKeywords();
-        $this->view->meta_keywords = $meta_keywords;
+
+        $this->view->assign(array(
+            'meta_title' => $meta_title,
+            'meta_description' => $meta_description,
+            'meta_keywords' => $meta_keywords
+        ));
+
+        return $this;
     }
 
 

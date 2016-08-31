@@ -172,6 +172,11 @@ class Pipeline_Model_Mapper_Pipeline
         return $entry;
     }
 
+    /**
+     * @param $id
+     * @param Zend_Db_Table_Select|null $select
+     * @return Pipeline_Model_Pipeline[]|null
+     */
     public function fetchPropertyRel($id, Zend_Db_Table_Select $select = null)
     {
         $result = $this->getDbTable()->find($id);
