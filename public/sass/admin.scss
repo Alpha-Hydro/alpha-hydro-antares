@@ -272,6 +272,17 @@ input[type=number]::-webkit-outer-spin-button {
     }
   }
 }
+.text-hover{
+  &:hover{
+    cursor: pointer;
+    .glyphicon-folder-close{
+      &::before{
+        content: "\e118";
+      }
+    }
+  }
+}
+
 a:hover{
   .glyphicon-folder-close{
     &::before{

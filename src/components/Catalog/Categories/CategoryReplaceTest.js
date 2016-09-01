@@ -8,13 +8,15 @@ import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 
 import categoryHelpers from "./../../../utils/getDataHelper";
+import CategoryReplaceListItem from "./CategoryReplaceListItem";
 
 export default class CategoryReplaceTest extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
 			selectId: '',
-			selectCategoryInfo: '',
+			parentId: '',
+			parentCategoryInfo: '',
 			categoryList: []
 		}
 	}
@@ -23,11 +25,13 @@ export default class CategoryReplaceTest extends React.Component{
 	}
 
 	componentWillMount(){
+		console.log('LIST CATEGORY',this.props.selectId);
+
 		categoryHelpers.getCategoryInfo(this.props.selectId)
 			.then(function(categoryInfo){
 				this.setState({
-					selectId: this.props.selectId,
-					selectCategoryInfo: categoryInfo
+					parentId: this.props.selectId,
+					parentCategoryInfo: categoryInfo
 				});
 			}.bind(this));
 
@@ -39,18 +43,52 @@ export default class CategoryReplaceTest extends React.Component{
 			}.bind(this));
 	}
 
+	selectCategory(id){
+		console.log('SELECT CATEGORY',id);
+		this.setState({
+			selectId: id
+		})
+	}
+
+	replaceCategory(id){
+		console.log('LIST CATEGORY',id);
+
+		/*categoryHelpers.getCategoryInfo(id)
+			.then(function(categoryInfo){
+				this.setState({
+					parentId: id,
+					parentCategoryInfo: categoryInfo
+				});
+			}.bind(this));
+
+		categoryHelpers.getSubGategoryList(id)
+			.then(function(categoryList){
+				this.setState({
+					categoryList: categoryList
+				});
+			}.bind(this));*/
+	}
+
 	render(){
 		const headerListGroup = () => {
 			switch (false) {
-				case this.state.selectId != 0 && this.state.selectCategoryInfo.parentId != 0:
+				case this.state.parentId != 0 && this.state.parentCategoryInfo.parentId != 0:
 					return 'Каталог';
 					break;
-				default: return 'link Parent category'
+				default: return '...'
 			}
 		};
 
 		const listgroupInstance = this.state.categoryList.map((category) =>
-			<ListGroupItem key={category.id} active={category.id == this.state.selectId}>{category.name}</ListGroupItem>
+			<CategoryReplaceListItem
+				key={category.id}
+				id={category.id}
+				select={this.selectCategory.bind(this)}
+				replace={this.replaceCategory.bind(this)}
+				active={category.id == this.state.parentId}
+			>
+				{category.name}
+			</CategoryReplaceListItem>
 		);
 
 		return(
@@ -62,8 +100,15 @@ export default class CategoryReplaceTest extends React.Component{
 					<Modal.Title>Выбор категории</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<ListGroup>
-						<ListGroupItem active={this.state.selectId == 0}>{headerListGroup()}</ListGroupItem>
+					<ListGroup componentClass="ul">
+						<CategoryReplaceListItem
+							select={this.selectCategory.bind(this)}
+							replace={this.replaceCategory.bind(this)}
+							levelUp={this.state.parentId != 0 && this.state.parentCategoryInfo.parentId != 0}
+							active={this.state.parentId == 0}
+							id={(this.state.parentId != 0)?this.state.parentCategoryInfo.parentId:0}>
+							{headerListGroup()}
+						</CategoryReplaceListItem>
 						{listgroupInstance}
 					</ListGroup>
 				</Modal.Body>
