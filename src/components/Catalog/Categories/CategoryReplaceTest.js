@@ -53,7 +53,7 @@ export default class CategoryReplaceTest extends React.Component{
 	replaceCategory(id){
 		console.log('LIST CATEGORY',id);
 
-		/*categoryHelpers.getCategoryInfo(id)
+		categoryHelpers.getCategoryInfo(id)
 			.then(function(categoryInfo){
 				this.setState({
 					parentId: id,
@@ -66,7 +66,7 @@ export default class CategoryReplaceTest extends React.Component{
 				this.setState({
 					categoryList: categoryList
 				});
-			}.bind(this));*/
+			}.bind(this));
 	}
 
 	render(){
@@ -75,7 +75,7 @@ export default class CategoryReplaceTest extends React.Component{
 				case this.state.parentId != 0 && this.state.parentCategoryInfo.parentId != 0:
 					return 'Каталог';
 					break;
-				default: return '...'
+				default: return '... ' + this.state.parentCategoryInfo.name;
 			}
 		};
 
@@ -106,7 +106,7 @@ export default class CategoryReplaceTest extends React.Component{
 							replace={this.replaceCategory.bind(this)}
 							levelUp={this.state.parentId != 0 && this.state.parentCategoryInfo.parentId != 0}
 							active={this.state.parentId == 0}
-							id={(this.state.parentId != 0)?this.state.parentCategoryInfo.parentId:0}>
+							id={this.state.parentCategoryInfo.parentId}>
 							{headerListGroup()}
 						</CategoryReplaceListItem>
 						{listgroupInstance}
