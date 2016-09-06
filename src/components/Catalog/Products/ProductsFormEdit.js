@@ -13,7 +13,7 @@ import categoryHelpers from "../../../utils/getDataHelper";
 import Slugify from "./../../../utils/slugifyHelper";
 
 import ImagesUpload from "./../../../utils/ImagesUpload";
-import CategoryReplace from "./../Categories/CategoryReplaceComponent";
+import CategoryReplace from "../Categories/_categoryReplaceComponent";
 import ProductPropertyEditButton from "../ProductProperties/ProductPropertyEditButton";
 import ProductModificationEditButton from "../ProductModificatons/ProductModificationEditButton";
 import ProductModificationPropertyEditButton from "../ProductModificatons/ProductModificationPropertyEditButton";

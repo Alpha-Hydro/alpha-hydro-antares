@@ -1,7 +1,6 @@
 import React from "react";
 import Row from "react-bootstrap/lib/Row";
 import Col from "react-bootstrap/lib/Col";
-import Button from "react-bootstrap/lib/Button";
 import Badge from "react-bootstrap/lib/Badge";
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
@@ -32,9 +31,16 @@ export default class CategoryReplaceListItem extends React.Component{
 					<Col xs={1}>
 						{this.radioInstance()}
 					</Col>
-					<Col xs={11} onClick={() => {this.props.replace(this.props.id)}} className="text-hover">
-						<Glyphicon glyph="folder-close" className="mlr1"/>
+					<Col xs={10} onClick={() => {this.props.badge && this.props.replace(this.props.id)}} className="text-hover">
+						{!this.props.levelUp && <Glyphicon glyph="folder-close" className="mlr1"/>}
 						{this.props.children}
+					</Col>
+					<Col xs={1}>
+						<Badge
+							pullRight={true}
+							className={(this.props.badge != 0)?"":"hidden"}>
+							{this.props.badge}
+						</Badge>
 					</Col>
 				</Row>
 			</li>

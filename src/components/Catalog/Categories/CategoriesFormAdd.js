@@ -12,7 +12,7 @@ import ImagesUpload from "./../../../utils/ImagesUpload";
 import Slugify from "./../../../utils/slugifyHelper";
 import categoryHelpers from "./../../../utils/getDataHelper";
 
-import CategoryReplace from "./CategoryReplaceComponent";
+import CategoryReplaceComponent from "./CategoryReplaceComponent";
 
 export default class CategoriesFormAdd extends React.Component{
 	constructor(props){
@@ -96,9 +96,8 @@ export default class CategoriesFormAdd extends React.Component{
 							<ControlLabel>Родительская категория</ControlLabel>
 							<InputGroup>
 								<InputGroup.Button>
-									<CategoryReplace
-										currentCategory={this.props.data}
-										categoryList={this.state.categoryList}
+									<CategoryReplaceComponent
+										selectId={this.state.parentCategoryInfo.id}
 										selectCategory={this.selectCategory.bind(this)}
 									/>
 								</InputGroup.Button>

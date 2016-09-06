@@ -1,61 +1,81 @@
 import React from "react";
-
-import Button from "react-bootstrap/lib/Button";
-import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import Modal from "react-bootstrap/lib/Modal";
+import Button from "react-bootstrap/lib/Button";
+
 import ListGroup from "react-bootstrap/lib/ListGroup";
+import Glyphicon from "react-bootstrap/lib/Glyphicon";
 
-import categoryHelpers from "../../../utils/getDataHelper"
-import CatalogParentCategoryReplaceItemList from "./CatalogParentCategoryReplaceItemList"
-import CategoryRaplaceList from "./CategoryRaplaceList";
+import categoryHelpers from "./../../../utils/getDataHelper";
+import CategoryReplaceListItem from "./CategoryReplaceListItem";
 
-export default class CategoryReplaceComponent extends React.Component {
+export default class CategoryReplaceComponent extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			showModal: false,
-			currentCategory: '',
+			showReplace: false,
+			selectId: props.selectId,
 			parentId: '',
-			categoryList: [],
-			selectedCategory: ''
-		};
-
-		this.selectCategory = this.selectCategory.bind(this);
+			parentCategoryInfo: '',
+			categoryList: []
+		}
 	}
 
-	/*componentWillMount(){
-		var parentId = (this.props.currentCategory.parentId)?this.props.currentCategory.parentId:'0';
+
+	showModal(){
 		this.setState({
-			currentCategory: this.props.currentCategory,
-			parentId: parentId
-		});
-	}*/
-
-	close() {
-		this.setState({ showModal: false });
+			showReplace: true
+		})
 	}
 
-	open() {
-		var id = this.props.currentCategory.id;
-		var parentId = this.props.currentCategory.parentId;
+	hideModal(){
+		this.setState({
+			showReplace: false
+		})
+	}
 
-		categoryHelpers.getCurrentGategoryList(id)
+	cancelReplace(){
+		this.hideModal();
+		categoryHelpers.getCategoryInfo(this.props.selectId)
+			.then(function(categoryInfo){
+				this.setState({
+					parentCategoryInfo: categoryInfo,
+					parentId: this.props.selectId,
+				});
+			}.bind(this));
+
+		categoryHelpers.getCurrentGategoryList(this.props.selectId)
 			.then(function(categoryList){
 				this.setState({
 					categoryList: categoryList,
-					parentId: parentId,
-					showModal: true
+					selectId: this.props.selectId
+				});
+			}.bind(this));
+	}
+
+	componentWillMount(){
+		console.log('LIST CATEGORY',this.props.selectId);
+
+		categoryHelpers.getCategoryInfo(this.props.selectId)
+			.then(function(categoryInfo){
+				this.setState({
+					parentCategoryInfo: categoryInfo,
+					parentId: this.props.selectId,
+				});
+			}.bind(this));
+
+		categoryHelpers.getCurrentGategoryList(this.props.selectId)
+			.then(function(categoryList){
+				this.setState({
+					categoryList: categoryList
 				});
 			}.bind(this));
 	}
 
 	subCategoriesList(id){
-		this.setState({ showModal: false });
-
 		categoryHelpers.getCategoryInfo(id)
 			.then(function(categoryInfo){
 				this.setState({
-					currentCategory: categoryInfo,
+					parentCategoryInfo: categoryInfo,
 					parentId: id
 				});
 			}.bind(this));
@@ -66,92 +86,84 @@ export default class CategoryReplaceComponent extends React.Component {
 					categoryList: categoryList
 				});
 			}.bind(this));
-
-		setTimeout(function() {
-			this.setState({ showModal: true });
-		}.bind(this), 500);
 	}
 
-	currentCategoriesList(id){
-		this.setState({ showModal: false });
-
-		categoryHelpers.getCategoryInfo(id)
-			.then(function(categoryInfo){
-				this.setState({
-					currentCategory: categoryInfo,
-					parentId: categoryInfo.parentId
-				});
-			}.bind(this));
-
-		categoryHelpers.getCurrentGategoryList(id)
-			.then(function(categoryList){
-				this.setState({
-					categoryList: categoryList
-				});
-			}.bind(this));
-
-		setTimeout(function() {
-			this.setState({ showModal: true });
-		}.bind(this), 500);
-	}
-
-	returnParentCategory(){
-		this.currentCategoriesList(this.state.parentId);
+	replaceCategory(id){
+		console.log('LIST CATEGORY',id);
+		this.hideModal();
+		this.subCategoriesList(id);
+		setTimeout(() =>{
+			this.showModal();
+		}, 800);
 	}
 
 	selectCategory(id){
-		this.setState({selectedCategory: id});
+		console.log('SELECT CATEGORY',id);
+		this.setState({
+			selectId: id
+		})
 	}
 
-	selectRootCategory(e){
-		this.setState({selectedCategory: e.target.id});
-	}
-
-	handlerSave(){
-		this.state.selectedCategory && this.props.selectCategory(this.state.selectedCategory);
-		this.close();
+	saveSelect(){
+		this.props.selectCategory(this.state.selectId);
+		this.hideModal();
 	}
 
 	render(){
-		const categoryList = this.state.categoryList;
-		const categoryListComponent = categoryList.map((category,i) =>
-			<CategoryRaplaceList
-				key={i}
-				category={category}
-				eventClick={this.subCategoriesList.bind(this)}
-				handlerSelect={this.selectCategory.bind(this)}
-				currentId={this.props.currentCategory.id}
-			/>
+		const headerListGroup = () => {
+			switch (false) {
+				case this.state.parentId != 0 && this.state.parentCategoryInfo.id != 0:
+					return 'Каталог';
+					break;
+				default: return '... '; // + this.state.parentCategoryInfo.breadcrumbs;
+			}
+		};
+
+		const listgroupInstance = this.state.categoryList.map((category) =>
+			<CategoryReplaceListItem
+				key={category.id}
+				id={category.id}
+				select={this.selectCategory.bind(this)}
+				replace={this.replaceCategory.bind(this)}
+				active={category.id == this.props.selectId}
+				badge={category.countSubCategories}
+			>
+				{category.name}
+			</CategoryReplaceListItem>
 		);
 
 		return(
 			<div>
-				<Button  bsStyle="primary" onClick={this.open.bind(this)}>
+				<Button  bsStyle="primary" onClick={this.showModal.bind(this)}>
 					<Glyphicon glyph="refresh" />
 				</Button>
 				<Modal
-					{...this.props}
-					show={this.state.showModal}
-					onHide={this.close.bind(this)}>
+					show={this.state.showReplace}
+					onHide={this.cancelReplace.bind(this)}>
 					<Modal.Header closeButton>
 						<Modal.Title>Выбор категории</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>
-						<ListGroup>
-							<CatalogParentCategoryReplaceItemList
-									returnParentCategory = {this.returnParentCategory.bind(this)}
-									selectRootCategory = {this.selectRootCategory.bind(this)}
-									parentId = {this.state.parentId}
-							/>
-							{categoryListComponent}
+						<ListGroup componentClass="ul">
+							<CategoryReplaceListItem
+								select={this.selectCategory.bind(this)}
+								replace={this.replaceCategory.bind(this)}
+								levelUp={this.state.parentId != 0 && this.state.parentCategoryInfo.id != 0}
+								badge={this.state.parentId != 0 && this.state.parentCategoryInfo.id != 0}
+								active={this.state.parentId == 0 && this.props.selectId == 0}
+								id={(this.state.parentCategoryInfo.parentId)?this.state.parentCategoryInfo.parentId:0}>
+								<em>{headerListGroup()}</em>
+							</CategoryReplaceListItem>
+							{listgroupInstance}
 						</ListGroup>
 					</Modal.Body>
 					<Modal.Footer>
-						<Button onClick={this.close.bind(this)}>Отмена</Button>
-						<Button onClick={this.handlerSave.bind(this)} bsStyle="primary">Выбрать</Button>
+						<Button onClick={this.cancelReplace.bind(this)}>Отмена</Button>
+						<Button bsStyle="primary" onClick={this.saveSelect.bind(this)}>Выбрать</Button>
 					</Modal.Footer>
 				</Modal>
 			</div>
-		)
+
+		);
 	}
 }
