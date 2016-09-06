@@ -71,7 +71,32 @@ export default class CategoryReplaceComponent extends React.Component{
 			}.bind(this));
 	}
 
-	subCategoriesList(id){
+	levelUpCategory(id){
+		this.hideModal();
+
+		categoryHelpers.getCategoryInfo(id)
+			.then(function(categoryInfo){
+				this.setState({
+					parentCategoryInfo: categoryInfo,
+					parentId: categoryInfo.parentId
+				});
+			}.bind(this));
+
+		categoryHelpers.getCurrentGategoryList(id)
+			.then(function(categoryList){
+				this.setState({
+					categoryList: categoryList
+				});
+			}.bind(this));
+
+		setTimeout(() =>{
+			this.showModal();
+		}, 800);
+	}
+
+	replaceCategory(id){
+		this.hideModal();
+
 		categoryHelpers.getCategoryInfo(id)
 			.then(function(categoryInfo){
 				this.setState({
@@ -86,19 +111,13 @@ export default class CategoryReplaceComponent extends React.Component{
 					categoryList: categoryList
 				});
 			}.bind(this));
-	}
 
-	replaceCategory(id){
-		console.log('LIST CATEGORY',id);
-		this.hideModal();
-		this.subCategoriesList(id);
 		setTimeout(() =>{
 			this.showModal();
 		}, 800);
 	}
 
 	selectCategory(id){
-		console.log('SELECT CATEGORY',id);
 		this.setState({
 			selectId: id
 		})
