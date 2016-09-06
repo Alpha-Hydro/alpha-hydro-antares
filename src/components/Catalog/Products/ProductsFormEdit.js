@@ -13,7 +13,7 @@ import categoryHelpers from "../../../utils/getDataHelper";
 import Slugify from "./../../../utils/slugifyHelper";
 
 import ImagesUpload from "./../../../utils/ImagesUpload";
-import CategoryReplace from "../Categories/_categoryReplaceComponent";
+import CategoryReplaceComponent from "../Categories/CategoryReplaceComponent";
 import ProductPropertyEditButton from "../ProductProperties/ProductPropertyEditButton";
 import ProductModificationEditButton from "../ProductModificatons/ProductModificationEditButton";
 import ProductModificationPropertyEditButton from "../ProductModificatons/ProductModificationPropertyEditButton";
@@ -142,8 +142,8 @@ export default class ProductsFormEdit extends React.Component{
 							<ControlLabel>Категория</ControlLabel>
 							<InputGroup>
 								<InputGroup.Button>
-									<CategoryReplace
-										currentCategory={this.state.categoryInfo}
+									<CategoryReplaceComponent
+										selectId={this.state.categoryInfo.id}
 										selectCategory={this.selectCategory.bind(this)}
 									/>
 								</InputGroup.Button>
