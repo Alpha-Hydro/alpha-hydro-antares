@@ -109,10 +109,13 @@ class Api_CategoriesController extends Api_BaseController
         return $this->_helper->json->sendJson($this->getListTreeCategories($treeCategories));
     }
 
+    /**
+     * @param $categories Catalog_Model_Categories[]
+     * @return array
+     */
     public function getListTreeCategories($categories)
     {
         $result = array();
-        /**@var $category Catalog_Model_Categories*/
         foreach ($categories as $category) {
             $result[] = array(
                 'id' => $category->getId(),
