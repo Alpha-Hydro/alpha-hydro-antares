@@ -33,6 +33,7 @@ export default class CategoriesFormEdit extends React.Component{
 				this.setState({
 					categoryInfo: categoryInfo
 				});
+				//console.log(categoryInfo);
 			}.bind(this));
 	}
 
@@ -132,6 +133,8 @@ export default class CategoriesFormEdit extends React.Component{
 								<InputGroup.Button>
 									<CategoryReplaceComponent
 										selectId={this.state.parentId}
+										parentCategoryId={this.props.data.parentId}
+										currentCategoryId={this.props.data.id}
 										selectCategory={this.selectCategory.bind(this)}
 									/>
 								</InputGroup.Button>

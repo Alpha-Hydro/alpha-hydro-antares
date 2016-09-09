@@ -29,7 +29,7 @@ class Api_CategoriesController extends Api_BaseController
             'role' => Zend_Auth::getInstance()->getIdentity()->role,
             $this->_request->getControllerKey() => $this->_request->getControllerName(),
             'name' => 'Каталог',
-            'id' => '0',
+            'id' => '0'
         );
 
         if($id){

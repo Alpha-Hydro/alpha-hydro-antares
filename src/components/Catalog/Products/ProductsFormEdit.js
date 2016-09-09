@@ -144,6 +144,8 @@ export default class ProductsFormEdit extends React.Component{
 								<InputGroup.Button>
 									<CategoryReplaceComponent
 										selectId={this.state.categoryInfo.id}
+										parentCategoryId={this.props.data.parentId}
+										currentCategoryId={this.props.data.id}
 										selectCategory={this.selectCategory.bind(this)}
 									/>
 								</InputGroup.Button>

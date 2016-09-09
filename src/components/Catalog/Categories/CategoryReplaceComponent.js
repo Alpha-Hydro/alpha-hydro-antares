@@ -39,7 +39,7 @@ export default class CategoryReplaceComponent extends React.Component{
 			.then(function(categoryInfo){
 				this.setState({
 					parentCategoryInfo: categoryInfo,
-					parentId: this.props.selectId,
+					parentId: (categoryInfo.parentId)?categoryInfo.parentId:0,
 				});
 			}.bind(this));
 
@@ -53,13 +53,13 @@ export default class CategoryReplaceComponent extends React.Component{
 	}
 
 	componentWillMount(){
-		console.log('LIST CATEGORY',this.props.selectId);
-
+		console.log('Will Mount props',this.props);
+		console.log('Will Mount state',this.state);
 		categoryHelpers.getCategoryInfo(this.props.selectId)
 			.then(function(categoryInfo){
 				this.setState({
 					parentCategoryInfo: categoryInfo,
-					parentId: this.props.selectId,
+					parentId: (categoryInfo.parentId)?categoryInfo.parentId:0,
 				});
 			}.bind(this));
 
@@ -69,6 +69,11 @@ export default class CategoryReplaceComponent extends React.Component{
 					categoryList: categoryList
 				});
 			}.bind(this));
+	}
+
+	componentDidMount(){
+		console.log('Did Mount props',this.props);
+		console.log('Did Mount state',this.state);
 	}
 
 	levelUpCategory(id){
@@ -138,17 +143,19 @@ export default class CategoryReplaceComponent extends React.Component{
 			}
 		};
 
-		const listgroupInstance = this.state.categoryList.map((category) =>
-			<CategoryReplaceListItem
-				key={category.id}
-				id={category.id}
-				select={this.selectCategory.bind(this)}
-				replace={this.replaceCategory.bind(this)}
-				active={category.id == this.props.selectId}
-				badge={category.countSubCategories}
-			>
-				{category.name}
-			</CategoryReplaceListItem>
+		const listgroupInstance = this.state.categoryList
+			.filter((category) => category.id != this.props.currentCategoryId)
+			.map((category) =>
+				<CategoryReplaceListItem
+					key={category.id}
+					id={category.id}
+					select={this.selectCategory.bind(this)}
+					replace={this.replaceCategory.bind(this)}
+					active={category.id == this.props.selectId}
+					badge={category.countSubCategories}
+				>
+					{category.name}
+				</CategoryReplaceListItem>
 		);
 
 		return(
@@ -178,7 +185,7 @@ export default class CategoryReplaceComponent extends React.Component{
 					</Modal.Body>
 					<Modal.Footer>
 						<Button onClick={this.cancelReplace.bind(this)}>Отмена</Button>
-						<Button bsStyle="primary" onClick={this.saveSelect.bind(this)}>Выбрать</Button>
+						<Button bsStyle="primary" onClick={this.saveSelect.bind(this)} disabled={this.state.selectId === this.props.selectId}>Выбрать</Button>
 					</Modal.Footer>
 				</Modal>
 			</div>
