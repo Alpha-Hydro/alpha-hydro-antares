@@ -141,7 +141,7 @@ class Catalog_Model_PrintPdf extends TCPDF
 
         $x = $this->getImageRBX()+5;
         if(!empty($properties)){
-            $w = array(40, $this->getPageWidth()-$this->original_rMargin-$x-40);
+            $w = array(60, $this->getPageWidth()-$this->original_rMargin-$x-60);
             foreach($properties as $property){
                 $this->SetFont('','B',10);
                 $this->MultiCell($w[0], 0, $property->name, 0, 'L', false, 0, $x, '', true, 0, false, true, 0);
@@ -157,7 +157,28 @@ class Catalog_Model_PrintPdf extends TCPDF
         if($product->description != ''){
             $this->SetX($x);
             $wd = $this->getPageWidth()-$this->original_rMargin-$x;
-            $this->MultiCell($wd,0,$product->description,0, 'L');
+            //$this->MultiCell($wd,0,$product->description,0, 'L');
+            $html = <<<EOF
+<style>
+    table{
+        font-size: 8pt;
+        vertical-align: middle;
+        text-align: center;
+    }
+    th {
+        background-color: rgb(0, 148, 218);
+        color: #ffffff;
+        font-weight: bold;
+        height: 20px;
+        border-top: 1px solid #ddd;
+    }
+    tr.odd td{
+        background-color: rgb(228, 228, 228);
+    }
+</style>
+EOF;
+            $html .= $product->description;
+            $this->writeHTML($html, true, false, true, false, '');
             $this->Ln(5);
         }
 
@@ -178,8 +199,10 @@ class Catalog_Model_PrintPdf extends TCPDF
      */
     public function showModificatonTable($table)
     {
-        //$this->Write(0, $this->GetY());
-        //$this->Write(0, );
+        $this->SetFont('','B');
+        $this->Write(0, 'Модификации и размеры');
+        $this->ln(5);
+
         if($this->GetY() < $this->getImageRBY()+5)
             $this->SetY($this->getImageRBY()+5);
 
