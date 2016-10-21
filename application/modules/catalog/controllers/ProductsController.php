@@ -291,6 +291,7 @@ class Catalog_ProductsController extends Zend_Controller_Action
 
         $pdf->showImages()
             ->showProperty()
+            ->showDescription()
             ->showModificatonTable($tableModifications)
         ;
 

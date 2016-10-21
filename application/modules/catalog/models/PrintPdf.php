@@ -154,10 +154,13 @@ class Catalog_Model_PrintPdf extends TCPDF
 
         $this->Ln(5);
 
+        return $this;
+    }
+
+    public function showDescription()
+    {
+        $product = $this->getProduct();
         if($product->description != ''){
-            $this->SetX($x);
-            $wd = $this->getPageWidth()-$this->original_rMargin-$x;
-            //$this->MultiCell($wd,0,$product->description,0, 'L');
             $html = <<<EOF
 <style>
     table{
@@ -183,10 +186,6 @@ EOF;
         }
 
         return $this;
-    }
-
-    public function showDescription()
-    {
 
     }
 
