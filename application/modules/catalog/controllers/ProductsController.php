@@ -15,6 +15,7 @@ class Catalog_ProductsController extends Zend_Controller_Action
     protected $_aHostName = array(
         'alfa-hydro.loc',
         'alfa-hydro.com',
+        'www.alfa-hydro.com',
     );
 
     public function init()
