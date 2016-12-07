@@ -154,11 +154,15 @@ class Catalog_Model_PrintPdf extends TCPDF
 
         $this->Ln(5);
 
+        if($this->y < $this->getImageRBY()+5)
+            $this->SetX($x);
+
         return $this;
     }
 
     public function showDescription()
     {
+
         $product = $this->getProduct();
         if($product->description != ''){
             $html = <<<EOF
@@ -181,12 +185,11 @@ class Catalog_Model_PrintPdf extends TCPDF
 </style>
 EOF;
             $html .= $product->description;
-            $this->writeHTML($html, true, false, true, false, '');
+            $this->writeHTMLCell(0, '', '', '', $html, 0, 1);
             $this->Ln(5);
         }
 
         return $this;
-
     }
 
 
