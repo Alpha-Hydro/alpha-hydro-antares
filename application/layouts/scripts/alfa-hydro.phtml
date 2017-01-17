@@ -1,0 +1,70 @@
+<?php echo $this->doctype() ?>
+<html lang="ru">
+<head>
+    <?php
+    echo $this->headTitle();
+
+    echo $this->render("components/_meta_head.phtml");
+
+    $this->headLink()
+        ->appendStylesheet('//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css')
+        ->appendStylesheet($this->baseUrl().'/css/global.min.css')
+        ->headLink(array('rel' => 'shortcut icon',
+            'type' => "image/x-icon",
+            'href' => $this->baseUrl().'/favicon.ico'),
+            'PREPEND');
+    echo $this->headLink();
+
+    $this->headScript()
+        ->prependFile('//code.jquery.com/jquery-1.11.3.min.js')
+        ->appendFile('//cdnjs.cloudflare.com/ajax/libs/LoadGo/2.1/loadgo.min.js');
+    ?>
+</head>
+<body class="vertical-center">
+    <div>
+        <div class="relative">
+            <img id="logo" src="/img/logo/alpha-hydro-logo-ru.svg" alt="Alpha-Hydro" />
+        </div>
+        <div id="progress" class="mt1"></div>
+    </div>
+
+    <?php
+    if(!Zend_Auth::getInstance()->hasIdentity())
+        echo $this->partial("components/_counters.phtml");
+    ?>
+    <?= $this->headScript();?>
+    <script>
+        $("#logo").load(function() {
+            $('#logo').loadgo();
+        }).each(function() {
+            if(this.complete) $(this).load();
+        });
+
+
+
+        function playLoadGo() {
+        	var p = 0;
+            $('#progress').html('0%');
+            window.setTimeout(function () {
+                interval = window.setInterval(function (){
+                    if ($('#logo').loadgo('getprogress') == 100) {
+                        window.clearInterval(interval)
+                    }
+                    else {
+                        var prog = p*10;
+                        $('#logo').loadgo('setprogress', prog);
+                        $('#progress').html(prog + '%');
+                        p++;
+                    }
+                }, 150);
+            }, 300);
+        }
+
+        $(window).load(function () {
+            playLoadGo();
+            $.get( "/", { loading: "success" } );
+        })
+
+    </script>
+</body>
+</html>

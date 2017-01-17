@@ -11,16 +11,16 @@ class Plugin_Redirect extends Zend_Controller_Plugin_Abstract
 
     public function preDispatch(Zend_Controller_Request_Abstract $request)
     {
+        $layout = Zend_Layout::getMvcInstance();
+
         $aHostName = array(
             'hansa-flex.pro',
             'hansa-flex.su',
             'hansa-flex.org',
             'xn----7sbavhvfm6b0af.xn--p1ai',
         );
-
         if(in_array($request->getServer('HTTP_HOST'), $aHostName)){
-            $layout = Zend_Layout::getMvcInstance();
-            $layout->setLayout('plug');
+            $layout->setLayout('hansa_flex');
         }
 
         if($request->getParam('fullPath'))

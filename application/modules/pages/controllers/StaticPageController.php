@@ -59,6 +59,17 @@ class Pages_StaticPageController extends Zend_Controller_Action
             && !Zend_Auth::getInstance()->hasIdentity())
             throw new Zend_Controller_Action_Exception("Раздел временно не доступен", 500);
 
+        if($this->_request->getServer('HTTP_HOST') === 'alfa-hydro.loc'){
+
+            $layout = Zend_Layout::getMvcInstance();
+            $loading = $this->_request->getParam('loading');
+            if(isset($loading)){
+                $layout->setLayout('layout');
+            }
+            else{
+                $layout->setLayout('alfa-hydro');
+            }
+        }
 
         $this->view->assign(array(
             'adminPath' => 'pages/edit/'.$this->getPage()->getId(),
@@ -93,8 +104,7 @@ class Pages_StaticPageController extends Zend_Controller_Action
     public function getRedirector()
     {
         $this->_redirector = $this->_helper->getHelper('Redirector');
-        return $this->_redirector;    }
-
-
+        return $this->_redirector;
+    }
 }
 
