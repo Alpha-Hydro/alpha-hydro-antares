@@ -15,7 +15,7 @@ class Utils_ModelsGeneratorController extends Zend_Controller_Action
             'host'     => 'localhost',
             'username' => 'root',
             'password' => '',
-            'dbname'   => 'alphahyd'
+            'dbname'   => 'db1057313_alphahyd'
         ));
 
         $aTables = $db->listTables();

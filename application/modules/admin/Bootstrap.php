@@ -77,6 +77,7 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
         $acl->addResource(new Zend_Acl_Resource('update-image-catalog'));
         $acl->addResource(new Zend_Acl_Resource('products-draft'));
         $acl->addResource(new Zend_Acl_Resource('models-generator'));
+        $acl->addResource(new Zend_Acl_Resource('sefurl'));
         $acl->addResource(new Zend_Acl_Resource('csv-catalog-generator'));
         $acl->addResource(new Zend_Acl_Resource('xml-catalog-generator'));
 
