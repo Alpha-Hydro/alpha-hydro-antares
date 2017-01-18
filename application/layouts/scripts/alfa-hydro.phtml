@@ -48,7 +48,8 @@
             window.setTimeout(function () {
                 interval = window.setInterval(function (){
                     if ($('#logo').loadgo('getprogress') == 100) {
-                        window.clearInterval(interval)
+                        window.clearInterval(interval);
+						window.location.replace('/catalog');
                     }
                     else {
                         var prog = p*10;
@@ -62,8 +63,7 @@
 
         $(window).load(function () {
             playLoadGo();
-            $.get( "/", { loading: "success" } );
-        })
+        });
 
     </script>
 </body>
