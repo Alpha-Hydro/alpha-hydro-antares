@@ -59,7 +59,7 @@ class Pages_StaticPageController extends Zend_Controller_Action
             && !Zend_Auth::getInstance()->hasIdentity())
             throw new Zend_Controller_Action_Exception("Раздел временно не доступен", 500);
 
-        if($this->_request->getServer('HTTP_HOST') === 'alfa-hydro.COM'){
+        if($this->_request->getServer('HTTP_HOST') === 'alfa-hydro.com'){
 
             $defaultNamespace = new Zend_Session_Namespace('Default');
             $layout = Zend_Layout::getMvcInstance();
