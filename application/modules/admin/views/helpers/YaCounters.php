@@ -17,6 +17,7 @@ class Zend_View_Helper_YaCounters extends Zend_View_Helper_Abstract
     protected $_aHostName = array(
         'alfa-hydro.loc' => 38923225,
         'alfa-hydro.com' => 38923225,
+        'www.alfa-hydro.com' => 38923225,
         'alpha-hydro.loc' => 30986941,
         'alpha-hydro.com' => 30986941,
     );
