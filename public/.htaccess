@@ -76,6 +76,8 @@ RewriteCond %{HTTP_HOST} ^4494944\.ru$ [OR]
 RewriteCond %{HTTP_HOST} ^4494944\.org$ [OR]
 RewriteCond %{HTTP_HOST} ^alfa-hydro\.ru$ [OR]
 RewriteCond %{HTTP_HOST} ^alfa-hydro\.com$
+## все файлы должны присутствовать реально - RewriteRule работает с путями(файлами)
+## если такого пути (файла) нет правило не сработает
 RewriteCond %{REQUEST_URI} !^/robots\.txt$
 RewriteCond %{REQUEST_URI} !^/yandex\_(.+)\.html$ [NC]
 RewriteRule ^ http://alpha-hydro.com%1%{REQUEST_URI} [R=301,L]

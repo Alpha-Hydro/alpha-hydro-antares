@@ -19,8 +19,13 @@ class Plugin_Redirect extends Zend_Controller_Plugin_Abstract
             'hansa-flex.org',
             'xn----7sbavhvfm6b0af.xn--p1ai',
         );
-        if(in_array($request->getServer('HTTP_HOST'), $aHostName)){
-            $layout->setLayout('hansa_flex');
+
+        $hostName = $request->getServer('HTTP_HOST');
+        if(in_array($hostName, $aHostName)){
+            $layout->setLayout('plug');
+            $view = $layout->getView();
+
+            $view->host = ($hostName != 'xn----7sbavhvfm6b0af.xn--p1ai')?$hostName:'ханза-флекс.рф';
         }
 
         if($request->getParam('fullPath'))
