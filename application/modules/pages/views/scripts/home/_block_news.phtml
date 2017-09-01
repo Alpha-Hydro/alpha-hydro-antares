@@ -11,7 +11,7 @@
                     <a href="/media/<?=$this->newsItem->getFullPath()?>/" class="title"><?=$this->newsItem->getName()?></a>
                 </h4>
                 <div class="media-left">
-                    <img class="media-object" src="<?=$this->newsItem->getImage()?>" alt="...">
+                    <img class="media-object" src="<?=$this->newsItem->getImage()?>" alt="<?=$this->newsItem->getName()?>">
                 </div>
                 <div class="media-body">
                     <p class="description"><?=$this->strCrop($this->newsItem->getSContent(), 250)?></p>
