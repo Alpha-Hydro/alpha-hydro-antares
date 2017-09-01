@@ -1,6 +1,119 @@
 <?php
-$config = new Zend_Config_Xml(APPLICATION_PATH.'/navigations/main-menu.xml');
+/*$config = new Zend_Config_Xml(APPLICATION_PATH.'/navigations/main-menu.xml');
 $container = new Zend_Navigation();
-$container->setPages($config->toArray());
+$container->setPages($config->toArray());*/
+
+$container = new Zend_Navigation(
+    array(
+        array(
+            'label' => 'Каталог',
+            'module' => 'catalog',
+            'controller' => 'index',
+            'route' => 'default',
+            'pages' => array(
+                array(
+                    'label' => 'Категории',
+                    'module' => 'catalog',
+                    'controller' => 'categories',
+                    'route' => 'catalog',
+                ),
+                array(
+                    'label' => 'Справочный материал',
+                    'module' => 'catalog',
+                    'controller' => 'index',
+                    'actions' => 'articles',
+                    'route' => 'catalog_articles',
+                ),
+            )
+        ),
+        array(
+            'label' => 'Производство',
+            'module' => 'manufacture',
+            'controller' => 'index',
+            'route' => 'default',
+            'pages' => array(
+                array(
+                    'label' => 'Категории',
+                    'module' => 'manufacture',
+                    'controller' => 'index',
+                    'route' => 'manufacture',
+                ),
+                array(
+                    'label' => 'Справочный материал',
+                    'module' => 'manufacture',
+                    'controller' => 'index',
+                    'actions' => 'articles',
+                    'route' => 'manufacture_articles',
+                ),
+            )
+        ),
+        array(
+            'label' => 'Детали трубопроводов',
+            'module' => 'pipeline',
+            'controller' => 'index',
+            'route' => 'default',
+            'pages' => array(
+                array(
+                    'label' => 'Категории',
+                    'module' => 'pipeline',
+                    'controller' => 'categories',
+                    'route' => 'pipeline',
+                ),
+                array(
+                    'label' => 'Справочный материал',
+                    'module' => 'pipeline',
+                    'controller' => 'index',
+                    'actions' => 'articles',
+                    'route' => 'pipeline_articles',
+                ),
+            )
+        ),
+        array(
+            'label' => 'Масла',
+            'module' => 'oil',
+            'controller' => 'index',
+            'route' => 'default',
+            'pages' => array(
+                array(
+                    'label' => 'Категории',
+                    'module' => 'oil',
+                    'controller' => 'categories',
+                    'route' => 'oil',
+                ),
+                array(
+                    'label' => 'Справочный материал',
+                    'module' => 'oil',
+                    'controller' => 'index',
+                    'actions' => 'articles',
+                    'route' => 'oil_articles',
+                ),
+            )
+        ),
+        array(
+            'label' => 'Форум',
+            'module' => 'forum',
+            'controller' => 'index',
+            'route' => 'default'
+        ),
+        array(
+            'label' => 'Пресса',
+            'module' => 'media',
+            'controller' => 'index',
+            'route' => 'default'
+        ),
+        array(
+            'label' => 'О нас',
+            'module' => 'pages',
+            'controller' => 'about',
+            'route' => 'pages_about'
+        ),
+        array(
+            'label' => 'Контакты',
+            'module' => 'pages',
+            'controller' => 'contacts',
+            'route' => 'pages_contacts'
+        ),
+    )
+);
 
 echo $this->navigation($container)->menu()->setUlClass('col-md-8')->setMaxDepth(0)->render();
