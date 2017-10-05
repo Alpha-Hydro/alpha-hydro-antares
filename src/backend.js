@@ -97,11 +97,11 @@ if (document.getElementById('product-modification-edit')){
 			<ProductModificationEditButton
 				id = {productId}
 				bsStyle="primary"
-				role = {productPropertyEdit.getAttribute('role')}/>
+				role = {productModificationEdit.getAttribute('role')}/>
 			<ProductModificationPropertyEditButton
 				id = {productId}
 				bsStyle="primary"
-				role = {productPropertyEdit.getAttribute('role')}/>
+				role = {productModificationEdit.getAttribute('role')}/>
 		</ButtonGroup>
 		, productModificationEdit);
 }
