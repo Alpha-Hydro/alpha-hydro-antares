@@ -50,7 +50,6 @@ class IndexController extends Zend_Controller_Action
             ->setSeparator('')
             ->filter($slug);
         return $this->_helper->json->sendJson(array('path' => strtoupper($result), 'error' => null));
-
     }
 
     /**

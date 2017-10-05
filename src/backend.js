@@ -4,7 +4,7 @@ import ButtonGroup from "react-bootstrap/lib/ButtonGroup";
 
 import IssueModalComponent from "./components/IssueModalComponent";
 
-import ForumActions from "./ts/ForumActions";
+//import ForumActions from "./ts/ForumActions";
 import Slugify from "./ts/Slugify";
 
 import PanelButtonsComponent from "./components/PanelButtonsComponent";
@@ -29,7 +29,7 @@ modalAuth && ReactDOM.render(
 	<AdminModalAuth/>, modalAuth
 );
 
-let forumActions = ForumActions;
+//let forumActions = ForumActions;
 
 let onchangeSlugify = new Slugify('.onchangeSlugify');
 onchangeSlugify.onchange();
@@ -69,9 +69,16 @@ productAddButtton && ReactDOM.render(
 	productAddButtton
 );
 
-var productId;
-const productPropertyEdit = document.getElementById('product-property-edit');
-if (productPropertyEdit){
+const passportPdf = document.getElementById('passport-pdf');
+passportPdf && ReactDOM.render(
+	<ProductPassportPdf dataItem = {passportPdf.dataset}/>
+	, passportPdf
+);
+
+let productId;
+
+if (document.getElementById('product-property-edit')){
+	const productPropertyEdit = document.getElementById('product-property-edit');
 	productId = productPropertyEdit.getAttribute('data-id');
 	ReactDOM.render(<ProductPropertyEditButton
 		role = {productPropertyEdit.getAttribute('role')}
@@ -82,8 +89,8 @@ if (productPropertyEdit){
 	/>, productPropertyEdit);
 }
 
-const productModificationEdit = document.getElementById('product-modification-edit');
-if (productModificationEdit){
+if (document.getElementById('product-modification-edit')){
+	const productModificationEdit = document.getElementById('product-modification-edit');
 	productId = productModificationEdit.getAttribute('data-id');
 	ReactDOM.render(
 		<ButtonGroup className="pull-right"	bsSize="small">
@@ -98,9 +105,3 @@ if (productModificationEdit){
 		</ButtonGroup>
 		, productModificationEdit);
 }
-
-const passportPdf = document.getElementById('passport-pdf');
-passportPdf && ReactDOM.render(
-	<ProductPassportPdf dataItem = {passportPdf.dataset}/>
-	, passportPdf
-);

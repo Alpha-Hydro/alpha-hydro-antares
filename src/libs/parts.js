@@ -120,7 +120,7 @@ exports.loadTS = function(paths) {
 			loaders: [
 				{
 					test: /\.tsx?$/,
-					loaders: ['ts-loader'],
+					loaders: ['awesome-typescript-loader'],
 					include: paths
 				}
 			]
