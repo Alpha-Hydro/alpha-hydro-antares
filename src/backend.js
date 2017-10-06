@@ -6,6 +6,7 @@ import IssueModalComponent from "./components/IssueModalComponent";
 
 //import ForumActions from "./ts/ForumActions";
 import Slugify from "./ts/Slugify";
+import SearchForm from "./ts/search";
 
 import PanelButtonsComponent from "./components/PanelButtonsComponent";
 import ItemButtonsComponent from "./components/ItemButtonsComponent";
@@ -104,4 +105,8 @@ if (document.getElementById('product-modification-edit')){
 				role = {productModificationEdit.getAttribute('role')}/>
 		</ButtonGroup>
 		, productModificationEdit);
+}
+
+if (document.getElementById('search')){
+	new SearchForm('search');
 }
