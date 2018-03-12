@@ -131,6 +131,7 @@ define("SelectMediaSectionSite", ["require", "exports"], function (require, expo
 });
 define("adminPublic", ["require", "exports", "ImageLoader", "SelectCategory", "SelectMediaSectionSite"], function (require, exports, ImageLoader, SelectCategory, SelectMediaSectionSite) {
     "use strict";
+    exports.__esModule = true;
     var formItemEdit = document.getElementById('itemEdit');
     var saveFormItemEdit = document.getElementById('saveItemEdit');
     formItemEdit && formItemEdit.addEventListener('change', function () {
